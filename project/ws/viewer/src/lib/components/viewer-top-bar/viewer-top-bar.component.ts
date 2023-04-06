@@ -7,6 +7,7 @@ import { WidgetContentService } from '@sunbird-cb/collection/src/lib/_services/w
 import { ConfigurationsService, NsPage, ValueService } from '@sunbird-cb/utils'
 import { Subscription } from 'rxjs'
 import { ViewerDataService } from '../../viewer-data.service'
+import { ViewerUtilService } from '../../viewer-util.service'
 import { CourseCompletionDialogComponent } from '../course-completion-dialog/course-completion-dialog.component'
 
 @Component({
@@ -45,6 +46,8 @@ export class ViewerTopBarComponent implements OnInit, OnDestroy {
   batchId: any
   leafNodesCount: any
   userid: any
+  isOptionalReading = false
+  nextResource: any
   // primaryCategory = NsContent.EPrimaryCategory
   constructor(
     private activatedRoute: ActivatedRoute,
@@ -56,6 +59,7 @@ export class ViewerTopBarComponent implements OnInit, OnDestroy {
     private dialog: MatDialog,
     private router: Router,
     private widgetServ: WidgetContentService,
+    private viewerSvc: ViewerUtilService,
   ) {
     this.valueSvc.isXSmall$.subscribe(isXSmall => {
       this.logo = !isXSmall
@@ -63,6 +67,7 @@ export class ViewerTopBarComponent implements OnInit, OnDestroy {
     this.router.events.subscribe(event => {
       if (event instanceof NavigationEnd) {
         this.currentRoute = event.url
+       // console.log('Current', this.currentRoute)
       }
     })
   }
@@ -89,36 +94,91 @@ export class ViewerTopBarComponent implements OnInit, OnDestroy {
     // )
     this.viewerDataServiceSubscription = this.viewerDataSvc.tocChangeSubject.subscribe(data => {
       if (data.prevResource) {
-        this.prevResourceUrl = data.prevResource.viewerUrl
-        // this.previousResourcePrimaryCategory = data.prevResource.primaryCategory
-        this.prevResourceUrlParams = {
-          queryParams: {
-            primaryCategory: data.prevResource.primaryCategory,
-            collectionId: data.prevResource.collectionId,
-            collectionType: data.prevResource.collectionType,
-            batchId: data.prevResource.batchId,
-            viewMode: data.prevResource.viewMode,
-            preview: this.forPreview,
-          },
-          fragment: '',
+        if (!data.prevResource.title.includes('optional reading') || (data.prevResource.title.includes('optional reading')
+          && data.prevResource.mimeType !== 'application/pdf')) {
+          this.prevResourceUrl = data.prevResource.viewerUrl
+          // console.log('data.prevResource', data.prevResource)
+          // this.previousResourcePrimaryCategory = data.prevResource.primaryCategory
+          this.prevResourceUrlParams = {
+            queryParams: {
+              primaryCategory: data.prevResource.primaryCategory,
+              collectionId: data.prevResource.collectionId,
+              collectionType: data.prevResource.collectionType,
+              batchId: data.prevResource.batchId,
+              viewMode: data.prevResource.viewMode,
+              preview: this.forPreview,
+            },
+            fragment: '',
+          }
+        } else {
+          if (data.prevResource.title.includes('optional reading') &&
+             (data.prevResource.mimeType === 'application/pdf')
+            && data.prevToPrevResource) {
+            this.prevResourceUrl = data.prevToPrevResource.viewerUrl
+            // console.log('this.nextResourceUrl', this.nextResourceUrl)
+            // console.log('this.prevToPrevResource', data.prevToPrevResource)
+            this.prevResourceUrlParams = {
+              queryParams: {
+                primaryCategory: data.prevToPrevResource.primaryCategory,
+                collectionId: data.prevToPrevResource.collectionId,
+                collectionType: data.prevToPrevResource.collectionType,
+                batchId: data.prevToPrevResource.batchId,
+                viewMode: data.prevToPrevResource.viewMode,
+                preview: this.forPreview,
+              },
+              fragment: '',
+            }
+          } else {
+            this.prevResourceUrl = null
+          }
         }
       } else {
         this.prevResourceUrl = null
       }
       if (data.nextResource) {
-        this.nextResourceUrl = data.nextResource.viewerUrl
-        // this.nextResourcePrimaryCategory = data.nextResource.primaryCategory
-        this.nextResourceUrlParams = {
-          queryParams: {
-            primaryCategory: data.nextResource.primaryCategory,
-            collectionId: data.nextResource.collectionId,
-            collectionType: data.nextResource.collectionType,
-            batchId: data.nextResource.batchId,
-            viewMode: data.nextResource.viewMode,
-            courseName: this.courseName,
-            preview: this.forPreview,
-          },
-          fragment: '',
+        if (!data.nextResource.title.includes('optional reading')
+         || (data.nextResource.title.includes('optional reading')
+          && data.nextResource.mimeType !== 'application/pdf')) {
+          this.nextResourceUrl = data.nextResource.viewerUrl
+          // this.nextResourcePrimaryCategory = data.nextResource.primaryCategory
+          this.nextResourceUrlParams = {
+            queryParams: {
+              primaryCategory: data.nextResource.primaryCategory,
+              collectionId: data.nextResource.collectionId,
+              collectionType: data.nextResource.collectionType,
+              batchId: data.nextResource.batchId,
+              viewMode: data.nextResource.viewMode,
+              courseName: this.courseName,
+              preview: this.forPreview,
+            },
+            fragment: '',
+          }
+        } else {
+          if (data.nextResource.title.includes('optional reading')
+            && (data.nextResource.mimeType === 'application/pdf') && data.nextToNextResource) {
+            this.nextResourceUrl = data.nextToNextResource.viewerUrl
+            // this.nextResourcePrimaryCategory = data.nextResource.primaryCategory
+            this.nextResourceUrlParams = {
+              queryParams: {
+                primaryCategory: data.nextToNextResource.primaryCategory,
+                collectionId: data.nextToNextResource.collectionId,
+                collectionType: data.nextToNextResource.collectionType,
+                batchId: data.nextToNextResource.batchId,
+                viewMode: data.nextToNextResource.viewMode,
+                courseName: this.courseName,
+                preview: this.forPreview,
+              },
+              fragment: '',
+            }
+            this.updateProgress(2, data.nextResource.identifier)
+          } else {
+            if (data.nextResource.title.includes('optional reading') && 
+            (data.nextResource.mimeType === 'application/pdf') && !data.nextToNextResource) {
+              this.nextResource = data.nextResource
+              this.isOptionalReading = true
+            }
+            this.nextResourceUrl = null
+          }
         }
       } else {
         this.nextResourceUrl = null
@@ -140,6 +200,14 @@ export class ViewerTopBarComponent implements OnInit, OnDestroy {
         this.resourcePrimaryCategory = this.viewerDataSvc.resource ? this.viewerDataSvc.resource.primaryCategory : ''
       },
     )
+  }
+  updateProgress(status: number, resourceId: any) {
+    const collectionId = this.activatedRoute.snapshot.queryParams.collectionId ?
+      this.activatedRoute.snapshot.queryParams.collectionId : ''
+    const batchId = this.activatedRoute.snapshot.queryParams.batchId ?
+      this.activatedRoute.snapshot.queryParams.batchId : ''
+    // tslint:disable-next-line:max-line-length
+    this.viewerSvc.realTimeProgressUpdateQuiz(resourceId, collectionId, batchId, status)
   }
 
   ngOnDestroy() {
@@ -173,11 +241,10 @@ export class ViewerTopBarComponent implements OnInit, OnDestroy {
 
   }
 
-   getAuthDataIdentifer() {
+  getAuthDataIdentifer() {
     const collectionId = this.activatedRoute.snapshot.queryParams.collectionId
-     this.widgetServ.fetchAuthoringContent(collectionId).subscribe((data: any) => {
-    this.leafNodesCount = data.result.content.leafNodesCount
-
+    this.widgetServ.fetchAuthoringContent(collectionId).subscribe((data: any) => {
+      this.leafNodesCount = data.result.content.leafNodesCount
     })
   }
   finishDialog() {
@@ -186,13 +253,17 @@ export class ViewerTopBarComponent implements OnInit, OnDestroy {
       this.identifier = this.activatedRoute.snapshot.queryParams.collectionId
       this.batchId = this.activatedRoute.snapshot.queryParams.batchId
 
+      if (this.isOptionalReading) {
+        this.updateProgress(2, this.nextResource.identifier)
+      }
+
       if (this.identifier && this.batchId && this.configSvc.userProfile) {
         let userId
         if (this.configSvc.userProfile) {
           userId = this.configSvc.userProfile.userId || ''
           this.userid = this.configSvc.userProfile.userId || ''
         }
-        const req  = {
+        const req = {
           request: {
             userId,
             batchId: this.batchId,
@@ -202,34 +273,34 @@ export class ViewerTopBarComponent implements OnInit, OnDestroy {
           },
         }
         this.widgetServ.fetchContentHistoryV2(req).subscribe(
-          (data:  any) => {
-          this.contentProgressHash = data.result.contentList
+          (data: any) => {
+            this.contentProgressHash = data.result.contentList
 
-          if (this.leafNodesCount === this.contentProgressHash.length) {
-            const ipStatusCount = this.contentProgressHash.filter((item: any) => item.status === 1)
+            if (this.leafNodesCount === this.contentProgressHash.length) {
+              const ipStatusCount = this.contentProgressHash.filter((item: any) => item.status === 1)
 
-            if (ipStatusCount.length === 0) {
-              const dialogRef = this.dialog.open(CourseCompletionDialogComponent, {
-                autoFocus: false,
-                data: {
-                  courseName: this.activatedRoute.snapshot.queryParams.courseName,
-                  userId: this.userid,
-                  identifier: this.identifier,
-                  primaryCategory: this.collectionType,
-                },
-              })
-              dialogRef.afterClosed().subscribe(result => {
-                if (result === true) {
-                  this.router.navigateByUrl(`app/toc/${this.collectionId}/overview`)
-                }
-              })
+              if (ipStatusCount.length === 0) {
+                const dialogRef = this.dialog.open(CourseCompletionDialogComponent, {
+                  autoFocus: false,
+                  data: {
+                    courseName: this.activatedRoute.snapshot.queryParams.courseName,
+                    userId: this.userid,
+                    identifier: this.identifier,
+                    primaryCategory: this.collectionType,
+                  },
+                })
+                dialogRef.afterClosed().subscribe(result => {
+                  if (result === true) {
+                    this.router.navigateByUrl(`app/toc/${this.collectionId}/overview`)
+                  }
+                })
+              } else {
+                this.router.navigateByUrl(`app/toc/${this.collectionId}/overview`)
+              }
             } else {
               this.router.navigateByUrl(`app/toc/${this.collectionId}/overview`)
             }
-          } else {
-            this.router.navigateByUrl(`app/toc/${this.collectionId}/overview`)
-          }
-        })
+          })
       }
     } else {
       this.router.navigateByUrl(`public/toc/${this.collectionId}/overview`)

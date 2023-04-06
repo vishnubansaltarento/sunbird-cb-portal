@@ -5,6 +5,8 @@ import { IViewerTocCard } from './components/viewer-toc/viewer-toc.component'
 
 export interface IViewerTocChangeEvent {
   tocAvailable: boolean
+  nextToNextResource: IViewerTocCard | null
+  prevToPrevResource: IViewerTocCard | null
   nextResource: IViewerTocCard | null
   prevResource: IViewerTocCard | null
 }
@@ -65,10 +67,13 @@ export class ViewerDataService {
     }
     this.changedSubject.next()
   }
-  updateNextPrevResource(isValid = true, prev: IViewerTocCard | null = null, next: IViewerTocCard | null = null) {
+  updateNextPrevResource(isValid = true, prev: IViewerTocCard | null = null, prevToPrev: IViewerTocCard | null = null,
+                         next: IViewerTocCard | null = null, nextToNext: IViewerTocCard | null = null) {
     this.tocChangeSubject.next(
       {
         tocAvailable: isValid,
+        nextToNextResource: nextToNext,
+        prevToPrevResource: prevToPrev,
         nextResource: next,
         prevResource: prev,
       },

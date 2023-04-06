@@ -210,8 +210,11 @@ export class ViewerTocComponent implements OnInit, OnDestroy {
       const currentIndex = this.queue.findIndex(c => c.identifier === this.resourceId)
       const next =
         currentIndex + 1 < this.queue.length ? this.queue[currentIndex + 1] : null
+      const nextToNext =
+        currentIndex + 2 < this.queue.length ? this.queue[currentIndex + 2] : null
       const prev = currentIndex - 1 >= 0 ? this.queue[currentIndex - 1] : null
-      this.viewerDataSvc.updateNextPrevResource(Boolean(this.collection), prev, next)
+      const prevToPrev = currentIndex - 2 >= 0 ? this.queue[currentIndex - 2] : null
+      this.viewerDataSvc.updateNextPrevResource(Boolean(this.collection), prev, prevToPrev, next, nextToNext)
       this.processCollectionForTree()
       this.expandThePath()
       if (next && next.viewerUrl === '0') { // temp
