@@ -172,8 +172,8 @@ export class ViewerTopBarComponent implements OnInit, OnDestroy {
             }
             this.updateProgress(2, data.nextResource.identifier)
           } else {
-            if (data.nextResource.title.includes('optional reading') && 
-            (data.nextResource.mimeType === 'application/pdf') && !data.nextToNextResource) {
+            if (data.nextResource.title.includes('optional reading') 
+            && (data.nextResource.mimeType === 'application/pdf') && !data.nextToNextResource) {
               this.nextResource = data.nextResource
               this.isOptionalReading = true
             }
