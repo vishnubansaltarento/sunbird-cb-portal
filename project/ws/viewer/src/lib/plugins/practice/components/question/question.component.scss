@@ -13,6 +13,7 @@
 
 .quiz-question {
   overflow-x: auto;
+  font: 600 16px/20px 'Montserrat' !important
 }
 
 .quiz-radio-group {
@@ -74,7 +75,7 @@
 .respo {
   flex-direction: row;
 
-  padding: $size-m 0 $size-m 0;
+  // padding: $size-m 0 $size-m 0;
   box-sizing: border-box;
   @include breakpoint-lt-m {
     flex-direction: column;
@@ -92,7 +93,7 @@
 }
 
 .respo_inner {
-  padding: 0px 100px;
+  padding: 0px 32px;
   @include breakpoint-lt-m {
     padding: 0px 12px;
   }
@@ -114,7 +115,7 @@
   border-bottom: none !important;
 }
 .b-r {
-  border-radius: #{$size-xs / 2};
+  border-radius: #{$size-xs};
 }
 .no-shadow {
   box-shadow: none !important;
@@ -132,3 +133,27 @@
     margin-right: $size-xs;
   }
 }
+
+
+::ng-deep .mat-radio-button {
+  background-color: rgb(245,245,245) !important;
+}
+
+.question-number {
+  font-family: 'Montserrat';
+  font-size: 20px;
+  font-weight: 600;
+  letter-spacing: 0.12;
+  line-height: 28px;
+  color: rgba(0, 0, 0, 0.87);
+}
+
+.subheading-1 {
+  font-family: 'Montserrat';
+  font-size: 20px;
+  font-weight: 300;
+  letter-spacing: 0.12;
+  line-height: 28px;
+  color: rgba(0, 0, 0, 0.87);
+}
+

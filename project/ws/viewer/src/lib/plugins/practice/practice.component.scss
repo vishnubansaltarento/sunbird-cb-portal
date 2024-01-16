@@ -81,11 +81,10 @@ $nav-height: 40px;
   cursor: pointer;
   // width: 40px;
   // height: 26px;
-  width: 48px;
-  height: 36px;
-  border-radius: 24px;
+  width: 44px;
+  height: 32px;
+  // border-radius: 24px;
   text-align: center;
-  line-height: 33px;
 }
 
 .attempted-question {
@@ -124,7 +123,7 @@ $nav-height: 40px;
 }
 
 .dark-border {
-  border: solid #666666 2px;
+  border: solid rgba(0, 0, 0, 0.4) 2px;
 }
 
 .card-section {
@@ -221,7 +220,7 @@ $nav-height: 40px;
 
 .selected {
   background-color: RGBA(0, 116, 182, 0.05) !important;
-  border: 1px solid #0074b6 !important;
+  border: 1px solid rgb(27, 76, 161) !important;
   border-radius: $size-xs;
 }
 
@@ -267,9 +266,14 @@ $nav-height: 40px;
 
 
 .quest_btn {
-  @include breakpoint-lt-xs {
-    width: 100%;
-  }
+  // @include breakpoint-lt-xs {
+  //   width: 100%;
+  // }
+  width:123px;
+}
+
+.quest_btn_prev {
+  color: rgb(27, 76, 161) !important
 }
 .mat-cell {
   border: 1px solid orange;
@@ -279,4 +283,35 @@ $nav-height: 40px;
 .mat-header-cell {
   border: 1px solid orange;
   padding: $size-s;
+}
+
+
+::ng-deep .mat-progress-bar {
+  height: 9px;
+}
+
+.border-radius-63 {
+  border-radius: 63px;
+}
+
+.seperator {
+  border-bottom: 1px solid rgba(0, 0, 0, 0.08);
+  margin: 16px 0;
+}
+
+.ques_stats_container {
+  margin: 24px 16px;
+}
+
+.align-center {
+  align-items: center;
+}
+
+.ques-count {
+  color: rgb(27, 76, 161);
+  font-size: 16px;
+  font-weight: 600;
+  font-family: 'Montserrat';
+  letter-spacing: 0.12px;
+  line-height: 24px;
 }

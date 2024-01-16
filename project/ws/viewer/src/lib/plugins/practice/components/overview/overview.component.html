@@ -39,7 +39,7 @@
     </div>
   </mat-card>
 </div> -->
-<div class="flex auto-w ws-mat-primary-lite-background-important box-height">
+<!-- <div class="flex auto-w ws-mat-primary-lite-background-important box-height">
   <div class="flex flex-1 max-w small-screen">
       <div class="flex flex-1 flex-column flex-center center banner-text">
           <span class="mat-title mat-body-2 ws-mat-black60-text padding-s attempt-text text-block">Now, it’s time for a quick assessment.</span>
@@ -55,19 +55,8 @@
       </a>
       <mat-hint class="mat-title" *ngIf="canAttempt?.attemptsMade >= canAttempt?.attemptsAllowed">You have exceeded the
         maximum allowed attempt</mat-hint>
-      <!-- <div class="flex flex-1">
-        <div class="flex">
-          <mat-hint class="mat-title">Hint: </mat-hint>
-        </div>
-        <div class="margin-left-s flex flex-column">
-          <mat-hint>h: Hour(s) </mat-hint>
-          <mat-hint>m: Minute(s) </mat-hint>
-          <mat-hint>s: Second(s) </mat-hint>
-        </div>
-      </div> -->
-
       <div class="flex margin-top-xl flex-column">
-        <span class="mat-subheading-2 ws-mat-black60-text">Summary</span>
+        <span class="mat-subheading-2 ws-mat-black60-text">Summary test</span>
         <ng-container [ngTemplateOutlet]="testdetail" [ngTemplateOutletContext]="{
                   icon: '/assets/icons/content/assessment.svg',
                   isSVG: true,
@@ -91,13 +80,6 @@
                   isSVG: false,
                   text: 'Maximum '+ (canAttempt?.attemptsAllowed || 0) + ' retake(s) are allowed, and you already attempted ' + (canAttempt?.attemptsMade || 0) + ' time(s) '
                 }"></ng-container>
-                <!-- text: 'Maximum '+ (canAttempt?.attemptsAllowed || 0) + ' retake(s) are allowed, and you already attempted ' + (canAttempt?.attemptsMade || 0) + ' time(s) ' -->
-        <!-- <ng-container *ngIf="questionTYP.FINAL_ASSESSMENT === primaryCategory" [ngTemplateOutlet]="testdetail"
-          [ngTemplateOutletContext]="{
-                        icon: 'stop',
-                        isSVG: false,
-                        text: 'Retakes are not allowed'
-                      }"></ng-container> -->
         <ng-container *ngIf="complexityLevel" [ngTemplateOutlet]="testdetail" [ngTemplateOutletContext]="{
                         icon: 'replay',
                         isSVG: false,
@@ -108,12 +90,6 @@
                               isSVG: false,
                               text: ( timeLimit | pipeDurationTransform: 'hms')
                             }"></ng-container>
-        <!-- <ng-container *ngIf="questionTYP.PRACTICE_RESOURCE  !==primaryCategory" [ngTemplateOutlet]="testdetail"
-          [ngTemplateOutletContext]="{
-                  icon: 'replay',
-                  isSVG: false,
-                  text: 'Unlimited retakes are not allowed'
-                }"></ng-container> -->
       </div>
       <div class="flex flex-1 flex-column margin-top-xl">
         <span class="mat-subheading-2 ws-mat-black60-text">Points to note</span>
@@ -127,6 +103,42 @@
     </div>
   </div>
   <div class="flex flex-1 blank_box"></div>
+</div> -->
+<div class="flex flex-col ws-mat-primary-lite-background-important box-height">
+  <div class="assessment-container">
+  <div class="assessment-stats-count">
+    <div class="flex flex-row">
+      <div class="flex flex-col stats-label">
+          <div><img src="assets/icons/content/assessment.svg"></div>
+          <div>{{noOfQuestions}} questions</div>
+      </div>
+      <div class="flex flex-col margin-left-64 stats-label">
+        <div><img src="assets/icons/content/assessment.svg"></div>
+        <div>{{( timeLimit | pipeDurationTransform: 'hms')}}</div>
+    </div>
+    </div>
+  </div>
+  <div class="summary flex flex-col">
+    <div>
+      <h2 class="summary-label">Summary</h2>
+    </div>
+    <div class="summary-detail">
+     <ul>
+      <li>Maximum {{(canAttempt?.attemptsAllowed || 0)}} retakes are allowed and you already attempted {{(canAttempt?.attemptsMade || 0)}} times</li>
+      <li>If the given time is runs out answer will be autosubmitted</li>
+      <li>Skipped questions can be attempted again before submitting</li>
+      <li>No negative marking</li>
+     </ul>
+    </div>
+  </div>
+  <div class="start-assessment-cta flex flex-row">
+    <button *ngIf="canAttempt?.attemptsMade < canAttempt?.attemptsAllowed" [class.spinner]="loading" [disabled]="loading" (click)="overviewed('start')" class="bg-blue-800 text-sm font-semibold text-white py-3 px-5 rounded-full border-none cursor-pointer tracking-wide">
+      <span class="padding-xs" i18n>Start assessment</span>
+    </button>
+    <mat-hint class="mat-title" *ngIf="canAttempt?.attemptsMade >= canAttempt?.attemptsAllowed">You have exceeded the
+        maximum allowed attempt</mat-hint>
+  </div>
+</div>
 </div>
 <ng-template #detail let-icon="icon" let-text="text">
   <mat-card class="flex max-card-w customcard margin-top-xs ws-mat-primary-tags">

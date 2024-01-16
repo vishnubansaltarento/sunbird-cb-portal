@@ -1,13 +1,13 @@
 <mat-card *ngIf="!(question?.questionType === 'mtf' || question?.questionType === 'ftb')"
   class="flex flex-1 respo margin-bottom-m no-shadow">
-  <div class="respo flex flex-1 flex-column padding-top-m  ws-mat-accent-border right-border">
-    <div class="flex flex-1- flex-column respo_inner">
+  <div class="respo flex flex-column padding-top-m">
+    <div class="flex flex-column respo_inner">
       <div class="flex flex-middle">
-        <h3 class="mat-subheading-2 ws-mat-black60-text margin-bottom-m">
-          <ng-container i18n="question number label">Question &nbsp;</ng-container>{{ questionNumber }}
-          <ng-container i18n="question number of total questions">of</ng-container>
-          {{ total }}
-        </h3>
+        <p class="margin-bottom-m">
+          <ng-container i18n="question number label"><span class="subheading-1">Question</span></ng-container><span class="question-number">&nbsp;{{ questionNumber }}&nbsp;</span>
+          <ng-container i18n="question number of total questions"><span class="question-number">of</span></ng-container>
+          <span class="question-number">&nbsp;{{ total }}</span>
+        </p>
       </div>
 
       <div class="flex flex-1">
@@ -19,18 +19,7 @@
             (update)="update($event)"></viewer-fitb-question>
         </ng-container>
       </div>
-    </div>
-  </div>
-  <div class="flex flex-1">
-    <div class="flex flex-1 flex-column">
       <div class="flex flex-1">
-        <span class="spacer"></span>
-        <button aria-label="flag" i18n-aria-label mat-icon-button (click)="markQuestion()" class="flag_btn">
-        <mat-icon *ngIf="!isQuestionMarked()" matTooltip="You can use this Flag icon to postpone attempting a particular question. The flagged question will be highlighted in orange, as a reminder, when you attempt it later.">outlined_flag</mat-icon>
-        <mat-icon *ngIf="isQuestionMarked()" matTooltip="You can use this Flag icon to postpone attempting a particular question. The flagged question will be highlighted in orange, as a reminder, when you attempt it later.">flag</mat-icon>
-        </button>
-      </div>
-      <div class="flex flex-1 viewer_quest_box">
         <!-- {{log(question)}} -->
         <ng-container *ngIf="question.questionType === 'mcq-mca'">
           <viewer-mcq-mca-question   [primaryCategory]="primaryCategory" class="flex-1" [question]="question" [itemSelectedList]="itemSelectedList1"
@@ -69,6 +58,18 @@
           </div>
         </ng-container>
       </div>
+    </div>
+  </div>
+  <div class="flex flex-1">
+    <div class="flex flex-1 flex-column">
+      <div class="flex flex-1">
+        <span class="spacer"></span>
+        <button aria-label="flag" i18n-aria-label mat-icon-button (click)="markQuestion()" class="flag_btn">
+        <mat-icon *ngIf="!isQuestionMarked()" matTooltip="You can use this Flag icon to postpone attempting a particular question. The flagged question will be highlighted in orange, as a reminder, when you attempt it later.">outlined_flag</mat-icon>
+        <mat-icon *ngIf="isQuestionMarked()" matTooltip="You can use this Flag icon to postpone attempting a particular question. The flagged question will be highlighted in orange, as a reminder, when you attempt it later.">flag</mat-icon>
+        </button>
+      </div>
+      
     </div>
   </div>
 </mat-card>

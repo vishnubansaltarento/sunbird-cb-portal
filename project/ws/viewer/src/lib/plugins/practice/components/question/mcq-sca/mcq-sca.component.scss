@@ -7,6 +7,9 @@
 
 .wrap-mat-radio-label {
     white-space: normal;
+    font-size: 14px;
+    font-family: 'Lato';
+    font-weight: 700;
 }
 
 .quiz-radio-group {
@@ -27,4 +30,15 @@
 
 .incorrect-answer {
     border-color: #f44336 !important;
+}
+
+.padding-s {
+    padding:15px !important;
+}
+
+.quiz-radio-group {
+    .mat-radio-button {
+        background-color: rgb(245,245,245) !important;
+    }
+    
 }

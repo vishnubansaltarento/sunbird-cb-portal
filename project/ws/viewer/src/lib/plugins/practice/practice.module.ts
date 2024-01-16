@@ -22,6 +22,8 @@ import {
   MatProgressBarModule,
   MatExpansionModule,
   MatTooltipModule,
+  MatCheckboxModule,
+  MatChipsModule
 } from '@angular/material'
 
 import {
@@ -64,6 +66,8 @@ import { MatchTheFollowingQuesComponent } from './components/question/mtf/mtf.co
     BtnFullscreenModule,
     MatProgressSpinnerModule,
     MatTooltipModule,
+    MatCheckboxModule,
+    MatChipsModule
   ],
   exports: [
     PracticeComponent,
