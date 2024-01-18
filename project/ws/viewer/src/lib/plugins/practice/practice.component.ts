@@ -7,6 +7,7 @@ import {
   QueryList,
   SimpleChanges,
   ViewChild, ViewChildren,
+  Inject
 } from '@angular/core'
 import { MatDialog, MatSidenav, MatSnackBar } from '@angular/material'
 import { Subscription } from 'rxjs'
@@ -24,6 +25,7 @@ import _ from 'lodash'
 import { NSQuiz } from '../quiz/quiz.model'
 import { environment } from 'src/environments/environment'
 import { DomSanitizer, SafeHtml } from '@angular/platform-browser'
+import { DOCUMENT } from '@angular/common';
 // import { ViewerDataService } from '../../viewer-data.service'
 export type FetchStatus = 'hasMore' | 'fetching' | 'done' | 'error' | 'none'
 @Component({
@@ -108,6 +110,7 @@ export class PracticeComponent implements OnInit, OnChanges, OnDestroy {
   showAnswer = false
   matchHintDisplay: any[] = []
   canAttempt!: NSPractice.IRetakeAssessment
+  questionAttemptedCount = 0;
   constructor(
     private events: EventService,
     public dialog: MatDialog,
@@ -118,7 +121,8 @@ export class PracticeComponent implements OnInit, OnChanges, OnDestroy {
     private valueSvc: ValueService,
     // private vws: ViewerDataService,
     public snackbar: MatSnackBar,
-    private sanitized: DomSanitizer
+    private sanitized: DomSanitizer,
+    @Inject(DOCUMENT) private document: any
   ) {
     if (environment.assessmentBuffer) {
       this.assessmentBuffer = environment.assessmentBuffer
@@ -126,6 +130,7 @@ export class PracticeComponent implements OnInit, OnChanges, OnDestroy {
   }
   init() {
     // this.getSections()
+    // this.loadFullScreen();
     this.isSubmitted = false
     this.markedQuestions = new Set([])
     this.questionAnswerHash = {}
@@ -153,6 +158,8 @@ export class PracticeComponent implements OnInit, OnChanges, OnDestroy {
     this.valueSvc.isXSmall$.subscribe(isXSmall => {
       this.isXsmall = isXSmall
     })
+
+    
   }
   @HostListener('window:beforeunload', ['$event'])
   beforeUnloadHander(e: any) {
@@ -644,6 +651,11 @@ export class PracticeComponent implements OnInit, OnChanges, OnDestroy {
     if (this.markSectionAsComplete(answered) && this.selectedSection) {
       this.quizSvc.setFullAttemptSection(this.selectedSection)
     }
+    if(this.questionAnswerHash) {
+      this.questionAttemptedCount = Object.keys(this.questionAnswerHash).length;
+    }
+    
+    console.log('this.selectedSection,',this.questionAnswerHash)
   }
   markSectionAsComplete(answered: any): boolean {
     let seted = true
@@ -1016,7 +1028,7 @@ export class PracticeComponent implements OnInit, OnChanges, OnDestroy {
     }
   }
 
-  isQuestionAttempted(questionId: string): boolean {
+  isQuestionAttempted(questionId: string): boolean {    
     return !(Object.keys(this.questionAnswerHash).indexOf(questionId) === -1)
   }
 
@@ -1187,4 +1199,8 @@ export class PracticeComponent implements OnInit, OnChanges, OnDestroy {
     newText += `</ul>`
     return this.sanitized.bypassSecurityTrustHtml(newText)
   }
+
+  
+
+ 
 }

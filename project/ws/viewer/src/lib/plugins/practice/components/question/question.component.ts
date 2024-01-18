@@ -1,6 +1,7 @@
 import {
   AfterViewInit, Component, EventEmitter,
   Input, OnChanges, OnInit, Output, SimpleChanges, ViewEncapsulation,
+  Inject 
 } from '@angular/core'
 import { NSPractice } from '../../practice.model'
 import { SafeHtml } from '@angular/platform-browser'
@@ -9,7 +10,7 @@ import { PracticeService } from '../../practice.service'
 // tslint:disable-next-line
 import _ from 'lodash'
 import { NsContent } from '@sunbird-cb/utils/src/public-api'
-
+import { DOCUMENT } from '@angular/common';
 @Component({
   selector: 'viewer-question',
   templateUrl: './question.component.html',
@@ -55,10 +56,12 @@ export class QuestionComponent implements OnInit, OnChanges, AfterViewInit {
     // private domSanitizer: DomSanitizer,
     // private elementRef: ElementRef,
     private practiceSvc: PracticeService,
+    @Inject(DOCUMENT) private document: any
   ) { }
 
   ngOnInit() {
     this.init()
+    this.loadFullScreen();
   }
 
   ngAfterViewInit() {
@@ -116,6 +119,12 @@ export class QuestionComponent implements OnInit, OnChanges, AfterViewInit {
     const elementById: HTMLElement | null = document.getElementById(id)
     if (elementById && color) {
       elementById.style.borderColor = color
+    }
+  }
+
+  loadFullScreen() {
+    if (this.document.documentElement.requestFullscreen) {
+      this.document.documentElement.requestFullscreen();
     }
   }
 

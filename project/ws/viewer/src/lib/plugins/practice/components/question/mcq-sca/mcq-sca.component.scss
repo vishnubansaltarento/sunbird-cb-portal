@@ -36,9 +36,16 @@
     padding:15px !important;
 }
 
-.quiz-radio-group {
+.theme-igot.day-mode {
     .mat-radio-button {
         background-color: rgb(245,245,245) !important;
     }
     
+}
+
+.theme-igot.day-mode .ws-mat-accent-border-active {
+    background-color: #eff3f9 !important;
+    .mat-radio-label-content {
+        color: rgb(27, 76, 161) !important;
+    }
 }

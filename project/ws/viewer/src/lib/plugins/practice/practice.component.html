@@ -70,79 +70,7 @@
         </div>
       </mat-sidenav>
       <mat-sidenav-content class="overflow-y-scroll" id="result-nav">
-        <mat-card class="flex flex-1 flex-column margin-m pad-0 quest_mat_card">
-          <div class="ques_stats_container">
-            <div class="flex flex-row justify-between">
-              <div>
-                Questions
-              </div>
-              <div>
-                Timer
-              </div>
-            </div>
-            <div class="seperator"></div>
-            <div>
-              <div class="flex flex-row justify-between">
-                <div class="flex flex-col align-center">
-                  <div class="ques-count">20</div>
-                  <div>Not answered</div>
-                 </div>
-                 <div class="flex flex-col align-center">
-                  <div class="ques-count">20</div>
-                  <div>Answered</div>
-                 </div>
-                 <div class="flex flex-col align-center">
-                  <div class="ques-count">20</div>
-                  <div>Skipped</div>
-                 </div>
-              </div>
-            </div> 
-            <div class="seperator"></div>       
-            <div>
-              Questions:
-            </div>
-            <div class="seperator"></div>
-            <div class="flex flex-row justify-between">
-              
-              <div>
-                <div>Answered</div>
-                <div><mat-chip-list><mat-chip>Test</mat-chip></mat-chip-list></div>
-              </div>
-              <div>
-                Not Answered <mat-checkbox class="example-margin"></mat-checkbox>
-              </div>
-              <div>
-                <div>Skipped</div>
-                <div><mat-chip>Test</mat-chip></div>
-              </div>
-            </div>
-          </div>
-          <div class="seperator"></div>  
-          <div *ngIf="!isSubmitted && !isXsmall && viewState === 'attempt'" class="flex flex-1">
-            <ng-template *ngIf="fetchingQuestionsStatus === 'fetching'" [ngTemplateOutlet]="showLoading"></ng-template>
-            <div class="flex flex-nowrap margin-right-s margin-left-s quest_num_box"
-              *ngIf="fetchingQuestionsStatus === 'done'">
-              <div class="col" *ngFor="let question of secQuestions; let i = index">
-                <div (click)="scroll(i + 1)" [ngClass]="{
-                'marked-question': isQuestionMarked(question?.questionId),
-                'attempted-question':
-                  !isQuestionMarked(question?.questionId) &&
-                  isQuestionAttempted(question?.questionId),
-                'white-border':
-                  !isQuestionMarked(question?.questionId) &&
-                  !isQuestionAttempted(question?.questionId) &&
-                  currentTheme === 'black-theme',
-                'dark-border':
-                  !isQuestionMarked(question?.questionId) &&
-                  !isQuestionAttempted(question?.questionId) &&
-                  currentTheme !== 'black-theme'
-              }" class="margin-xs ovel">
-                  <div class="question-number"><span class="mat-body-2">{{ i + 1 }}</span></div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </mat-card> 
+        
         
         <!-- {{current_Question | json}}
       {{currentQuestionIndex}} -->
@@ -155,11 +83,7 @@
               <ng-container [ngTemplateOutlet]="timer"></ng-container>
              
             </div> -->
-            <div class="flex flex-1">
-              <mat-progress-bar class="quiz-progress" [color]="secondary" [mode]="determinate"
-                [value]="((currentQuestionIndex + 1)/totalQCount)*100" [bufferValue]="100">
-              </mat-progress-bar>
-            </div>
+           
             <!-- {{current_Question?.questionId}}====
           {{current_Question?.questionType}}
           {{questionAnswerHash[(current_Question?.questionId)] | json}} -->
@@ -170,7 +94,10 @@
             [question]="question" [itemSelectedList]="questionAnswerHash[(question?.questionId)]"
             (itemSelected)="fillSelectedItems(question, $event)" [hidden]="i !== currentQuestionIndex">
           </viewer-question> -->
-            <ng-container *ngIf="current_Question && !process">
+            <div class="flex flex-row">
+              <div>
+                Practice Assessment
+              </div>
               <div class="flex flex-1 flex-row-reverse butto_box end">
                 <ng-container
                   *ngIf="!allSecAttempted.full && allSecAttempted.next && ((currentQuestionIndex+1) === totalQCount)">
@@ -201,13 +128,101 @@
                   </button>
                 </ng-container> -->
               </div>
-              <viewer-question #questionsReference [id]="'question' + (currentQuestionIndex + 1)"
-                [markedQuestions]="markedQuestions" [artifactUrl]="artifactUrl"
-                [questionNumber]="currentQuestionIndex + 1" [total]="secQuestions.length" [viewState]="viewState"
-                [question]="current_Question" [itemSelectedList]="questionAnswerHash[(current_Question?.questionId)]"
-                [primaryCategory]="primaryCategory"
-                 (itemSelected)="fillSelectedItems(current_Question, $event)">
-              </viewer-question>
+            </div>
+            <ng-container *ngIf="current_Question && !process">
+              <div class="question_container flex flex-row">
+                <div class="border-outline">
+                  <div class="flex flex-1">
+                    <mat-progress-bar class="quiz-progress" [color]="secondary" [mode]="determinate"
+                      [value]="((currentQuestionIndex + 1)/totalQCount)*100" [bufferValue]="100">
+                    </mat-progress-bar>
+                  </div>
+                 
+                  <viewer-question #questionsReference [id]="'question' + (currentQuestionIndex + 1)"
+                    [markedQuestions]="markedQuestions" [artifactUrl]="artifactUrl"
+                    [questionNumber]="currentQuestionIndex + 1" [total]="secQuestions.length" [viewState]="viewState"
+                    [question]="current_Question" [itemSelectedList]="questionAnswerHash[(current_Question?.questionId)]"
+                    [primaryCategory]="primaryCategory"
+                     (itemSelected)="fillSelectedItems(current_Question, $event)">
+                  </viewer-question>
+                </div>
+                <div class="question-list">
+                  <mat-card class="flex flex-1 flex-column margin-m pad-0 quest_mat_card">
+                    <div class="ques_stats_container">
+                      <div class="flex flex-row justify-between">
+                        <h3 class="mat-subheading-2">
+                          Questions
+                        </h3>
+                        <div class="timer">
+                          <mat-chip class="light-blue"><span class="chip-text">
+                            <ng-container [ngTemplateOutlet]="timer"></ng-container>
+                          </span></mat-chip>
+                        </div>
+                      </div>
+                      <div class="seperator"></div>
+                      <div>
+                        <div class="flex flex-row justify-between">
+                          <div class="flex flex-col align-center">
+                            <div class="ques-count">20</div>
+                            <div class="stats-label">Not answered</div>
+                           </div>
+                           <div class="flex flex-col align-center">
+                            <div class="ques-count">{{questionAttemptedCount}}</div>
+                            <div class="stats-label">Answered</div>
+                           </div>
+                           <div class="flex flex-col align-center">
+                            <div class="ques-count">{{markedQuestions.size}}</div>
+                            <div class="stats-label">Skipped</div>
+                           </div>
+                        </div>
+                      </div>      
+                      <div class="seperate-text">
+                        <span>Questions</span>
+                      </div>
+                      <div class="flex flex-row justify-between">
+                        
+                        <div class="flex flex-row center-text">
+                          <div class="answer-stats-label">Answered&nbsp;</div>
+                          <div><mat-chip-list><mat-chip class="light-blue-small">&nbsp;&nbsp;&nbsp;&nbsp;</mat-chip></mat-chip-list></div>
+                        </div>
+                        <div class="flex flex-row center-text answer-stats-label">
+                          Not Answered &nbsp;<mat-checkbox class="example-margin"></mat-checkbox>
+                        </div>
+                        <div class="flex flex-row center-text">
+                          <div class="answer-stats-label">Skipped&nbsp;</div>
+                          <div><mat-chip class="orange-small">&nbsp;&nbsp;&nbsp;&nbsp;</mat-chip></div>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="seperator"></div>  
+                    <div *ngIf="!isSubmitted && !isXsmall && viewState === 'attempt'" class="flex flex-1">
+                      <ng-template *ngIf="fetchingQuestionsStatus === 'fetching'" [ngTemplateOutlet]="showLoading"></ng-template>
+                      <div class="flex flex-nowrap margin-right-s margin-left-s quest_num_box"
+                        *ngIf="fetchingQuestionsStatus === 'done'">
+                        <div class="col" *ngFor="let question of secQuestions; let i = index">
+                          <div (click)="scroll(i + 1)" [ngClass]="{
+                          'marked-question': isQuestionMarked(question?.questionId),
+                          'attempted-question':
+                            !isQuestionMarked(question?.questionId) &&
+                            isQuestionAttempted(question?.questionId),
+                          'white-border':
+                            !isQuestionMarked(question?.questionId) &&
+                            !isQuestionAttempted(question?.questionId) &&
+                            currentTheme === 'black-theme',
+                          'dark-border':
+                            !isQuestionMarked(question?.questionId) &&
+                            !isQuestionAttempted(question?.questionId) &&
+                            currentTheme !== 'black-theme'
+                        }" class="margin-xs ovel">
+                            <div class="question-number"><span class="mat-body-2">{{ i + 1 }}</span></div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </mat-card> 
+                </div>
+              </div>
+             
             </ng-container>
             <div class="flex flex-1">
               <ng-container
@@ -252,14 +267,13 @@
             <ng-template *ngIf="!(current_Question && !process)" [ngTemplateOutlet]="showLoading"></ng-template>
           </ng-container>
         </mat-card>
-        <ng-container *ngIf="fetchingQuestionsStatus === 'done'  && current_Question && !process">
+        <!-- <ng-container *ngIf="fetchingQuestionsStatus === 'done'  && current_Question && !process">
           <ng-container *ngIf="viewState === 'attempt' && !isSubmitted">
             <div class="flex flex-1 flex-column margin-top-l margin-left-xs bottom_box margin-bottom-xs">
               <div class="flex flex-start margin-left-m  cen">
                 <mat-icon class="flex margin-top-xs margin-bottom-xs">warning</mat-icon>
                 <span class="flex mat-body-2 padding-xs font-weight-700" i18n>Instructions </span>
                 <span class="flex mat-body-2 font-weight-700" i18n>:</span>
-                <!-- <span class="flex mat-body-2 padding-xs" i18n>{{selectedSection.additionalInstructions}}</span> -->
                 <span [innerHtml]="formate(selectedSection.additionalInstructions)"></span>
               </div>
               <div class="flex flex-start margin-left-m  cen">
@@ -274,7 +288,7 @@
               </div>
             </div>
           </ng-container>
-        </ng-container>
+        </ng-container> -->
 
         <div id="quiz-end"></div>
         <ng-container *ngIf="isSubmitted && (viewState === 'answer' || viewState === 'review')">

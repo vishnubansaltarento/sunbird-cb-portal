@@ -88,8 +88,8 @@ $nav-height: 40px;
 }
 
 .attempted-question {
-  border: solid #1D8923 2px;
-  color: #1D8923;
+  border: solid rgb(27, 76, 161) 2px;
+  color: rgb(27, 76, 161);
 }
 
 .marked-question {
@@ -202,7 +202,7 @@ $nav-height: 40px;
 
 .complete {
   background-color: RGBA(29, 137, 35, 0.1) !important;
-  border: 1px solid #1d8923 !important;
+  border: 1px solid rgb(27, 76, 161) !important;
   border-radius: $size-xs;
 }
 
@@ -314,4 +314,96 @@ $nav-height: 40px;
   font-family: 'Montserrat';
   letter-spacing: 0.12px;
   line-height: 24px;
+}
+
+.border-outline {
+  border: 1px solid rgb(0,0,0);
+  width: 65%;
+}
+
+.question-number {
+  color:rgb(27, 76, 161)
+}
+
+.question-list {
+  width: 35%;
+}
+
+::ng-deep .mat-checkbox .mat-checkbox-inner-container {
+  height: 24px !important;
+  width: 40px !important;
+}
+
+.center-text {
+  display: flex;
+    align-items: center;
+    flex-direction: row;
+}
+
+.light-blue {
+  background-color: #eff3f9 !important;
+    border: 1px solid #1b4ca1;
+    width: 102px;
+    align-items: center;
+    justify-content: center;
+   
+}
+
+.light-blue-small {
+  background-color: #eff3f9 !important;
+    border: 1px solid #1b4ca1;
+    align-items: center;
+    justify-content: center;
+}
+
+.orange-small {
+  background-color: rgba(239, 149, 30, 0.08) !important;
+    border: 1px solid rgb(239, 149, 30);
+    align-items: center;
+    justify-content: center;
+}
+
+.chip-text {
+  font-size: 14px;
+  font-weight: 700;
+  color: #1b4ca1;
+}
+
+.stats-label {
+  font-size: 12px;
+  font-weight: 400;
+  color: rgba(0, 0, 0, 0.6);
+  font-family: 'Lato';
+}
+
+.answer-stats-label {
+  font-size: 14px;
+  font-weight: 400;
+  color: rgba(0, 0, 0, 0.6);
+  font-family: 'Lato';
+}
+
+::ng-deep .mat-standard-chip {
+  min-height: 24px !important;
+}
+
+::ng-deep .timer .mat-standard-chip {
+  min-height: 32px !important;
+}
+
+.seperate-text {
+  width: 100%; 
+   text-align: center; 
+   border-bottom: 1px solid rgb(216,216,216); 
+   line-height: 0.1em;
+   margin: 10px 0 20px; 
+}
+
+.seperate-text  span { 
+  background:#fff; 
+  padding:0 10px; 
+  font-size: 12px;
+  font-weight: 700;
+  font-family: 'Lato';
+  letter-spacing: 0.25px;
 }
