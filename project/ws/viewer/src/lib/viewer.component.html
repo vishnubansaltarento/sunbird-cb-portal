@@ -6,7 +6,7 @@
     (toggle)="toggleSideBar()" [leafNodesCount]="leafNodesCount" >
   </viewer-viewer-top-bar>
   <mat-sidenav-container autosize class="viewer-sidenav-container">
-    <mat-sidenav [ngClass]="isTypeOfCollection?'viewer-sidenav':'viewer-sidenav-standalone'" position="end"
+    <!-- <mat-sidenav [ngClass]="isTypeOfCollection?'viewer-sidenav':'viewer-sidenav-standalone'" position="end"
       [opened]="sideNavBarOpened" [mode]="mode">
       <mat-tab-group>
         <mat-tab *ngIf="isTypeOfCollection" i18n-label label="Contents">
@@ -17,7 +17,7 @@
           <ws-widget-player-brief [forPreview]="forPreview" [content]="content"></ws-widget-player-brief>
         </mat-tab>
       </mat-tab-group>
-    </mat-sidenav>
+    </mat-sidenav> -->
 
     <mat-sidenav-content class="sidenavContent" #scrollableContent>
       <section *ngIf="status === 'error'">

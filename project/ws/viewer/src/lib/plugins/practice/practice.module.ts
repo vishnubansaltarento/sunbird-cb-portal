@@ -34,7 +34,7 @@ import { FillInTheBlankComponent } from './components/question/fitb/fitb.compone
 import { MultipleChoiseQuesComponent } from './components/question/mcq-mca/mcq-mca.component'
 import { SingleChoiseQuesComponent } from './components/question/mcq-sca/mcq-sca.component'
 import { MatchTheFollowingQuesComponent } from './components/question/mtf/mtf.component'
-
+import { SkeletonLoaderModule } from '@sunbird-cb/collection/src/lib/_common/skeleton-loader/skeleton-loader.module';
 @NgModule({
   declarations: [
     FillInTheBlankComponent,
@@ -67,7 +67,8 @@ import { MatchTheFollowingQuesComponent } from './components/question/mtf/mtf.co
     MatProgressSpinnerModule,
     MatTooltipModule,
     MatCheckboxModule,
-    MatChipsModule
+    MatChipsModule,
+    SkeletonLoaderModule
   ],
   exports: [
     PracticeComponent,

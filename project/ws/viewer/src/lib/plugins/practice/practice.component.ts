@@ -111,6 +111,8 @@ export class PracticeComponent implements OnInit, OnChanges, OnDestroy {
   matchHintDisplay: any[] = []
   canAttempt!: NSPractice.IRetakeAssessment
   questionAttemptedCount = 0;
+  isMobile = false;
+  expandFalse = true;
   constructor(
     private events: EventService,
     public dialog: MatDialog,
@@ -194,6 +196,11 @@ export class PracticeComponent implements OnInit, OnChanges, OnDestroy {
     }
   }
   ngOnInit() {
+    if(window.innerWidth <= 1200) {
+      this.isMobile = true;
+    } else {
+      this.isMobile = false;
+    }
     this.canAttend()
     this.attemptSubscription = this.quizSvc.secAttempted.subscribe(data => {
       this.attemptSubData = data

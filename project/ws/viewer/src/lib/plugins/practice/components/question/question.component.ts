@@ -61,7 +61,7 @@ export class QuestionComponent implements OnInit, OnChanges, AfterViewInit {
 
   ngOnInit() {
     this.init()
-    this.loadFullScreen();
+    // this.loadFullScreen();
   }
 
   ngAfterViewInit() {
@@ -122,10 +122,10 @@ export class QuestionComponent implements OnInit, OnChanges, AfterViewInit {
     }
   }
 
-  loadFullScreen() {
-    if (this.document.documentElement.requestFullscreen) {
-      this.document.documentElement.requestFullscreen();
-    }
-  }
+  // loadFullScreen() {
+  //   if (this.document.documentElement.requestFullscreen) {
+  //     this.document.documentElement.requestFullscreen();
+  //   }
+  // }
 
 }
