@@ -1935,6 +1935,7 @@ export class UserProfileComponent implements OnInit, OnDestroy {
               },
             }
             this.userProfileSvc.updatePrimaryEmailDetails(reqUpdates).subscribe((_updateRes: any) => {
+              this.snackBar.open(this.translateTo('updateEamilConfirmation'))
               this.router.navigateByUrl('/', { skipLocationChange: true }).then(() => {
                 this.router.navigate(['app/user-profile/details'])
               })
