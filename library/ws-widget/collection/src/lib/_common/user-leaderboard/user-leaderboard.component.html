@@ -18,9 +18,8 @@
             <span class="month">{{monthName}} {{rank1.year}}</span>
           </div>
           <div class="hidden md:block">
-            <mat-icon class="cursor-pointer info-icon" (click)="tooltip.show()"
+            <mat-icon class="cursor-pointer info-icon"
               #tooltip="matTooltip" [matTooltipClass]="'below'"[matTooltipPosition]="'below'"
-              [matTooltipHideDelay]="tooltipDelay"
               matTooltip="{{'learnerLeaderboard.toolTip' | translate}}">info_outline</mat-icon>
           </div>
           <div class="block md:hidden">
