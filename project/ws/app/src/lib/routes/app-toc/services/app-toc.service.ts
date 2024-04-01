@@ -562,7 +562,7 @@ export class AppTocService {
       // content.children.forEach(async (parentChild,index) => {
         const parentChild = content.children[i]
         if (parentChild.primaryCategory === NsContent.EPrimaryCategory.COURSE) {
-          const foundContent = enrolmentList.find((el: any) => el.collectionId === parentChild.identifier)
+          const foundContent = enrolmentList && enrolmentList.find((el: any) => el.collectionId === parentChild.identifier)
           // tslint:disable-next-line: max-line-length
           // totalCount = foundContent && foundContent.completionPercentage ? totalCount + foundContent.completionPercentage : totalCount + 0
           // content.completionPercentage = Math.round(totalCount / leafnodeCount)
