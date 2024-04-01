@@ -4,7 +4,7 @@ import { MatDialog } from '@angular/material/dialog'
 import { ActivatedRoute } from '@angular/router'
 import { CompetenceService } from '../../services/competence.service'
 /* tslint:disable */
-import _ from 'lodash';
+import * as _ from 'lodash'
 import { FormControl } from '@angular/forms';
 import { CompetenceViewComponent } from '../../components/competencies-view/competencies-view.component'
 import { MatSnackBar } from '@angular/material';
@@ -490,9 +490,16 @@ export class CompetenceAllComponent implements OnInit {
       label,
       index,
     }
-    this.eventSvc.handleTabTelemetry(
-      WsEvents.EnumInteractSubTypes.COMPETENCY_TAB,
-      data,
+    this.eventSvc.raiseInteractTelemetry(
+      {
+        type: WsEvents.EnumInteractTypes.CLICK,
+        subType: WsEvents.EnumInteractSubTypes.COMPETENCY_TAB,
+        id: `${_.camelCase(data.label)}-tab`
+      },
+      {},
+      {
+        module: WsEvents.EnumTelemetrymodules.COMPETENCY
+      }
     )
   }
 }

@@ -7,7 +7,7 @@ import {
   ActivatedRoute,
 } from '@angular/router'
 // tslint:disable-next-line
-import _ from 'lodash'
+import * as _ from 'lodash'
 import {
   SeeAllService,
 } from '../../services/see-all.service'
@@ -203,9 +203,16 @@ export class SeeAllHomeComponent implements OnInit, OnDestroy {
       label: `${tabEvent.tab.textLabel}`,
       index: tabEvent.index,
     }
-    this.eventSvc.handleTabTelemetry(
-      WsEvents.EnumInteractSubTypes.HOME_PAGE_STRIP_TABS,
-      data,
+    this.eventSvc.raiseInteractTelemetry(
+      {
+        type: WsEvents.EnumInteractTypes.CLICK,
+        subType: WsEvents.EnumInteractSubTypes.HOME_PAGE_STRIP_TABS,
+        id: `${_.camelCase(data.label)}-tab`,
+      },
+      {},
+      {
+        module: WsEvents.EnumTelemetrymodules.HOME,
+      }
     )
     const currentTabFromMap = stripMap.tabs && stripMap.tabs[tabEvent.index]
     const currentStrip = stripMap
