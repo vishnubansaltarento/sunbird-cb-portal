@@ -65,12 +65,17 @@
   left: 50%;
   top: 40%;
   transform: translateX(-50%);
+  display: block;
 
   @media only screen and (max-width:469px) {
     width: 100%;
-    top: 30px;
+    top: 0;
     left: 0px;
     right: 0px;
+    transform: none;
+    height: inherit;
+    overflow: scroll;
+    bottom: 0;
   }
 }
 
@@ -99,7 +104,7 @@
 
 @media screen and (min-width: 280px) and (max-width: 375px) { 
   .html-viewer-container {
-    height:150px;
+    height:210px;
     box-shadow: none !important;
     background: rgb(27, 33, 51) !important;
     padding: 0 !important;
@@ -153,8 +158,9 @@
     width: 85%;
     margin: 0 auto;
     position: absolute;
-    left: 0%;
-    top: 28%;
+    left: 50%;
+    // top: 28%;
+    transform: translateX(-50%);
   }
 }
 @media screen and (min-width: 540px) and (max-width: 540px) { 
