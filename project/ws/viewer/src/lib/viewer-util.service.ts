@@ -178,9 +178,9 @@ export class ViewerUtilService {
       ) {
       tempContentData.children.forEach((childList: NsContent.IContent) => {
         if (childList.primaryCategory === NsContent.EPrimaryCategory.COURSE) {
-          const courseEnrollmentList = enrollmentList.filter((v: NsContent.ICourse) => v.contentId === childList.identifier)
+          const courseEnrollmentList = enrollmentList &&  enrollmentList.filter((v: NsContent.ICourse) => v.contentId === childList.identifier)
           if (childList.childNodes && childList.childNodes.indexOf(resourceId) !== -1) {
-            if (courseEnrollmentList.length > 0) {
+            if (courseEnrollmentList && courseEnrollmentList.length > 0) {
               tempData.batchId = courseEnrollmentList[courseEnrollmentList.length - 1].batch.batchId
               tempData.courseId = childList.identifier
             }
