@@ -28,6 +28,7 @@ export class CompetencyCardDetailsComponent implements OnInit, OnDestroy {
   updatedTime: any
   themeDetails: any
   isMobile = false
+  detailsData: any
 
   constructor(
     private actRouter: ActivatedRoute,
@@ -50,14 +51,17 @@ export class CompetencyCardDetailsComponent implements OnInit, OnDestroy {
     })
     // tslint: disable-next-line: whitespace
     if (localStorage.getItem('details_page') !== 'undefined') {
-      const detailsData = JSON.parse(localStorage.getItem('details_page') as any)
-      this.themeDetails = detailsData
-      this.certificateData = detailsData.issuedCertificates
+      this.detailsData = JSON.parse(localStorage.getItem('details_page') as any)
+      this.themeDetails = this.detailsData
+      this.certificateData = this.detailsData.issuedCertificates
       this.certificateData.forEach((obj: any) => {
         obj.courseName = obj.courseName.charAt(0).toUpperCase() + obj.courseName.slice(1)
         if (obj.identifier) {
-          obj['loading'] = true
-          this.getCertificateSVG(obj)
+          if (!obj.printURI && obj.printURI !== '') {
+            obj['loading'] = true
+            this.getCertificateSVG(obj)
+          }
+          
           // tslint:disable-next-line: max-line-length
           this.updatedTime =  this.updatedTime ? (new Date(this.updatedTime) > new Date(obj.lastIssuedOn)) ? this.updatedTime : obj.lastIssuedOn : obj.lastIssuedOn
         }
@@ -75,6 +79,13 @@ export class CompetencyCardDetailsComponent implements OnInit, OnDestroy {
         // tslint: disable-next-line
         obj['printURI'] = res.result.printUri
         obj['loading'] = false
+        this.certificateData = this.certificateData && this.certificateData.map((_elem: any) => {
+          if (_elem.identifier === obj.identifier) {
+            _elem['printURI'] = res.result.printUri
+          }
+          return _elem
+        })
+        localStorage.setItem('details_page', JSON.stringify(this.detailsData))
         // tslint: disable-next-line
       },         (error: HttpErrorResponse) => {
         if (!error.ok) {
@@ -82,6 +93,8 @@ export class CompetencyCardDetailsComponent implements OnInit, OnDestroy {
           obj['error'] = 'Failed to fetch Certificate'
         }
       })
+
+    
   }
 
   async handleDownloadCertificatePDF(uriData: any): Promise<void> {
