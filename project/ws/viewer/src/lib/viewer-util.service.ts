@@ -178,6 +178,7 @@ export class ViewerUtilService {
       ) {
       tempContentData.children.forEach((childList: NsContent.IContent) => {
         if (childList.primaryCategory === NsContent.EPrimaryCategory.COURSE) {
+          // tslint:disable-next-line: max-line-length
           const courseEnrollmentList = enrollmentList &&  enrollmentList.filter((v: NsContent.ICourse) => v.contentId === childList.identifier)
           if (childList.childNodes && childList.childNodes.indexOf(resourceId) !== -1) {
             if (courseEnrollmentList && courseEnrollmentList.length > 0) {
