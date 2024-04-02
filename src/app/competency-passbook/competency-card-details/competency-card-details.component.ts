@@ -61,7 +61,7 @@ export class CompetencyCardDetailsComponent implements OnInit, OnDestroy {
             obj['loading'] = true
             this.getCertificateSVG(obj)
           }
-          
+
           // tslint:disable-next-line: max-line-length
           this.updatedTime =  this.updatedTime ? (new Date(this.updatedTime) > new Date(obj.lastIssuedOn)) ? this.updatedTime : obj.lastIssuedOn : obj.lastIssuedOn
         }
@@ -94,7 +94,6 @@ export class CompetencyCardDetailsComponent implements OnInit, OnDestroy {
         }
       })
 
-    
   }
 
   async handleDownloadCertificatePDF(uriData: any): Promise<void> {
