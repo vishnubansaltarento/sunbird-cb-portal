@@ -501,6 +501,8 @@ export class ContentStripWithTabsComponent extends WidgetBaseComponent
                 calculateParentStatus,
                 response.viewMoreUrl,
               )
+            } else {
+              this.processStrip(strip, [], 'error', calculateParentStatus, null)
             }
 
           } else {
