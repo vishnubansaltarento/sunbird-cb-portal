@@ -1,28 +1,21 @@
 import { AfterViewInit, Component, ElementRef, HostListener, OnDestroy, OnInit, ViewChild } from '@angular/core'
 import { HttpErrorResponse } from '@angular/common/http'
-import { NSProfileDataV2 } from '../../models/profile-v2.model'
-import { MatDialog } from '@angular/material/dialog'
-import { MatSnackBar } from '@angular/material'
 import { ActivatedRoute, Router } from '@angular/router'
-import { DiscussService } from '../../../discuss/services/discuss.service'
-// import { DOCUMENT } from '@angular/common'
-// import { ProfileV2Service } from '../../services/profile-v2.servive'
+import { MatDialog } from '@angular/material/dialog'
+import { MatSnackBar, MatTabChangeEvent } from '@angular/material'
+
 /* tslint:disable */
 import _ from 'lodash'
-import { MatTabChangeEvent } from '@angular/material'
-import { NetworkV2Service } from '../../../network-v2/services/network-v2.service'
-import { NSNetworkDataV2 } from '../../../network-v2/models/network-v2.model'
-import { ConfigurationsService, ValueService } from '@sunbird-cb/utils';
-import { map } from 'rxjs/operators'
 import moment from 'moment'
+import { map } from 'rxjs/operators'
 
-import {
-  NsContent,
-  WidgetContentService,
-} from '@sunbird-cb/collection'
+import { ConfigurationsService, ValueService } from '@sunbird-cb/utils';
 import { HomePageService } from 'src/app/services/home-page.service'
-/* tslint:enable */
-// import {  } from '@sunbird-cb/utils'
+import { NsContent, WidgetContentService } from '@sunbird-cb/collection'
+import { DiscussService } from '../../../discuss/services/discuss.service'
+import { NetworkV2Service } from '../../../network-v2/services/network-v2.service'
+import { NSProfileDataV2 } from '../../models/profile-v2.model'
+import { NSNetworkDataV2 } from '../../../network-v2/models/network-v2.model'
 
 @Component({
   selector: 'app-profile-view',
@@ -32,6 +25,7 @@ import { HomePageService } from 'src/app/services/home-page.service'
   host: { class: 'flex flex-1 margin-top-l' },
   /* tslint:enable */
 })
+
 export class ProfileViewComponent implements OnInit, AfterViewInit, OnDestroy {
   @ViewChild('stickyMenu', { static: true }) menuElement!: ElementRef
   sticky = false
@@ -112,7 +106,6 @@ export class ProfileViewComponent implements OnInit, AfterViewInit, OnDestroy {
     private contentSvc: WidgetContentService,
     private homeSvc: HomePageService,
     private matSnackBar: MatSnackBar
-    // @Inject(DOCUMENT) private document: Document
   ) {
     this.Math = Math
     this.pageData = this.route.parent && this.route.parent.snapshot.data.pageData.data
