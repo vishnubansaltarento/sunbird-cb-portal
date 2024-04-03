@@ -61,7 +61,7 @@ export class CompetencyCardDetailsComponent implements OnInit, AfterViewInit, On
           if (obj.identifier) {
             obj['loading'] = true
             this.getCertificateSVG(obj)
-            this.updatedTime =  this.updatedTime ? (new Date(this.updatedTime) > new Date(obj.lastIssuedOn)) ? 
+            this.updatedTime =  this.updatedTime ? (new Date(this.updatedTime) > new Date(obj.lastIssuedOn)) ?
             this.updatedTime : obj.lastIssuedOn : obj.lastIssuedOn
           }
         })
@@ -87,7 +87,7 @@ export class CompetencyCardDetailsComponent implements OnInit, AfterViewInit, On
         // tslint: disable-next-line
         obj['printURI'] = res.result.printUri
         obj['loading'] = false
-      }, (error: HttpErrorResponse) => {
+      },         (error: HttpErrorResponse) => {
         if (!error.ok) {
           obj['loading'] = false
           obj['error'] = 'Failed to fetch Certificate'
