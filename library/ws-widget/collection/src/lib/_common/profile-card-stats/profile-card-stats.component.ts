@@ -48,7 +48,7 @@ export class ProfileCardStatsComponent implements OnInit {
         this.userName = this.userInfo.firstName
       }
       if (this.userInfo.firstName.length <= 2) {
-        this.userName = this.userInfo.firstName + ' ' + this.userInfo.lastName
+        this.userName = `${this.userInfo.firstName} ${this.userInfo.lastName}`
       }
       if (this.userName.length > 18) {
         this.userName = `${this.userName.slice(0, 18)}...`
