@@ -44,9 +44,14 @@ export class ProfileCardStatsComponent implements OnInit {
     this.userInfo =  this.configSvc && this.configSvc.userProfile
     this.currentUserId = this.configSvc.unMappedUser.id
     if (this.userInfo) {
-      this.userName = this.userInfo.firstName
+      if (this.userInfo.firstName.length > 2) {
+        this.userName = this.userInfo.firstName
+      }
+      if (this.userInfo.firstName.length <= 2) {
+        this.userName = this.userInfo.firstName + ' ' + this.userInfo.lastName
+      }
       if (this.userName.length > 18) {
-        this.userName = `${this.userInfo.firstName.slice(0, 18)}...`
+        this.userName = `${this.userName.slice(0, 18)}...`
       }
     }
     this.enrollInterval = setInterval(() => {
