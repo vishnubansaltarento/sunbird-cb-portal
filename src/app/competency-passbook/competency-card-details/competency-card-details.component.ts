@@ -1,5 +1,5 @@
 // Core imports
-import { Component, OnDestroy, OnInit } from '@angular/core'
+import { AfterViewInit, Component, ElementRef, OnDestroy, OnInit, QueryList, ViewChildren } from '@angular/core'
 import { ActivatedRoute, Router } from '@angular/router'
 import { HttpErrorResponse } from '@angular/common/http'
 import { jsPDF } from 'jspdf'
@@ -19,7 +19,7 @@ import { EventService, WsEvents } from '@sunbird-cb/utils'
   styleUrls: ['./competency-card-details.component.scss'],
 })
 
-export class CompetencyCardDetailsComponent implements OnInit, OnDestroy {
+export class CompetencyCardDetailsComponent implements OnInit, AfterViewInit, OnDestroy {
   private destroySubject$ = new Subject()
   params: any
   certificateData: any = []
@@ -29,6 +29,7 @@ export class CompetencyCardDetailsComponent implements OnInit, OnDestroy {
   themeDetails: any
   isMobile = false
   detailsData: any
+  @ViewChildren('courseName') courseNameDiv!: QueryList<ElementRef>
 
   constructor(
     private actRouter: ActivatedRoute,
@@ -50,26 +51,33 @@ export class CompetencyCardDetailsComponent implements OnInit, OnDestroy {
       this.params = params
     })
     // tslint: disable-next-line: whitespace
-    if (localStorage.getItem('details_page') !== 'undefined') {
+    if (localStorage.getItem('details_page') !== '' && localStorage.getItem('details_page') !== 'undefined') {
       this.detailsData = JSON.parse(localStorage.getItem('details_page') as any)
-      this.themeDetails = this.detailsData
-      this.certificateData = this.detailsData.issuedCertificates
-      this.certificateData.forEach((obj: any) => {
-        obj.courseName = obj.courseName.charAt(0).toUpperCase() + obj.courseName.slice(1)
-        if (obj.identifier) {
-          if (!obj.printURI && obj.printURI !== '') {
+      if (this.detailsData) {
+        this.themeDetails = this.detailsData
+        this.certificateData = this.detailsData.issuedCertificates
+        this.certificateData.forEach((obj: any) => {
+          obj.courseName = obj.courseName.charAt(0).toUpperCase() + obj.courseName.slice(1)
+          if (obj.identifier) {
             obj['loading'] = true
             this.getCertificateSVG(obj)
+            this.updatedTime =  this.updatedTime ? (new Date(this.updatedTime) > new Date(obj.lastIssuedOn)) ? 
+            this.updatedTime : obj.lastIssuedOn : obj.lastIssuedOn
           }
-
-          // tslint:disable-next-line: max-line-length
-          this.updatedTime =  this.updatedTime ? (new Date(this.updatedTime) > new Date(obj.lastIssuedOn)) ? this.updatedTime : obj.lastIssuedOn : obj.lastIssuedOn
-        }
-      })
+        })
+      }
     }
   }
 
   ngOnInit() {}
+
+  ngAfterViewInit(): void {
+    this.courseNameDiv.forEach((_elem: ElementRef, index: number) => {
+      if (_elem.nativeElement.getBoundingClientRect().height >= 48) {
+        this.detailsData.issuedCertificates[index]['courseEllipsis'] = true
+      }
+    })
+  }
 
   getCertificateSVG(obj: any): void {
     // tslint: disable-next-line
@@ -79,21 +87,12 @@ export class CompetencyCardDetailsComponent implements OnInit, OnDestroy {
         // tslint: disable-next-line
         obj['printURI'] = res.result.printUri
         obj['loading'] = false
-        this.certificateData = this.certificateData && this.certificateData.map((_elem: any) => {
-          if (_elem.identifier === obj.identifier) {
-            _elem['printURI'] = res.result.printUri
-          }
-          return _elem
-        })
-        localStorage.setItem('details_page', JSON.stringify(this.detailsData))
-        // tslint: disable-next-line
-      },         (error: HttpErrorResponse) => {
+      }, (error: HttpErrorResponse) => {
         if (!error.ok) {
           obj['loading'] = false
           obj['error'] = 'Failed to fetch Certificate'
         }
       })
-
   }
 
   async handleDownloadCertificatePDF(uriData: any): Promise<void> {
@@ -136,10 +135,6 @@ export class CompetencyCardDetailsComponent implements OnInit, OnDestroy {
     obj.viewMore = flag ? false : true
   }
 
-  ngOnDestroy(): void {
-    this.destroySubject$.unsubscribe()
-  }
-
   raiseShareIntreactTelemetry(certId?: string, type?: string, action?: string) {
     this.events.raiseInteractTelemetry(
       {
@@ -154,4 +149,7 @@ export class CompetencyCardDetailsComponent implements OnInit, OnDestroy {
     )
   }
 
+  ngOnDestroy(): void {
+    this.destroySubject$.unsubscribe()
+  }
 }
