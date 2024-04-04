@@ -1,9 +1,11 @@
 <div class="flex flex-col w-full gap-5">
-  <div class="flex flex-row gap-4 profile-header">
-    <div class="flex items-center justify-center profile-circle">
-      VS
+  <div class="flex flex-col sm:flex-row gap-4 profile-header">
+    <div class="profile-circle-container">
+      <div class="flex items-center justify-center profile-circle">
+        VS
+      </div>
     </div>
-    <div class="flex-1">
+    <div class="flex-1 profile-info">
       <div class="flex flex-col gap-2">
         <div class="flex flex-row">
           <div class="profile-not-verified">
@@ -16,22 +18,24 @@
           <mat-icon class="cursor-pointer">edit</mat-icon>
         </div>
         <div class="position">Senior Tech Lead</div>
-        <div class="flex flex-row gap-4 items-center">
+        <div class="flex flex-col sm:flex-row gap-4 sm:items-center">
           <div class="institute">Tarento technologies Pvt Ltd</div>
-          <div class="flex flex-row gap-2 items-center make-transer">
-            <div class="text-sm">Make Transfer Request</div>
-            <mat-icon>info</mat-icon>
+          <div class="flex flex-row">
+            <div class="flex flex-row gap-2 items-center make-transer">
+              <div class="text-sm">Make Transfer Request</div>
+              <mat-icon>info</mat-icon>
+            </div>
           </div>
         </div>
         <div class="divider"></div>
       </div>
-      <div class="flex flex-row items-center gap-5">
-        <button class="flex flex-row gap-2 items-center karma-points">
+      <div class="flex flex-col sm:flex-row sm:items-center gap-5">
+        <button class="flex flex-row gap-2 items-center karma-points justify-center">
           <img src="/assets/icons/home/karma-badge.svg" alt="badge icon" />
           My Karma Points
           <mat-icon>chevron_right</mat-icon>
         </button>
-        <button class="flex flex-row gap-2 items-center certificate-button">
+        <button class="flex flex-row gap-2 items-center certificate-button justify-center">
           <img src="/assets/icons/home/certificate.svg" alt="certificate icon" />
           View My Certificates
           <mat-icon>chevron_right</mat-icon>
@@ -45,7 +49,7 @@
     <div class="common-tab-css tab-active">eHRMS Information</div>
   </div>
 
-  <div class="flex flex-col gap-5">
+  <div class="flex flex-col gap-5 p-4 pt-0 sm:p-0">
     <div class="common-card-css">
       <div class="flex flex-col gap-5">
         <div class="flex flex-row gap-4 items-center justify-between">
@@ -61,7 +65,7 @@
           </div>
         </div>
 
-        <div class="grid grid-col-4 grid-flow-col gap-4">
+        <div class="grid grid-flow-row sm:grid-flow-col gap-6 grid-col">
           <div class="info-div">
             <div class="label">Group</div>
             <div class="flex flex-row gap-2 items-center info-value">
@@ -72,17 +76,16 @@
 
           <div class="info-div">
             <div class="label">Designation</div>
-            <div class="flex flex-row gap-2 items-center info-value">
+            <div class="flex flex-col sm:flex-row gap-2 sm:items-center info-value">
               Junior Secretariat Assistant
-              <div class="profile-not-verified">
-                <div class="text">Not verified</div>
-                <mat-icon>info</mat-icon>
+              <div class="flex flex-row">
+                <div class="profile-not-verified">
+                  <div class="text">Not verified</div>
+                  <mat-icon>info</mat-icon>
+                </div>
               </div>
             </div>
           </div>
-
-          <div class="flex"></div>
-          <div class="flex"></div>
         </div>
       </div>
     </div>
@@ -101,7 +104,7 @@
           </div>
         </div>
 
-        <div class="flex flex-col gap-8">
+        <div class="flex flex-col gap-6 sm:gap-8">
           <div class="grid-container">
             <div class="info-div">
               <div class="label">Employee ID</div>
