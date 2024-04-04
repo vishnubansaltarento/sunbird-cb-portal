@@ -96,6 +96,27 @@ $text-primary: #1B4CA1;
     padding-top: 2px;
 }
 
+$title-line-count: 2;
+
+.text-ellipsis {
+    white-space: initial;
+    position: relative;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    display: -webkit-box;
+    -webkit-line-clamp: $title-line-count;
+    -webkit-box-orient: vertical;
+}
+
+.course-name {
+    @extend .text-ellipsis;
+    min-height: $title-line-count * 24px;
+}
+
+.course-name-div {
+    height: 72px;
+}
+
 @media screen and (max-width: 768px) {
     .mobile-container {
         padding: 16px;
