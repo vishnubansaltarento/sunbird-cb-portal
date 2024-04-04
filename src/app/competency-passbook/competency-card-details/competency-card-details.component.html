@@ -110,13 +110,6 @@
                             </div>
                         </div>
                     </ng-container>
-                    <div class="flex items-center text-primary underline cursor-pointer text-xs" *ngIf="themeDetails.courseSubThemes[i]?.length > 2 && !eachCert.viewMore" (click)="handleViewMore(eachCert)">
-                        {{'competencyCardDetails.viewMore' | translate}}
-                    </div>
-                    <div class="flex items-center text-primary underline cursor-pointer text-xs" *ngIf="eachCert?.viewMore"
-                        (click)="handleViewMore(eachCert, 'less')">
-                        {{'competencyCardDetails.viewLess' | translate}}
-                    </div>
                 </div>
             </ng-container>
         </div>

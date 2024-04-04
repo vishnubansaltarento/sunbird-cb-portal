@@ -22,7 +22,7 @@ import { NSNetworkDataV2 } from '../../../network-v2/models/network-v2.model'
   templateUrl: './profile-view.component.html',
   styleUrls: ['./profile-view.component.scss'],
   /* tslint:disable */
-  host: { class: 'flex flex-1 margin-top-l' },
+  host: { class: 'flex margin-top-l margin-bottom-l' },
   /* tslint:enable */
 })
 
@@ -84,6 +84,7 @@ export class ProfileViewComponent implements OnInit, AfterViewInit, OnDestroy {
   credMessage = 'View my credentials'
   assessmentsData: any
   isCurrentUser!: boolean
+  infoType = 'primary'
 
   @HostListener('window:scroll', ['$event'])
   handleScroll() {

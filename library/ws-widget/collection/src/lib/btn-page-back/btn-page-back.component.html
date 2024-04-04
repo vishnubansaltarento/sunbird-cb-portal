@@ -4,33 +4,22 @@
       <div class="flex flex-1 flex-column">
         <div class="flex flex-1 flex-wrap margin-bottom-xs margin-top-xs" role="menubar">
           <!-- disabled for explore btn disabled on contact us page refresh-->
-          <!-- <a class="flex cursor-pointer simple-hubs-link margin-left-0" (click)="toggleVisibility()" [class.disabled]="!isUserLoggegIn"
-            href="javascript:void(0)" role="menuitem" accesskey="H" i18n-aria-label i18n-aria-label > -->
-
-        <!---- <a class="flex cursor-pointer simple-hubs-link margin-left-0" (click)="toggleVisibility()"
-            href="javascript:void(0)" role="menuitem" accesskey="H" i18n-aria-label i18n-aria-label >
-            <mat-icon class="margin-right-xs ws-mat-default-text">menu</mat-icon>
-            <span class="margin-auto ws-mat-default-text mat-subheading-2">EXPLORE</span>
-          </a> -->
-
-          <a class="flex cursor-pointer simple-hubs-link "
-          href="/" role="menuitem" accesskey="H" i18n-aria-label i18n-aria-label >
-          <!-- <mat-icon class="margin-right-xs ws-mat-default-text">menu</mat-icon> -->
-          <span class="margin-auto ws-mat-default-text margin-0 mat-subheading-2">{{ 'btnpageback.home' | translate }}</span>
-        </a>
+          <a class="flex cursor-pointer simple-hubs-link " href="/" role="menuitem" accesskey="H" i18n-aria-label i18n-aria-title>
+            <span class="margin-auto ws-mat-default-text margin-0 mat-subheading-2">{{ 'btnpageback.home' | translate }}</span>
+          </a>
 
           <ng-container *ngIf="widgetData.titles && widgetData.titles.length>0">
             <div class="flex" *ngFor="let title of widgetData.titles">
               <mat-icon class="main-back m-auto">keyboard_arrow_right</mat-icon>
               <span *ngIf="title.title && title.url && title.url === 'none'" i18n-aria-label i18n-aria-title
                 i18n="page title: {{title.title}}" class="flex margin-left-xs m-auto">
-                <mat-icon class="ws-mat-default-text icon-margin m-t-b" *ngIf="title.icon">{{title.icon}}</mat-icon>
-                <span class="m-t-b mat-body-2 font-bold-imp ws-mat-black60-text">{{title.title}}</span>
+                <mat-icon class="ws-mat-default-text icon-margin m-t-b" *ngIf="title.icon">{{ title.icon }}</mat-icon>
+                <span class="m-t-b mat-body-2 font-bold-imp ws-mat-black60-text">{{ title.title }}</span>
               </span>
               <a class="flex m-auto ws-mat-default-text" i18n-aria-label *ngIf="title.url && title.url !== 'none'"
                 [routerLink]="title.url" [queryParams]="title.queryParams" role="menuitem" i18n-aria-label [routerLink]="title.path"
                 [attr.accesskey]="title.accessKey">
-                <mat-icon class="ws-mat-default-text icon-margin" *ngIf="title.icon">{{title.icon}}</mat-icon>
+                <mat-icon class="ws-mat-default-text icon-margin" *ngIf="title.icon">{{ title.icon }}</mat-icon>
                 <span class="m-t-b mat-body-2 font-bold-imp"> {{ translateLabels(title.title, 'btnpageback') }}</span>
               </a>
             </div>
@@ -44,10 +33,8 @@
             <h3 class="mat-error text-center" *ngIf="hubsList.length === 0" i18n>
               {{ 'btnpageback.noHubs' | translate }}
             </h3>
-            <div class="grid grid-cols-1 margin-xs sm:grid-cols-2 md:grid-cols-3 md:grid-cols-4 col-gap-2"
-              role="menubar">
-              <ng-container *ngFor="let hubsObj of hubsList" [ngTemplateOutlet]="userIndividualNew"
-                [ngTemplateOutletContext]="{ hubs: hubsObj }">
+            <div class="grid grid-cols-1 margin-xs sm:grid-cols-2 md:grid-cols-3 md:grid-cols-4 col-gap-2" role="menubar">
+              <ng-container *ngFor="let hubsObj of hubsList" [ngTemplateOutlet]="userIndividualNew" [ngTemplateOutletContext]="{ hubs: hubsObj }">
               </ng-container>
             </div>
           </div>
@@ -108,7 +95,7 @@
                 <ng-container *ngIf="portal.isPublic || isAllowed(portal.id)">
                   <a class="flex flex-wrap mb-4" role="menuitem" [attr.href]="portal.uriPath" target="_blank">
                     <div class="icon ws-mat-primary-tags">
-                      <mat-icon class="m-auto mat-icon notranslate material-icons mat-icon-no-color" role="img" aria-hidden="true">{{portal.icon || 'info'}}</mat-icon>
+                      <mat-icon class="m-auto mat-icon notranslate material-icons mat-icon-no-color" role="img" aria-hidden="true">{{ portal.icon || 'info' }}</mat-icon>
                     </div>
                     <div class="width-expand padding-left-xs cursor-pointer">
                       <div class="margin-0 mat-subheading-2"> {{portal.name}} </div>
@@ -117,41 +104,7 @@
                   </a>
                 </ng-container>
               </ng-container>
-              <!-- <a class="flex flex-wrap mb-4" role="menuitem" [attr.href]="environment.fracPortal" target="_blank" *ngIf="isAllowed('frac')">
-                <div class="icon ws-mat-primary-tags">
-                  <mat-icon class="m-auto mat-icon notranslate material-icons mat-icon-no-color" role="img" aria-hidden="true">local_library</mat-icon>
-                </div>
-                <div class="width-expand padding-left-xs cursor-pointer">
-                  <div class="margin-0 mat-subheading-2"> FRAC dictionary </div>
-                  <div class="mat-caption cohorts-desc ws-mat-black60-text">The dictionary of framework of roles, activities and competencies.</div>
-                </div>
-              </a>
-
-              <a class="flex flex-wrap mb-4" role="menuitem" [attr.href]="environment.cbpPortal" target="_blank" *ngIf="isAllowed('cbp')">
-                <div class="icon ws-mat-primary-tags">
-                  <mat-icon aria-hidden="false" class="mat-icon notranslate material-icons mat-icon-no-color" role="img"> add_moderator
-                  </mat-icon>
-                </div>
-                <div class="width-expand padding-left-xs cursor-pointer">
-                  <div class="margin-0 mat-subheading-2"> CBP portal </div>
-                  <div class="mat-caption cohorts-desc ws-mat-black60-text">Create and manage CBPs here</div>
-                </div>
-              </a>
-
-              <a class="flex flex-wrap mb-4" role="menuitem" [attr.href]="environment.mdoPortal" target="_blank" *ngIf="isAllowed('mdo')">
-                <div class="icon ws-mat-primary-tags">
-                  <mat-icon class=" m-auto mat-icon notranslate material-icons mat-icon-no-color" role="img" aria-hidden="true">book</mat-icon>
-                </div>
-                <div class="width-expand padding-left-xs cursor-pointer">
-                  <div class="margin-0 mat-subheading-2"> MDO portal </div>
-                  <div class="mat-caption cohorts-desc ws-mat-black60-text">Manage MDO user access, work orders and events</div>
-                </div>
-              </a> -->
             </div>
-          </div>
-
-          <div class="text-center">
-
           </div>
         </div>
       </div>
