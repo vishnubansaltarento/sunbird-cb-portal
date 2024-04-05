@@ -18,9 +18,12 @@
 .batch-div {
     border-radius: 8px;
     background-color: #FDEAD5;
-    padding: 16px;
+    // padding: 16px;
     max-width: 400px;
     margin: 0 auto;
+    .request-block {
+        padding: 16px;
+    }
 
     .batch-details {
         padding: 16px;
@@ -696,5 +699,28 @@ button:disabled {
   and (max-device-width: 819px) {
     .triangle-left {
         display: none;
+    }
+}
+
+.location-wrapper {
+    padding: 16px;
+    border-top: 1px solid rgba(0, 0, 0, 0.16);
+    .location-icon {
+        color: rgb(27, 76, 161);
+        height: 32px;
+        width: 32px;
+        font-size: 32px;
+        padding-right: 8px;
+    }
+    .loc-details {
+        opacity: 1;
+        color: rgba(0, 0, 0, 0.87);
+        font-family: "Lato-Bold";
+        font-size: 14px;
+        font-weight: 700;
+        font-style: Bold;
+        letter-spacing: 0.25px;
+        text-align: left;
+        line-height: 20px;
     }
 }
