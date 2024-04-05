@@ -44,7 +44,7 @@ export class ProfileCardStatsComponent implements OnInit {
     this.userInfo =  this.configSvc && this.configSvc.userProfile
     this.currentUserId = this.configSvc.unMappedUser.id
     if (this.userInfo) {
-      let userFstName = this.userInfo.firstName
+      const userFstName = this.userInfo.firstName
       const userNameFW = userFstName.split(' ')
       if (userNameFW && userNameFW.length && userNameFW[0] && userNameFW[0].length > 2) {
         this.userName = `${userNameFW[0]}`
@@ -96,7 +96,7 @@ export class ProfileCardStatsComponent implements OnInit {
         this.republicDayData['info'] = defaultData['webInfo'][rand]
         this.republicDayData['centerImage'] = defaultData['centerImage'][rand]
         this.republicDayData['textColor'] = defaultData['textColor']
-        let userFsName = this.userInfo.firstName
+        const userFsName = this.userInfo.firstName
         if (userFsName) {
           const userNameFW = userFsName.split(' ')
           if (userNameFW && userNameFW.length && userNameFW[0] && userNameFW[0].length > 2) {
@@ -125,7 +125,7 @@ export class ProfileCardStatsComponent implements OnInit {
           //   userName = `${this.userInfo.firstName.slice(0, 18)}...`
           // }
           // this.republicDayData['greet'] = data['greet'].replace('<userName>', userName)
-          let userFsName = this.userInfo.firstName
+          const userFsName = this.userInfo.firstName
           if (userFsName) {
             const userNameFW = userFsName.split(' ')
             if (userNameFW && userNameFW.length && userNameFW[0] && userNameFW[0].length > 2) {
