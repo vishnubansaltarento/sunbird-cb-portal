@@ -69,7 +69,7 @@
           <div class="info-div">
             <div class="label">Group</div>
             <div class="flex flex-row gap-2 items-center info-value">
-              Group A
+              Group D
               <mat-icon class="verified-check">check_circle</mat-icon>
             </div>
           </div>
@@ -77,7 +77,7 @@
           <div class="info-div">
             <div class="label">Designation</div>
             <div class="flex flex-col sm:flex-row gap-2 sm:items-center info-value">
-              Junior Secretariat Assistant
+              {{ currentUser?.professionalDetails[0]?.designation }}
               <div class="flex flex-row">
                 <div class="profile-not-verified">
                   <div class="text">Not verified</div>

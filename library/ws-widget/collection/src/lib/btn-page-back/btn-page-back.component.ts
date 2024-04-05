@@ -86,7 +86,7 @@ export class BtnPageBackComponent extends WidgetBaseComponent
         routeUrl: '/page/home',
       }
     }
-    
+
     if (this.widgetData.url === 'home') {
       return {
         queryParams: undefined,

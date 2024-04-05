@@ -8,12 +8,16 @@ import { MatSnackBar, MatTabChangeEvent } from '@angular/material'
 import _ from 'lodash'
 import moment from 'moment'
 import { map } from 'rxjs/operators'
+import { Subject } from 'rxjs'
+import { takeUntil } from 'rxjs/operators'
 
 import { ConfigurationsService, ValueService } from '@sunbird-cb/utils';
 import { HomePageService } from 'src/app/services/home-page.service'
 import { NsContent, WidgetContentService } from '@sunbird-cb/collection'
 import { DiscussService } from '../../../discuss/services/discuss.service'
 import { NetworkV2Service } from '../../../network-v2/services/network-v2.service'
+import { UserProfileService } from '../../../user-profile/services/user-profile.service'
+
 import { NSProfileDataV2 } from '../../models/profile-v2.model'
 import { NSNetworkDataV2 } from '../../../network-v2/models/network-v2.model'
 
@@ -28,6 +32,7 @@ import { NSNetworkDataV2 } from '../../../network-v2/models/network-v2.model'
 
 export class ProfileViewComponent implements OnInit, AfterViewInit, OnDestroy {
   @ViewChild('stickyMenu', { static: true }) menuElement!: ElementRef
+  private destroySubject$ = new Subject()
   sticky = false
   /* tslint:disable */
   Math: any
@@ -106,13 +111,14 @@ export class ProfileViewComponent implements OnInit, AfterViewInit, OnDestroy {
     private valueSvc: ValueService,
     private contentSvc: WidgetContentService,
     private homeSvc: HomePageService,
-    private matSnackBar: MatSnackBar
+    private matSnackBar: MatSnackBar,
   ) {
     this.Math = Math
     this.pageData = this.route.parent && this.route.parent.snapshot.data.pageData.data
     this.currentUser = this.configSvc && this.configSvc.userProfile
     this.tabsData = this.route.parent && this.route.parent.snapshot.data.pageData.data.tabs || []
     this.selectedTabIndex = this.route.snapshot.queryParams && this.route.snapshot.queryParams.tab || 0
+
     this.tabs = this.route.data.subscribe(data => {
       if (data.certificates) {
         this.certificatesData = data.certificates.data
@@ -124,6 +130,7 @@ export class ProfileViewComponent implements OnInit, AfterViewInit, OnDestroy {
       if (data.profile.data) {
         this.orgId = data.profile.data.rootOrgId
       }
+
       if (data.profile.data.profileDetails) {
         this.portalProfile = data.profile.data.profileDetails
       } else {
@@ -184,7 +191,6 @@ export class ProfileViewComponent implements OnInit, AfterViewInit, OnDestroy {
       this.sideNavBarOpened = !isLtMedium
     })
     this.getPendingRequestData()
-    // this.getAssessmentData()
     this.enrollInterval = setInterval(() => {
       this.getKarmaCount()
     },                                1000)
