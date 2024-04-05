@@ -417,11 +417,15 @@ export class CardContentV2Component extends WidgetBaseComponent
     }
   }
   async getRedirectUrlData(content: any){
-    let urlData = await this.contSvc.getResourseLink(content)
-    this.router.navigate(
-      [urlData.url],
-      {
-        queryParams: urlData.queryParams
-      })
+    // routerLink="/app/gyaan-karmayogi/player/{{widgetData.content.identifier}}?primaryCategory={{widgetData.content.primaryCategory}}"
+    // let urlData = await this.contSvc.getResourseLink(content)
+    // this.router.navigate(
+    //   [urlData.url],
+    //   {
+    //     queryParams: urlData.queryParams
+    //   })
+    this.router.navigate([`/app/gyaan-karmayogi/player/${content.identifier}`]),{
+      primaryCategory: content.primaryCategory
+    }
   }
 }

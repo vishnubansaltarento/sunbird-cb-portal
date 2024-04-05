@@ -1,18 +1,92 @@
 
 <div class="gyann-wrapper">
-    <div class="headder-block flex flex-col mt-8 flex-middle flex-center">
-        <p class="title mat-display-1">{{'gyaanKarmayogi.title'| translate}}</p>
-        <p class="description mat-title">{{'gyaanKarmayogi.description'| translate}}</p>
-    </div>
-    <div class="flex flex-center">
-        <div class="container">
-            <mat-form-field class="search w-full" appearance="outline">
-                <input type="text" placeholder="search" aria-label="Search" matInput 
-                   autocomplete="off" />
-                <mat-icon class="cursor-pointer" matSuffix>search</mat-icon>
-              </mat-form-field>
+    <div >
+        <div class="flex flex-center headder-block">
+            <div class="container">
+                <div class="grid grid-cols-2">
+                    <div class="">
+                        <p class="title mat-display-1 mb-2">{{'gyaanKarmayogi.title'| translate}}</p>
+                        <p class="description mat-title">{{'gyaanKarmayogi.description'| translate}}</p>
+                        <div class="flex search-block">
+                            <input type="text" placeholder="Search in Gyaan Karmayogi" class="flex-1">
+                            <button type="button" class="btn">Search</button>
+                        </div>
+                    </div>
+
+                    <div>
+                        qwertyuio
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
+
     
+    <div class="flex flex-center mt-8 mb-8">
+        <div class="container">
+          <div class="flex sector-section gap-2">
+            <div class="flex">
+                <div class="all-sector flex items-center justify-center" [routerLink]="'/app/gyaan-karmayogi/player'">
+                    {{sectorsList[0].label}}
+                </div> 
+            </div>
+            <div class="flex flex-wrap gap-2">
+                <ng-container *ngFor="let sector of sectorsList|slice: 1:(sectorsList.length)">
+                   <div class="each-sector flex items-center justify-center" [style.background]="sector?.bgColor">
+                    {{sector.label}}
+                   </div> 
+                </ng-container>
+            </div>
+          </div>
+
+        </div>
+    </div>
+    <div class="flex flex-center filter-section">
+        <div class="container">
+            <div class="flex gap-2 items-end justify-between">
+                <div class="flex flex-col">
+                    <label for="">Sectors</label>
+                    <mat-form-field  appearance="outline" class="filter-select">
+                        <mat-select  placeholder="Sector">
+                        <mat-option value="option1">Option 1</mat-option>
+                        <mat-option value="option2" disabled>Option 2 (disabled)</mat-option>
+                        <mat-option value="option3">Option 3</mat-option>
+                        </mat-select>
+                    </mat-form-field>
+                </div>
+                <div class="flex flex-col">
+                    <label for="">Sub-sectors</label>
+                    <mat-form-field  appearance="outline" class="filter-select">
+                        <mat-select  placeholder="Sub-sectors">
+                        <mat-option value="option1">Option 1</mat-option>
+                        <mat-option value="option2" disabled>Option 2 (disabled)</mat-option>
+                        <mat-option value="option3">Option 3</mat-option>
+                        </mat-select>
+                    </mat-form-field>
+                </div>
+                <div class="flex flex-col">
+                    <label for="">Categories</label>
+                    <mat-form-field  appearance="outline" class="filter-select">
+                        <mat-select  placeholder="Categories">
+                        <mat-option value="option1">Option 1</mat-option>
+                        <mat-option value="option2" disabled>Option 2 (disabled)</mat-option>
+                        <mat-option value="option3">Option 3</mat-option>
+                        </mat-select>
+                    </mat-form-field>
+                </div>
+                <button class="apply-btn" type="button">Apply now</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="flex flex-center filter-section">
+    <div class="container">
+        <div class="flex gap-2 items-end justify-between">  
+            <div class="w-full">
+                <ws-widget-content-strip-with-tabs [widgetData]="stripData"></ws-widget-content-strip-with-tabs>
+            </div>
+        </div>
+    </div>
 </div>
 <!--{{translateLetMenuName('title')}} -->
