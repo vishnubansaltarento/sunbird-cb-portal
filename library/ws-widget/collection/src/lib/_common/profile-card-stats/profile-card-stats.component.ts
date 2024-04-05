@@ -47,8 +47,8 @@ export class ProfileCardStatsComponent implements OnInit {
     this.currentUserId = this.configSvc.unMappedUser.id
     if (this.userInfo) {
      this.userFullName = this.userInfo.firstName
-     
-      if ( this.userFullName && this.userFullName.length > 18) {
+
+      if (this.userFullName && this.userFullName.length > 18) {
         this.userFullName = `${this.userInfo.firstName.slice(0, 18)}...`
       }
 
