@@ -103,7 +103,7 @@ export class AppTocAboutComponent implements OnInit, OnChanges, AfterViewInit, O
   @Input() batchData: any
   @Input() fromViewer = false
   @Input() selectedBatchData: any
-  @Input() selectedTabValue: number
+  @Input() selectedTabValue = 0
   @ViewChild('summaryElem', { static: false }) summaryElem !: ElementRef
   @ViewChild('descElem', { static: false }) descElem !: ElementRef
   @ViewChild('tagsElem', { static: false }) tagsElem !: ElementRef
