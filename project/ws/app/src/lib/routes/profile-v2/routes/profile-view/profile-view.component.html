@@ -14,10 +14,10 @@
           </div>
         </div>
         <div class="flex flex-row gap-4 items-center"> 
-          <div class="name">Vinod Shyave</div>
+          <div class="name">{{ currentUser?.firstName }} {{ currentUser?.lastName }}</div>
           <mat-icon class="cursor-pointer">edit</mat-icon>
         </div>
-        <div class="position">Senior Tech Lead</div>
+        <div class="position">{{ portalProfile?.employmentDetails?.departmentName }}</div>
         <div class="flex flex-col sm:flex-row gap-4 sm:items-center">
           <div class="institute">Tarento technologies Pvt Ltd</div>
           <div class="flex flex-row">
@@ -30,7 +30,7 @@
         <div class="divider"></div>
       </div>
       <div class="flex flex-col sm:flex-row sm:items-center gap-5">
-        <button class="flex flex-row gap-2 items-center karma-points justify-center">
+        <button class="flex flex-row gap-2 items-center karma-points justify-center" [routerLink]="['/app/person-profile/karma-points']">
           <img src="/assets/icons/home/karma-badge.svg" alt="badge icon" />
           My Karma Points
           <mat-icon>chevron_right</mat-icon>
@@ -69,7 +69,7 @@
           <div class="info-div">
             <div class="label">Group</div>
             <div class="flex flex-row gap-2 items-center info-value">
-              Group D
+              {{ currentUser?.professionalDetails[0]?.group }}
               <mat-icon class="verified-check">check_circle</mat-icon>
             </div>
           </div>
