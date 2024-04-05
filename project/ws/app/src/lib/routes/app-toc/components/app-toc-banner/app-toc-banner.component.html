@@ -108,7 +108,7 @@
         (batchData?.workFlow?.wfItem?.currentStatus !== WFBlendedProgramStatus.WITHDRAWN) &&
         (batchData?.workFlow?.wfItem?.currentStatus !== WFBlendedProgramStatus.APPROVED) && batchData?.content?.length">
         <p class="margin-remove-bottom mat-body-1 padding-m bg-white">
-          {{batchData?.workFlow?.batch.name}} - ({{batchData?.workFlow?.batch.startDate | date: 'dd-MM-yyyy'}} - {{batchData?.workFlow?.batch.endDate | date: 'dd-MM-yyyy' || 'present'}})
+          {{batchData?.workFlow?.batch?.name}} - ({{batchData?.workFlow?.batch?.startDate | date: 'dd-MM-yyyy'}} - {{batchData?.workFlow?.batch?.endDate | date: 'dd-MM-yyyy' || 'present'}})
         </p>
         <ng-container>
           <button class="withdraw-batch" (click)="!disableWithdrawnBtn && requestToWithdrawDialog()" [disabled]="disableWithdrawnBtn" [ngClass]="{ 'disable-btn': disableWithdrawnBtn }" >
@@ -118,7 +118,7 @@
       </ng-container>
       <ng-container *ngIf="batchData && batchData?.enrolled && batchData?.content?.length">
         <h3 class="margin-remove-bottom p-4 bg-white mat-body-1" i18n *ngFor="let batch of batchData.content">
-          {{batch.name}} ({{batch.startDate | date: 'dd-MM-yyyy' }} - {{batch.endDate | date: 'dd-MM-yyyy' || 'present'}})
+          {{batch?.name}} ({{batch?.startDate | date: 'dd-MM-yyyy' }} - {{batch?.endDate | date: 'dd-MM-yyyy' || 'present'}})
         </h3>
         <ng-container [ngTemplateOutlet]="statusMsg"></ng-container>
       </ng-container>
