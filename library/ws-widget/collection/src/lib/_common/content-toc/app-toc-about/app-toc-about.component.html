@@ -130,7 +130,6 @@
                 <div class="flex-1">
                     <div class="flex underline"></div>
                 </div>
-    
             </div>
 
             <div class="flex flex-row gap-4 justify-center">
@@ -204,8 +203,7 @@
             <div class="mat-subheading-1 font-bold">{{ 'apptocsinglepage.summary' | translate }}</div>
             <div [ngClass]="{'mob-desc-ellipsis': summary.ellipsis && isMobile, 'desc-ellipsis': summary.ellipsis && !isMobile}" #summaryElem>
                 <span class="mob-text">{{ handleCapitalize(content?.description) }}</span>
-                <div class="ws-mat-default-text font-bold cursor-pointer text-sm" *ngIf="summary.viewLess"
-                    (click)="summary.ellipsis = !summary.ellipsis; summary.viewLess = !summary.viewLess">&nbsp;{{ 'apptocsinglepage.viewLess' | translate }}</div>
+                <div class="ws-mat-default-text font-bold cursor-pointer text-sm" *ngIf="summary.viewLess" (click)="summary.ellipsis = !summary.ellipsis; summary.viewLess = !summary.viewLess">&nbsp;{{ 'apptocsinglepage.viewLess' | translate }}</div>
             </div>
             <div class="ws-mat-default-text font-bold text-sm" *ngIf="summary.ellipsis">
                 <span class="cursor-pointer" (click)="summary.ellipsis = !summary.ellipsis; summary.viewLess = !summary.viewLess">{{ 'apptocsinglepage.viewMore' | translate }}</span>

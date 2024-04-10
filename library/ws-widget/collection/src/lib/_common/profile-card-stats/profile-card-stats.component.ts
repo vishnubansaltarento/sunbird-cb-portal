@@ -31,8 +31,10 @@ export class ProfileCardStatsComponent implements OnInit {
   interval = 0
   profileDelay = 0
   userName = ''
+  userFullName = ''
   currentUserRank: any
   currentUserId: any
+  profileNudgeUsername = ''
   constructor(private configSvc: ConfigurationsService,
               private router: Router,
               private pipDuration: PipeDurationTransformPipe,
@@ -44,10 +46,11 @@ export class ProfileCardStatsComponent implements OnInit {
     this.userInfo =  this.configSvc && this.configSvc.userProfile
     this.currentUserId = this.configSvc.unMappedUser.id
     if (this.userInfo) {
-      this.userName = this.userInfo.firstName
-      if (this.userName.length > 18) {
-        this.userName = `${this.userInfo.firstName.slice(0, 18)}...`
+     this.userFullName = this.userInfo.firstName
+      if (this.userFullName && this.userFullName.length > 18) {
+        this.userFullName = `${this.userInfo.firstName.slice(0, 18)}...`
       }
+
     }
     this.enrollInterval = setInterval(() => {
       this.getCounts()
@@ -90,14 +93,14 @@ export class ProfileCardStatsComponent implements OnInit {
         this.republicDayData['info'] = defaultData['webInfo'][rand]
         this.republicDayData['centerImage'] = defaultData['centerImage'][rand]
         this.republicDayData['textColor'] = defaultData['textColor']
-        let userName = this.userInfo.firstName
-        if (userName) {
-          const userNameFW = userName.split(' ')
-          if (userNameFW && userNameFW.length && userNameFW[0] && userNameFW[0].length >= 2) {
-            userName = `${userNameFW[0]}`
+        this.userName = this.userInfo.firstName
+        if (this.userName) {
+          const userNameFW = this.userName.split(' ')
+          if (userNameFW && userNameFW.length && userNameFW[0] && userNameFW[0].length > 2) {
+            this.userName = `${userNameFW[0]}`
           }
-          if (userName.length > 18) {
-            userName = `${this.userInfo.firstName.slice(0, 18)}...`
+          if (this.userName.length > 18) {
+            this.userName = `${this.userInfo.firstName.slice(0, 18)}...`
           }
           this.republicDayData['greet'] = defaultData['webGreet']
         }
@@ -116,19 +119,19 @@ export class ProfileCardStatsComponent implements OnInit {
           // if (userName.length > 18) {
           //   userName = `${this.userInfo.firstName.slice(0, 18)}...`
           // }
-          // this.republicDayData['greet'] = data['greet'].replace('<userName>', userName)
-          let userName = this.userInfo.firstName
-          if (userName) {
-            const userNameFW = userName.split(' ')
-            if (userNameFW && userNameFW.length && userNameFW[0] && userNameFW[0].length >= 2) {
-              userName = `${userNameFW[0]}`
+         // this.republicDayData['greet'] = data['greet'].replace('<userName>', userName)
+         this.userName = this.userInfo.firstName
+          if (this.userName) {
+            const userNameFW = this.userName.split(' ')
+            if (userNameFW && userNameFW.length && userNameFW[0] && userNameFW[0].length > 2) {
+              this.userName = `${userNameFW[0]}`
             }
-            if (userName.length > 18) {
-              userName = `${this.userInfo.firstName.slice(0, 18)}...`
+            if (this.userName.length > 18) {
+              this.userName = `${this.userInfo.firstName.slice(0, 18)}...`
             }
             this.republicDayData['greet'] = data['webGreet']
           }
-          this.republicDayData['textColor'] = data['textColor']
+
           // let userName = this.userInfo.firstName
           // if (userName.length > 18) {
           //   userName = `${this.userInfo.firstName.slice(0, 18)}...`
@@ -140,7 +143,7 @@ export class ProfileCardStatsComponent implements OnInit {
         //   this.showrepublicBanner = false
         // },         (1000 * timeInterval))
       })
-    }
+      }
   }
 
   getCounts() {

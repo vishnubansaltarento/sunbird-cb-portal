@@ -98,7 +98,7 @@
         <!-- <img src="assets/icons/final-assessment/star_empty.svg"> -->
         <span class="summary-list-label">{{ 'playerbrief.startAssessmentSummary1' | translate }}</span>
       </li>
-      <li>
+      <li *ngIf="questionTYP.FINAL_ASSESSMENT === primaryCategory">
         <!-- <img src="assets/icons/final-assessment/star_empty.svg"> -->
         <span class="summary-list-label">{{ 'playerbrief.startAssessmentSummary2' | translate }}</span></li>
       <li>

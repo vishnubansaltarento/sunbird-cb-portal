@@ -18,7 +18,7 @@ import { filter } from 'rxjs/operators'
 import { WidgetUserService } from '../_services/widget-user.service'
 import { environment } from 'src/environments/environment'
 // tslint:disable-next-line
-import _ from 'lodash'
+import * as _ from 'lodash'
 import { MatTabChangeEvent } from '@angular/material'
 import { NsCardContent } from '../card-content-v2/card-content-v2.model'
 import { ITodayEvents } from '@ws/app/src/lib/routes/events/models/event'
@@ -505,6 +505,8 @@ export class ContentStripWithTabsComponent extends WidgetBaseComponent
                 calculateParentStatus,
                 response.viewMoreUrl,
               )
+            } else {
+              this.processStrip(strip, [], 'error', calculateParentStatus, null)
             }
 
           } else {
@@ -878,9 +880,16 @@ export class ContentStripWithTabsComponent extends WidgetBaseComponent
       label: `${tabEvent.tab.textLabel}`,
       index: tabEvent.index,
     }
-    this.eventSvc.handleTabTelemetry(
-      WsEvents.EnumInteractSubTypes.HOME_PAGE_STRIP_TABS,
-      data,
+    this.eventSvc.raiseInteractTelemetry(
+      {
+        type: WsEvents.EnumInteractTypes.CLICK,
+        subType: WsEvents.EnumInteractSubTypes.HOME_PAGE_STRIP_TABS,
+        id: `${_.camelCase(data.label)}-tab`,
+      },
+      {},
+      {
+        module: WsEvents.EnumTelemetrymodules.HOME,
+      }
     )
     const currentTabFromMap: any = stripMap.tabs && stripMap.tabs[tabEvent.index]
     const currentStrip = this.widgetData.strips.find(s => s.key === stripKey)

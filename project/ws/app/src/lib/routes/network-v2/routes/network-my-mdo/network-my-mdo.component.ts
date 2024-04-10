@@ -5,6 +5,7 @@ import { ActivatedRoute } from '@angular/router'
 import { NetworkV2Service } from '../../services/network-v2.service'
 import { ConfigurationsService, WsEvents, EventService, MultilingualTranslationsService } from '@sunbird-cb/utils'
 import { TranslateService } from '@ngx-translate/core'
+import * as _ from 'lodash'
 
 @Component({
   selector: 'ws-app-network-my-mdo',
@@ -114,9 +115,16 @@ export class NetworkMyMdoComponent implements OnInit {
       label,
       index,
     }
-    this.eventSvc.handleTabTelemetry(
-      WsEvents.EnumInteractSubTypes.NETWORK_TAB,
-      data,
+    this.eventSvc.raiseInteractTelemetry(
+      {
+        type: WsEvents.EnumInteractTypes.CLICK,
+        subType: WsEvents.EnumInteractSubTypes.NETWORK_TAB,
+        id: `${_.camelCase(data.label)}-tab`,
+      },
+      {},
+      {
+        module: WsEvents.EnumTelemetrymodules.NETWORK,
+      }
     )
   }
 
