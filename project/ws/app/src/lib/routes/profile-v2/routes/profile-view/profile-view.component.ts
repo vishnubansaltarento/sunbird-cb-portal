@@ -8,15 +8,13 @@ import { MatSnackBar, MatTabChangeEvent } from '@angular/material'
 import _ from 'lodash'
 import moment from 'moment'
 import { map } from 'rxjs/operators'
-import { Subject } from 'rxjs'
-import { takeUntil } from 'rxjs/operators'
+// import { Subject } from 'rxjs'
 
 import { ConfigurationsService, ValueService } from '@sunbird-cb/utils';
 import { HomePageService } from 'src/app/services/home-page.service'
 import { NsContent, WidgetContentService } from '@sunbird-cb/collection'
 import { DiscussService } from '../../../discuss/services/discuss.service'
 import { NetworkV2Service } from '../../../network-v2/services/network-v2.service'
-import { UserProfileService } from '../../../user-profile/services/user-profile.service'
 
 import { NSProfileDataV2 } from '../../models/profile-v2.model'
 import { NSNetworkDataV2 } from '../../../network-v2/models/network-v2.model'
@@ -32,7 +30,7 @@ import { NSNetworkDataV2 } from '../../../network-v2/models/network-v2.model'
 
 export class ProfileViewComponent implements OnInit, AfterViewInit, OnDestroy {
   @ViewChild('stickyMenu', { static: true }) menuElement!: ElementRef
-  private destroySubject$ = new Subject()
+  // private destroySubject$ = new Subject()
   sticky = false
   /* tslint:disable */
   Math: any
@@ -61,6 +59,7 @@ export class ProfileViewComponent implements OnInit, AfterViewInit, OnDestroy {
   mode$ = this.isLtMedium$.pipe(map(isMedium => (isMedium ? 'over' : 'side')))
   orgId: any
   selectedTabIndex: any
+  nameInitials = ''
 
   pendingRequestData: any = []
   pendingRequestSkeleton = true
@@ -184,6 +183,9 @@ export class ProfileViewComponent implements OnInit, AfterViewInit, OnDestroy {
         this.portalProfile.karmapoints = res.kpList
       }
     })
+
+    // console.log('portalProfile - ', this.portalProfile)
+
   }
 
   ngOnInit() {
@@ -194,6 +196,12 @@ export class ProfileViewComponent implements OnInit, AfterViewInit, OnDestroy {
     this.enrollInterval = setInterval(() => {
       this.getKarmaCount()
     },                                1000)
+
+    this.nameInitials = this.currentUser.firstName.charAt(0)
+    if (this.currentUser.lastName) {
+      this.nameInitials += this.currentUser.lastName.charAt(0)
+    }
+
   }
 
   ngAfterViewInit() {
@@ -511,5 +519,9 @@ export class ProfileViewComponent implements OnInit, AfterViewInit, OnDestroy {
     this.matSnackBar.open(primaryMsg, 'X', {
       duration,
     })
+  }
+
+  handleDateFormat(dateString: string): any {
+    return moment(new Date(dateString)).format('D MMM YYYY')
   }
 }
