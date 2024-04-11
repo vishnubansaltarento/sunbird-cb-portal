@@ -10,7 +10,7 @@
     </div>
     <div class="flex-1 profile-info">
       <div class="flex flex-col gap-2">
-        <div class="flex flex-row" *ngIf="!portalProfile?.professionalDetails[0]?.verifiedKarmayogi">
+        <div class="flex flex-row" *ngIf="!portalProfile?.professionalDetails || !portalProfile?.professionalDetails[0]?.verifiedKarmayogi">
           <div class="profile-not-verified">
             <div class="text">Profile not verified</div>
             <mat-icon>info</mat-icon>
@@ -18,12 +18,12 @@
         </div>
         <div class="flex flex-row gap-4 items-center"> 
           <div class="name">{{ currentUser?.firstName }} {{ currentUser?.lastName }}</div>
-          <mat-icon class="profile-verified-check" *ngIf="portalProfile?.professionalDetails[0]?.verifiedKarmayogi">check_circle</mat-icon>
+          <mat-icon class="profile-verified-check" *ngIf="portalProfile?.professionalDetails && portalProfile?.professionalDetails[0]?.verifiedKarmayogi">check_circle</mat-icon>
           <mat-icon class="cursor-pointer">edit</mat-icon>
         </div>
         <div class="position">{{ portalProfile?.employmentDetails?.departmentName }}</div>
         <div class="flex flex-col sm:flex-row gap-4 sm:items-center">
-          <div class="institute">{{ portalProfile?.professionalDetails[0]?.industry }}</div>
+          <div class="institute" *ngIf="portalProfile?.professionalDetails">{{ portalProfile?.professionalDetails[0]?.industry }}</div>
           <div class="flex flex-row">
             <div class="flex flex-row gap-2 items-center make-transer">
               <div class="text-sm">Make Transfer Request</div>
@@ -72,15 +72,16 @@
         <div class="grid grid-flow-row sm:grid-flow-col gap-6 grid-col">
           <div class="info-div">
             <div class="label">Group</div>
-            <div class="flex flex-row gap-2 items-center info-value">
+            <div class="flex flex-row gap-2 items-center info-value" *ngIf="currentUser?.professionalDetails?.length">
               {{ currentUser?.professionalDetails[0]?.group }}
               <mat-icon class="verified-check">check_circle</mat-icon>
             </div>
+            <div class="info-value" *ngIf="!currentUser?.professionalDetails?.length">NA</div>
           </div>
 
           <div class="info-div">
             <div class="label">Designation</div>
-            <div class="flex flex-col sm:flex-row gap-2 sm:items-center info-value">
+            <div class="flex flex-col sm:flex-row gap-2 sm:items-center info-value" *ngIf="currentUser?.professionalDetails?.length">
               {{ currentUser?.professionalDetails[0]?.designation }}
               <div class="flex flex-row">
                 <div class="profile-not-verified">
@@ -89,6 +90,7 @@
                 </div>
               </div>
             </div>
+            <div class="info-value" *ngIf="!currentUser?.professionalDetails?.length">NA</div>
           </div>
         </div>
       </div>
@@ -101,75 +103,141 @@
             <div class="title">Other Details</div>
           </div>
           <div class="flex flex-row info-value">
-            <div class="flex flex-row gap-2 items-center edit-button">
+            <div class="flex flex-row gap-2 items-center edit-button" *ngIf="!editDetails" (click)="editDetails = !editDetails">
               <mat-icon>edit</mat-icon>
               Edit
             </div>
           </div>
         </div>
 
-        <div class="flex flex-col gap-6 sm:gap-8">
-          <div class="grid-container">
-            <div class="info-div">
-              <div class="label">Employee ID</div>
-              <div class="info-value">NA</div>
-            </div>
-            <div class="info-div">
-              <div class="label">Email</div>
-              <div class="info-value">{{ portalProfile?.personalDetails?.officialEmail || 'NA' }}</div>
-            </div>
-            <div class="info-div">
-              <div class="label">Mobile Number</div>
-              <div class="info-value">
-                <span class="flex flex-row gap-2 items-center" *ngIf="portalProfile?.personalDetails?.mobile">
-                  +91 {{ portalProfile?.personalDetails?.mobile }}
-                  <span class="flex items-center" *ngIf="portalProfile?.personalDetails?.phoneVerified">
-                    <mat-icon class="verified-check">check_circle</mat-icon>
+        <form [formGroup]="otherDetailsForm">
+          <div class="flex flex-col gap-6 sm:gap-8">
+            <div class="grid-container">
+              <div class="info-div">
+                <div class="label">Employee ID</div>
+                <div class="info-value">NA</div>
+              </div>
+              <div class="info-div">
+                <div class="label">Email</div>
+                <div class="info-value" *ngIf="!editDetails">{{ portalProfile?.personalDetails?.officialEmail || 'NA' }}</div>
+                <div class="flex" *ngIf="editDetails">
+                  <mat-form-field class="profile-form-field">
+                    <input type="email" class="input-text" matInput formControlName="official_email" />
+                  </mat-form-field>
+                </div>
+              </div>
+              <div class="info-div">
+                <div class="label">Mobile Number</div>
+                <div class="info-value" *ngIf="!editDetails">
+                  <span class="flex flex-row gap-2 items-center" *ngIf="portalProfile?.personalDetails?.mobile">
+                    +91 {{ portalProfile?.personalDetails?.mobile }}
+                    <span class="flex items-center" *ngIf="portalProfile?.personalDetails?.phoneVerified">
+                      <mat-icon class="verified-check">check_circle</mat-icon>
+                    </span>
                   </span>
-                </span>
-                <span *ngIf="!portalProfile?.personalDetails?.mobile">NA</span>
+                  <span *ngIf="!portalProfile?.personalDetails?.mobile">NA</span>
+                </div>
+
+                <div class="flex flex-row gap-2" *ngIf="editDetails">
+                  <div class="flex">
+                    <mat-form-field class="mobile-form-field">
+                      <mat-select formControlName="nationality">
+                        <mat-option value="+91">+91</mat-option>
+                        <mat-option value="+92">+92</mat-option>
+                        <mat-option value="+93">+93</mat-option>
+                        <mat-option value="+94">+94</mat-option>
+                      </mat-select>
+                    </mat-form-field>
+                  </div>
+                  <mat-form-field class="profile-form-field">
+                    <input type="text" class="input-text mobile-text" matInput formControlName="official_email" />
+                  </mat-form-field>
+                </div>
+              </div>
+              <div class="info-div">
+                <div class="label">Gender</div>
+                <div class="info-value" *ngIf="!editDetails">{{ portalProfile?.personalDetails?.gender || 'NA' }}</div>
+                <div class="flex" *ngIf="editDetails">
+                  <mat-form-field class="profile-form-field">
+                    <mat-select formControlName="nationality">
+                      <mat-option value="male">Male</mat-option>
+                      <mat-option value="female">Female</mat-option>
+                      <mat-option value="others">Others</mat-option>
+                    </mat-select>
+                  </mat-form-field>
+                </div>
               </div>
             </div>
-            <div class="info-div">
-              <div class="label">Gender</div>
-              <div class="info-value">{{ portalProfile?.personalDetails?.gender || 'NA' }}</div>
-            </div>
-          </div>
-  
-          <div class="grid-container">
-            <div class="info-div">
-              <div class="label">Date of Birth</div>
-              <div class="info-value">
-                <span *ngIf="portalProfile?.personalDetails?.dob">{{ handleDateFormat(portalProfile?.personalDetails?.dob) }}</span>
-                <span *ngIf="!portalProfile?.personalDetails?.dob">NA</span>
+    
+            <div class="grid-container">
+              <div class="info-div">
+                <div class="label">Date of Birth</div>
+                <div class="info-value" *ngIf="!editDetails">
+                  <span *ngIf="portalProfile?.personalDetails?.dob">{{ handleDateFormat(portalProfile?.personalDetails?.dob) }}</span>
+                  <span *ngIf="!portalProfile?.personalDetails?.dob">NA</span>
+                </div>
+                <div class="info-value" *ngIf="editDetails">
+                  <mat-form-field class="profile-form-field">
+                    <input matInput class="input-text" [matDatepicker]="picker">
+                    <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                    <mat-datepicker #picker></mat-datepicker>
+                  </mat-form-field>
+                </div>
+              </div>
+              <div class="info-div">
+                <div class="label">Mother Tongue</div>
+                <div class="info-value" *ngIf="!editDetails">
+                  {{ portalProfile?.personalDetails?.domicileMedium || 'NA' }}
+                </div>
+                <div class="info-value flex" *ngIf="editDetails">
+                  <mat-form-field class="profile-form-field">
+                    <mat-select formControlName="nationality">
+                      <mat-option value="male">Male</mat-option>
+                      <mat-option value="female">Female</mat-option>
+                      <mat-option value="others">Others</mat-option>
+                    </mat-select>
+                  </mat-form-field>
+                </div>
+              </div>
+              <div class="info-div">
+                <div class="label">Category</div>
+                <div class="info-value" *ngIf="!editDetails">{{ portalProfile?.personalDetails?.category || 'NA' }}</div>
+                <div class="info-value flex" *ngIf="editDetails">
+                  <mat-form-field class="profile-form-field">
+                    <mat-select formControlName="nationality">
+                      <mat-option value="male">Male</mat-option>
+                      <mat-option value="female">Female</mat-option>
+                      <mat-option value="others">Others</mat-option>
+                    </mat-select>
+                  </mat-form-field>
+                </div>
+              </div>
+              <div class="info-div">
+                <div class="label">Office Pin Code</div>
+                <div class="info-value" *ngIf="!editDetails">{{ portalProfile?.personalDetails?.pincode || 'NA' }}</div>
+                <div class="flex" *ngIf="editDetails">
+                  <mat-form-field class="profile-form-field">
+                    <input type="email" class="input-text" matInput formControlName="official_email" />
+                  </mat-form-field>
+                </div>
               </div>
             </div>
-            <div class="info-div">
-              <div class="label">Mother Tongue</div>
-              <div class="flex flex-wrap gap-2 info-value">
-                <ng-container *ngIf="portalProfile?.personalDetails?.knownLanguages">
-                  {{ portalProfile?.personalDetails?.knownLanguages?.join(', ') }}
-                </ng-container>
-                <ng-container *ngIf="!portalProfile?.personalDetails?.knownLanguages">NA</ng-container>
+    
+            <div class="grid-container">
+              <div class="info-div">
+                <div class="label">eHRMS ID/External System ID</div>
+                <div class="info-value">NA</div>
               </div>
             </div>
-            <div class="info-div">
-              <div class="label">Category</div>
-              <div class="info-value">{{ portalProfile?.personalDetails?.category || 'NA' }}</div>
-            </div>
-            <div class="info-div">
-              <div class="label">Office Pin Code</div>
-              <div class="info-value">{{ portalProfile?.personalDetails?.pincode || 'NA' }}</div>
-            </div>
-          </div>
-  
-          <div class="grid-container">
-            <div class="info-div">
-              <div class="label">eHRMS ID/External System ID</div>
-              <div class="info-value">NA</div>
+
+            <div class="grid-container" *ngIf="editDetails">
+              <div class="flex flex-row gap-4">
+                <button class="outline-button" (click)="editDetails = !editDetails">Cancel</button>
+                <button class="save-button">Save Changes</button>
+              </div>
             </div>
           </div>
-        </div>
+        </form>
       </div>
     </div>
 
@@ -180,10 +248,13 @@
             <div class="title">Tags</div>
           </div>
         </div>
-        <div class="flex flex-wrap gap-2">
+        <div class="flex flex-wrap gap-2" *ngIf="portalProfile?.additionalProperties?.tag">
           <ng-container *ngFor="let tag of portalProfile?.additionalProperties?.tag">
             <div class="chips">{{ tag }}</div>
           </ng-container>
+        </div>
+        <div class="font-medium" *ngIf="!portalProfile?.additionalProperties?.tag">
+          No tags found!
         </div>
       </div>
     </div>

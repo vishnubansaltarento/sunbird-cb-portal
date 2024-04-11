@@ -22,6 +22,7 @@ import {
   MatProgressBarModule,
   MatTabsModule,
   MatTooltipModule,
+  MatDatepickerModule,
 } from '@angular/material'
 import { MatCardModule } from '@angular/material/card'
 import { ReactiveFormsModule, FormsModule } from '@angular/forms'
@@ -103,6 +104,7 @@ import { UserLeaderboardModule } from '@sunbird-cb/collection/src/lib/_common/us
     PendingRequestModule,
     TranslateModule,
     MatTooltipModule,
+    MatDatepickerModule,
     // ShareModule
   ],
   entryComponents: [

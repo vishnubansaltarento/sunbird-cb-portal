@@ -244,6 +244,74 @@ $border-color: rgba($color: #000000, $alpha: 0.16);
   }
 }
 
+.button-common-css {
+  padding: 12px 16px;
+  border-radius: 20px;
+  cursor: pointer;
+  line-height: 16px;
+  font-size: 14px;
+  font-weight: 700;
+}
+
+.outline-button {
+  @extend .button-common-css;
+  color: $text-primary;
+  border: 1px solid $text-primary;
+  background-color: #FFF;
+}
+
+.save-button {
+  @extend .button-common-css;
+  color: #FFF;
+  background-color: $text-primary;
+  border: 1px solid $text-primary;
+}
+
+.input-text {
+  padding: 12px 16px;
+  border-radius: 4px;
+  border: 1px solid rgba($color: #000000, $alpha: 0.14);
+  font-family: $font-family-lato;
+  letter-spacing: 0.25px;
+  width: calc(100% - 36px);
+}
+
+.mobile-form-field {
+  width: 84px;
+
+  .mat-form-field-flex {
+    .mat-form-field-infix {
+      border-top: 0px !important;
+    }
+  }
+}
+
+.profile-form-field {
+  width: 100%;
+}
+
+::ng-deep .profile-form-field, .mobile-form-field {
+  .mat-form-field-wrapper {
+    padding-bottom: 0px !important;
+
+    .mat-form-field-flex {
+      display: flex;
+      align-items: center;
+      
+      .mat-form-field-infix {
+        border-top: 0px !important;
+      }
+    }
+  }
+
+  .mat-select {
+    padding: 12px 16px;
+    border: 1px solid rgba($color: #000000, $alpha: 0.14);
+    border-radius: 4px;
+    width: calc(100% - 36px);
+  }
+}
+
 // .buton {
 //   display: flex;
 //   border: 1px solid;

@@ -1,14 +1,15 @@
-import { AfterViewInit, Component, ElementRef, HostListener, OnDestroy, OnInit, ViewChild } from '@angular/core'
+import { AfterViewInit, Component, ElementRef, OnDestroy, OnInit, ViewChild } from '@angular/core'
 import { HttpErrorResponse } from '@angular/common/http'
 import { ActivatedRoute, Router } from '@angular/router'
 import { MatDialog } from '@angular/material/dialog'
 import { MatSnackBar, MatTabChangeEvent } from '@angular/material'
+import { FormControl, FormGroup, Validators } from '@angular/forms'
 
 /* tslint:disable */
 import _ from 'lodash'
 import moment from 'moment'
-import { map } from 'rxjs/operators'
-// import { Subject } from 'rxjs'
+import { map, takeUntil } from 'rxjs/operators'
+import { Subject } from 'rxjs'
 
 import { ConfigurationsService, ValueService } from '@sunbird-cb/utils';
 import { HomePageService } from 'src/app/services/home-page.service'
@@ -30,8 +31,7 @@ import { NSNetworkDataV2 } from '../../../network-v2/models/network-v2.model'
 
 export class ProfileViewComponent implements OnInit, AfterViewInit, OnDestroy {
   @ViewChild('stickyMenu', { static: true }) menuElement!: ElementRef
-  // private destroySubject$ = new Subject()
-  sticky = false
+  private destroySubject$ = new Subject()
   /* tslint:disable */
   Math: any
   /* tslint:enable */
@@ -88,17 +88,14 @@ export class ProfileViewComponent implements OnInit, AfterViewInit, OnDestroy {
   credMessage = 'View my credentials'
   assessmentsData: any
   isCurrentUser!: boolean
-  infoType = 'primary'
 
-  @HostListener('window:scroll', ['$event'])
-  handleScroll() {
-    const windowScroll = window.pageYOffset
-    if (windowScroll >= this.elementPosition) {
-      this.sticky = true
-    } else {
-      this.sticky = false
-    }
-  }
+  // Latest variables...
+  infoType = 'primary'
+  editDetails = false
+  otherDetailsForm = new FormGroup({
+    official_email: new FormControl('', [Validators.required]),
+    nationality: new FormControl('', [Validators.required]),
+  })
 
   constructor(
     public dialog: MatDialog,
@@ -176,16 +173,13 @@ export class ProfileViewComponent implements OnInit, AfterViewInit, OnDestroy {
       this.decideAPICall()
       this.getInsightsData()
     })
-    // this.fetchDiscussionsData()
+
     this.fetchRecentRequests()
     this.contentSvc.getKarmaPoitns(3, moment(new Date()).valueOf()).subscribe((res: any) => {
       if (res && res.kpList) {
         this.portalProfile.karmapoints = res.kpList
       }
     })
-
-    // console.log('portalProfile - ', this.portalProfile)
-
   }
 
   ngOnInit() {
@@ -201,7 +195,6 @@ export class ProfileViewComponent implements OnInit, AfterViewInit, OnDestroy {
     if (this.currentUser.lastName) {
       this.nameInitials += this.currentUser.lastName.charAt(0)
     }
-
   }
 
   ngAfterViewInit() {
@@ -249,7 +242,9 @@ export class ProfileViewComponent implements OnInit, AfterViewInit, OnDestroy {
 
   fetchDiscussionsData(): void {
     this.discussion.loadSkeleton = true
-    this.homeSvc.getDiscussionsData(this.currentUser.userName).subscribe(
+    this.homeSvc.getDiscussionsData(this.currentUser.userName)
+    .pipe(takeUntil(this.destroySubject$))
+    .subscribe(
       (res: any) => {
         this.discussion.loadSkeleton = false
         this.updatesPosts.loadSkeleton = false
@@ -271,7 +266,9 @@ export class ProfileViewComponent implements OnInit, AfterViewInit, OnDestroy {
 
   fetchRecentRequests(): void {
     this.recentRequests.loadSkeleton = true
-    this.homeSvc.getRecentRequests().subscribe(
+    this.homeSvc.getRecentRequests()
+    .pipe(takeUntil(this.destroySubject$))
+    .subscribe(
       (res: any) => {
         this.recentRequests.loadSkeleton = false
         this.recentRequests.data = res.result.data && res.result.data.map((elem: any) => {
@@ -289,7 +286,9 @@ export class ProfileViewComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   handleUpdateRequest(event: any): void {
-    this.homeSvc.updateConnection(event.payload).subscribe(
+    this.homeSvc.updateConnection(event.payload)
+    .pipe(takeUntil(this.destroySubject$))
+    .subscribe(
       (_res: any) => {
         if (event.action === 'Approved') {
           this.matSnackBar.open('Request accepted successfully')
@@ -310,22 +309,30 @@ export class ProfileViewComponent implements OnInit, AfterViewInit, OnDestroy {
 
   fetchUserDetails(name: string) {
     if (name) {
-      this.discussService.fetchProfileInfo(name).subscribe((response: any) => {
+      this.discussService.fetchProfileInfo(name)
+      .pipe(takeUntil(this.destroySubject$))
+      .subscribe((response: any) => {
         if (response) {
           this.discussProfileData = response
           this.discussionList = _.uniqBy(_.filter(this.discussProfileData.posts, p => _.get(p, 'isMainPost') === true), 'tid') || []
         }
+      },         (_error: HttpErrorResponse) => {
+        // tslint:disable-next-line
+        console.error('_error - ', _error)
       })
     }
   }
 
   fetchConnectionDetails(wid: string) {
-    this.networkV2Service.fetchAllConnectionEstablishedById(wid).subscribe(
+    this.networkV2Service.fetchAllConnectionEstablishedById(wid)
+    .pipe(takeUntil(this.destroySubject$))
+    .subscribe(
       (data: any) => {
         this.connectionRequests = data.result.data
-              },
-      (_err: any) => {
-        // this.openSnackbar(err.error.message.split('|')[1] || this.defaultError)
+      },
+      (_err: HttpErrorResponse) => {
+        // tslint:disable-next-line
+        console.error('_error - ', _err)
       })
   }
 
@@ -409,7 +416,9 @@ export class ProfileViewComponent implements OnInit, AfterViewInit, OnDestroy {
           },
       },
     }
-    this.homeSvc.getInsightsData(request).subscribe((res: any) => {
+    this.homeSvc.getInsightsData(request)
+    .pipe(takeUntil(this.destroySubject$))
+    .subscribe((res: any) => {
       if (res.result.response) {
         this.insightsData = res.result.response
         this.constructNudgeData()
@@ -418,10 +427,11 @@ export class ProfileViewComponent implements OnInit, AfterViewInit, OnDestroy {
         }
       }
       this.insightsDataLoading = false
-   },                                               (_error: any) => {
+    },         (_error: HttpErrorResponse) => {
       this.insightsDataLoading = false
-   })
+    })
   }
+
   constructNudgeData() {
     this.insightsDataLoading = true
     const nudgeData: any = {
@@ -453,7 +463,9 @@ export class ProfileViewComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   getPendingRequestData() {
-    this.homeSvc.getRecentRequests().subscribe(
+    this.homeSvc.getRecentRequests()
+    .pipe(takeUntil(this.destroySubject$))
+    .subscribe(
       (res: any) => {
         this.pendingRequestSkeleton = false
         this.pendingRequestData = res.result.data && res.result.data.map((elem: any) => {
@@ -467,16 +479,6 @@ export class ProfileViewComponent implements OnInit, AfterViewInit, OnDestroy {
         }
       }
     )
-  }
-
-  ngOnDestroy() {
-    if (this.tabs) {
-      this.tabs.unsubscribe()
-    }
-
-    if (this.defaultSideNavBarOpenedSubscription) {
-      this.defaultSideNavBarOpenedSubscription.unsubscribe()
-    }
   }
 
   toggleCreds() {
@@ -500,7 +502,9 @@ export class ProfileViewComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   getAssessmentData() {
-    this.homeSvc.getAssessmentinfo().subscribe(
+    this.homeSvc.getAssessmentinfo()
+    .pipe(takeUntil(this.destroySubject$))
+    .subscribe(
       (res: any) => {
         if (res && res.result && res.result.response) {
           this.assessmentsData = res.result.response
@@ -523,5 +527,17 @@ export class ProfileViewComponent implements OnInit, AfterViewInit, OnDestroy {
 
   handleDateFormat(dateString: string): any {
     return moment(new Date(dateString)).format('D MMM YYYY')
+  }
+
+  ngOnDestroy() {
+    if (this.tabs) {
+      this.tabs.unsubscribe()
+    }
+
+    if (this.defaultSideNavBarOpenedSubscription) {
+      this.defaultSideNavBarOpenedSubscription.unsubscribe()
+    }
+
+    this.destroySubject$.unsubscribe()
   }
 }
