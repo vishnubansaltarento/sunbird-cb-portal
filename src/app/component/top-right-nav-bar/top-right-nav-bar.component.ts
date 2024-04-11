@@ -86,7 +86,7 @@ export class TopRightNavBarComponent implements OnInit, OnChanges {
   }
 
   ngOnChanges() {
-    this.rightNavConfig = this.rightNavConfig.topRightNavConfig ? this.rightNavConfig.topRightNavConfig : rightNavConfig
+    // this.rightNavConfig = this.rightNavConfig.topRightNavConfig ? this.rightNavConfig.topRightNavConfig : rightNavConfig
   }
   // ngOnChanges() {}
   // openDialog(): void {
