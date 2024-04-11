@@ -311,8 +311,9 @@
                     <div class="text-xs font-bold text-white leading-3">{{ translateLabel(content?.primaryCategory, 'searchfilters') }}</div>
                   </ng-container>
                 </div>
+                
                 <div class="flex items-center" *ngIf="cbPlanEndDate">
-                  <div class="flex items-center due-tag text-xs leading-3">
+                  <div class="flex items-center due-tag text-xs leading-3" [ngClass]="{'due-warning': cbPlanDuration === nsCardContentData.UPCOMING, 'due-overdue': cbPlanDuration === nsCardContentData.OVERDUE, 'due-success': cbPlanDuration === nsCardContentData.SUCCESS}" >
                     {{ 'common.dueBy' | translate }} - &nbsp;<span class="font-bold">{{ cbPlanEndDate | date: 'd MMM, y'}}</span>
                   </div>
                 </div>
@@ -382,9 +383,9 @@
         </div>
         <!-- Overall progress functionality -->
 
-        <ws-widget-content-toc [content]="content" [componentName]="'toc'"  [pathSet]="pathSet" [tocStructure]="tocStructure"
-        [forPreview]="false" [resumeData]="resumeData" [batchData]="selectedBatchData" [skeletonLoader]="skeletonLoader"
-        [changeTab]="changeTab" [hierarchyMapData]="tocSvc?.hashmap" [selectedBatchData]="selectedBatchData" [condition]="{isPostAssessment: isPostAssessment, content: content, isAcbpCourse: isAcbpCourse, isClaimed: isClaimed, monthlyCapExceed: monthlyCapExceed, isCompletedThisMonth: isCompletedThisMonth, showTakeAssessment: showTakeAssessment, userEnrollmentList: userEnrollmentList, resumeData: resumeData, userRating: userRating, enrollBtnLoading: enrollBtnLoading, primaryCategory: primaryCategory, currentCourseBatchId: currentCourseBatchId}" [kparray]="kparray"></ws-widget-content-toc>
+        <ws-widget-content-toc [content]="content" [componentName]="'toc'"  [pathSet]="pathSet" [tocStructure]="tocStructure" 
+        [forPreview]="false" [resumeData]="resumeData" [batchData]="selectedBatchData" [skeletonLoader]="skeletonLoader" 
+        [changeTab]="changeTab" [hierarchyMapData]="tocSvc?.hashmap" [selectedBatchData]="selectedBatchData" [condition]="{isPostAssessment: isPostAssessment, content: content, isAcbpCourse: isAcbpCourse, isClaimed: isClaimed, monthlyCapExceed: monthlyCapExceed, isCompletedThisMonth: isCompletedThisMonth, showTakeAssessment: showTakeAssessment, userEnrollmentList: userEnrollmentList, resumeData: resumeData, userRating: userRating, enrollBtnLoading: enrollBtnLoading, primaryCategory: primaryCategory, currentCourseBatchId: currentCourseBatchId, isAcbpClaim: isAcbpClaim}" [kparray]="kparray"></ws-widget-content-toc>
       </div>
     </div>
 
@@ -494,8 +495,8 @@
             </div>
 
             <div class="karma-points-div">
-              <ws-widget-karma-points [btntype]="" [data]="kparray" [btnCategory]="" (clickClaimKarmaPoints)="onClickOfClaim($event)"
-                [condition]="{isPostAssessment: isPostAssessment, content: content, isAcbpCourse: isAcbpCourse, isClaimed: isClaimed, monthlyCapExceed: monthlyCapExceed, isCompletedThisMonth: isCompletedThisMonth, showTakeAssessment: showTakeAssessment, userEnrollmentList: userEnrollmentList, isCompletedThisMonth: isCompletedThisMonth, resumeData: resumeData, userRating: userRating, enrollBtnLoading: enrollBtnLoading, primaryCategory: primaryCategory, currentCourseBatchId: currentCourseBatchId}"></ws-widget-karma-points>
+              <ws-widget-karma-points [data]="kparray" (clickClaimKarmaPoints)="onClickOfClaim($event)"
+                [condition]="{isPostAssessment: isPostAssessment, content: content, isAcbpCourse: isAcbpCourse, isClaimed: isClaimed, monthlyCapExceed: monthlyCapExceed, isCompletedThisMonth: isCompletedThisMonth, showTakeAssessment: showTakeAssessment, userEnrollmentList: userEnrollmentList, isCompletedThisMonth: isCompletedThisMonth, resumeData: resumeData, userRating: userRating, enrollBtnLoading: enrollBtnLoading, primaryCategory: primaryCategory, currentCourseBatchId: currentCourseBatchId, isAcbpClaim: isAcbpClaim}"></ws-widget-karma-points>
             </div>
           </ng-container>
 
@@ -581,14 +582,12 @@
             </div> -->
             <div class="flex flex-col gap-3" *ngIf="content?.source">
               <div class="text-base font-bold">{{ 'apptocsinglepage.provider' | translate }}</div>
-              <div class="flex flex-row gap-4" *ngFor="let creator of handleParseJsonData(content?.creatorContacts)">
-                <div class="flex items-center justify-center imgdiv">
-                  <img *ngIf="!content.creatorLogo" class="mat-icon" src="/assets/instances/eagle/app_logos/KarmayogiBharat_Logo.svg" alt="{{ 'apptocsinglepage.provider' | translate }}" />
-                  <img *ngIf="content.creatorLogo" [src]="widgetData.content.creatorLogo | pipePublicURL" class="mat-icon">
+              <div class="flex flex-row gap-4 items-center" *ngFor="let creator of handleParseJsonData(content?.creatorContacts)">
+                <div class="flex provider-logo-div">
+                  <img *ngIf="content?.creatorLogo" [src]="content?.creatorLogo" alt="{{ 'apptocsinglepage.provider' | translate }}" />
+                  <img *ngIf="!content?.creatorLogo" class="mat-icon" src="/assets/instances/eagle/app_logos/KarmayogiBharat_Logo.svg" alt="{{ 'apptocsinglepage.provider' | translate }}" />
                 </div>
-                <div class="flex flex-col gap-1 justify-center">
-                  <div class="text-xs leading-3">{{ handleCapitalize(content?.source, 'source') }}</div>
-                </div>
+                <div class="text-sm word-break">{{ handleCapitalize(content?.source, 'source') }}</div>
               </div>
             </div>
           </ng-container>

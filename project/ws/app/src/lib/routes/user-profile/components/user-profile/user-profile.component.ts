@@ -29,7 +29,7 @@ import { Notify } from '@ws/author/src/lib/constants/notificationMessage'
 import { NOTIFICATION_TIME } from '@ws/author/src/lib/constants/constant'
 import { LoaderService } from '@ws/author/src/public-api'
 /* tslint:disable */
-import _ from 'lodash'
+import * as _ from 'lodash'
 import { OtpService } from '../../services/otp.services';
 import { environment } from 'src/environments/environment'
 import { TranslateService } from '@ngx-translate/core'
@@ -1805,9 +1805,16 @@ export class UserProfileComponent implements OnInit, OnDestroy {
       label: `${tabEvent.tab.textLabel}`,
       index: tabEvent.index,
     }
-    this.eventSvc.handleTabTelemetry(
-      WsEvents.EnumInteractSubTypes.PROFILE_EDIT_TAB,
-      data,
+    this.eventSvc.raiseInteractTelemetry(
+      {
+        type: WsEvents.EnumInteractTypes.CLICK,
+        subType: WsEvents.EnumInteractSubTypes.PROFILE_EDIT_TAB,
+        id: `${_.camelCase(data.label)}-tab`,
+      },
+      {},
+      {
+        module: WsEvents.EnumTelemetrymodules.PROFILE,
+      }
     )
 
   }
@@ -1935,6 +1942,7 @@ export class UserProfileComponent implements OnInit, OnDestroy {
               },
             }
             this.userProfileSvc.updatePrimaryEmailDetails(reqUpdates).subscribe((_updateRes: any) => {
+              this.snackBar.open(this.translateTo('updateEamilConfirmation'))
               this.router.navigateByUrl('/', { skipLocationChange: true }).then(() => {
                 this.router.navigate(['app/user-profile/details'])
               })

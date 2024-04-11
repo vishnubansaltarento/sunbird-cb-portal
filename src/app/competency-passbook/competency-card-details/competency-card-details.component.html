@@ -60,8 +60,8 @@
                     <div class="certificate-card">
                         <div class="flex flex-col certificate-info p-4 gap-3">
                             <div class="flex flex-row">
-                                <div class="flex-1">
-                                    <div class="text-base font-semibold cursor-pointer" (click)="handleNavigate(eachCert)" >{{ eachCert?.courseName }}</div>
+                                <div class="flex-1 course-name-div">
+                                    <div class="text-base font-semibold cursor-pointer" #courseName (click)="handleNavigate(eachCert)" [ngClass]="{'course-name': eachCert.courseEllipsis && eachCert.courseEllipsis === true}" title="{{ eachCert?.courseName }}" >{{ eachCert?.courseName }}</div>
                                     <div class="text-xs font-light" *ngIf="eachCert?.identifier" >{{'competencyList.issued' | translate }} {{ eachCert?.lastIssuedOn | date: 'MMM y' }}</div>
                                 </div>
                                 <div class="flex justify-center">
@@ -110,13 +110,13 @@
                             </div>
                         </div>
                     </ng-container>
-                    <div class="flex items-center text-primary underline cursor-pointer text-xs" *ngIf="themeDetails.courseSubThemes[i]?.length > 2 && !eachCert.viewMore" (click)="handleViewMore(eachCert)">
+                    <!-- <div class="flex items-center text-primary underline cursor-pointer text-xs" *ngIf="themeDetails.courseSubThemes[i]?.length > 2 && !eachCert.viewMore" (click)="handleViewMore(eachCert)">
                         {{'competencyCardDetails.viewMore' | translate}}
                     </div>
                     <div class="flex items-center text-primary underline cursor-pointer text-xs" *ngIf="eachCert?.viewMore"
                         (click)="handleViewMore(eachCert, 'less')">
                         {{'competencyCardDetails.viewLess' | translate}}
-                    </div>
+                    </div> -->
                 </div>
             </ng-container>
         </div>

@@ -46,18 +46,6 @@ $title-line-count: 2;
     min-height: $title-line-count * 24px;
 }
 
-// .competency-name {
-//     height: 44px;
-//     font-size: 14px;
-//     line-height: 21px;
-//     overflow: hidden;
-//     text-overflow: ellipsis;
-//     word-wrap: break-word;
-//     overflow: hidden;
-
-//     @extend .mat-subheading-1;
-// }
-
 @media screen and (max-width: 768px) {
     .mobile-right-container {
         display: block;

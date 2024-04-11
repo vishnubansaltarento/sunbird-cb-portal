@@ -76,7 +76,7 @@ export class AppTocHomeComponent implements OnInit, OnDestroy, AfterViewChecked,
   contentReadData: NsContent.IContent | null = null
   errorCode: NsAppToc.EWsTocErrorCode | null = null
   resumeData: any = null
-  nsCardContentData: any = NsCardContent
+  nsCardContentData: any = NsCardContent.ACBPConst
   batchData: NsContent.IBatchListResponse | null = null
   currentCourseBatchId: string | null = null
   userEnrollmentList!: NsContent.ICourse[]
@@ -1662,7 +1662,7 @@ export class AppTocHomeComponent implements OnInit, OnDestroy, AfterViewChecked,
         }).join(' ')
       } else {
 
-        returnValue = str.charAt(0).toUpperCase() + str.slice(1)
+        returnValue = str && (str.charAt(0).toUpperCase() + str.slice(1))
       }
     }
     return returnValue

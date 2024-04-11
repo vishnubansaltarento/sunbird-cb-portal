@@ -223,6 +223,7 @@ $mob-title-line-count: 2;
     border: 1px solid rgb(27, 76, 161);
     border-radius: 8px;
     background-color: #fff;
+    max-width: 768px;
 
     .ribbon {
         position: relative;
@@ -448,6 +449,7 @@ $mob-title-line-count: 2;
     overflow: hidden;
     text-overflow: ellipsis;
 }
+
 .celebration-animation {
     position: absolute;
     left: 0%;
@@ -455,6 +457,7 @@ $mob-title-line-count: 2;
     z-index: 9999;
     width: 100%;
 }
+
 .download-section {
     z-index: 99999;
 }
