@@ -260,7 +260,7 @@ export class SeeAllHomeComponent implements OnInit, OnDestroy {
               this.dynamicTabIndex = _.findIndex(this.tabResults, (v: any) => v.label === this.tabSelected)
             }
           }
-        }, 
+        },
         () => {
         }
       )
