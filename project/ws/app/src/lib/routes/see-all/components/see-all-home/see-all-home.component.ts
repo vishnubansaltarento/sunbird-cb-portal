@@ -1,7 +1,6 @@
 import { Component, OnInit, OnDestroy } from '@angular/core'
 import { ActivatedRoute } from '@angular/router'
-import { MatTabChangeEvent, MatSnackBar } from '@angular/material'
-import { HttpErrorResponse } from '@angular/common/http'
+import { MatTabChangeEvent } from '@angular/material'
 // tslint:disable-next-line
 import * as _ from 'lodash'
 import { ConfigurationsService, EventService, MultilingualTranslationsService, WsEvents } from '@sunbird-cb/utils'
@@ -37,7 +36,6 @@ export class SeeAllHomeComponent implements OnInit, OnDestroy {
     private userSvc: WidgetUserService,
     private eventSvc: EventService,
     private langtranslations: MultilingualTranslationsService,
-    private matSnackBar: MatSnackBar
   ) {
 
   }

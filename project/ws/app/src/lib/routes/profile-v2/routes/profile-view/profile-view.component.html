@@ -1,10 +1,10 @@
 <div class="flex flex-col w-full gap-5">
   <div class="flex flex-col sm:flex-row gap-4 profile-header">
     <div class="profile-circle-container">
-      <!-- <ng-container *ngIf="portalProfile?.profileImageUrl">
+      <ng-container *ngIf="portalProfile?.profileImageUrl">
         <img src="{{ portalProfile?.profileImageUrl }}" class="profile-pic" alt="profile image" />
-      </ng-container> -->
-      <div class="flex items-center justify-center profile-circle">
+      </ng-container>
+      <div class="flex items-center justify-center profile-circle" *ngIf="!portalProfile?.profileImageUrl">
         {{ nameInitials }}
       </div>
     </div>
@@ -22,15 +22,19 @@
           <mat-icon class="cursor-pointer">edit</mat-icon>
         </div>
         <div class="position">{{ portalProfile?.employmentDetails?.departmentName }}</div>
-        <div class="flex flex-col sm:flex-row gap-4 sm:items-center">
-          <div class="institute" *ngIf="portalProfile?.professionalDetails">{{ portalProfile?.professionalDetails[0]?.industry }}</div>
-          <div class="flex flex-row">
-            <div class="flex flex-row gap-2 items-center make-transer">
-              <div class="text-sm">Make Transfer Request</div>
-              <mat-icon>info</mat-icon>
+        <ng-container *ngIf="portalProfile?.professionalDetails.length">
+          <ng-container *ngIf="portalProfile?.professionalDetails[0]?.industry">
+            <div class="flex flex-col sm:flex-row gap-4 sm:items-center">
+              <div class="institute">{{ portalProfile?.professionalDetails[0]?.industry }}</div>
+              <div class="flex flex-row">
+                <div class="flex flex-row gap-2 items-center make-transer">
+                  <div class="text-sm">Make Transfer Request</div>
+                  <mat-icon>info</mat-icon>
+                </div>
+              </div>
             </div>
-          </div>
-        </div>
+          </ng-container>
+        </ng-container>
         <div class="divider"></div>
       </div>
       <div class="flex flex-col sm:flex-row sm:items-center gap-5">
@@ -50,7 +54,7 @@
 
   <div class="flex flex-row gap-4 items-center justify-center">
     <div class="common-tab-css" [ngClass]="{'tab-active': infoType === 'primary'}" (click)="infoType = 'primary'">Primary Information</div>
-    <div class="common-tab-css" [ngClass]="{'tab-active': infoType === 'ehrms'}" (click)="infoType = 'ehrms'">eHRMS Information</div>
+    <!-- <div class="common-tab-css" [ngClass]="{'tab-active': infoType === 'ehrms'}" (click)="infoType = 'ehrms'">eHRMS Information</div> -->
   </div>
 
   <div class="flex flex-col gap-5 p-4 pt-0 sm:p-0" *ngIf="infoType === 'primary'">
@@ -72,11 +76,11 @@
         <div class="grid grid-flow-row sm:grid-flow-col gap-6 grid-col">
           <div class="info-div">
             <div class="label">Group</div>
-            <div class="flex flex-row gap-2 items-center info-value" *ngIf="currentUser?.professionalDetails?.length">
+            <div class="flex flex-row gap-2 items-center info-value" *ngIf="currentUser?.professionalDetails?.length && currentUser?.professionalDetails[0]?.group">
               {{ currentUser?.professionalDetails[0]?.group }}
               <mat-icon class="verified-check">check_circle</mat-icon>
             </div>
-            <div class="info-value" *ngIf="!currentUser?.professionalDetails?.length">NA</div>
+            <div class="info-value" *ngIf="!currentUser?.professionalDetails?.length || !currentUser?.professionalDetails[0]?.group">NA</div>
           </div>
 
           <div class="info-div">
