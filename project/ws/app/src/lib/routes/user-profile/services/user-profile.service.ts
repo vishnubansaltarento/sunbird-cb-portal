@@ -18,7 +18,7 @@ const API_ENDPOINTS = {
   updateProfileDetails: '/apis/protected/v8/user/profileDetails/updateUser',
   getUserdetailsFromRegistry: '/apis/proxies/v8/api/user/v2/read',
   getUserdetails: '/apis/protected/v8/user/details/detailV1',
-  getMasterNationlity: '/apis/protected/v8/user/profileRegistry/getMasterNationalities',
+  getMasterNationality: '/apis/protected/v8/user/profileRegistry/getMasterNationalities',
   getMasterCountries: '/apis/protected/v8/user/profileRegistry/getMasterCountries',
   getMasterLanguages: '/apis/protected/v8/user/profileRegistry/getMasterLanguages',
   getProfilePageMeta: '/apis/protected/v8/user/profileRegistry/getProfilePageMeta',
@@ -55,8 +55,8 @@ export class UserProfileService {
   getMasterLanguages(): Observable<ILanguagesApiData> {
     return this.http.get<ILanguagesApiData>(API_ENDPOINTS.getMasterLanguages)
   }
-  getMasterNationlity(): Observable<INationalityApiData> {
-    return this.http.get<INationalityApiData>(API_ENDPOINTS.getMasterNationlity)
+  getMasterNationality(): Observable<INationalityApiData> {
+    return this.http.get<INationalityApiData>(API_ENDPOINTS.getMasterNationality)
   }
   getMasterCountries(): Observable<ICountryApiData> {
     return this.http.get<ICountryApiData>(API_ENDPOINTS.getMasterCountries)

@@ -24,7 +24,9 @@ import {
   MatTooltipModule,
   MatDatepickerModule,
 } from '@angular/material'
+import { MatAutocompleteModule } from '@angular/material/autocomplete'
 import { MatCardModule } from '@angular/material/card'
+
 import { ReactiveFormsModule, FormsModule } from '@angular/forms'
 import { AvatarPhotoModule, BtnPageBackModule } from '@sunbird-cb/collection'
 import { EditorSharedModule } from '@ws/author/src/lib/routing/modules/editor/shared/shared.module'
@@ -105,6 +107,7 @@ import { UserLeaderboardModule } from '@sunbird-cb/collection/src/lib/_common/us
     TranslateModule,
     MatTooltipModule,
     MatDatepickerModule,
+    MatAutocompleteModule,
     // ShareModule
   ],
   entryComponents: [

@@ -4,21 +4,24 @@ import { ActivatedRoute, Router } from '@angular/router'
 import { MatDialog } from '@angular/material/dialog'
 import { MatSnackBar, MatTabChangeEvent } from '@angular/material'
 import { FormControl, FormGroup, Validators } from '@angular/forms'
+import { TranslateService } from '@ngx-translate/core'
 
 /* tslint:disable */
 import _ from 'lodash'
 import moment from 'moment'
-import { map, takeUntil } from 'rxjs/operators'
 import { Subject } from 'rxjs'
+import { debounceTime, distinctUntilChanged, map, startWith, takeUntil } from 'rxjs/operators'
 
 import { ConfigurationsService, ValueService } from '@sunbird-cb/utils';
-import { HomePageService } from 'src/app/services/home-page.service'
 import { NsContent, WidgetContentService } from '@sunbird-cb/collection'
+import { HomePageService } from 'src/app/services/home-page.service'
 import { DiscussService } from '../../../discuss/services/discuss.service'
 import { NetworkV2Service } from '../../../network-v2/services/network-v2.service'
+import { UserProfileService } from '../../../user-profile/services/user-profile.service'
 
 import { NSProfileDataV2 } from '../../models/profile-v2.model'
 import { NSNetworkDataV2 } from '../../../network-v2/models/network-v2.model'
+import { NsUserProfileDetails } from '../../../user-profile/models/NsUserProfile'
 
 @Component({
   selector: 'app-profile-view',
@@ -91,9 +94,23 @@ export class ProfileViewComponent implements OnInit, AfterViewInit, OnDestroy {
 
   // Latest variables...
   infoType = 'primary'
+  countryCodes: any[] = []
+  countryCodesBackUp: any[] = []
+  nationalityData: any[] = []
   editDetails = false
+  eUserGender = Object.keys(NsUserProfileDetails.EUserGender)
+  eCategory = Object.keys(NsUserProfileDetails.ECategory)
+  masterLanguages: any[] | undefined
+  masterLanguageBackup: any[] | undefined
   otherDetailsForm = new FormGroup({
-    official_email: new FormControl('', [Validators.required]),
+    officialEmail: new FormControl('', [Validators.required]),
+    gender: new FormControl('', [Validators.required]),
+    dob: new FormControl('', [Validators.required]),
+    motherTongue: new FormControl('', []),
+    mobile: new FormControl('', [Validators.required]),
+    countryCode: new FormControl('', [Validators.required]),
+    maritalStatus: new FormControl('', [Validators.required]),
+    otherDetailsOfficePinCode: new FormControl('', [Validators.required]),
     nationality: new FormControl('', [Validators.required]),
   })
 
@@ -108,7 +125,38 @@ export class ProfileViewComponent implements OnInit, AfterViewInit, OnDestroy {
     private contentSvc: WidgetContentService,
     private homeSvc: HomePageService,
     private matSnackBar: MatSnackBar,
+    private userProfileService: UserProfileService,
+    private translateService: TranslateService,
   ) {
+
+    if (this.otherDetailsForm.get('motherTongue')) {
+      this.otherDetailsForm.get('motherTongue')!.valueChanges
+      .pipe(
+        debounceTime(250),
+        distinctUntilChanged(),
+        startWith(''),
+      )
+      .subscribe(res => {
+        if (this.masterLanguageBackup) {
+          this.masterLanguages = this.masterLanguageBackup.filter(item => item.name.toLowerCase().includes(res.toLowerCase()))
+        }
+      })
+    }
+
+    if (this.otherDetailsForm.get('countryCode')) {
+      this.otherDetailsForm.get('countryCode')!.valueChanges
+      .pipe(
+        debounceTime(100),
+        distinctUntilChanged(),
+        startWith('')
+      )
+      .subscribe(res => {
+        if (this.countryCodesBackUp) {
+          this.countryCodes = this.countryCodesBackUp.filter(item => item.includes(res))
+        }
+      })
+    }
+
     this.Math = Math
     this.pageData = this.route.parent && this.route.parent.snapshot.data.pageData.data
     this.currentUser = this.configSvc && this.configSvc.userProfile
@@ -186,6 +234,7 @@ export class ProfileViewComponent implements OnInit, AfterViewInit, OnDestroy {
     this.defaultSideNavBarOpenedSubscription = this.isLtMedium$.subscribe(isLtMedium => {
       this.sideNavBarOpened = !isLtMedium
     })
+
     this.getPendingRequestData()
     this.enrollInterval = setInterval(() => {
       this.getKarmaCount()
@@ -195,6 +244,9 @@ export class ProfileViewComponent implements OnInit, AfterViewInit, OnDestroy {
     if (this.currentUser.lastName) {
       this.nameInitials += this.currentUser.lastName.charAt(0)
     }
+
+    this.getMasterNationality()
+    this.getMasterLanguage()
   }
 
   ngAfterViewInit() {
@@ -228,7 +280,6 @@ export class ProfileViewComponent implements OnInit, AfterViewInit, OnDestroy {
       this.fetchUserDetails(this.currentUsername)
       this.fetchConnectionDetails(user)
     } else {
-
       if (this.configSvc.userProfile) {
         const me = this.configSvc.userProfile.userName || ''
         if (me) {
@@ -236,7 +287,6 @@ export class ProfileViewComponent implements OnInit, AfterViewInit, OnDestroy {
           this.fetchConnectionDetails(this.configSvc.userProfile.userId)
         }
       }
-
     }
   }
 
@@ -525,9 +575,49 @@ export class ProfileViewComponent implements OnInit, AfterViewInit, OnDestroy {
     })
   }
 
+  getMasterNationality(): void {
+    this.userProfileService.getMasterNationality()
+    .pipe(takeUntil(this.destroySubject$))
+    .subscribe((res: any) => {
+      if (res.nationality) {
+        res.nationality.forEach((item: any) => {
+          this.countryCodes.push(item.countryCode)
+          this.countryCodesBackUp.push(item.countryCode)
+          this.nationalityData.push(item.name)
+        })
+      }
+    },         (error: HttpErrorResponse) => {
+      if (!error.ok) {
+        this.matSnackBar.open('Unable to fetch master nation data')
+      }
+    })
+  }
+
+  getMasterLanguage(): void {
+    this.userProfileService.getMasterLanguages()
+    .pipe(takeUntil(this.destroySubject$))
+    .subscribe((res: any) => {
+      this.masterLanguages = res.languages
+      this.masterLanguageBackup = res.languages
+    },         (error: HttpErrorResponse) => {
+      if (!error.ok) {
+        this.matSnackBar.open('Unable to fetch master data of language')
+      }
+    })
+
+  }
+
+  handleTranslateTo(menuName: string): string {
+    // tslint:disable-next-line: prefer-template
+    const translationKey = 'userProfile.' + menuName.replace(/\s/g, '')
+    return this.translateService.instant(translationKey)
+  }
+
   handleDateFormat(dateString: string): any {
     return moment(new Date(dateString)).format('D MMM YYYY')
   }
+
+  handleSaveOtherDetails(): void { }
 
   ngOnDestroy() {
     if (this.tabs) {

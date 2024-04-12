@@ -39,11 +39,11 @@
           My Karma Points
           <mat-icon>chevron_right</mat-icon>
         </button>
-        <button class="flex flex-row gap-2 items-center certificate-button justify-center">
+        <a class="flex flex-row gap-2 items-center certificate-button justify-center" [routerLink]="['/app/seeAll']"  [queryParams]="{key: 'continueLearning', tab: 'completed'}">
           <img src="/assets/icons/home/certificate.svg" alt="certificate icon" />
           View My Certificates
           <mat-icon>chevron_right</mat-icon>
-        </button>
+        </a>
       </div>
     </div>
   </div>
@@ -122,7 +122,7 @@
                 <div class="info-value" *ngIf="!editDetails">{{ portalProfile?.personalDetails?.officialEmail || 'NA' }}</div>
                 <div class="flex" *ngIf="editDetails">
                   <mat-form-field class="profile-form-field">
-                    <input type="email" class="input-text" matInput formControlName="official_email" />
+                    <input type="email" class="input-text" matInput formControlName="officialEmail" />
                   </mat-form-field>
                 </div>
               </div>
@@ -141,16 +141,19 @@
                 <div class="flex flex-row gap-2" *ngIf="editDetails">
                   <div class="flex">
                     <mat-form-field class="mobile-form-field">
-                      <mat-select formControlName="nationality">
-                        <mat-option value="+91">+91</mat-option>
-                        <mat-option value="+92">+92</mat-option>
-                        <mat-option value="+93">+93</mat-option>
-                        <mat-option value="+94">+94</mat-option>
-                      </mat-select>
+                      <!-- <mat-select formControlName="countryCode">
+                        <mat-option *ngFor="let code of countryCodes" value="{{ code }}">{{ code }}</mat-option>
+                      </mat-select> -->
+                      <input type="text" matInput class="input-text" aria-label="Country code" formControlName="countryCode" [matAutocomplete]="ccAuto" />
+                      <mat-autocomplete #ccAuto="matAutocomplete">
+                        <mat-option *ngFor="let code of countryCodes" [value]="code">
+                          {{ code }}
+                        </mat-option>
+                      </mat-autocomplete>
                     </mat-form-field>
                   </div>
-                  <mat-form-field class="profile-form-field">
-                    <input type="text" class="input-text mobile-text" matInput formControlName="official_email" />
+                  <mat-form-field class="profile-form-field mobile-num">
+                    <input type="text" class="input-text mobile-text" matInput formControlName="mobile" />
                   </mat-form-field>
                 </div>
               </div>
@@ -159,10 +162,8 @@
                 <div class="info-value" *ngIf="!editDetails">{{ portalProfile?.personalDetails?.gender || 'NA' }}</div>
                 <div class="flex" *ngIf="editDetails">
                   <mat-form-field class="profile-form-field">
-                    <mat-select formControlName="nationality">
-                      <mat-option value="male">Male</mat-option>
-                      <mat-option value="female">Female</mat-option>
-                      <mat-option value="others">Others</mat-option>
+                    <mat-select formControlName="gender">
+                      <mat-option *ngFor="let gender of eUserGender" value="{{ gender }}">{{ handleTranslateTo(gender.toLowerCase()) }}</mat-option>
                     </mat-select>
                   </mat-form-field>
                 </div>
@@ -178,7 +179,7 @@
                 </div>
                 <div class="info-value" *ngIf="editDetails">
                   <mat-form-field class="profile-form-field">
-                    <input matInput class="input-text" [matDatepicker]="picker">
+                    <input matInput class="input-text" [matDatepicker]="picker" formControlName="dob" />
                     <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
                     <mat-datepicker #picker></mat-datepicker>
                   </mat-form-field>
@@ -191,11 +192,13 @@
                 </div>
                 <div class="info-value flex" *ngIf="editDetails">
                   <mat-form-field class="profile-form-field">
-                    <mat-select formControlName="nationality">
-                      <mat-option value="male">Male</mat-option>
-                      <mat-option value="female">Female</mat-option>
-                      <mat-option value="others">Others</mat-option>
-                    </mat-select>
+                    <input type="text" class="input-text" aria-label="Domicile Medium (Mother Tongue)" matInput formControlName="motherTongue"
+                      [matAutocomplete]="languageAuto">
+                    <mat-autocomplete #languageAuto="matAutocomplete">
+                      <mat-option *ngFor="let language of masterLanguages" [value]="language.name">
+                        {{ language.name }}
+                      </mat-option>
+                    </mat-autocomplete>
                   </mat-form-field>
                 </div>
               </div>
@@ -205,9 +208,7 @@
                 <div class="info-value flex" *ngIf="editDetails">
                   <mat-form-field class="profile-form-field">
                     <mat-select formControlName="nationality">
-                      <mat-option value="male">Male</mat-option>
-                      <mat-option value="female">Female</mat-option>
-                      <mat-option value="others">Others</mat-option>
+                      <mat-option *ngFor="let category of eCategory" value="{{ category }}">{{ handleTranslateTo(category?.toLowerCase()) }}</mat-option>
                     </mat-select>
                   </mat-form-field>
                 </div>
@@ -217,7 +218,7 @@
                 <div class="info-value" *ngIf="!editDetails">{{ portalProfile?.personalDetails?.pincode || 'NA' }}</div>
                 <div class="flex" *ngIf="editDetails">
                   <mat-form-field class="profile-form-field">
-                    <input type="email" class="input-text" matInput formControlName="official_email" />
+                    <input type="email" class="input-text" matInput formControlName="otherDetailsOfficePinCode" />
                   </mat-form-field>
                 </div>
               </div>
@@ -233,7 +234,7 @@
             <div class="grid-container" *ngIf="editDetails">
               <div class="flex flex-row gap-4">
                 <button class="outline-button" (click)="editDetails = !editDetails">Cancel</button>
-                <button class="save-button">Save Changes</button>
+                <button class="save-button" (click)="handleSaveOtherDetails()">Save Changes</button>
               </div>
             </div>
           </div>
