@@ -38,6 +38,7 @@ import { AppHierarchyResolverService } from './services/app-hierarchy-resolver.s
 import { AppEnrollmentResolverService } from './services/app-enrollment-resolver.service'
 import { AppContentResolverService } from './services/app-content-read-resolver.service'
 import { SurveyShikshaComponent } from './component/survey-shiksha/survey-shiksha.component'
+import { PrivacyPolicyComponent } from './component/privacy-policy/privacy-policy.component'
 // 💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥
 // Please declare routes in alphabetical order
 // 😵😵😵😵😵😵😵😵😵😵😵😵😵😵😵😵😵😵😵😵😵😵😵😵😵😵😵😵😵😵😵😵😵😵😵😵😵😵😵
@@ -885,6 +886,15 @@ const routes: Routes = [
     data: {
       module: 'sso',
       pageId: 'public/sso',
+    },
+  },
+
+  {
+    path: 'public/privacy-policy',
+    component: PrivacyPolicyComponent,
+    data: {
+      module: 'privacy-policy',
+      pageId: 'public/privacy-policy',
     },
   },
   {
