@@ -619,8 +619,7 @@
                       {{'userProfile.telephoneNumber' | translate }}
                     </label>
                     <mat-form-field appearance="outline" class="margin-top-xs">
-                      <input id="telephoneNumber" #telephone type="text" matInput placeholder="{{'userProfile.telephoneNumberPlaceholder' | translate }}"
-                        formControlName="telephone" i18n-aria-label maxlength="12">
+                      <input id="telephoneNumber" #telephone type="text" matInput placeholder="{{'userProfile.telephoneNumberPlaceholder' | translate }}" formControlName="telephone" i18n-aria-label maxlength="12">
                       <mat-error [hidden]="false" *ngIf="createUserForm?.controls['telephone'].errors?.pattern">
                         {{'userProfile.telephoneNumberValidation' | translate }}
                       </mat-error>

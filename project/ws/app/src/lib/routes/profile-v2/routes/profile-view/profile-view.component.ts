@@ -1,40 +1,40 @@
-import { AfterViewInit, Component, ElementRef, HostListener, OnDestroy, OnInit, ViewChild } from '@angular/core'
+import { AfterViewInit, Component, ElementRef, OnDestroy, OnInit, ViewChild } from '@angular/core'
 import { HttpErrorResponse } from '@angular/common/http'
-import { NSProfileDataV2 } from '../../models/profile-v2.model'
-import { MatDialog } from '@angular/material/dialog'
-import { MatSnackBar } from '@angular/material'
 import { ActivatedRoute, Router } from '@angular/router'
-import { DiscussService } from '../../../discuss/services/discuss.service'
-// import { DOCUMENT } from '@angular/common'
-// import { ProfileV2Service } from '../../services/profile-v2.servive'
+import { MatDialog } from '@angular/material/dialog'
+import { MatSnackBar, MatTabChangeEvent } from '@angular/material'
+import { FormControl, FormGroup, Validators } from '@angular/forms'
+import { TranslateService } from '@ngx-translate/core'
+
 /* tslint:disable */
 import _ from 'lodash'
-import { MatTabChangeEvent } from '@angular/material'
-import { NetworkV2Service } from '../../../network-v2/services/network-v2.service'
-import { NSNetworkDataV2 } from '../../../network-v2/models/network-v2.model'
-import { ConfigurationsService, ValueService } from '@sunbird-cb/utils';
-import { map } from 'rxjs/operators'
 import moment from 'moment'
+import { Subject } from 'rxjs'
+import { debounceTime, distinctUntilChanged, map, startWith, takeUntil } from 'rxjs/operators'
 
-import {
-  NsContent,
-  WidgetContentService,
-} from '@sunbird-cb/collection'
+import { ConfigurationsService, ValueService } from '@sunbird-cb/utils';
+import { NsContent, WidgetContentService } from '@sunbird-cb/collection'
 import { HomePageService } from 'src/app/services/home-page.service'
-/* tslint:enable */
-// import {  } from '@sunbird-cb/utils'
+import { DiscussService } from '../../../discuss/services/discuss.service'
+import { NetworkV2Service } from '../../../network-v2/services/network-v2.service'
+import { UserProfileService } from '../../../user-profile/services/user-profile.service'
+
+import { NSProfileDataV2 } from '../../models/profile-v2.model'
+import { NSNetworkDataV2 } from '../../../network-v2/models/network-v2.model'
+import { NsUserProfileDetails } from '../../../user-profile/models/NsUserProfile'
 
 @Component({
   selector: 'app-profile-view',
   templateUrl: './profile-view.component.html',
   styleUrls: ['./profile-view.component.scss'],
   /* tslint:disable */
-  host: { class: 'flex flex-1 margin-top-l' },
+  host: { class: 'flex margin-top-l margin-bottom-l' },
   /* tslint:enable */
 })
+
 export class ProfileViewComponent implements OnInit, AfterViewInit, OnDestroy {
   @ViewChild('stickyMenu', { static: true }) menuElement!: ElementRef
-  sticky = false
+  private destroySubject$ = new Subject()
   /* tslint:disable */
   Math: any
   /* tslint:enable */
@@ -62,6 +62,7 @@ export class ProfileViewComponent implements OnInit, AfterViewInit, OnDestroy {
   mode$ = this.isLtMedium$.pipe(map(isMedium => (isMedium ? 'over' : 'side')))
   orgId: any
   selectedTabIndex: any
+  nameInitials = ''
 
   pendingRequestData: any = []
   pendingRequestSkeleton = true
@@ -91,15 +92,27 @@ export class ProfileViewComponent implements OnInit, AfterViewInit, OnDestroy {
   assessmentsData: any
   isCurrentUser!: boolean
 
-  @HostListener('window:scroll', ['$event'])
-  handleScroll() {
-    const windowScroll = window.pageYOffset
-    if (windowScroll >= this.elementPosition) {
-      this.sticky = true
-    } else {
-      this.sticky = false
-    }
-  }
+  // Latest variables...
+  infoType = 'primary'
+  countryCodes: any[] = []
+  countryCodesBackUp: any[] = []
+  nationalityData: any[] = []
+  editDetails = false
+  eUserGender = Object.keys(NsUserProfileDetails.EUserGender)
+  eCategory = Object.keys(NsUserProfileDetails.ECategory)
+  masterLanguages: any[] | undefined
+  masterLanguageBackup: any[] | undefined
+  otherDetailsForm = new FormGroup({
+    officialEmail: new FormControl('', [Validators.required]),
+    gender: new FormControl('', [Validators.required]),
+    dob: new FormControl('', [Validators.required]),
+    motherTongue: new FormControl('', []),
+    mobile: new FormControl('', [Validators.required]),
+    countryCode: new FormControl('', [Validators.required]),
+    maritalStatus: new FormControl('', [Validators.required]),
+    otherDetailsOfficePinCode: new FormControl('', [Validators.required]),
+    nationality: new FormControl('', [Validators.required]),
+  })
 
   constructor(
     public dialog: MatDialog,
@@ -111,14 +124,45 @@ export class ProfileViewComponent implements OnInit, AfterViewInit, OnDestroy {
     private valueSvc: ValueService,
     private contentSvc: WidgetContentService,
     private homeSvc: HomePageService,
-    private matSnackBar: MatSnackBar
-    // @Inject(DOCUMENT) private document: Document
+    private matSnackBar: MatSnackBar,
+    private userProfileService: UserProfileService,
+    private translateService: TranslateService,
   ) {
+
+    if (this.otherDetailsForm.get('motherTongue')) {
+      this.otherDetailsForm.get('motherTongue')!.valueChanges
+      .pipe(
+        debounceTime(250),
+        distinctUntilChanged(),
+        startWith(''),
+      )
+      .subscribe(res => {
+        if (this.masterLanguageBackup) {
+          this.masterLanguages = this.masterLanguageBackup.filter(item => item.name.toLowerCase().includes(res.toLowerCase()))
+        }
+      })
+    }
+
+    if (this.otherDetailsForm.get('countryCode')) {
+      this.otherDetailsForm.get('countryCode')!.valueChanges
+      .pipe(
+        debounceTime(100),
+        distinctUntilChanged(),
+        startWith('')
+      )
+      .subscribe(res => {
+        if (this.countryCodesBackUp) {
+          this.countryCodes = this.countryCodesBackUp.filter(item => item.includes(res))
+        }
+      })
+    }
+
     this.Math = Math
     this.pageData = this.route.parent && this.route.parent.snapshot.data.pageData.data
     this.currentUser = this.configSvc && this.configSvc.userProfile
     this.tabsData = this.route.parent && this.route.parent.snapshot.data.pageData.data.tabs || []
     this.selectedTabIndex = this.route.snapshot.queryParams && this.route.snapshot.queryParams.tab || 0
+
     this.tabs = this.route.data.subscribe(data => {
       if (data.certificates) {
         this.certificatesData = data.certificates.data
@@ -130,6 +174,7 @@ export class ProfileViewComponent implements OnInit, AfterViewInit, OnDestroy {
       if (data.profile.data) {
         this.orgId = data.profile.data.rootOrgId
       }
+
       if (data.profile.data.profileDetails) {
         this.portalProfile = data.profile.data.profileDetails
       } else {
@@ -176,7 +221,7 @@ export class ProfileViewComponent implements OnInit, AfterViewInit, OnDestroy {
       this.decideAPICall()
       this.getInsightsData()
     })
-    // this.fetchDiscussionsData()
+
     this.fetchRecentRequests()
     this.contentSvc.getKarmaPoitns(3, moment(new Date()).valueOf()).subscribe((res: any) => {
       if (res && res.kpList) {
@@ -189,11 +234,19 @@ export class ProfileViewComponent implements OnInit, AfterViewInit, OnDestroy {
     this.defaultSideNavBarOpenedSubscription = this.isLtMedium$.subscribe(isLtMedium => {
       this.sideNavBarOpened = !isLtMedium
     })
+
     this.getPendingRequestData()
-    // this.getAssessmentData()
     this.enrollInterval = setInterval(() => {
       this.getKarmaCount()
     },                                1000)
+
+    this.nameInitials = this.currentUser.firstName.charAt(0)
+    if (this.currentUser.lastName) {
+      this.nameInitials += this.currentUser.lastName.charAt(0)
+    }
+
+    this.getMasterNationality()
+    this.getMasterLanguage()
   }
 
   ngAfterViewInit() {
@@ -227,7 +280,6 @@ export class ProfileViewComponent implements OnInit, AfterViewInit, OnDestroy {
       this.fetchUserDetails(this.currentUsername)
       this.fetchConnectionDetails(user)
     } else {
-
       if (this.configSvc.userProfile) {
         const me = this.configSvc.userProfile.userName || ''
         if (me) {
@@ -235,13 +287,14 @@ export class ProfileViewComponent implements OnInit, AfterViewInit, OnDestroy {
           this.fetchConnectionDetails(this.configSvc.userProfile.userId)
         }
       }
-
     }
   }
 
   fetchDiscussionsData(): void {
     this.discussion.loadSkeleton = true
-    this.homeSvc.getDiscussionsData(this.currentUser.userName).subscribe(
+    this.homeSvc.getDiscussionsData(this.currentUser.userName)
+    .pipe(takeUntil(this.destroySubject$))
+    .subscribe(
       (res: any) => {
         this.discussion.loadSkeleton = false
         this.updatesPosts.loadSkeleton = false
@@ -263,7 +316,9 @@ export class ProfileViewComponent implements OnInit, AfterViewInit, OnDestroy {
 
   fetchRecentRequests(): void {
     this.recentRequests.loadSkeleton = true
-    this.homeSvc.getRecentRequests().subscribe(
+    this.homeSvc.getRecentRequests()
+    .pipe(takeUntil(this.destroySubject$))
+    .subscribe(
       (res: any) => {
         this.recentRequests.loadSkeleton = false
         this.recentRequests.data = res.result.data && res.result.data.map((elem: any) => {
@@ -281,7 +336,9 @@ export class ProfileViewComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   handleUpdateRequest(event: any): void {
-    this.homeSvc.updateConnection(event.payload).subscribe(
+    this.homeSvc.updateConnection(event.payload)
+    .pipe(takeUntil(this.destroySubject$))
+    .subscribe(
       (_res: any) => {
         if (event.action === 'Approved') {
           this.matSnackBar.open('Request accepted successfully')
@@ -302,22 +359,30 @@ export class ProfileViewComponent implements OnInit, AfterViewInit, OnDestroy {
 
   fetchUserDetails(name: string) {
     if (name) {
-      this.discussService.fetchProfileInfo(name).subscribe((response: any) => {
+      this.discussService.fetchProfileInfo(name)
+      .pipe(takeUntil(this.destroySubject$))
+      .subscribe((response: any) => {
         if (response) {
           this.discussProfileData = response
           this.discussionList = _.uniqBy(_.filter(this.discussProfileData.posts, p => _.get(p, 'isMainPost') === true), 'tid') || []
         }
+      },         (_error: HttpErrorResponse) => {
+        // tslint:disable-next-line
+        console.error('_error - ', _error)
       })
     }
   }
 
   fetchConnectionDetails(wid: string) {
-    this.networkV2Service.fetchAllConnectionEstablishedById(wid).subscribe(
+    this.networkV2Service.fetchAllConnectionEstablishedById(wid)
+    .pipe(takeUntil(this.destroySubject$))
+    .subscribe(
       (data: any) => {
         this.connectionRequests = data.result.data
-              },
-      (_err: any) => {
-        // this.openSnackbar(err.error.message.split('|')[1] || this.defaultError)
+      },
+      (_err: HttpErrorResponse) => {
+        // tslint:disable-next-line
+        console.error('_error - ', _err)
       })
   }
 
@@ -401,7 +466,9 @@ export class ProfileViewComponent implements OnInit, AfterViewInit, OnDestroy {
           },
       },
     }
-    this.homeSvc.getInsightsData(request).subscribe((res: any) => {
+    this.homeSvc.getInsightsData(request)
+    .pipe(takeUntil(this.destroySubject$))
+    .subscribe((res: any) => {
       if (res.result.response) {
         this.insightsData = res.result.response
         this.constructNudgeData()
@@ -410,10 +477,11 @@ export class ProfileViewComponent implements OnInit, AfterViewInit, OnDestroy {
         }
       }
       this.insightsDataLoading = false
-   },                                               (_error: any) => {
+    },         (_error: HttpErrorResponse) => {
       this.insightsDataLoading = false
-   })
+    })
   }
+
   constructNudgeData() {
     this.insightsDataLoading = true
     const nudgeData: any = {
@@ -445,7 +513,9 @@ export class ProfileViewComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   getPendingRequestData() {
-    this.homeSvc.getRecentRequests().subscribe(
+    this.homeSvc.getRecentRequests()
+    .pipe(takeUntil(this.destroySubject$))
+    .subscribe(
       (res: any) => {
         this.pendingRequestSkeleton = false
         this.pendingRequestData = res.result.data && res.result.data.map((elem: any) => {
@@ -459,16 +529,6 @@ export class ProfileViewComponent implements OnInit, AfterViewInit, OnDestroy {
         }
       }
     )
-  }
-
-  ngOnDestroy() {
-    if (this.tabs) {
-      this.tabs.unsubscribe()
-    }
-
-    if (this.defaultSideNavBarOpenedSubscription) {
-      this.defaultSideNavBarOpenedSubscription.unsubscribe()
-    }
   }
 
   toggleCreds() {
@@ -492,7 +552,9 @@ export class ProfileViewComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   getAssessmentData() {
-    this.homeSvc.getAssessmentinfo().subscribe(
+    this.homeSvc.getAssessmentinfo()
+    .pipe(takeUntil(this.destroySubject$))
+    .subscribe(
       (res: any) => {
         if (res && res.result && res.result.response) {
           this.assessmentsData = res.result.response
@@ -511,5 +573,63 @@ export class ProfileViewComponent implements OnInit, AfterViewInit, OnDestroy {
     this.matSnackBar.open(primaryMsg, 'X', {
       duration,
     })
+  }
+
+  getMasterNationality(): void {
+    this.userProfileService.getMasterNationality()
+    .pipe(takeUntil(this.destroySubject$))
+    .subscribe((res: any) => {
+      if (res.nationality) {
+        res.nationality.forEach((item: any) => {
+          this.countryCodes.push(item.countryCode)
+          this.countryCodesBackUp.push(item.countryCode)
+          this.nationalityData.push(item.name)
+        })
+      }
+    },         (error: HttpErrorResponse) => {
+      if (!error.ok) {
+        this.matSnackBar.open('Unable to fetch master nation data')
+      }
+    })
+  }
+
+  getMasterLanguage(): void {
+    this.userProfileService.getMasterLanguages()
+    .pipe(takeUntil(this.destroySubject$))
+    .subscribe((res: any) => {
+      this.masterLanguages = res.languages
+      this.masterLanguageBackup = res.languages
+    },         (error: HttpErrorResponse) => {
+      if (!error.ok) {
+        this.matSnackBar.open('Unable to fetch master data of language')
+      }
+    })
+
+  }
+
+  handleTranslateTo(menuName: string): string {
+    // tslint:disable-next-line: prefer-template
+    const translationKey = 'userProfile.' + menuName.replace(/\s/g, '')
+    return this.translateService.instant(translationKey)
+  }
+
+  handleDateFormat(dateString: string): any {
+    const dateArr = dateString.split('-')
+    const newDateStr = `${dateArr[1]}/${dateArr[0]}/${dateArr[2]}`
+    return moment(new Date(newDateStr)).format('D MMM YYYY')
+  }
+
+  handleSaveOtherDetails(): void { }
+
+  ngOnDestroy() {
+    if (this.tabs) {
+      this.tabs.unsubscribe()
+    }
+
+    if (this.defaultSideNavBarOpenedSubscription) {
+      this.defaultSideNavBarOpenedSubscription.unsubscribe()
+    }
+
+    this.destroySubject$.unsubscribe()
   }
 }
