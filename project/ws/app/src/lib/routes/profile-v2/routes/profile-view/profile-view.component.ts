@@ -54,7 +54,7 @@ export class ProfileViewComponent implements OnInit, AfterViewInit, OnDestroy {
   allCertificate: any = []
   pageData: any
   sideNavBarOpened = true
-  verifiedBadge = false
+  // verifiedBadge = false
   private defaultSideNavBarOpenedSubscription: any
   public screenSizeIsLtMedium = false
   isLtMedium$ = this.valueSvc.isLtMedium$
@@ -108,10 +108,9 @@ export class ProfileViewComponent implements OnInit, AfterViewInit, OnDestroy {
     mobile: new FormControl('', []),
     gender: new FormControl('', []),
     dob: new FormControl('', []),
-    motherTongue: new FormControl('', []),
+    domicileMedium: new FormControl('', []),
     countryCode: new FormControl('', []),
-    maritalStatus: new FormControl('', []),
-    otherDetailsOfficePinCode: new FormControl('', []),
+    pincode: new FormControl('', []),
     category: new FormControl('', []),
   })
 
@@ -130,8 +129,8 @@ export class ProfileViewComponent implements OnInit, AfterViewInit, OnDestroy {
     private translateService: TranslateService,
   ) {
 
-    if (this.otherDetailsForm.get('motherTongue')) {
-      this.otherDetailsForm.get('motherTongue')!.valueChanges
+    if (this.otherDetailsForm.get('domicileMedium')) {
+      this.otherDetailsForm.get('domicileMedium')!.valueChanges
       .pipe(
         debounceTime(250),
         distinctUntilChanged(),
@@ -169,23 +168,23 @@ export class ProfileViewComponent implements OnInit, AfterViewInit, OnDestroy {
         this.certificatesData = data.certificates.data
         this.fetchCertificates(this.certificatesData)
       }
-      if (data.profile.data.profileDetails.verifiedKarmayogi === true) {
-        this.verifiedBadge = true
-      }
+      // if (data.profile.data.profileDetails.verifiedKarmayogi === true) {
+      //   this.verifiedBadge = true
+      // }
       if (data.profile.data) {
         this.orgId = data.profile.data.rootOrgId
       }
 
       if (data.profile.data.profileDetails) {
         this.portalProfile = data.profile.data.profileDetails
-      } else {
-        this.portalProfile = data.profile.data
-        _.set(this.portalProfile, 'personalDetails.firstname', _.get(data.profile.data, 'firstName'))
-        // _.set(this.portalProfile, 'personalDetails.surname', _.get(data.profile.data, 'lastName'))
-        _.set(this.portalProfile, 'personalDetails.email', _.get(data.profile.data, 'email'))
-        _.set(this.portalProfile, 'personalDetails.userId', _.get(data.profile.data, 'userId'))
-        _.set(this.portalProfile, 'personalDetails.userName', _.get(data.profile.data, 'userName'))
       }
+      // else {
+      //   this.portalProfile = data.profile.data
+      //   _.set(this.portalProfile, 'personalDetails.firstname', _.get(data.profile.data, 'firstName'))
+      //   _.set(this.portalProfile, 'personalDetails.email', _.get(data.profile.data, 'email'))
+      //   _.set(this.portalProfile, 'personalDetails.userId', _.get(data.profile.data, 'userId'))
+      //   _.set(this.portalProfile, 'personalDetails.userName', _.get(data.profile.data, 'userName'))
+      // }
 
       const user = this.portalProfile.userId || this.portalProfile.id || _.get(data, 'profile.data.id') || ''
       if (this.portalProfile && !(this.portalProfile.id && this.portalProfile.userId)) {
@@ -249,22 +248,7 @@ export class ProfileViewComponent implements OnInit, AfterViewInit, OnDestroy {
 
     this.getMasterNationality()
     this.getMasterLanguage()
-
-    // console.log("this.portalProfile.personalDetails - ", this.portalProfile.personalDetails);
-    const dateArray = this.portalProfile.personalDetails.dob.split('-')
-    this.dateOfBirth = new Date(`${dateArray[1]}/${dateArray[0]}/${dateArray[2]}`)
-    // console.log("dateOfBirth - ", this.dateOfBirth);
-    this.otherDetailsForm.patchValue({
-      officialEmail: this.portalProfile.personalDetails.officialEmail,
-      gender: this.portalProfile.personalDetails.gender && this.portalProfile.personalDetails.gender.toUpperCase(),
-      dob: this.dateOfBirth,
-      motherTongue: this.portalProfile.personalDetails.domicileMedium,
-      mobile: this.portalProfile.personalDetails.mobile,
-      countryCode: this.portalProfile.personalDetails.countryCode || '+91',
-      maritalStatus: this.portalProfile.personalDetails.maritalStatus,
-      otherDetailsOfficePinCode: this.portalProfile.personalDetails.pincode,
-      category: this.portalProfile.personalDetails.category && this.portalProfile.personalDetails.category.toUpperCase(),
-    })
+    this.prefillForm()
   }
 
   ngAfterViewInit() {
@@ -631,13 +615,64 @@ export class ProfileViewComponent implements OnInit, AfterViewInit, OnDestroy {
     return this.translateService.instant(translationKey)
   }
 
+  prefillForm(data ?: any): void {
+    if (data) {
+      this.portalProfile.personalDetails = data
+    }
+    const dateArray = this.portalProfile.personalDetails.dob.split('-')
+    this.dateOfBirth = new Date(`${dateArray[1]}/${dateArray[0]}/${dateArray[2]}`)
+    this.otherDetailsForm.patchValue({
+      officialEmail: this.portalProfile.personalDetails.officialEmail,
+      gender: this.portalProfile.personalDetails.gender && this.portalProfile.personalDetails.gender.toUpperCase(),
+      dob: this.dateOfBirth,
+      domicileMedium: this.portalProfile.personalDetails.domicileMedium,
+      mobile: this.portalProfile.personalDetails.mobile,
+      countryCode: this.portalProfile.personalDetails.countryCode || '+91',
+      pincode: this.portalProfile.personalDetails.pincode,
+      category: this.portalProfile.personalDetails.category && this.portalProfile.personalDetails.category.toUpperCase(),
+    })
+  }
+
+  handleCancelUpdate(): void {
+    this.editDetails = !this.editDetails
+    this.prefillForm()
+  }
+
   handleDateFormat(dateString: string): any {
     const dateArr = dateString.split('-')
     const newDateStr = `${dateArr[1]}/${dateArr[0]}/${dateArr[2]}`
     return moment(new Date(newDateStr)).format('D MMM YYYY')
   }
 
-  handleSaveOtherDetails(): void { }
+  handleSaveOtherDetails(): void {
+    const dataToSubmit = {...this.otherDetailsForm.value}
+    dataToSubmit.dob = `${dataToSubmit.dob.getDate()}-${dataToSubmit.dob.getMonth() + 1}-${dataToSubmit.dob.getFullYear()}`
+    delete dataToSubmit.countryCode
+
+    const payload = {
+      "request": {
+        "userId": this.configSvc.unMappedUser.id,
+        "profileDetails": {
+          "personalDetails": {}
+        }
+      }
+    }
+    payload.request.profileDetails.personalDetails = dataToSubmit
+    this.userProfileService.editProfileDetails(payload)
+    .pipe(takeUntil(this.destroySubject$))
+    .subscribe((_res: any) => {
+      this.matSnackBar.open("User details updated successfully!")
+      this.editDetails = !this.editDetails
+      this.prefillForm(dataToSubmit)
+    }, (error: HttpErrorResponse) => {
+      if (!error.ok) {
+        this.matSnackBar.open("Unable to update user profile details, please try again!")
+        this.editDetails = !this.editDetails
+        this.prefillForm()
+      }
+    })
+
+  }
 
   ngOnDestroy() {
     if (this.tabs) {

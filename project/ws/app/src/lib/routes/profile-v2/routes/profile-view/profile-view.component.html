@@ -196,7 +196,7 @@
                 </div>
                 <div class="info-value flex" *ngIf="editDetails">
                   <mat-form-field class="profile-form-field">
-                    <input type="text" class="input-text" aria-label="Domicile Medium (Mother Tongue)" matInput formControlName="motherTongue"
+                    <input type="text" class="input-text" aria-label="Domicile Medium (Mother Tongue)" matInput formControlName="domicileMedium"
                       [matAutocomplete]="languageAuto">
                     <mat-autocomplete #languageAuto="matAutocomplete">
                       <mat-option *ngFor="let language of masterLanguages" [value]="language.name">
@@ -222,7 +222,7 @@
                 <div class="info-value" *ngIf="!editDetails">{{ portalProfile?.personalDetails?.pincode || 'NA' }}</div>
                 <div class="flex" *ngIf="editDetails">
                   <mat-form-field class="profile-form-field">
-                    <input type="email" class="input-text" matInput formControlName="otherDetailsOfficePinCode" />
+                    <input type="email" class="input-text" matInput formControlName="pincode" />
                   </mat-form-field>
                 </div>
               </div>
@@ -237,7 +237,7 @@
 
             <div class="grid-container" *ngIf="editDetails">
               <div class="flex flex-row gap-4">
-                <button class="outline-button" (click)="editDetails = !editDetails">Cancel</button>
+                <button class="outline-button" (click)="handleCancelUpdate()">Cancel</button>
                 <button class="save-button" (click)="handleSaveOtherDetails()">Save Changes</button>
               </div>
             </div>
