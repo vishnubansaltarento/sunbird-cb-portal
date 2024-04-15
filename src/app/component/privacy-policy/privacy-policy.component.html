@@ -5,7 +5,7 @@
         <div class="flex flex-4 flex-column">
           <div class="flex flex-1 custom">
             <div class="discuss-right-panel flex-3">
-              <h3 class="flex flex-middle margin-remove">
+              <h3 class="flex flex-middle margin-remove" *ngIf="!hideHeader">
                 <p class="mat-display-1 main_title_text margin-bottom-xl">
                   {{ 'privacypolicy.privacyPolicy' | translate }}
                 </p>
@@ -213,7 +213,7 @@
                 </div>
               </div>
               <div
-                class="info-section margin-bottom-xl width-1-1 ng-star-inserted"
+                class="info-section width-1-1 ng-star-inserted"
                 id="Contacting Us"
               >
                 <h3 class="flex flex-middle margin-remove">
@@ -221,7 +221,7 @@
                     'privacypolicy.contactingUs' | translate
                   }}</span>
                 </h3>
-                <div class="flex flex-column margin-bottom-xl">
+                <div class="flex flex-column">
                   <div class="privacy-policy-content">
                     <p class="mat-body-2 margin-remove">
                       {{ 'privacypolicy.p23IfYouHaveAnyQuestions' | translate }}

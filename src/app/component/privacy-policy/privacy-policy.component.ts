@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core'
+import { ActivatedRoute } from '@angular/router'
 import { TranslateService } from '@ngx-translate/core'
 @Component({
   selector: 'app-privacy-policy',
@@ -7,7 +8,9 @@ import { TranslateService } from '@ngx-translate/core'
 })
 export class PrivacyPolicyComponent implements OnInit {
 
-  constructor(private translate: TranslateService) {
+  hideHeader = false
+
+  constructor(private translate: TranslateService, private activatedRoute: ActivatedRoute) {
     if (localStorage.getItem('websiteLanguage')) {
       this.translate.setDefaultLang('en')
       const lang = localStorage.getItem('websiteLanguage')!
@@ -16,7 +19,12 @@ export class PrivacyPolicyComponent implements OnInit {
   }
 
   ngOnInit(): void {
-
+    this.activatedRoute.queryParams.subscribe(params => {
+      let mode = params['mode'];
+      if (mode && mode === 'mobile') {
+        this.hideHeader = true
+      } 
+    })
   }
 
  changeLanguage(language: string) {
