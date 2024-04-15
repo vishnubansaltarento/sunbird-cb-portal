@@ -1,4 +1,445 @@
-<div class="flex flex-4 flex-column" id="activityTab">
+<div class="flex flex-col w-full gap-5">
+  <div class="flex flex-col sm:flex-row gap-4 profile-header">
+    <div class="profile-circle-container">
+      <ng-container *ngIf="portalProfile?.profileImageUrl">
+        <img src="{{ portalProfile?.profileImageUrl }}" class="profile-pic" alt="profile image" />
+      </ng-container>
+      <div class="flex items-center justify-center profile-circle" *ngIf="!portalProfile?.profileImageUrl">
+        {{ nameInitials }}
+      </div>
+    </div>
+    <div class="flex-1 profile-info">
+      <div class="flex flex-col gap-2">
+        <div class="flex flex-row" *ngIf="!portalProfile?.professionalDetails || !portalProfile?.professionalDetails[0]?.verifiedKarmayogi">
+          <div class="profile-not-verified">
+            <div class="text">Profile not verified</div>
+            <mat-icon>info</mat-icon>
+          </div>
+        </div>
+        <div class="flex flex-row gap-4 items-center"> 
+          <div class="name">{{ currentUser?.firstName }} {{ currentUser?.lastName }}</div>
+          <mat-icon class="profile-verified-check" *ngIf="portalProfile?.professionalDetails && portalProfile?.professionalDetails[0]?.verifiedKarmayogi">check_circle</mat-icon>
+          <mat-icon class="cursor-pointer">edit</mat-icon>
+        </div>
+        <div class="position">{{ portalProfile?.employmentDetails?.departmentName }}</div>
+        <ng-container *ngIf="portalProfile?.professionalDetails.length">
+          <ng-container *ngIf="portalProfile?.professionalDetails[0]?.industry">
+            <div class="flex flex-col sm:flex-row gap-4 sm:items-center">
+              <div class="institute">{{ portalProfile?.professionalDetails[0]?.industry }}</div>
+              <div class="flex flex-row">
+                <div class="flex flex-row gap-2 items-center make-transer">
+                  <div class="text-sm">Make Transfer Request</div>
+                  <mat-icon>info</mat-icon>
+                </div>
+              </div>
+            </div>
+          </ng-container>
+        </ng-container>
+        <div class="divider"></div>
+      </div>
+      <div class="flex flex-col sm:flex-row sm:items-center gap-5">
+        <button class="flex flex-row gap-2 items-center karma-points justify-center" [routerLink]="['/app/person-profile/karma-points']">
+          <img src="/assets/icons/home/karma-badge.svg" alt="badge icon" />
+          My Karma Points
+          <mat-icon>chevron_right</mat-icon>
+        </button>
+        <a class="flex flex-row gap-2 items-center certificate-button justify-center" [routerLink]="['/app/seeAll']"  [queryParams]="{key: 'continueLearning', tab: 'completed'}">
+          <img src="/assets/icons/home/certificate.svg" alt="certificate icon" />
+          View My Certificates
+          <mat-icon>chevron_right</mat-icon>
+        </a>
+      </div>
+    </div>
+  </div>
+
+  <div class="flex flex-row gap-4 items-center justify-center">
+    <div class="common-tab-css" [ngClass]="{'tab-active': infoType === 'primary'}" (click)="infoType = 'primary'">Primary Information</div>
+    <!-- <div class="common-tab-css" [ngClass]="{'tab-active': infoType === 'ehrms'}" (click)="infoType = 'ehrms'">eHRMS Information</div> -->
+  </div>
+
+  <div class="flex flex-col gap-5 p-4 pt-0 sm:p-0" *ngIf="infoType === 'primary'">
+    <div class="common-card-css">
+      <div class="flex flex-col gap-5">
+        <div class="flex flex-row gap-4 items-center justify-between">
+          <div class="flex flex-row gap-2 title-div items-center">
+            <div class="title">Primary Details</div>
+            <mat-icon class="custom-mat-icon">info</mat-icon>
+          </div>
+          <div class="flex flex-row">
+            <div class="flex flex-row gap-2 items-center edit-button">
+              <mat-icon>edit</mat-icon>
+              Edit
+            </div>
+          </div>
+        </div>
+
+        <div class="grid grid-flow-row sm:grid-flow-col gap-6 grid-col">
+          <div class="info-div">
+            <div class="label">Group</div>
+            <div class="flex flex-row gap-2 items-center info-value" *ngIf="currentUser?.professionalDetails?.length && currentUser?.professionalDetails[0]?.group">
+              {{ currentUser?.professionalDetails[0]?.group }}
+              <mat-icon class="verified-check">check_circle</mat-icon>
+            </div>
+            <div class="info-value" *ngIf="!currentUser?.professionalDetails?.length || !currentUser?.professionalDetails[0]?.group">NA</div>
+          </div>
+
+          <div class="info-div">
+            <div class="label">Designation</div>
+            <div class="flex flex-col sm:flex-row gap-2 sm:items-center info-value" *ngIf="currentUser?.professionalDetails?.length">
+              {{ currentUser?.professionalDetails[0]?.designation }}
+              <div class="flex flex-row">
+                <div class="profile-not-verified">
+                  <div class="text">Not verified</div>
+                  <mat-icon>info</mat-icon>
+                </div>
+              </div>
+            </div>
+            <div class="info-value" *ngIf="!currentUser?.professionalDetails?.length">NA</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="common-card-css">
+      <div class="flex flex-col gap-5">
+        <div class="flex flex-row gap-4 items-center justify-between">
+          <div class="flex flex-row gap-2 title-div items-center">
+            <div class="title">Other Details</div>
+          </div>
+          <div class="flex flex-row info-value">
+            <div class="flex flex-row gap-2 items-center edit-button" *ngIf="!editDetails" (click)="editDetails = !editDetails">
+              <mat-icon>edit</mat-icon>
+              Edit
+            </div>
+          </div>
+        </div>
+
+        <form [formGroup]="otherDetailsForm">
+          <div class="flex flex-col gap-6 sm:gap-8">
+            <div class="grid-container">
+              <div class="info-div">
+                <div class="label">Employee ID</div>
+                <div class="info-value">NA</div>
+              </div>
+              <div class="info-div">
+                <div class="label">Email</div>
+                <div class="info-value" *ngIf="!editDetails">{{ portalProfile?.personalDetails?.officialEmail || 'NA' }}</div>
+                <div class="flex" *ngIf="editDetails">
+                  <mat-form-field class="profile-form-field">
+                    <input type="email" class="input-text" matInput formControlName="officialEmail" />
+                  </mat-form-field>
+                </div>
+              </div>
+              <div class="info-div">
+                <div class="label">Mobile Number</div>
+                <div class="info-value" *ngIf="!editDetails">
+                  <span class="flex flex-row gap-2 items-center" *ngIf="portalProfile?.personalDetails?.mobile">
+                    +91 {{ portalProfile?.personalDetails?.mobile }}
+                    <span class="flex items-center" *ngIf="portalProfile?.personalDetails?.phoneVerified">
+                      <mat-icon class="verified-check">check_circle</mat-icon>
+                    </span>
+                  </span>
+                  <span *ngIf="!portalProfile?.personalDetails?.mobile">NA</span>
+                </div>
+
+                <div class="flex flex-row gap-2" *ngIf="editDetails">
+                  <div class="flex">
+                    <mat-form-field class="mobile-form-field">
+                      <!-- <mat-select formControlName="countryCode">
+                        <mat-option *ngFor="let code of countryCodes" value="{{ code }}">{{ code }}</mat-option>
+                      </mat-select> -->
+                      <input type="text" matInput class="input-text" aria-label="Country code" formControlName="countryCode" [matAutocomplete]="ccAuto" />
+                      <mat-autocomplete #ccAuto="matAutocomplete">
+                        <mat-option *ngFor="let code of countryCodes" [value]="code">
+                          {{ code }}
+                        </mat-option>
+                      </mat-autocomplete>
+                    </mat-form-field>
+                  </div>
+                  <mat-form-field class="profile-form-field mobile-num">
+                    <input type="text" class="input-text mobile-text" matInput formControlName="mobile" />
+                  </mat-form-field>
+                </div>
+              </div>
+              <div class="info-div">
+                <div class="label">Gender</div>
+                <div class="info-value" *ngIf="!editDetails">{{ portalProfile?.personalDetails?.gender || 'NA' }}</div>
+                <div class="flex" *ngIf="editDetails">
+                  <mat-form-field class="profile-form-field">
+                    <mat-select formControlName="gender">
+                      <mat-option *ngFor="let gender of eUserGender" value="{{ gender }}">{{ handleTranslateTo(gender.toLowerCase()) }}</mat-option>
+                    </mat-select>
+                  </mat-form-field>
+                </div>
+              </div>
+            </div>
+    
+            <div class="grid-container">
+              <div class="info-div">
+                <div class="label">Date of Birth</div>
+                <div class="info-value" *ngIf="!editDetails">
+                  <span *ngIf="portalProfile?.personalDetails?.dob">{{ handleDateFormat(portalProfile?.personalDetails?.dob) }}</span>
+                  <span *ngIf="!portalProfile?.personalDetails?.dob">NA</span>
+                </div>
+                <div class="info-value" *ngIf="editDetails">
+                  <mat-form-field class="profile-form-field">
+                    <input matInput class="input-text" [matDatepicker]="picker" formControlName="dob" />
+                    <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                    <mat-datepicker #picker></mat-datepicker>
+                  </mat-form-field>
+                </div>
+              </div>
+              <div class="info-div">
+                <div class="label">Mother Tongue</div>
+                <div class="info-value" *ngIf="!editDetails">
+                  {{ portalProfile?.personalDetails?.domicileMedium || 'NA' }}
+                </div>
+                <div class="info-value flex" *ngIf="editDetails">
+                  <mat-form-field class="profile-form-field">
+                    <input type="text" class="input-text" aria-label="Domicile Medium (Mother Tongue)" matInput formControlName="motherTongue"
+                      [matAutocomplete]="languageAuto">
+                    <mat-autocomplete #languageAuto="matAutocomplete">
+                      <mat-option *ngFor="let language of masterLanguages" [value]="language.name">
+                        {{ language.name }}
+                      </mat-option>
+                    </mat-autocomplete>
+                  </mat-form-field>
+                </div>
+              </div>
+              <div class="info-div">
+                <div class="label">Category</div>
+                <div class="info-value" *ngIf="!editDetails">{{ portalProfile?.personalDetails?.category || 'NA' }}</div>
+                <div class="info-value flex" *ngIf="editDetails">
+                  <mat-form-field class="profile-form-field">
+                    <mat-select formControlName="nationality">
+                      <mat-option *ngFor="let category of eCategory" value="{{ category }}">{{ handleTranslateTo(category?.toLowerCase()) }}</mat-option>
+                    </mat-select>
+                  </mat-form-field>
+                </div>
+              </div>
+              <div class="info-div">
+                <div class="label">Office Pin Code</div>
+                <div class="info-value" *ngIf="!editDetails">{{ portalProfile?.personalDetails?.pincode || 'NA' }}</div>
+                <div class="flex" *ngIf="editDetails">
+                  <mat-form-field class="profile-form-field">
+                    <input type="email" class="input-text" matInput formControlName="otherDetailsOfficePinCode" />
+                  </mat-form-field>
+                </div>
+              </div>
+            </div>
+    
+            <div class="grid-container">
+              <div class="info-div">
+                <div class="label">eHRMS ID/External System ID</div>
+                <div class="info-value">NA</div>
+              </div>
+            </div>
+
+            <div class="grid-container" *ngIf="editDetails">
+              <div class="flex flex-row gap-4">
+                <button class="outline-button" (click)="editDetails = !editDetails">Cancel</button>
+                <button class="save-button" (click)="handleSaveOtherDetails()">Save Changes</button>
+              </div>
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
+
+    <div class="common-card-css">
+      <div class="flex flex-col gap-5">
+        <div class="flex flex-row gap-4 items-center justify-between">
+          <div class="flex flex-row gap-2 title-div items-center">
+            <div class="title">Tags</div>
+          </div>
+        </div>
+        <div class="flex flex-wrap gap-2" *ngIf="portalProfile?.additionalProperties?.tag">
+          <ng-container *ngFor="let tag of portalProfile?.additionalProperties?.tag">
+            <div class="chips">{{ tag }}</div>
+          </ng-container>
+        </div>
+        <div class="font-medium" *ngIf="!portalProfile?.additionalProperties?.tag">
+          No tags found!
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="flex flex-col gap-5 p-4 pt-0 sm:p-0" *ngIf="infoType === 'ehrms'">
+    <div class="common-card-css">
+      <div class="flex flex-col gap-5">
+        <div class="flex flex-row title-div">
+          <div class="title">Basic Information</div>
+        </div>
+        <div class="flex flex-col gap-6 sm:gap-8">
+          <div class="grid-container">
+            <div class="info-div">
+              <div class="label">Salutation</div>
+              <div class="info-value">Shri.</div>
+            </div>
+            <div class="info-div">
+              <div class="label">First Name</div>
+              <div class="info-value">Vinod</div>
+            </div>
+            <div class="info-div">
+              <div class="label">Middle Name</div>
+              <div class="info-value">Kumar</div>
+            </div>
+            <div class="info-div">
+              <div class="label">Last Name</div>
+              <div class="info-value">Shyave</div>
+            </div>
+          </div>
+
+          <div class="grid-container">
+            <div class="info-div">
+              <div class="label">Date of Birth</div>
+              <div class="info-value">KB2468</div>
+            </div>
+            <div class="info-div">
+              <div class="label">Gender</div>
+              <div class="info-value">vinod.shyave@tarento.com</div>
+            </div>
+            <div class="info-div">
+              <div class="label">Category</div>
+              <div class="info-value">+91 9743289489</div>
+            </div>
+            <div class="info-div">
+              <div class="label">Differently Abled</div>
+              <div class="info-value">Male</div>
+            </div>
+          </div>
+
+          <div class="grid-container">
+            <div class="info-div">
+              <div class="label">Marital Status</div>
+              <div class="info-value">KB2468</div>
+            </div>
+            <div class="info-div">
+              <div class="label">Employee Code</div>
+              <div class="info-value">vinod.shyave@tarento.com</div>
+            </div>
+            <div class="info-div">
+              <div class="label">Service</div>
+              <div class="info-value">+91 9743289489</div>
+            </div>
+            <div class="info-div">
+              <div class="label">Designation</div>
+              <div class="info-value">Male</div>
+            </div>
+          </div>
+
+          <div class="grid-container">
+            <div class="info-div">
+              <div class="label">Ministry/Department/Organisation</div>
+              <div class="info-value">KB2468</div>
+            </div>
+            <div class="info-div">
+              <div class="label">Current Place of Posting</div>
+              <div class="info-value">vinod.shyave@tarento.com</div>
+            </div>
+            <div class="info-div">
+              <div class="label">Email ID (gov/nic)</div>
+              <div class="info-value">+91 9743289489</div>
+            </div>
+            <div class="info-div">
+              <div class="label">Mobile Number</div>
+              <div class="info-value">Male</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="common-card-css">
+      <div class="flex flex-col gap-5">
+        <div class="flex flex-row title-div">
+          <div class="title">Current Address</div>
+        </div>
+
+        <div class="grid grid-flow-row sm:grid-flow-col gap-6 grid-col-2-2">
+          <div class="info-div">
+            <div class="label">Address 1</div>
+            <div class="info-value">307 3rd Floor, Jawahar Lal Nehru University, Old JNU Campus,.</div>
+          </div>
+          <div class="info-div">
+            <div class="label">Address 2</div>
+            <div class="info-value">Munirka, New Delhi</div>
+          </div>
+        </div>
+
+        <div class="grid grid-flow-row sm:grid-flow-col gap-6 grid-col-1-1-2">
+          <div class="grid-container">
+            <div class="info-div">
+              <div class="label">State</div>
+              <div class="info-value">Delhi</div>
+            </div>
+          </div>
+
+          <div class="grid-container">
+            <div class="info-div">
+              <div class="label">District</div>
+              <div class="info-value">New Dehi</div>
+            </div>
+          </div>
+
+          <div class="grid-container">
+            <div class="info-div">
+              <div class="label">Pin Code</div>
+              <div class="info-value">110067</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="common-card-css">
+      <div class="flex flex-col gap-5">
+        <div class="flex flex-row title-div">
+          <div class="title">Permanent Address</div>
+        </div>
+
+        <div class="grid grid-flow-row sm:grid-flow-col gap-6 grid-col-2-2">
+          <div class="info-div">
+            <div class="label">Address 1</div>
+            <div class="info-value">307 3rd Floor, Jawahar Lal Nehru University, Old JNU Campus,.</div>
+          </div>
+          <div class="info-div">
+            <div class="label">Address 2</div>
+            <div class="info-value">Munirka, New Delhi</div>
+          </div>
+        </div>
+        
+        <div class="grid grid-flow-row sm:grid-flow-col gap-6 grid-col-1-1-2">
+          <div class="grid-container">
+            <div class="info-div">
+              <div class="label">State</div>
+              <div class="info-value">Delhi</div>
+            </div>
+          </div>
+        
+          <div class="grid-container">
+            <div class="info-div">
+              <div class="label">District</div>
+              <div class="info-value">New Dehi</div>
+            </div>
+          </div>
+        
+          <div class="grid-container">
+            <div class="info-div">
+              <div class="label">Pin Code</div>
+              <div class="info-value">110067</div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<!-- <div class="flex flex-4 flex-column" id="activityTab">
   <mat-card class="flex-custom" [attr.id]="tabsData && tabsData[0] && tabsData[0].key">
     <mat-card-header class="flex-custom-m" *ngIf="portalProfile && portalProfile.personalDetails">
       <div class="flex flex-1 flex-row-reverse absolute right-0 profile-edit-icon">
@@ -32,8 +473,8 @@
               <mat-card-title role="link" tabindex="0" class="flex mobile-margin text-capitalize mat-h2" [innerHTML]="
               portalProfile?.personalDetails?.firstname
             ">
-                <span *ngIf="verifiedBadge" class="profile-badge"> <img class="profile-badge"
-                    src="fusion-assets/images/profile-badge.png" height="18">
+                <span *ngIf="verifiedBadge" class="profile-badge">
+                  <img class="profile-badge" src="fusion-assets/images/profile-badge.png" height="18">
                 </span>
               </mat-card-title>
             </ng-container>
@@ -42,47 +483,25 @@
                 <mat-card-title role="link" tabindex="0" class="flex mobile-margin text-capitalize mat-h2" [innerHTML]="
                   portalProfile?.personalDetails?.firstName
                 ">
-                  <span *ngIf="verifiedBadge" class="profile-badge"> <img class="profile-badge"
-                      src="fusion-assets/images/profile-badge.png" height="18">
+                  <span *ngIf="verifiedBadge" class="profile-badge">
+                    <img class="profile-badge" src="fusion-assets/images/profile-badge.png" height="18">
                   </span>
                 </mat-card-title>
-
               </ng-container>
             </ng-template>
 
-
-            <!-- <div class="flex verified">
-              <mat-icon class="ws-mat-green-text" svgIcon="verified"></mat-icon>
-            </div> -->
             <span *ngIf="verifiedBadge" class="profile-badge"> <img class="profile-badge"
                 src="fusion-assets/images/profile-badge.png" height="18">
             </span>
-
           </div>
-          <!-- <div class="flex flex-1 flex-row-reverse">
-            <div *ngIf="
-                portalProfile.id === currentUser?.userId ||
-                portalProfile.userId === currentUser?.userId
-              " class="ml-4 mr-6 mb-2 view-more ws-mat-accent-text view-all ws-mat-primary-lite-background-important">
-              <a mat-button [routerLink]="'/app/user-profile/details'">
-                <mat-icon class="margin-right-xs">edit</mat-icon>
-                <span i18n>{{ 'Edit Profile' }}</span>
-              </a>
-            </div>
-          </div> -->
         </div>
         <mat-card-subtitle role="link" tabindex="0" i18n-aria-label>
           {{ portalProfile?.employmentDetails?.departmentName }}
         </mat-card-subtitle>
-        <!-- <mat-card-subtitle role="link" tabindex="0" i18n-aria-label>
-          {{ portalProfile?.employmentDetails?.officialPostalAddress }}
-        </mat-card-subtitle> -->
-
         <mat-card-subtitle role="link" tabindex="0" i18n-aria-label
         *ngIf="portalProfile?.additionalProperties?.externalSystem === 'DoPT eHRMS'">
         eHRMS Id - {{ portalProfile?.additionalProperties?.externalSystemId }}
       </mat-card-subtitle>
-        <!-- <mat-card-subtitle>{{discussProfileData.email}}</mat-card-subtitle> -->
         <ng-container>
           <div class="flex flex-1 custom margin-0 margin-top-m bottom-fix mob" role="link" tabindex="0">
             <div class="flex flex-1">
@@ -101,17 +520,12 @@
                 <span class="pad-4 small-text">Connections</span>
               </span>
               <span class="flex margin-right-l mobile flex-col items-center">
-                <!-- {{discussProfileData | json}} -->
                 <span class="ws-mat-default-text">{{
                   Math.abs(discussProfileData?.topiccount || 0)
                   }}</span>
                 <span class="pad-4 small-text">Discussions</span>
               </span>
             </div>
-            <!-- <div class="flex flex-1" class="text-right mobile2">
-                <span class="noocoments" mat-card-subtitle>Last online
-                  {{discussProfileData.lastonline | pipeRelativeTime}}</span>
-              </div> -->
           </div>
         </ng-container>
       </div>
@@ -122,8 +536,8 @@
               <mat-card-title role="link" tabindex="0" class="flex mobile-margin text-capitalize mat-h2" [innerHTML]="
               portalProfile?.personalDetails?.firstname
             ">
-                <span *ngIf="verifiedBadge" class="profile-badge"> <img class="profile-badge"
-                    src="fusion-assets/images/profile-badge.png" height="18">
+                <span *ngIf="verifiedBadge" class="profile-badge">
+                  <img class="profile-badge" src="fusion-assets/images/profile-badge.png" height="18">
                 </span>
               </mat-card-title>
             </ng-container>
@@ -132,47 +546,24 @@
                 <mat-card-title role="link" tabindex="0" class="flex mobile-margin text-capitalize mat-h2" [innerHTML]="
                   portalProfile?.personalDetails?.firstName
                 ">
-                  <span *ngIf="verifiedBadge" class="profile-badge"> <img class="profile-badge"
-                      src="fusion-assets/images/profile-badge.png" height="18">
+                  <span *ngIf="verifiedBadge" class="profile-badge">
+                    <img class="profile-badge" src="fusion-assets/images/profile-badge.png" height="18">
                   </span>
                 </mat-card-title>
-
               </ng-container>
             </ng-template>
-
-
-            <!-- <div class="flex verified">
-              <mat-icon class="ws-mat-green-text" svgIcon="verified"></mat-icon>
-            </div> -->
-            <span *ngIf="verifiedBadge" class="profile-badge"> <img class="profile-badge"
-                src="fusion-assets/images/profile-badge.png" height="18">
+            <span *ngIf="verifiedBadge" class="profile-badge"> <img class="profile-badge" src="fusion-assets/images/profile-badge.png" height="18">
             </span>
-
           </div>
-          <!-- <div class="flex flex-1 flex-row-reverse">
-            <div *ngIf="
-                portalProfile.id === currentUser?.userId ||
-                portalProfile.userId === currentUser?.userId
-              " class="ml-4 mr-6 mb-2 view-more ws-mat-accent-text view-all ws-mat-primary-lite-background-important">
-              <a mat-button [routerLink]="'/app/user-profile/details'">
-                <mat-icon class="margin-right-xs">edit</mat-icon>
-                <span i18n>{{ 'profileView.editProfile' | translate }}</span>
-              </a>
-            </div>
-          </div> -->
         </div>
         <mat-card-subtitle role="link" tabindex="0" i18n-aria-label>
           {{ portalProfile?.employmentDetails?.departmentName }}
         </mat-card-subtitle>
-        <!-- <mat-card-subtitle role="link" tabindex="0" i18n-aria-label>
-          {{ portalProfile?.employmentDetails?.officialPostalAddress }}
-        </mat-card-subtitle> -->
 
         <mat-card-subtitle role="link" tabindex="0" i18n-aria-label
           *ngIf="portalProfile?.additionalProperties?.externalSystem === 'DoPT eHRMS'">
           eHRMS Id - {{ portalProfile?.additionalProperties?.externalSystemId }}
         </mat-card-subtitle>
-        <!-- <mat-card-subtitle>{{discussProfileData.email}}</mat-card-subtitle> -->
         <ng-container>
           <div class="flex flex-1 custom margin-0 margin-top-m bottom-fix mob" role="link" tabindex="0">
             <div class="flex flex-1">
@@ -191,18 +582,12 @@
                 <span class="pad-4">{{ 'profileView.connections' | translate }}</span>
               </span>
               <span class="flex margin-right-l mobile">
-                <!-- {{discussProfileData | json}} -->
                 <span class="ws-mat-default-text">{{
                   Math.abs(discussProfileData?.topiccount || 0)
                   }}</span>
                 <span class="pad-4">{{ 'profileView.discussions' | translate }}</span>
               </span>
             </div>
-
-            <!-- <div class="flex flex-1" class="text-right mobile2">
-              <span class="noocoments" mat-card-subtitle>Last online
-                {{discussProfileData.lastonline | pipeRelativeTime}}</span>
-            </div> -->
           </div>
         </ng-container>
       </div>
@@ -307,14 +692,6 @@
               </div>
               <ws-widget-discussions [discussion]="discussion" [count]="2"></ws-widget-discussions>
             </div>
-
-            <!-- <div class="margin-bottom-m mt-4">
-              <ws-widget-update-posts [isMobile]="true" [updatesPosts]="updatesPosts"></ws-widget-update-posts>
-            </div> -->
-
-            <!-- <div class="margin-bottom-m mt-4 discussion-card">
-              <ws-widget-recent-requests [recentRequests]="recentRequests" (updateRequest)="handleUpdateRequest($event)"></ws-widget-recent-requests>
-            </div> -->
             <div class="mt-4 mb-4">
               <ws-widget-pending-request [pendingRequestData]="pendingRequestData"
                 [isLoading]="pendingRequestSkeleton"></ws-widget-pending-request>
@@ -330,17 +707,6 @@
 
 <ng-template #profileSection>
   <mat-sidenav-container name="discuss-menu" class="min-height margin-top-m">
-    <!-- <div class="flex-1" style="position: relative;"> -->
-    <!-- <mat-sidenav  [(opened)]="sideNavBarOpened" class="border-0">
-      <div class="contain">
-
-          <div #stickyMenu [class.sticky]="sticky">
-            <app-profile-v2-left-menu [tabsData]="tabsData" class="flex flex-1"></app-profile-v2-left-menu>
-          </div>
-
-      </div>
-    </mat-sidenav> -->
-
     <mat-sidenav [mode]="mode$ | async" [(opened)]="sideNavBarOpened" class="border-0 sidenav_inner">
       <div class="contain">
         <div class="flex-1" style="position: relative">
@@ -361,7 +727,6 @@
 
       <div class="main_network_box">
         <ng-container *ngFor="let tab of tabsData;let i=index">
-          <!-- <ws-widget-profile-v2-academics *ngIf="pdfData" [widgetData]="tab"></ws-widget-profile-v2-academics> -->
           <ng-container *ngIf="tab && tab.render && tab.enabled">
             <ng-container *ngIf="
             portalProfile.id === currentUser?.userId ||
@@ -392,81 +757,6 @@
               }"></ng-container>
           </ng-container>
         </ng-container>
-        <!-- <ng-container *ngIf="discussionList">
-          <div [attr.id]="discussions"
-            class="flex flex-1 flex-column margin-top-xs margin-botton-xs dark-card discussion-card"
-            style="box-shadow: none"> -->
-        <!-- <mat-card [attr.id]='discussions' class="margin-left-xs margin-top-xs margin-botton-xs dark-card discussion-card"
-          style="box-shadow: none;"> -->
-
-        <!-- <mat-card-content> -->
-        <!-- <div class="flex flex-1">
-              <span class="margin-bottom-xs margin-top-l mat-title flex-1">{{
-                'Discussions'
-                }}</span> -->
-        <!-- <div
-                class="ml-4 mr-6 mb-2 view-more ws-mat-accent-text view-all ws-mat-primary-lite-background-important">
-                <a mat-button [routerLink]="'/app/discuss/my-discussions'">
-                   <span i18n>{{'Go to discussion profile'}}</span>
-                </a>
-              </div> -->
-        <!-- </div>
-            <ng-container> -->
-        <!-- <mat-card class="recent-tabs"> -->
-        <!-- <div class="w-full">
-                <div class="flex flex-1 flex-column filter_outer_box">
-                  <div class="flex flex-1 filter flex-wrap">
-                    <a href="javascript:void(0)" class="filter-option font-normal" i18n-aria-label role="button"
-                      [ngClass]="{
-                        'ws-mat-accent-border-active':
-                          currentFilter === 'timestamp',
-                        'ws-mat-accent-border font-medium':
-                          currentFilter !== 'timestamp'
-                      }" mat-button (click)="filter('timestamp')">
-                      {{ 'profileView.recentPosts' | translate }}
-                    </a>
-                    <a href="javascript:void(0)" class="filter-option" i18n-aria-label role="button" [ngClass]="{
-                        'ws-mat-accent-border-active': currentFilter === 'best',
-                        'ws-mat-accent-border font-medium':
-                          currentFilter !== 'best'
-                      }" mat-button (click)="filter('best')">
-                      {{ 'profileView.bestPosts' | translate }}
-                    </a>
-                    <a href="javascript:void(0)" class="filter-option" i18n-aria-label role="button" [ngClass]="{
-                        'ws-mat-accent-border-active':
-                          currentFilter === 'saved',
-                        'ws-mat-accent-border font-medium':
-                          currentFilter !== 'saved'
-                      }" mat-button (click)="filter('saved')" *ngIf="
-                        portalProfile.id === currentUser?.userId ||
-                        portalProfile.userId === currentUser?.userId
-                      ">
-                      {{ 'profileView.savedPosts' | translate }}
-                    </a>
-                  </div>
-                </div> -->
-        <!-- </mat-card> -->
-        <!-- </div>
-            </ng-container>
-            <ng-container *ngIf="discussionList && discussionList.length > 0">
-              <ng-container *ngFor="let data of discussionList">
-                <app-dicuss-post-card [discuss]="data"></app-dicuss-post-card>
-              </ng-container>
-            </ng-container>
-            <ng-container *ngIf="!(discussionList && discussionList.length > 0)">
-              <mat-card class="no-shadow mat-card margin-bottom-l">
-                <mat-card-header>
-                  <mat-card-title>{{ 'profileView.noData' | translate }}</mat-card-title>
-                </mat-card-header>
-                <mat-card-content>
-                  <span>&nbsp;</span>
-                </mat-card-content>
-              </mat-card>
-            </ng-container> -->
-        <!-- </mat-card-content> -->
-        <!-- </mat-card> -->
-        <!-- </div>
-        </ng-container> -->
       </div>
     </mat-sidenav-content>
 
@@ -477,7 +767,5 @@
         </div>
       </div>
     </div>
-
-    <!-- </div> -->
   </mat-sidenav-container>
-</ng-template>
+</ng-template> -->

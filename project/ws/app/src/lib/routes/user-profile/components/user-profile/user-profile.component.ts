@@ -324,7 +324,7 @@ export class UserProfileComponent implements OnInit, OnDestroy {
                                               (_err: any) => {
       })
 
-    this.userProfileSvc.getMasterNationlity().subscribe(
+    this.userProfileSvc.getMasterNationality().subscribe(
       data => {
         data.nationality.map((item: INationality) => {
           this.masterNationalities.push({ name: item.name })

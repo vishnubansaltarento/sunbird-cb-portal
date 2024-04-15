@@ -34,6 +34,7 @@ export namespace NSProfileDataV2 {
     userName: any
     profileDetails: any
     karmapoints?: IKarmapoints[]
+    profileImageUrl: string
   }
 
   export interface IKarmapoints {
@@ -133,6 +134,7 @@ export namespace NSProfileDataV2 {
     osUpdatedBy: string
     osid: string
     responsibilities: string
+    verifiedKarmayogi: boolean
   }
   export interface ISkills {
     additionalSkills: string

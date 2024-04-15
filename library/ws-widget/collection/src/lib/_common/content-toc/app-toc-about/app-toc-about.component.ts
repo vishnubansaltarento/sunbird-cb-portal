@@ -103,6 +103,7 @@ export class AppTocAboutComponent implements OnInit, OnChanges, AfterViewInit, O
   @Input() batchData: any
   @Input() fromViewer = false
   @Input() selectedBatchData: any
+  @Input() selectedTabValue = 0
   @ViewChild('summaryElem', { static: false }) summaryElem !: ElementRef
   @ViewChild('descElem', { static: false }) descElem !: ElementRef
   @ViewChild('tagsElem', { static: false }) tagsElem !: ElementRef
@@ -195,10 +196,8 @@ export class AppTocAboutComponent implements OnInit, OnChanges, AfterViewInit, O
   }
 
   ngOnChanges(changes: SimpleChanges): void {
-    if (changes.skeletonLoader && !changes.skeletonLoader.currentValue) {
+    if (changes.selectedTabValue && changes.selectedTabValue.currentValue === 0) {
       setTimeout(() => {
-        this.loadCheckService.componentLoaded(true)
-
         if (!this.isMobile) {
           if (this.summaryElem.nativeElement.offsetHeight > 72) {
             this.summary.ellipsis = true
@@ -220,6 +219,12 @@ export class AppTocAboutComponent implements OnInit, OnChanges, AfterViewInit, O
         if (this.tagsElem && this.tagsElem.nativeElement.offsetHeight > 64) {
           this.tagsEllipsis = true
         }
+      },         500)
+    }
+
+    if (changes.skeletonLoader && !changes.skeletonLoader.currentValue) {
+      setTimeout(() => {
+        this.loadCheckService.componentLoaded(true)
       },         500)
     }
 

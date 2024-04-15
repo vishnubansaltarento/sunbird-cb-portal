@@ -67,7 +67,8 @@
                                         <div class="flex items-center mx-2">
                                             <span class="period"></span>
                                         </div>
-                                        <div class="text-sm">{{ eachReview?.updatedon | pipeRelativeTime }}</div>
+                                        <div class="text-sm" *ngIf="eachReview?.date">{{ eachReview?.date | pipeRelativeTime }}</div>
+                                        <div class="text-sm" *ngIf="eachReview?.updatedon">{{ eachReview?.updatedon | pipeRelativeTime }}</div>
                                     </div>
                                 </div>
                             </div>
