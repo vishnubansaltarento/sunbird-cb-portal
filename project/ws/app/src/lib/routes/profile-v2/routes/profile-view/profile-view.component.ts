@@ -102,16 +102,17 @@ export class ProfileViewComponent implements OnInit, AfterViewInit, OnDestroy {
   eCategory = Object.keys(NsUserProfileDetails.ECategory)
   masterLanguages: any[] | undefined
   masterLanguageBackup: any[] | undefined
+  dateOfBirth: any | undefined
   otherDetailsForm = new FormGroup({
-    officialEmail: new FormControl('', [Validators.required]),
-    gender: new FormControl('', [Validators.required]),
-    dob: new FormControl('', [Validators.required]),
+    officialEmail: new FormControl('', []),
+    mobile: new FormControl('', []),
+    gender: new FormControl('', []),
+    dob: new FormControl('', []),
     motherTongue: new FormControl('', []),
-    mobile: new FormControl('', [Validators.required]),
-    countryCode: new FormControl('', [Validators.required]),
-    maritalStatus: new FormControl('', [Validators.required]),
-    otherDetailsOfficePinCode: new FormControl('', [Validators.required]),
-    nationality: new FormControl('', [Validators.required]),
+    countryCode: new FormControl('', []),
+    maritalStatus: new FormControl('', []),
+    otherDetailsOfficePinCode: new FormControl('', []),
+    category: new FormControl('', []),
   })
 
   constructor(
@@ -240,6 +241,7 @@ export class ProfileViewComponent implements OnInit, AfterViewInit, OnDestroy {
       this.getKarmaCount()
     },                                1000)
 
+    // Latest code...
     this.nameInitials = this.currentUser.firstName.charAt(0)
     if (this.currentUser.lastName) {
       this.nameInitials += this.currentUser.lastName.charAt(0)
@@ -247,6 +249,22 @@ export class ProfileViewComponent implements OnInit, AfterViewInit, OnDestroy {
 
     this.getMasterNationality()
     this.getMasterLanguage()
+
+    // console.log("this.portalProfile.personalDetails - ", this.portalProfile.personalDetails);
+    const dateArray = this.portalProfile.personalDetails.dob.split('-')
+    this.dateOfBirth = new Date(`${dateArray[1]}/${dateArray[0]}/${dateArray[2]}`)
+    // console.log("dateOfBirth - ", this.dateOfBirth);
+    this.otherDetailsForm.patchValue({
+      officialEmail: this.portalProfile.personalDetails.officialEmail,
+      gender: this.portalProfile.personalDetails.gender && this.portalProfile.personalDetails.gender.toUpperCase(),
+      dob: this.dateOfBirth,
+      motherTongue: this.portalProfile.personalDetails.domicileMedium,
+      mobile: this.portalProfile.personalDetails.mobile,
+      countryCode: this.portalProfile.personalDetails.countryCode || '+91',
+      maritalStatus: this.portalProfile.personalDetails.maritalStatus,
+      otherDetailsOfficePinCode: this.portalProfile.personalDetails.pincode,
+      category: this.portalProfile.personalDetails.category && this.portalProfile.personalDetails.category.toUpperCase(),
+    })
   }
 
   ngAfterViewInit() {

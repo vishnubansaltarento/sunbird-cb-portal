@@ -211,7 +211,7 @@
                 <div class="info-value" *ngIf="!editDetails">{{ portalProfile?.personalDetails?.category || 'NA' }}</div>
                 <div class="info-value flex" *ngIf="editDetails">
                   <mat-form-field class="profile-form-field">
-                    <mat-select formControlName="nationality">
+                    <mat-select formControlName="category">
                       <mat-option *ngFor="let category of eCategory" value="{{ category }}">{{ handleTranslateTo(category?.toLowerCase()) }}</mat-option>
                     </mat-select>
                   </mat-form-field>
