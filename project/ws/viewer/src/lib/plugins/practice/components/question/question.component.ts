@@ -87,9 +87,12 @@ export class QuestionComponent implements OnInit, OnChanges, AfterViewInit {
         const toBeReplaced = temp[0]
         temp = [temp[0].replace('src="/', '')]
         temp = [temp[0].replace(/\"/g, '')]
-        const baseUrl = this.artifactUrl.split('/')
-        const newUrl = this.artifactUrl.replace(baseUrl[baseUrl.length - 1], temp[0])
-        this.question.question = this.question.question.replace(toBeReplaced, `src="${newUrl}"`)
+        if(this.artifactUrl) {
+          const baseUrl = this.artifactUrl.split('/')
+          const newUrl = this.artifactUrl.replace(baseUrl[baseUrl.length - 1], temp[0])
+          this.question.question = this.question.question.replace(toBeReplaced, `src="${newUrl}"`)
+        }
+        
       }
     }
     this.practiceSvc.questionAnswerHash.subscribe(val => {

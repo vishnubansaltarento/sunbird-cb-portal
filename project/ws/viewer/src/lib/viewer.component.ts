@@ -145,15 +145,18 @@ export class ViewerComponent implements OnInit, OnDestroy, AfterViewChecked {
       this.leafNodesCount = contentData.result.content.leafNodesCount
     }
 
-    if (this.collectionId && this.enrollmentList) {
-      const enrolledCourseData = this.widgetServ.getEnrolledData(this.collectionId)
-      this.enrolledCourseData = enrolledCourseData
-      this.batchData = {
-        content: [enrolledCourseData.batch],
-        enrolled: true,
-      }
-      this.tocSvc.mapSessionCompletionPercentage(this.batchData)
-    }
+    // if (this.collectionId && this.enrollmentList) {
+    //   const enrolledCourseData = this.widgetServ.getEnrolledData(this.collectionId)
+    //   this.enrolledCourseData = enrolledCourseData
+    //   if(enrolledCourseData) {
+    //     this.batchData = {
+    //       content: [enrolledCourseData.batch],
+    //       enrolled: true,
+    //     }
+    //     this.tocSvc.mapSessionCompletionPercentage(this.batchData)
+    //   }
+      
+    // }
 
     this.pdfScormDataService.handleBackFromPdfScormFullScreen.subscribe((data: any) => {
       this.handleBackFromPdfScormFullScreenFlag = data

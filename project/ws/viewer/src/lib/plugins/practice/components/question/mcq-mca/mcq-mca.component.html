@@ -10,8 +10,8 @@
         'ws-mat-accent-border-active ': (lo.selected)
       }" (click)="updateParent(option.optionId)"
       [selected]="isSelected(option)">
-        <span class="incorrect-option" *ngIf="showAns && !option?.isCorrect && isSelected(option)">
-          {{ option?.text }}
+        <span class="incorrect-option" *ngIf="showAns && !option?.isCorrect && isSelected(option)" [innerHtml]="option?.text">
+          
         </span>
         <div [ngClass]="{
       'correct-option':
