@@ -3,7 +3,6 @@ import { CommonModule } from '@angular/common'
 import { PipeFilterModule, PipeHtmlTagRemovalModule, PipeOrderByModule, PipeRelativeTimeModule } from '@sunbird-cb/utils'
 import { LeftMenuComponent } from './components/left-menu/left-menu.component'
 import { RightMenuComponent } from './components/right-menu/right-menu.component'
-// import { BasicCKEditorComponent } from './components/basic-ckeditor/basic-ckeditor.component'
 import { MatGridListModule } from '@angular/material/grid-list'
 import { MatExpansionModule } from '@angular/material/expansion'
 import { MatDividerModule } from '@angular/material/divider'
@@ -30,10 +29,8 @@ import { MatCardModule } from '@angular/material/card'
 import { ReactiveFormsModule, FormsModule } from '@angular/forms'
 import { AvatarPhotoModule, BtnPageBackModule } from '@sunbird-cb/collection'
 import { EditorSharedModule } from '@ws/author/src/lib/routing/modules/editor/shared/shared.module'
-// import { CkEditorModule } from 'library/ws-widget/collection/src/lib/_common/ck-editor/ck-editor.module'
 import { LoaderService } from '@ws/author/src/lib/services/loader.service'
 import { InitResolver } from './resolvers/init-resolve.service'
-// import { CKEditorService } from 'library/ws-widget/collection/src/lib/_common/ck-editor/ck-editor.service'
 import { RouterModule } from '@angular/router'
 import { ProfileV2RoutingModule } from './profile-v2.rounting.module'
 import { ProfileComponent } from './routes/profile/profile.component'
@@ -50,7 +47,7 @@ import { PendingRequestModule } from '@sunbird-cb/collection/src/lib/_common/pen
 import { TranslateModule } from '@ngx-translate/core'
 import { ProfileKarmapointsComponent } from './routes/profile-karmapoints/profile-karmapoints.component'
 import { UserLeaderboardModule } from '@sunbird-cb/collection/src/lib/_common/user-leaderboard/user-leaderboard.module'
-// import { ShareModule } from 'ngx-sharebuttons';
+import { VerifyOtpComponent } from './components/verify-otp/verify-otp.component'
 
 @NgModule({
   declarations: [
@@ -59,6 +56,7 @@ import { UserLeaderboardModule } from '@sunbird-cb/collection/src/lib/_common/us
     ProfileKarmapointsComponent,
     LeftMenuComponent,
     RightMenuComponent,
+    VerifyOtpComponent,
   ],
   imports: [
     CommonModule,
@@ -90,7 +88,6 @@ import { UserLeaderboardModule } from '@sunbird-cb/collection/src/lib/_common/us
     PipeRelativeTimeModule,
     AvatarPhotoModule,
     EditorSharedModule,
-    // CkEditorModule,
     PipeOrderByModule,
     BtnPageBackModule,
     WidgetResolverModule,
@@ -108,12 +105,11 @@ import { UserLeaderboardModule } from '@sunbird-cb/collection/src/lib/_common/us
     MatTooltipModule,
     MatDatepickerModule,
     MatAutocompleteModule,
-    // ShareModule
   ],
   entryComponents: [
+    VerifyOtpComponent,
   ],
   providers: [
-    // CKEditorService,
     LoaderService,
     InitResolver,
   ],

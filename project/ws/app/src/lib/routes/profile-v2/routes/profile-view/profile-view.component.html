@@ -129,6 +129,9 @@
                     <input type="email" class="input-text" matInput formControlName="officialEmail" />
                   </mat-form-field>
                 </div>
+                <div class="flex justify-end" *ngIf="editDetails">
+                  <span class="get-otp" (click)="handleVerifyOTP('email')" >Get OTP</span>
+                </div>
               </div>
               <div class="info-div">
                 <div class="label">Mobile Number</div>
@@ -145,9 +148,6 @@
                 <div class="flex flex-row gap-2" *ngIf="editDetails">
                   <div class="flex">
                     <mat-form-field class="mobile-form-field">
-                      <!-- <mat-select formControlName="countryCode">
-                        <mat-option *ngFor="let code of countryCodes" value="{{ code }}">{{ code }}</mat-option>
-                      </mat-select> -->
                       <input type="text" matInput class="input-text" aria-label="Country code" formControlName="countryCode" [matAutocomplete]="ccAuto" />
                       <mat-autocomplete #ccAuto="matAutocomplete">
                         <mat-option *ngFor="let code of countryCodes" [value]="code">
@@ -156,9 +156,14 @@
                       </mat-autocomplete>
                     </mat-form-field>
                   </div>
-                  <mat-form-field class="profile-form-field mobile-num">
-                    <input type="text" class="input-text mobile-text" matInput formControlName="mobile" />
-                  </mat-form-field>
+                  <div class="flex flex-col gap-1">
+                    <mat-form-field class="profile-form-field mobile-num">
+                      <input type="text" class="input-text mobile-text" matInput formControlName="mobile" />
+                    </mat-form-field>
+                    <div class="flex justify-end" *ngIf="editDetails">
+                      <span class="get-otp sm:mr-4">Get OTP</span>
+                    </div>
+                  </div>
                 </div>
               </div>
               <div class="info-div">

@@ -3,7 +3,7 @@ import { HttpErrorResponse } from '@angular/common/http'
 import { ActivatedRoute, Router } from '@angular/router'
 import { MatDialog } from '@angular/material/dialog'
 import { MatSnackBar, MatTabChangeEvent } from '@angular/material'
-import { FormControl, FormGroup, Validators } from '@angular/forms'
+import { FormControl, FormGroup } from '@angular/forms'
 import { TranslateService } from '@ngx-translate/core'
 
 /* tslint:disable */
@@ -22,6 +22,7 @@ import { UserProfileService } from '../../../user-profile/services/user-profile.
 import { NSProfileDataV2 } from '../../models/profile-v2.model'
 import { NSNetworkDataV2 } from '../../../network-v2/models/network-v2.model'
 import { NsUserProfileDetails } from '../../../user-profile/models/NsUserProfile'
+import { VerifyOtpComponent } from '../../components/verify-otp/verify-otp.component'
 
 @Component({
   selector: 'app-profile-view',
@@ -644,29 +645,37 @@ export class ProfileViewComponent implements OnInit, AfterViewInit, OnDestroy {
     return moment(new Date(newDateStr)).format('D MMM YYYY')
   }
 
+  handleVerifyOTP(verifyType: string): void {
+    this.dialog.open(VerifyOtpComponent, {
+      data: verifyType,
+      disableClose: false,
+      panelClass: 'verify-otp-modal',
+    })
+  }
+
   handleSaveOtherDetails(): void {
-    const dataToSubmit = {...this.otherDetailsForm.value}
+    const dataToSubmit = { ...this.otherDetailsForm.value }
     dataToSubmit.dob = `${dataToSubmit.dob.getDate()}-${dataToSubmit.dob.getMonth() + 1}-${dataToSubmit.dob.getFullYear()}`
     delete dataToSubmit.countryCode
 
     const payload = {
-      "request": {
-        "userId": this.configSvc.unMappedUser.id,
-        "profileDetails": {
-          "personalDetails": {}
-        }
-      }
+      'request': {
+        'userId': this.configSvc.unMappedUser.id,
+        'profileDetails': {
+          'personalDetails': {},
+        },
+      },
     }
     payload.request.profileDetails.personalDetails = dataToSubmit
     this.userProfileService.editProfileDetails(payload)
     .pipe(takeUntil(this.destroySubject$))
     .subscribe((_res: any) => {
-      this.matSnackBar.open("User details updated successfully!")
+      this.matSnackBar.open('User details updated successfully!')
       this.editDetails = !this.editDetails
       this.prefillForm(dataToSubmit)
-    }, (error: HttpErrorResponse) => {
+    },         (error: HttpErrorResponse) => {
       if (!error.ok) {
-        this.matSnackBar.open("Unable to update user profile details, please try again!")
+        this.matSnackBar.open('Unable to update user profile details, please try again!')
         this.editDetails = !this.editDetails
         this.prefillForm()
       }
