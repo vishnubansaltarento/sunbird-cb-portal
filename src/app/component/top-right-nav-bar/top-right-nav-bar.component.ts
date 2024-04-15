@@ -7,28 +7,28 @@ import { ConfigurationsService, MultilingualTranslationsService } from '@sunbird
 import { DomSanitizer } from '@angular/platform-browser'
 import { HttpClient } from '@angular/common/http'
 import { DialogBoxComponent as ZohoDialogComponent } from '@ws/app/src/lib/routes/profile-v3/components/dialog-box/dialog-box.component'
-const rightNavConfig = [
-  {
-    id: 1,
-    section: 'download',
-    active: true,
-  },
-  {
-    id: 2,
-    section: 'font-setting',
-    active: true,
-  },
-  {
-    id: 3,
-    section: 'help',
-    active: true,
-  },
-  {
-    id: 4,
-    section: 'profile',
-    active: true,
-  },
-]
+// const rightNavConfig = [
+//   {
+//     id: 1,
+//     section: 'download',
+//     active: true,
+//   },
+//   {
+//     id: 2,
+//     section: 'font-setting',
+//     active: true,
+//   },
+//   {
+//     id: 3,
+//     section: 'help',
+//     active: true,
+//   },
+//   {
+//     id: 4,
+//     section: 'profile',
+//     active: true,
+//   },
+// ]
 
 @Component({
   selector: 'ws-top-right-nav-bar',
@@ -73,7 +73,7 @@ export class TopRightNavBarComponent implements OnInit, OnChanges {
       this.multiLang = instanceConfig.websitelanguages
       this.isMultiLangEnabled = instanceConfig.isMultilingualEnabled
     }
-    this.rightNavConfig = this.rightNavConfig.topRightNavConfig ? this.rightNavConfig.topRightNavConfig : rightNavConfig
+    this.rightNavConfig = this.rightNavConfig.topRightNavConfig ? this.rightNavConfig.topRightNavConfig : this.rightNavConfig
     this.homePageService.closeDialogPop.subscribe((data: any) => {
       if (data) {
         this.dialogRef.close()
@@ -86,7 +86,7 @@ export class TopRightNavBarComponent implements OnInit, OnChanges {
   }
 
   ngOnChanges() {
-    this.rightNavConfig = this.rightNavConfig.topRightNavConfig ? this.rightNavConfig.topRightNavConfig : rightNavConfig
+    this.rightNavConfig = this.rightNavConfig.topRightNavConfig ? this.rightNavConfig.topRightNavConfig : this.rightNavConfig
   }
   // ngOnChanges() {}
   // openDialog(): void {
