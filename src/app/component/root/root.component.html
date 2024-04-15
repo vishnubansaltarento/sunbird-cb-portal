@@ -29,11 +29,11 @@
 </div>
 
 <!-- <ws-app-footer class="app-footer" [ngClass]="{ 'padding-bottom: 56px': !isSetupPage}" *ngIf="showNavbar"></ws-app-footer> -->
-<ws-app-chatbot></ws-app-chatbot>
+<ws-app-chatbot *ngIf="!hideHeaderAndFooter"></ws-app-chatbot>
 <ws-app-footer class="app-footer" *ngIf="showNavbar && showFooter && headerFooterConfigData && !hideHeaderAndFooter" [headerFooterConfigData]="headerFooterConfigData">
 </ws-app-footer>
 
-<ws-app-nav-bar class="bottom-nav-bar" [hidden]="!isShowNavbar || !showBottomNav" *ngIf="navBarRequired && (isXSmall$ | async) === true"
+<ws-app-nav-bar class="bottom-nav-bar" [hidden]="!isShowNavbar || !showBottomNav" *ngIf="navBarRequired && (isXSmall$ | async) === true && !hideHeaderAndFooter"
   [mode]="'bottom'">
 </ws-app-nav-bar>
 
