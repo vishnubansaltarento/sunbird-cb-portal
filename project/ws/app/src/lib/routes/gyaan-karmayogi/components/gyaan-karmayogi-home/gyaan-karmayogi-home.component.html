@@ -32,16 +32,16 @@
         <div class="container-balanced w-full">
           <div class="flex sector-section justify-start items-start gap-2">
             <div class="flex">
-                <div class="all-sector flex items-center justify-center {{sectorsList[0].name === selectedSector? 'selected-sector': ''}}" 
+                <div class="all-sector flex items-center justify-center {{sectorsList[0]?.name === selectedSector? 'selected-sector': ''}}" 
                  (click)="sectorFilter(sectorsList[0],'all')" >
-                    {{sectorsList[0].name}}
+                    {{sectorsList[0]?.name}}
                 </div> 
             </div>
             <div class="flex flex-wrap gap-2">
                 <ng-container *ngFor="let sector of sectorsList|slice: 1:(sectorsList.length)">
-                   <div class="each-sector flex items-center justify-center {{sector.name === selectedSector? 'selected-sector': ''}}"
+                   <div class="each-sector flex items-center justify-center {{sector?.name === selectedSector? 'selected-sector': ''}}"
                     (click)="sectorFilter(sector)" [style.background]="sector?.bgColor">
-                    {{sector.name}}
+                    {{sector?.name}}
                    </div> 
                 </ng-container>
             </div>

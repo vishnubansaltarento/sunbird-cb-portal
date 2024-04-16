@@ -1624,6 +1624,10 @@ $title-line-count: 2;
   mat-card-content {
     // margin: 0 -0.25 * $card-padding;
     background: #fff;
+    div {
+      position: relative; 
+      z-index: 1;
+    }
   }
 
   .card-img {

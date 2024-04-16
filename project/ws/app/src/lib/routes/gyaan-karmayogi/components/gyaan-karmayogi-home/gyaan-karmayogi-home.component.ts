@@ -4,6 +4,7 @@ import { FormControl, FormGroup, Validators } from '@angular/forms'
 import { ActivatedRoute } from '@angular/router'
 import { TranslateService } from '@ngx-translate/core'
 import * as _ from 'lodash'
+import { GyaanConstants } from '../../models/gyaan-contants.model'
 
 @Component({
   selector: 'ws-app-gyaan-karmayogi-home',
@@ -16,19 +17,19 @@ export class GyaanKarmayogiHomeComponent implements OnInit {
   facetsdata: any
   hideAllStrip = false
   searchControl = new FormControl('')
-  selectedSector: any = 'All Sectors'
+  selectedSector: any = GyaanConstants.allSectors
   categories: any = [{
-    name: 'All Categories',
+    name: GyaanConstants.allCategories,
   }]
   subSector: any = [{
-    name: 'All Sub sector',
+    name: GyaanConstants.allSubSector,
   }]
   subSectorDefault: any = [{
-    name: 'All Sub sector',
+    name: GyaanConstants.allSubSector,
   }]
   sectorsList = [
   {
-    name: 'All Sectors',
+    name: GyaanConstants.allSectors,
   }]
 
   gyaanForm: FormGroup | undefined
@@ -120,13 +121,13 @@ debugger
   applyFilter(form: FormGroup) {
     const addFilters: any = {}
 
-    if (form.value.sectors && form.value.sectors.name !== 'All Sectors') {
+    if (form.value.sectors && form.value.sectors.name !== GyaanConstants.allSectors) {
       addFilters['sectorName'] = form.value.sectors.name
     }
-    if (form.value.subSectors && form.value.subSectors !== 'All Sub sector') {
+    if (form.value.subSectors && form.value.subSectors !== GyaanConstants.allSubSector) {
       addFilters['subSectorName'] = form.value.subSectors
     }
-    if (form.value.category && form.value.category !== 'All Categories') {
+    if (form.value.category && form.value.category !== GyaanConstants.allCategories) {
       addFilters['resourceCategory'] = form.value.category
     }
     if (form.value.sectors && form.value.subSectors && form.value.category) {
@@ -191,15 +192,15 @@ debugger
   searchFilter() {
     const addFilters: any = {}
     this.callStrips(addFilters)
-    this.selectedSector = 'All Sectors'
+    this.selectedSector = GyaanConstants.allSectors
   }
   doSomething(event: any) {
-    if (event.value && event.value.name === 'All Sectors') {
+    if (event.value && event.value.name === GyaanConstants.allSectors) {
       this.subSector = this.subSectorDefault
     } else {
       const childData = event.value && event.value.children || []
       const allSubSector = [{
-        name: 'All Sub sector',
+        name: GyaanConstants.allSubSector,
       }]
       this.subSector = [...allSubSector, ...childData]
     }
