@@ -1,25 +1,25 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { async, ComponentFixture, TestBed } from '@angular/core/testing'
 
-import { GyaanKarmayogiComponent } from './gyaan-karmayogi.component';
+import { GyaanKarmayogiComponent } from './gyaan-karmayogi.component'
 
 describe('GyaanKarmayogiComponent', () => {
-  let component: GyaanKarmayogiComponent;
-  let fixture: ComponentFixture<GyaanKarmayogiComponent>;
+  let component: GyaanKarmayogiComponent
+  let fixture: ComponentFixture<GyaanKarmayogiComponent>
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ GyaanKarmayogiComponent ]
+      declarations: [GyaanKarmayogiComponent],
     })
-    .compileComponents();
-  }));
+    .compileComponents()
+  }))
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(GyaanKarmayogiComponent);
-    component = fixture.componentInstance;
-    fixture.detectChanges();
-  });
+    fixture = TestBed.createComponent(GyaanKarmayogiComponent)
+    component = fixture.componentInstance
+    fixture.detectChanges()
+  })
 
   it('should create', () => {
-    expect(component).toBeTruthy();
-  });
-});
+    expect(component).toBeTruthy()
+  })
+})

@@ -1,0 +1,58 @@
+@import 'ws-mixins';
+@import 'ws-common';
+
+.container-balanced {
+  @extend %page-center;
+}
+
+.filter-wrapper {
+    width: 282px;
+    height: 968px;
+    border-radius: 12px 0px 0px 0px;
+    border: 1px 0px 0px 0px;
+    opacity: 0px;
+    background: rgba(255, 255, 255, 1);
+    padding: 16px;
+    p.title {
+       font-family: Montserrat;
+font-size: 16px;
+font-weight: 600;
+line-height: 19.5px;
+text-align: left;
+
+
+    }
+    .individual-block{
+        p.title {
+            font-family: Montserrat;
+            font-size: 16px;
+            font-weight: 600;
+            line-height: 19.5px;
+            text-align: left;
+            
+    
+        }
+        .search-filter {
+            position: relative;
+            input {
+                width: 227px;
+                height: 42px;
+                padding-left: 48px;
+                border-radius: 4px;
+                opacity: 0px;
+                border: 1px solid rgba(0, 0, 0, 0.16)
+            }
+            mat-icon{
+                position: absolute;
+                left: 8px;
+                top: 14px;
+            }
+
+        }
+        .check-list{
+            padding: 4px 0;
+        }
+        
+    }
+
+}

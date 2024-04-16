@@ -1,3 +1,9 @@
+@import 'ws-mixins';
+@import 'ws-common';
+
+.container-balanced {
+  @extend %page-center;
+}
 .gyann-wrapper {
     .headder-block {
         background: var(--Linear, linear-gradient(101deg, #3A83CF 4.01%, #1B4CA1 79.78%));
@@ -10,13 +16,13 @@
             font-weight: 700;
             margin-bottom:  16px !important;
             line-height: 56px; /* 116.667% */
-            &:after {
-                position: absolute;
-                width: 20px;
-                height: 10px;
-                content: '';
-                background-color: red;
-            }
+            // &:after {
+            //     position: absolute;
+            //     width: 20px;
+            //     height: 10px;
+            //     content: '';
+            //     background-color: red;
+            // }
         }
         
         .description {
@@ -51,7 +57,38 @@
 
             }
         }
-
+        .img-container {
+            padding-left: 24px;
+            .img1 {
+                width: 289px;
+                height: 304px;
+                top: -1px;
+                gap: 0px;
+                opacity: 0px;
+                border-radius: 8px;
+                
+            }
+            .img2 {
+                width: 141px;
+                height: 182px;
+                top: -106px;
+                left: 970px;
+                gap: 0px;
+                border-radius: 8px;
+                opacity: 0px;
+                
+            }
+            .img3 {
+                width: 181px;
+                height: 139px;
+                top: 90px;
+                left: 970px;
+                gap: 0px;
+                border-radius: 8px;
+                opacity: 0px;
+                
+            }
+        }
     }
 }
 
@@ -133,6 +170,15 @@
         border-radius: 12px;
         opacity: 0px;
         cursor: pointer;
+        background: rgba(239, 149, 30, 0.16);
 
     }
+    .selected-sector {
+        border: 2px solid #f3972e;
+    }
   }
+
+.bg-primary {
+    background: rgba(254, 247, 238, 1);
+
+}

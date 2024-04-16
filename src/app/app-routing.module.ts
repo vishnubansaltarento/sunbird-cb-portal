@@ -38,6 +38,7 @@ import { AppHierarchyResolverService } from './services/app-hierarchy-resolver.s
 import { AppEnrollmentResolverService } from './services/app-enrollment-resolver.service'
 import { AppContentResolverService } from './services/app-content-read-resolver.service'
 import { SurveyShikshaComponent } from './component/survey-shiksha/survey-shiksha.component'
+import { AppGyaanKarmayogiService } from './services/app-gyaan-karmayogi.service'
 // 💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥
 // Please declare routes in alphabetical order
 // 😵😵😵😵😵😵😵😵😵😵😵😵😵😵😵😵😵😵😵😵😵😵😵😵😵😵😵😵😵😵😵😵😵😵😵😵😵😵😵
@@ -187,6 +188,7 @@ const routes: Routes = [
     },
     resolve: {
       pageData: PageResolve,
+      gyaanData: AppGyaanKarmayogiService,
     },
   },
   {

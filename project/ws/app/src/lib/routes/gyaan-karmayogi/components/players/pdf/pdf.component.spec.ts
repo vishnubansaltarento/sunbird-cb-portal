@@ -1,20 +1,20 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing'
 
-import { GyaanPlayerComponent } from './gyaan-player.component'
+import { PdfComponent } from './pdf.component'
 
-describe('GyaanPlayerComponent', () => {
-  let component: GyaanPlayerComponent
-  let fixture: ComponentFixture<GyaanPlayerComponent>
+describe('PdfComponent', () => {
+  let component: PdfComponent
+  let fixture: ComponentFixture<PdfComponent>
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [GyaanPlayerComponent],
+      declarations: [PdfComponent],
     })
     .compileComponents()
   }))
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(GyaanPlayerComponent)
+    fixture = TestBed.createComponent(PdfComponent)
     component = fixture.componentInstance
     fixture.detectChanges()
   })

@@ -1,20 +1,20 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing'
 
-import { GyaanPlayerComponent } from './gyaan-player.component'
+import { GyaanVideoComponent } from './gyaan-video.component'
 
-describe('GyaanPlayerComponent', () => {
-  let component: GyaanPlayerComponent
-  let fixture: ComponentFixture<GyaanPlayerComponent>
+describe('GyaanVideoComponent', () => {
+  let component: GyaanVideoComponent
+  let fixture: ComponentFixture<GyaanVideoComponent>
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [GyaanPlayerComponent],
+      declarations: [GyaanVideoComponent],
     })
     .compileComponents()
   }))
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(GyaanPlayerComponent)
+    fixture = TestBed.createComponent(GyaanVideoComponent)
     component = fixture.componentInstance
     fixture.detectChanges()
   })
