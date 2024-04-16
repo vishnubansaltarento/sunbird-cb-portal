@@ -3,7 +3,7 @@ import { HttpErrorResponse } from '@angular/common/http'
 import { ActivatedRoute, Router } from '@angular/router'
 import { MatDialog } from '@angular/material/dialog'
 import { MatSnackBar, MatTabChangeEvent } from '@angular/material'
-import { FormControl, FormGroup } from '@angular/forms'
+import { FormControl, FormGroup, Validators } from '@angular/forms'
 import { TranslateService } from '@ngx-translate/core'
 
 /* tslint:disable */
@@ -18,6 +18,7 @@ import { HomePageService } from 'src/app/services/home-page.service'
 import { DiscussService } from '../../../discuss/services/discuss.service'
 import { NetworkV2Service } from '../../../network-v2/services/network-v2.service'
 import { UserProfileService } from '../../../user-profile/services/user-profile.service'
+import { OtpService } from '../../../user-profile/services/otp.services'
 
 import { NSProfileDataV2 } from '../../models/profile-v2.model'
 import { NSNetworkDataV2 } from '../../../network-v2/models/network-v2.model'
@@ -94,6 +95,8 @@ export class ProfileViewComponent implements OnInit, AfterViewInit, OnDestroy {
   isCurrentUser!: boolean
 
   // Latest variables...
+  verifyEmail = false
+  verifyMobile = false
   infoType = 'primary'
   countryCodes: any[] = []
   countryCodesBackUp: any[] = []
@@ -106,7 +109,7 @@ export class ProfileViewComponent implements OnInit, AfterViewInit, OnDestroy {
   dateOfBirth: any | undefined
   otherDetailsForm = new FormGroup({
     officialEmail: new FormControl('', []),
-    mobile: new FormControl('', []),
+    mobile: new FormControl('', [Validators.minLength(10), Validators.maxLength(10)]),
     gender: new FormControl('', []),
     dob: new FormControl('', []),
     domicileMedium: new FormControl('', []),
@@ -128,6 +131,7 @@ export class ProfileViewComponent implements OnInit, AfterViewInit, OnDestroy {
     private matSnackBar: MatSnackBar,
     private userProfileService: UserProfileService,
     private translateService: TranslateService,
+    private otpService: OtpService
   ) {
 
     if (this.otherDetailsForm.get('domicileMedium')) {
@@ -154,6 +158,35 @@ export class ProfileViewComponent implements OnInit, AfterViewInit, OnDestroy {
       .subscribe(res => {
         if (this.countryCodesBackUp) {
           this.countryCodes = this.countryCodesBackUp.filter(item => item.includes(res))
+        }
+      })
+    }
+
+    // To check the email entered by the user is same or not, validating the email to show the Get OTP.
+    if (this.otherDetailsForm.get('officialEmail')) {
+      this.otherDetailsForm.get('officialEmail')!.valueChanges
+      .subscribe(res => {
+        if (res && res !== this.portalProfile.personalDetails.officialEmail) {
+          const emailRegex = /^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/
+          if (emailRegex.test(res)) {
+            this.verifyEmail = true
+          }
+        } else {
+          this.verifyEmail = false
+        }
+      })
+    }
+
+    if (this.otherDetailsForm.get('mobile')) {
+      this.otherDetailsForm.get('mobile')!.valueChanges
+      .subscribe(res => {
+        if (res && res !== this.portalProfile.personalDetails.mobile) {
+          const mobileRegex = /^\d{10}$/
+          if (mobileRegex.test(res)) {
+            this.verifyMobile = true
+          }
+        } else {
+          this.verifyMobile = false
         }
       })
     }
@@ -646,10 +679,31 @@ export class ProfileViewComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   handleVerifyOTP(verifyType: string): void {
-    this.dialog.open(VerifyOtpComponent, {
+    const dialogRef = this.dialog.open(VerifyOtpComponent, {
       data: verifyType,
       disableClose: false,
       panelClass: 'verify-otp-modal',
+    })
+
+    dialogRef.componentInstance.resendOTP.subscribe((data: string) => {
+      if (data !== 'email') {
+        this.handleGenerateOTP()
+      }
+    })
+  }
+
+  handleGenerateOTP(verifyType?: string): void {
+    this.otpService.sendOtp(this.otherDetailsForm.value['mobile'])
+    .pipe(takeUntil(this.destroySubject$))
+    .subscribe((_res: any) => {
+      this.matSnackBar.open('OTP sent to the mobile number')
+      if (verifyType) {
+        this.handleVerifyOTP(verifyType)
+      }
+    },         (error: HttpErrorResponse) => {
+      if (!error.ok) {
+        this.matSnackBar.open('Unable to send OTP to given number, please try again later')
+      }
     })
   }
 

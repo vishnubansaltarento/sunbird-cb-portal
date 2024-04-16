@@ -1,4 +1,4 @@
-import { Component, OnInit, Inject, OnDestroy, ViewChild } from '@angular/core'
+import { Component, OnInit, Inject, OnDestroy, ViewChild, Output, EventEmitter } from '@angular/core'
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog'
 
 @Component({
@@ -10,9 +10,10 @@ import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog'
 export class VerifyOtpComponent implements OnInit, OnDestroy {
 
   @ViewChild('timerDiv', { static: false }) timerDiv !: any
+  @Output() resendOTP = new EventEmitter<string>()
   timeLeft = 90
   interval: any
-  resendOTP = false
+  showResendOTP = false
   constructor(
     public dialogRef: MatDialogRef<VerifyOtpComponent>,
     @Inject(MAT_DIALOG_DATA) public data: any
@@ -29,8 +30,7 @@ export class VerifyOtpComponent implements OnInit, OnDestroy {
         this.timerDiv.nativeElement.innerHTML = `${Math.floor(this.timeLeft / 60)}m: ${this.timeLeft % 60}s`
       } else {
         clearInterval(this.interval)
-        this.resendOTP = true
-        // Handle expiration (e.g., show error message, resend OTP, etc.)
+        this.showResendOTP = true
       }
     },                          1000)
   }
@@ -41,8 +41,9 @@ export class VerifyOtpComponent implements OnInit, OnDestroy {
 
   handleResendOTP(): void {
     this.timeLeft = 90
-    this.resendOTP = !this.resendOTP
+    this.showResendOTP = !this.resendOTP
     this.startTimer()
+    this.resendOTP.emit(this.data)
   }
 
   ngOnDestroy(): void {

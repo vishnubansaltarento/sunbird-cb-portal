@@ -1,12 +1,8 @@
 import { NgModule } from '@angular/core'
 import { CommonModule } from '@angular/common'
-import { PipeFilterModule, PipeHtmlTagRemovalModule, PipeOrderByModule, PipeRelativeTimeModule } from '@sunbird-cb/utils'
-import { LeftMenuComponent } from './components/left-menu/left-menu.component'
-import { RightMenuComponent } from './components/right-menu/right-menu.component'
-import { MatGridListModule } from '@angular/material/grid-list'
-import { MatExpansionModule } from '@angular/material/expansion'
-import { MatDividerModule } from '@angular/material/divider'
-import { WidgetResolverModule } from '@sunbird-cb/resolver'
+import { RouterModule } from '@angular/router'
+import { ReactiveFormsModule, FormsModule } from '@angular/forms'
+import { TranslateModule } from '@ngx-translate/core'
 import {
   MatIconModule,
   MatListModule,
@@ -23,19 +19,18 @@ import {
   MatTooltipModule,
   MatDatepickerModule,
 } from '@angular/material'
-import { MatAutocompleteModule } from '@angular/material/autocomplete'
 import { MatCardModule } from '@angular/material/card'
+import { MatAutocompleteModule } from '@angular/material/autocomplete'
+import { MatGridListModule } from '@angular/material/grid-list'
+import { MatExpansionModule } from '@angular/material/expansion'
+import { MatDividerModule } from '@angular/material/divider'
 
-import { ReactiveFormsModule, FormsModule } from '@angular/forms'
+import { WidgetResolverModule } from '@sunbird-cb/resolver'
+import { PipeFilterModule, PipeHtmlTagRemovalModule, PipeOrderByModule, PipeRelativeTimeModule } from '@sunbird-cb/utils'
 import { AvatarPhotoModule, BtnPageBackModule } from '@sunbird-cb/collection'
-import { EditorSharedModule } from '@ws/author/src/lib/routing/modules/editor/shared/shared.module'
-import { LoaderService } from '@ws/author/src/lib/services/loader.service'
-import { InitResolver } from './resolvers/init-resolve.service'
-import { RouterModule } from '@angular/router'
 import { ProfileV2RoutingModule } from './profile-v2.rounting.module'
-import { ProfileComponent } from './routes/profile/profile.component'
-import { ProfileViewComponent } from './routes/profile-view/profile-view.component'
 import { DiscussModule } from '../discuss/discuss.module'
+import { EditorSharedModule } from '@ws/author/src/lib/routing/modules/editor/shared/shared.module'
 import { ProfileCertificateDialogModule } from './components/profile-certificate-dialog/profile-certificate-dialog.module'
 import { SkeletonLoaderModule } from '@sunbird-cb/collection/src/lib/_common/skeleton-loader/skeleton-loader.module'
 import { ProfileCardStatsModule } from '@sunbird-cb/collection/src/lib/_common/profile-card-stats/profile-card-stats.module'
@@ -44,10 +39,18 @@ import { UpdatePostsModule } from '@sunbird-cb/collection/src/lib/_common/update
 import { DiscussionsModule } from '@sunbird-cb/collection/src/lib/_common/discussions/discussions.module'
 import { RecentRequestsModule } from '@sunbird-cb/collection/src/lib/_common/recent-requests/recent-requests.module'
 import { PendingRequestModule } from '@sunbird-cb/collection/src/lib/_common/pending-request/pending-request.module'
-import { TranslateModule } from '@ngx-translate/core'
-import { ProfileKarmapointsComponent } from './routes/profile-karmapoints/profile-karmapoints.component'
 import { UserLeaderboardModule } from '@sunbird-cb/collection/src/lib/_common/user-leaderboard/user-leaderboard.module'
+
+import { LeftMenuComponent } from './components/left-menu/left-menu.component'
+import { RightMenuComponent } from './components/right-menu/right-menu.component'
+import { ProfileComponent } from './routes/profile/profile.component'
+import { ProfileViewComponent } from './routes/profile-view/profile-view.component'
+import { ProfileKarmapointsComponent } from './routes/profile-karmapoints/profile-karmapoints.component'
 import { VerifyOtpComponent } from './components/verify-otp/verify-otp.component'
+
+import { LoaderService } from '@ws/author/src/lib/services/loader.service'
+import { InitResolver } from './resolvers/init-resolve.service'
+import { OtpService } from '../user-profile/services/otp.services'
 
 @NgModule({
   declarations: [
@@ -112,6 +115,7 @@ import { VerifyOtpComponent } from './components/verify-otp/verify-otp.component
   providers: [
     LoaderService,
     InitResolver,
+    OtpService,
   ],
 })
 export class ProfileV2Module {

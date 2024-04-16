@@ -129,7 +129,7 @@
                     <input type="email" class="input-text" matInput formControlName="officialEmail" />
                   </mat-form-field>
                 </div>
-                <div class="flex justify-end" *ngIf="editDetails">
+                <div class="flex justify-end" *ngIf="verifyEmail">
                   <span class="get-otp" (click)="handleVerifyOTP('email')" >Get OTP</span>
                 </div>
               </div>
@@ -160,8 +160,8 @@
                     <mat-form-field class="profile-form-field mobile-num">
                       <input type="text" class="input-text mobile-text" matInput formControlName="mobile" />
                     </mat-form-field>
-                    <div class="flex justify-end" *ngIf="editDetails">
-                      <span class="get-otp sm:mr-4">Get OTP</span>
+                    <div class="flex justify-end" *ngIf="verifyMobile">
+                      <span class="get-otp sm:mr-4" (click)="handleGenerateOTP('phone')">Get OTP</span>
                     </div>
                   </div>
                 </div>
