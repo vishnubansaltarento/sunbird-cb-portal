@@ -22,7 +22,7 @@
           <mat-icon class="cursor-pointer">edit</mat-icon>
         </div>
         <div class="position">{{ portalProfile?.employmentDetails?.departmentName }}</div>
-        <ng-container *ngIf="portalProfile?.professionalDetails.length">
+        <ng-container *ngIf="portalProfile?.professionalDetails?.length">
           <ng-container *ngIf="portalProfile?.professionalDetails[0]?.industry">
             <div class="flex flex-col sm:flex-row gap-4 sm:items-center">
               <div class="institute">{{ portalProfile?.professionalDetails[0]?.industry }}</div>
@@ -130,7 +130,7 @@
                   </mat-form-field>
                 </div>
                 <div class="flex justify-end" *ngIf="verifyEmail">
-                  <span class="get-otp" (click)="handleVerifyOTP('email')" >Get OTP</span>
+                  <span class="get-otp" (click)="handleGenerateEmailOTP('email')" >Get OTP</span>
                 </div>
               </div>
               <div class="info-div">

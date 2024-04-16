@@ -78,7 +78,6 @@ import { OtpService } from '../user-profile/services/otp.services'
     MatChipsModule,
     MatListModule,
     MatSelectModule,
-    FormsModule,
     ReactiveFormsModule,
     MatInputModule,
     MatDialogModule,

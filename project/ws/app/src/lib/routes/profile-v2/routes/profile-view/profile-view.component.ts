@@ -678,9 +678,9 @@ export class ProfileViewComponent implements OnInit, AfterViewInit, OnDestroy {
     return moment(new Date(newDateStr)).format('D MMM YYYY')
   }
 
-  handleVerifyOTP(verifyType: string): void {
+  handleVerifyOTP(verifyType: string, _value?: string): void {
     const dialogRef = this.dialog.open(VerifyOtpComponent, {
-      data: verifyType,
+      data: { type: verifyType, value: _value },
       disableClose: false,
       panelClass: 'verify-otp-modal',
     })
@@ -692,13 +692,28 @@ export class ProfileViewComponent implements OnInit, AfterViewInit, OnDestroy {
     })
   }
 
+  handleGenerateEmailOTP(verifyType?: string): void {
+    this.otpService.sendEmailOtp(this.otherDetailsForm.value['officialEmail'])
+    .pipe(takeUntil(this.destroySubject$))
+    .subscribe((_res: any) => {
+      this.matSnackBar.open('OTP sent to the email')
+      if (verifyType) {
+        this.handleVerifyOTP(verifyType, this.otherDetailsForm.value['officialEmail'])
+      }
+    },         (error: HttpErrorResponse) => {
+      if (!error.ok) {
+        this.matSnackBar.open('Unable to send OTP to given email id, please try again later')
+      }
+    })
+  }
+
   handleGenerateOTP(verifyType?: string): void {
     this.otpService.sendOtp(this.otherDetailsForm.value['mobile'])
     .pipe(takeUntil(this.destroySubject$))
     .subscribe((_res: any) => {
       this.matSnackBar.open('OTP sent to the mobile number')
       if (verifyType) {
-        this.handleVerifyOTP(verifyType)
+        this.handleVerifyOTP(verifyType, this.otherDetailsForm.value['mobile'])
       }
     },         (error: HttpErrorResponse) => {
       if (!error.ok) {
