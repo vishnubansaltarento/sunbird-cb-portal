@@ -1,7 +1,7 @@
-export const GyaanConstants = {
+export const gyaanConstants = {
     allCategories: 'All Categories',
-    allSectors:'All Sectors',
-    allSubSector:'All Sub sector',
-    timeOutDuration: 700
+    allSectors: 'All Sectors',
+    allSubSector: 'All Sub sector',
+    timeOutDuration: 700,
 
 }

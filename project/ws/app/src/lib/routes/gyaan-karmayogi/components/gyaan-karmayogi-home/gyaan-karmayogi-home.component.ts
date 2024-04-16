@@ -4,7 +4,7 @@ import { FormControl, FormGroup, Validators } from '@angular/forms'
 import { ActivatedRoute } from '@angular/router'
 import { TranslateService } from '@ngx-translate/core'
 import * as _ from 'lodash'
-import { GyaanConstants } from '../../models/gyaan-contants.model'
+import { gyaanConstants } from '../../models/gyaan-contants.model'
 
 @Component({
   selector: 'ws-app-gyaan-karmayogi-home',
@@ -17,19 +17,19 @@ export class GyaanKarmayogiHomeComponent implements OnInit {
   facetsdata: any
   hideAllStrip = false
   searchControl = new FormControl('')
-  selectedSector: any = GyaanConstants.allSectors
+  selectedSector: any = gyaanConstants.allSectors
   categories: any = [{
-    name: GyaanConstants.allCategories,
+    name: gyaanConstants.allCategories,
   }]
   subSector: any = [{
-    name: GyaanConstants.allSubSector,
+    name: gyaanConstants.allSubSector,
   }]
   subSectorDefault: any = [{
-    name: GyaanConstants.allSubSector,
+    name: gyaanConstants.allSubSector,
   }]
   sectorsList = [
   {
-    name: GyaanConstants.allSectors,
+    name: gyaanConstants.allSectors,
   }]
 
   gyaanForm: FormGroup | undefined
@@ -48,7 +48,6 @@ export class GyaanKarmayogiHomeComponent implements OnInit {
       subSectors: new FormControl('', [Validators.required]),
       category: new FormControl(''),
     })
-debugger
     this.pageConfig = (this.route.parent && this.route.parent.snapshot.data)
     this.stripData = (this.route.parent && this.route.parent.snapshot.data.pageData.data.stripConfig) || []
     this.facetsdata = this.pageConfig.gyaanData.facets.data
@@ -121,13 +120,13 @@ debugger
   applyFilter(form: FormGroup) {
     const addFilters: any = {}
 
-    if (form.value.sectors && form.value.sectors.name !== GyaanConstants.allSectors) {
+    if (form.value.sectors && form.value.sectors.name !== gyaanConstants.allSectors) {
       addFilters['sectorName'] = form.value.sectors.name
     }
-    if (form.value.subSectors && form.value.subSectors !== GyaanConstants.allSubSector) {
+    if (form.value.subSectors && form.value.subSectors !== gyaanConstants.allSubSector) {
       addFilters['subSectorName'] = form.value.subSectors
     }
-    if (form.value.category && form.value.category !== GyaanConstants.allCategories) {
+    if (form.value.category && form.value.category !== gyaanConstants.allCategories) {
       addFilters['resourceCategory'] = form.value.category
     }
     if (form.value.sectors && form.value.subSectors && form.value.category) {
@@ -192,15 +191,15 @@ debugger
   searchFilter() {
     const addFilters: any = {}
     this.callStrips(addFilters)
-    this.selectedSector = GyaanConstants.allSectors
+    this.selectedSector = gyaanConstants.allSectors
   }
   doSomething(event: any) {
-    if (event.value && event.value.name === GyaanConstants.allSectors) {
+    if (event.value && event.value.name === gyaanConstants.allSectors) {
       this.subSector = this.subSectorDefault
     } else {
       const childData = event.value && event.value.children || []
       const allSubSector = [{
-        name: GyaanConstants.allSubSector,
+        name: gyaanConstants.allSubSector,
       }]
       this.subSector = [...allSubSector, ...childData]
     }

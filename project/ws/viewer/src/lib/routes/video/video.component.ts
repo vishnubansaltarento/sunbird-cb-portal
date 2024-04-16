@@ -285,7 +285,7 @@ export class VideoComponent implements OnInit, OnDestroy {
       if (this.configSvc.userProfile) {
         userId = this.configSvc.userProfile.userId || ''
       }
-      if(this.activatedRoute.snapshot.queryParams.collectionId &&
+      if (this.activatedRoute.snapshot.queryParams.collectionId &&
         this.activatedRoute.snapshot.queryParams.batchId &&
         videoId
       ) {
@@ -331,7 +331,7 @@ export class VideoComponent implements OnInit, OnDestroy {
       } else {
         resolve(true)
       }
-      
+
     })
   }
   private async setS3Cookie(contentId: string) {

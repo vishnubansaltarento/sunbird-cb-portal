@@ -20,10 +20,10 @@ export class PrivacyPolicyComponent implements OnInit {
 
   ngOnInit(): void {
     this.activatedRoute.queryParams.subscribe(params => {
-      let mode = params['mode'];
+      const mode = params['mode']
       if (mode && mode === 'mobile') {
         this.hideHeader = true
-      } 
+      }
     })
   }
 
