@@ -3,36 +3,30 @@
 
     <form class="flex flex-col gap-4" [formGroup]="transferRequestForm">
         <div class="flex flex-col">
-            <div class="text-sm font-bold">Organization</div>
+            <div class="text-sm font-bold required">Organization</div>
             <mat-form-field class="profile-form-field">
                 <mat-select formControlName="organization">
-                    <mat-option value="">Choose an Organization</mat-option>
-                    <mat-option *ngFor="let item of ['Tarento', 'Google', 'Facebook']" value="{{item}}">{{ item }}</mat-option>
-                    <!-- <mat-option *ngFor="let gender of eUserGender" value="{{ gender }}">
-                        {{ handleTranslateTo(gender.toLowerCase()) }}
-                    </mat-option> -->
+                    <mat-option value="" disabled>Choose an Organization</mat-option>
+                    <mat-option *ngFor="let dept of departmentData" value="{{ dept }}">{{ dept }}</mat-option>
                 </mat-select>
             </mat-form-field>
         </div>
     
         <div class="flex flex-col">
-            <div class="text-sm font-bold">Group</div>
+            <div class="text-sm font-bold required">Group</div>
             <mat-form-field class="profile-form-field">
                 <mat-select formControlName="group">
-                    <mat-option value="">Choose a group</mat-option>
-                    <mat-option *ngFor="let item of ['Tarento', 'Google', 'Facebook']" value="{{item}}">{{ item }}</mat-option>
-                    <!-- <mat-option *ngFor="let gender of eUserGender" value="{{ gender }}">
-                        {{ handleTranslateTo(gender.toLowerCase()) }}
-                    </mat-option> -->
+                    <mat-option value="" disabled>Choose a group</mat-option>
+                    <mat-option *ngFor="let group of groupData" value="{{group}}">{{ group }}</mat-option>
                 </mat-select>
             </mat-form-field>
         </div>
     
         <div class="flex flex-col">
-            <div class="text-sm font-bold">Designation</div>
+            <div class="text-sm font-bold required">Designation</div>
             <mat-form-field class="profile-form-field">
                 <mat-select formControlName="designation">
-                    <mat-option value="">Choose a Designation</mat-option>
+                    <mat-option value="" disabled>Choose a Designation</mat-option>
                     <mat-option *ngFor="let designation of profileMetaData?.designations?.designations" value="{{ designation.name }}">{{ designation.name }}</mat-option>
                 </mat-select>
             </mat-form-field>
@@ -45,7 +39,7 @@
 
         <div class="flex flex-row justify-between mt-2">
             <button class="outline-button" (click)="handleCloseModal()">Cancel</button>
-            <button class="save-button" (click)="handleSubmitRequest()">Submit request</button>
+            <button class="save-button" [disabled]="transferRequestForm?.invalid" [ngClass]="{'disable-button': transferRequestForm?.invalid}" (click)="handleSubmitRequest()">Submit request</button>
         </div>
     </form>
 </div>

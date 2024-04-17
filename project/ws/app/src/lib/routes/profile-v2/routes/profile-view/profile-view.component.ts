@@ -8,7 +8,7 @@ import { TranslateService } from '@ngx-translate/core'
 
 /* tslint:disable */
 import _ from 'lodash'
-import moment, { invalid } from 'moment'
+import moment from 'moment'
 import { Subject } from 'rxjs'
 import { debounceTime, distinctUntilChanged, map, startWith, takeUntil } from 'rxjs/operators'
 

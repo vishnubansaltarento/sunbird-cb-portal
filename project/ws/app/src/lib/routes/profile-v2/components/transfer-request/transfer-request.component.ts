@@ -8,6 +8,7 @@ import { Subject } from 'rxjs'
 import { takeUntil } from 'rxjs/operators'
 
 import { UserProfileService } from '../../../user-profile/services/user-profile.service'
+import { ConfigurationsService } from '@sunbird-cb/utils/src/public-api'
 
 @Component({
   selector: 'ws-transfer-request',
@@ -23,16 +24,59 @@ export class TransferRequestComponent implements OnInit, OnDestroy {
     designation: new FormControl('', [Validators.required]),
   })
   profileMetaData: any
+  departmentData: any[] = []
   private destroySubject$ = new Subject()
+  groupData: any[] = []
 
   constructor(
     public dialogRef: MatDialogRef<TransferRequestComponent>,
     @Inject(MAT_DIALOG_DATA) public data: any,
     private userProfileService: UserProfileService,
-    private matSnackBar: MatSnackBar
+    private matSnackBar: MatSnackBar,
+    private configService: ConfigurationsService
   ) { }
 
   ngOnInit() {
+    this.getGroupData()
+    this.getAllDeptData()
+    this.getProfilePageMetaData()
+  }
+
+  handleCloseModal(): void {
+    this.dialogRef.close()
+  }
+
+  handleSubmitRequest(): void {
+    const data: any = {
+      'name': this.transferRequestForm.value['organization'],
+      'designation': this.transferRequestForm.value['designation'],
+      'group': this.transferRequestForm.value['group'],
+    }
+    const postData: any = {
+      'request': {
+        'userId': this.configService.unMappedUser.id,
+        'employmentDetails': {
+          'departmentName': this.transferRequestForm.value['organization'],
+        },
+        'profileDetails': {
+          'professionalDetails': [],
+        },
+      },
+    }
+    postData.request.profileDetails.professionalDetails.push(data)
+    this.userProfileService.editProfileDetails(postData)
+    .pipe(takeUntil(this.destroySubject$))
+    .subscribe((_res: any) => {
+      this.matSnackBar.open('Request sent successfully!')
+      this.handleCloseModal()
+    },         (error: HttpErrorResponse) => {
+      if (!error.ok) {
+        this.matSnackBar.open('Unable to do transfer request, please try again later!')
+      }
+    })
+  }
+
+  getProfilePageMetaData(): void {
     this.userProfileService.getProfilePageMeta()
     .pipe(takeUntil(this.destroySubject$))
     .subscribe(res => {
@@ -44,12 +88,30 @@ export class TransferRequestComponent implements OnInit, OnDestroy {
     })
   }
 
-  handleCloseModal(): void {
-    this.dialogRef.close()
+  getGroupData(): void {
+    this.userProfileService.getGroups()
+    .pipe(takeUntil(this.destroySubject$))
+    .subscribe((res: any) => {
+      this.groupData = res.result && res.result.response
+    },         (error: HttpErrorResponse) => {
+      if (!error.ok) {
+        this.matSnackBar.open('Unable to fetch group meta data')
+      }
+    })
   }
 
-  handleSubmitRequest(): void {
-
+  getAllDeptData(): void {
+    this.userProfileService.getAllDepartments()
+    .pipe(takeUntil(this.destroySubject$))
+    .subscribe((res: any) => {
+      this.departmentData = res.sort((a: any, b: any) => {
+        return a.toLowerCase().localeCompare(b.toLowerCase())
+      })
+    },         (error: HttpErrorResponse) => {
+      if (!error.ok) {
+        this.matSnackBar.open('Unable to fetch department data')
+      }
+    })
   }
 
   ngOnDestroy(): void {
