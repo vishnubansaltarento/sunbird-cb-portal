@@ -8,7 +8,7 @@ import { TranslateService } from '@ngx-translate/core'
 
 /* tslint:disable */
 import _ from 'lodash'
-import moment from 'moment'
+import moment, { invalid } from 'moment'
 import { Subject } from 'rxjs'
 import { debounceTime, distinctUntilChanged, map, startWith, takeUntil } from 'rxjs/operators'
 
@@ -109,7 +109,7 @@ export class ProfileViewComponent implements OnInit, AfterViewInit, OnDestroy {
   masterLanguageBackup: any[] | undefined
   dateOfBirth: any | undefined
   otherDetailsForm = new FormGroup({
-    officialEmail: new FormControl('', []),
+    officialEmail: new FormControl('', [Validators.pattern(/^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/)]),
     mobile: new FormControl('', [Validators.minLength(10), Validators.maxLength(10)]),
     gender: new FormControl('', []),
     dob: new FormControl('', []),
@@ -174,6 +174,7 @@ export class ProfileViewComponent implements OnInit, AfterViewInit, OnDestroy {
           }
         } else {
           this.verifyEmail = false
+          // this.otherDetailsForm.setErrors({ valid: false })
         }
       })
     }
@@ -682,7 +683,7 @@ export class ProfileViewComponent implements OnInit, AfterViewInit, OnDestroy {
   handleVerifyOTP(verifyType: string, _value?: string): void {
     const dialogRef = this.dialog.open(VerifyOtpComponent, {
       data: { type: verifyType, value: _value },
-      disableClose: false,
+      disableClose: true,
       panelClass: 'common-modal',
     })
 
@@ -691,9 +692,17 @@ export class ProfileViewComponent implements OnInit, AfterViewInit, OnDestroy {
         this.handleGenerateOTP()
       }
     })
+
+    dialogRef.componentInstance.otpVerified.subscribe((data: string) => {
+      if (data === 'email') {
+        this.verifyEmail = false
+      } else {
+        this.verifyMobile = false
+      }
+    })
   }
 
-  handleGenerateEmailOTP(verifyType?: string): void {
+  handleGenerateEmailOTP(verifyType?: any): void {
     this.otpService.sendEmailOtp(this.otherDetailsForm.value['officialEmail'])
     .pipe(takeUntil(this.destroySubject$))
     .subscribe((_res: any) => {
@@ -755,15 +764,27 @@ export class ProfileViewComponent implements OnInit, AfterViewInit, OnDestroy {
   handleTransferRequest(): void {
     this.dialog.open(TransferRequestComponent, {
       data: {  },
-      disableClose: false,
+      disableClose: true,
       panelClass: 'common-modal',
     })
+  }
 
-    // dialogRef.componentInstance.resendOTP.subscribe((data: string) => {
-    //   if (data !== 'email') {
-    //     this.handleGenerateOTP()
-    //   }
-    // })
+  handleEmpty(type: string): void {
+    if (type === 'mobile') {
+      if (this.portalProfile.personalDetails.mobile && !this.otherDetailsForm.value['mobile']) {
+        this.otherDetailsForm.setErrors({ valid: false })
+      }
+    }
+
+    if (type === 'officialEmail') {
+      // const emailRegex = /^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/
+      // if (!emailRegex.test(this.otherDetailsForm.value['officialEmail'])) {
+      //   this.otherDetailsForm.setErrors({ valid: false })
+      // }
+      if (!this.portalProfile.personalDetails.officialEmail && !this.otherDetailsForm.value['officialEmail']) {
+        this.otherDetailsForm.setErrors({ valid: false })
+      }
+    }
   }
 
   ngOnDestroy() {

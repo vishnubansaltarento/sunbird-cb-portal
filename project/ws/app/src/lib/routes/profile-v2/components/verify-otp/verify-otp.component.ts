@@ -21,6 +21,7 @@ export class VerifyOtpComponent implements OnInit, OnDestroy {
   private destroySubject$ = new Subject()
   @ViewChild('timerDiv', { static: false }) timerDiv !: any
   @Output() resendOTP = new EventEmitter<string>()
+  @Output() otpVerified = new EventEmitter<string>()
   timeLeft = 90
   interval: any
   showResendOTP = false
@@ -49,7 +50,7 @@ export class VerifyOtpComponent implements OnInit, OnDestroy {
   }
 
   handleVerifyOTP(): void {
-    if (this.data.value === 'email') {
+    if (this.data.type === 'email') {
       this.verifyEmailOTP()
     } else {
       this.verifyMobileOTP()
@@ -62,8 +63,8 @@ export class VerifyOtpComponent implements OnInit, OnDestroy {
     .subscribe((_res: any) => {
       this.matSnackbar.open("OTP verification done successfully!")
       this.handleCloseModal()
+      this.otpVerified.emit('email')
     }, (error: HttpErrorResponse) => {
-      console.log("error - ", error);
       if (!error.ok) {
         this.matSnackbar.open(_.get(error, 'error.params.errmsg') || "OTP verification failed! Please try again later!")
         this.handleCloseModal()
@@ -77,8 +78,8 @@ export class VerifyOtpComponent implements OnInit, OnDestroy {
     .subscribe((_res: any) => {
       this.matSnackbar.open("OTP verification done successfully!")
       this.handleCloseModal()
+      this.otpVerified.emit('mobile')
     }, (error: HttpErrorResponse) => {
-      console.log("error - ", error);
       if (!error.ok) {
         this.matSnackbar.open(_.get(error, 'error.params.errmsg') || "OTP verification failed! Please try again later!")
         this.handleCloseModal()

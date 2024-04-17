@@ -37,7 +37,7 @@ export class TransferRequestComponent implements OnInit, OnDestroy {
     .pipe(takeUntil(this.destroySubject$))
     .subscribe(res => {
       this.profileMetaData = res
-    }, (error: HttpErrorResponse) => {
+    },         (error: HttpErrorResponse) => {
       if (!error.ok) {
         this.matSnackBar.open('Unable to fetch profile page meta data')
       }

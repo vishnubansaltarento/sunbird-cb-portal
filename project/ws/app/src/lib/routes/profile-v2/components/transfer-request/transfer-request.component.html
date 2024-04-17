@@ -6,7 +6,8 @@
             <div class="text-sm font-bold">Organization</div>
             <mat-form-field class="profile-form-field">
                 <mat-select formControlName="organization">
-                    <mat-option *ngFor="let item of ['Tarento', 'Google', 'Facebook']">{{ item }}</mat-option>
+                    <mat-option value="">Choose an Organization</mat-option>
+                    <mat-option *ngFor="let item of ['Tarento', 'Google', 'Facebook']" value="{{item}}">{{ item }}</mat-option>
                     <!-- <mat-option *ngFor="let gender of eUserGender" value="{{ gender }}">
                         {{ handleTranslateTo(gender.toLowerCase()) }}
                     </mat-option> -->
@@ -18,7 +19,8 @@
             <div class="text-sm font-bold">Group</div>
             <mat-form-field class="profile-form-field">
                 <mat-select formControlName="group">
-                    <mat-option *ngFor="let item of ['Tarento', 'Google', 'Facebook']">{{ item }}</mat-option>
+                    <mat-option value="">Choose a group</mat-option>
+                    <mat-option *ngFor="let item of ['Tarento', 'Google', 'Facebook']" value="{{item}}">{{ item }}</mat-option>
                     <!-- <mat-option *ngFor="let gender of eUserGender" value="{{ gender }}">
                         {{ handleTranslateTo(gender.toLowerCase()) }}
                     </mat-option> -->
@@ -30,7 +32,8 @@
             <div class="text-sm font-bold">Designation</div>
             <mat-form-field class="profile-form-field">
                 <mat-select formControlName="designation">
-                    <mat-option *ngFor="let designation of profileMetaData?.designations?.designations">{{ designation.name }}</mat-option>
+                    <mat-option value="">Choose a Designation</mat-option>
+                    <mat-option *ngFor="let designation of profileMetaData?.designations?.designations" value="{{ designation.name }}">{{ designation.name }}</mat-option>
                 </mat-select>
             </mat-form-field>
         </div>
