@@ -24,6 +24,7 @@ import { NSProfileDataV2 } from '../../models/profile-v2.model'
 import { NSNetworkDataV2 } from '../../../network-v2/models/network-v2.model'
 import { NsUserProfileDetails } from '../../../user-profile/models/NsUserProfile'
 import { VerifyOtpComponent } from '../../components/verify-otp/verify-otp.component'
+import { TransferRequestComponent } from '../../components/transfer-request/transfer-request.component'
 
 @Component({
   selector: 'app-profile-view',
@@ -682,7 +683,7 @@ export class ProfileViewComponent implements OnInit, AfterViewInit, OnDestroy {
     const dialogRef = this.dialog.open(VerifyOtpComponent, {
       data: { type: verifyType, value: _value },
       disableClose: false,
-      panelClass: 'verify-otp-modal',
+      panelClass: 'common-modal',
     })
 
     dialogRef.componentInstance.resendOTP.subscribe((data: string) => {
@@ -749,7 +750,20 @@ export class ProfileViewComponent implements OnInit, AfterViewInit, OnDestroy {
         this.prefillForm()
       }
     })
+  }
 
+  handleTransferRequest(): void {
+    this.dialog.open(TransferRequestComponent, {
+      data: {  },
+      disableClose: false,
+      panelClass: 'common-modal',
+    })
+
+    // dialogRef.componentInstance.resendOTP.subscribe((data: string) => {
+    //   if (data !== 'email') {
+    //     this.handleGenerateOTP()
+    //   }
+    // })
   }
 
   ngOnDestroy() {

@@ -22,19 +22,19 @@
           <mat-icon class="cursor-pointer">edit</mat-icon>
         </div>
         <div class="position">{{ portalProfile?.employmentDetails?.departmentName }}</div>
-        <ng-container *ngIf="portalProfile?.professionalDetails?.length">
-          <ng-container *ngIf="portalProfile?.professionalDetails[0]?.industry">
+        <!-- <ng-container *ngIf="portalProfile?.professionalDetails?.length">
+          <ng-container *ngIf="portalProfile?.professionalDetails[0]?.industry"> -->
             <div class="flex flex-col sm:flex-row gap-4 sm:items-center">
-              <div class="institute">{{ portalProfile?.professionalDetails[0]?.industry }}</div>
+              <!-- <div class="institute">{{ portalProfile?.professionalDetails[0]?.industry }}</div> -->
               <div class="flex flex-row">
-                <div class="flex flex-row gap-2 items-center make-transer">
-                  <div class="text-sm">Make Transfer Request</div>
+                <div class="flex flex-row gap-2 items-center make-transfer-div">
+                  <div class="text-sm make-transer" (click)="handleTransferRequest()">Make Transfer Request</div>
                   <mat-icon>info</mat-icon>
                 </div>
               </div>
             </div>
-          </ng-container>
-        </ng-container>
+          <!-- </ng-container>
+        </ng-container> -->
         <div class="divider"></div>
       </div>
       <div class="flex flex-col sm:flex-row sm:items-center gap-5">
@@ -130,7 +130,7 @@
                   </mat-form-field>
                 </div>
                 <div class="flex justify-end" *ngIf="verifyEmail">
-                  <span class="get-otp" (click)="handleGenerateEmailOTP('email')" >Get OTP</span>
+                  <span class="get-otp" (click)="handleGenerateEmailOTP('email')">Get OTP</span>
                 </div>
               </div>
               <div class="info-div">

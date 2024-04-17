@@ -99,6 +99,7 @@ export class VerifyOtpComponent implements OnInit, OnDestroy {
 
   ngOnDestroy(): void {
     clearInterval(this.interval)
+    this.destroySubject$.unsubscribe()
   }
 
 }

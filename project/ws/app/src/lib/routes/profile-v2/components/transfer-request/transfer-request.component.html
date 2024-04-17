@@ -1,0 +1,48 @@
+<div class="flex flex-col gap-4">
+    <div class="text-base font-semibold text-center">Select all the fields to make transfer request.</div>
+
+    <form class="flex flex-col gap-4" [formGroup]="transferRequestForm">
+        <div class="flex flex-col">
+            <div class="text-sm font-bold">Organization</div>
+            <mat-form-field class="profile-form-field">
+                <mat-select formControlName="organization">
+                    <mat-option *ngFor="let item of ['Tarento', 'Google', 'Facebook']">{{ item }}</mat-option>
+                    <!-- <mat-option *ngFor="let gender of eUserGender" value="{{ gender }}">
+                        {{ handleTranslateTo(gender.toLowerCase()) }}
+                    </mat-option> -->
+                </mat-select>
+            </mat-form-field>
+        </div>
+    
+        <div class="flex flex-col">
+            <div class="text-sm font-bold">Group</div>
+            <mat-form-field class="profile-form-field">
+                <mat-select formControlName="group">
+                    <mat-option *ngFor="let item of ['Tarento', 'Google', 'Facebook']">{{ item }}</mat-option>
+                    <!-- <mat-option *ngFor="let gender of eUserGender" value="{{ gender }}">
+                        {{ handleTranslateTo(gender.toLowerCase()) }}
+                    </mat-option> -->
+                </mat-select>
+            </mat-form-field>
+        </div>
+    
+        <div class="flex flex-col">
+            <div class="text-sm font-bold">Designation</div>
+            <mat-form-field class="profile-form-field">
+                <mat-select formControlName="designation">
+                    <mat-option *ngFor="let designation of profileMetaData?.designations?.designations">{{ designation.name }}</mat-option>
+                </mat-select>
+            </mat-form-field>
+        </div>
+
+        <div class="flex flex-row gap-1 info-div">
+            <mat-icon>info</mat-icon>
+            <div>If you make a transfer request, your profile will need verification again.</div>
+        </div>
+
+        <div class="flex flex-row justify-between mt-2">
+            <button class="outline-button" (click)="handleCloseModal()">Cancel</button>
+            <button class="save-button" (click)="handleSubmitRequest()">Submit request</button>
+        </div>
+    </form>
+</div>

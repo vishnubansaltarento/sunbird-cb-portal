@@ -47,6 +47,7 @@ import { ProfileComponent } from './routes/profile/profile.component'
 import { ProfileViewComponent } from './routes/profile-view/profile-view.component'
 import { ProfileKarmapointsComponent } from './routes/profile-karmapoints/profile-karmapoints.component'
 import { VerifyOtpComponent } from './components/verify-otp/verify-otp.component'
+import { TransferRequestComponent } from './components/transfer-request/transfer-request.component'
 
 import { LoaderService } from '@ws/author/src/lib/services/loader.service'
 import { InitResolver } from './resolvers/init-resolve.service'
@@ -60,6 +61,7 @@ import { OtpService } from '../user-profile/services/otp.services'
     LeftMenuComponent,
     RightMenuComponent,
     VerifyOtpComponent,
+    TransferRequestComponent,
   ],
   imports: [
     CommonModule,
@@ -110,6 +112,7 @@ import { OtpService } from '../user-profile/services/otp.services'
   ],
   entryComponents: [
     VerifyOtpComponent,
+    TransferRequestComponent,
   ],
   providers: [
     LoaderService,
