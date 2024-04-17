@@ -1,0 +1,42 @@
+@import 'ws-mixins';
+@import 'ws-common';
+
+.container-balanced {
+  @extend %page-center;
+}
+
+.banner-container{
+    align-items: center;
+    background: #eee;
+    padding: 16px;
+    gap: 2.5rem;
+    justify-content: center;
+}
+
+.logo-box {
+    vertical-align: middle;
+    max-width: 250px;
+    background: #f5fdf1;
+    padding: 8px;
+    border: 1px solid rgba(0,0,0,0.5);
+}
+
+.slider-box {
+    max-width: 30%;
+}
+
+.stats-container {
+    justify-content: space-around;
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.stats-item {
+    display: flex;
+    align-items: center;
+    flex-wrap: nowrap;
+    // max-width: 250px;
+    // min-width: 180px;
+    padding: 8px 16px;
+    margin-bottom: 16px;
+}

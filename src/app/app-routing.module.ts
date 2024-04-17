@@ -38,6 +38,8 @@ import { AppHierarchyResolverService } from './services/app-hierarchy-resolver.s
 import { AppEnrollmentResolverService } from './services/app-enrollment-resolver.service'
 import { AppContentResolverService } from './services/app-content-read-resolver.service'
 import { SurveyShikshaComponent } from './component/survey-shiksha/survey-shiksha.component'
+import { MicrosotesComponent } from './routes/microsites/microsotes.component'
+import { MicrositesModule } from './routes/microsites/microsites.module'
 // 💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥
 // Please declare routes in alphabetical order
 // 😵😵😵😵😵😵😵😵😵😵😵😵😵😵😵😵😵😵😵😵😵😵😵😵😵😵😵😵😵😵😵😵😵😵😵😵😵😵😵
@@ -345,6 +347,15 @@ const routes: Routes = [
   {
     path: 'app/features',
     component: FeaturesComponent,
+    canActivate: [GeneralGuard],
+    data: {
+      pageId: 'app/features',
+      module: 'Settings',
+    },
+  },
+  {
+    path: 'app/microsites',
+    component: MicrosotesComponent,
     canActivate: [GeneralGuard],
     data: {
       pageId: 'app/features',
@@ -1012,6 +1023,7 @@ const routes: Routes = [
   imports: [
     PageModule,
     FeaturesModule,
+    MicrositesModule,
     RouterModule.forRoot(routes, {
       anchorScrolling: 'enabled',
       scrollPositionRestoration: 'top',
