@@ -14,6 +14,7 @@ import { CertificateDialogComponent } from '../_common/certificate-dialog/certif
 import { TranslateService } from '@ngx-translate/core'
 import { WidgetContentService } from '../_services/widget-content.service'
 import { Router } from '@angular/router'
+import { VIEWER_ROUTE_FROM_MIME } from '../_services/viewer-route-util'
 // import { Router } from '@angular/router'
 
 @Component({
@@ -416,12 +417,23 @@ export class CardContentV2Component extends WidgetBaseComponent
       clearInterval(this.cbPlanInterval)
     }
   }
-  async getRedirectUrlData(content: any){
-    let urlData = await this.contSvc.getResourseLink(content)
-    this.router.navigate(
-      [urlData.url],
-      {
-        queryParams: urlData.queryParams
+  async getRedirectUrlData(content: any,contentType?:any){
+    if(contentType) {
+      this.router.navigate([`/app/gyaan-karmayogi/player/${VIEWER_ROUTE_FROM_MIME(content.mimeType)}/${content.identifier}`],{
+        queryParams : {
+          primaryCategory: this.primaryCategory.RESOURCE
+          // preview: true
+        }
       })
+    } else {
+      let urlData = await this.contSvc.getResourseLink(content)
+      this.router.navigate(
+        [urlData.url],
+        {
+          queryParams: urlData.queryParams
+        })
+    }
+ 
+    
   }
 }
