@@ -21,11 +21,13 @@
           <mat-icon class="profile-verified-check" *ngIf="portalProfile?.professionalDetails && portalProfile?.professionalDetails[0]?.verifiedKarmayogi">check_circle</mat-icon>
           <mat-icon class="cursor-pointer">edit</mat-icon>
         </div>
-        <div class="position">{{ portalProfile?.employmentDetails?.departmentName }}</div>
-        <!-- <ng-container *ngIf="portalProfile?.professionalDetails?.length">
-          <ng-container *ngIf="portalProfile?.professionalDetails[0]?.industry"> -->
+        <ng-container *ngIf="currentUser?.professionalDetails?.length">
+          <div class="position">{{ currentUser?.professionalDetails[0]?.designation }}</div>
+        </ng-container>
+        <ng-container *ngIf="portalProfile?.professionalDetails?.length">
+          <ng-container *ngIf="portalProfile?.professionalDetails[0]?.industry">
             <div class="flex flex-col sm:flex-row gap-4 sm:items-center">
-              <!-- <div class="institute">{{ portalProfile?.professionalDetails[0]?.industry }}</div> -->
+              <div class="institute">{{ portalProfile?.professionalDetails[0]?.industry }}</div>
               <div class="flex flex-row">
                 <div class="flex flex-row gap-2 items-center make-transfer-div">
                   <div class="text-sm make-transer" (click)="handleTransferRequest()">Make Transfer Request</div>
@@ -33,8 +35,8 @@
                 </div>
               </div>
             </div>
-          <!-- </ng-container>
-        </ng-container> -->
+          </ng-container>
+        </ng-container>
         <div class="divider"></div>
       </div>
       <div class="flex flex-col sm:flex-row sm:items-center gap-5">
