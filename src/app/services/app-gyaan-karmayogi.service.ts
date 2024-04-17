@@ -54,10 +54,6 @@ resolve(
    }
  }))
  return join
-    // return this.http.post('apis/proxies/v8/sunbirdigot/v4/search',facets).pipe(
-    // map((rData: any) => ({ data: rData.result.facets, error: null })), //  (rData.responseData || []).map((p: any) => p.name)
-    // tap((resolveData: any) => of({ error: null, data: resolveData })),
-    // catchError((error: any) => of({ error, data: null })),
-    // )
+
 }
 }
