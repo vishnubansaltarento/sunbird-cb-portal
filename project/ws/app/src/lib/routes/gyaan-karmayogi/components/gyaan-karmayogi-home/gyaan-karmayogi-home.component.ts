@@ -85,7 +85,7 @@ export class GyaanKarmayogiHomeComponent implements OnInit {
 
     setTimeout(() => {
       this.hideAllStrip = false
-    },         700)
+    },         gyaanConstants.timeOutDuration)
   }
   callStrips(addFilters?: any) {
     const localStripData: any = []
@@ -93,23 +93,25 @@ export class GyaanKarmayogiHomeComponent implements OnInit {
       if (index >= 1) {
         const data = JSON.parse(JSON.stringify(this.route.parent &&
           this.route.parent.snapshot.data.pageData.data.stripConfig))
-        data.strips[0].title = cat.name
-        data.strips[0].key = cat.name
-        data.strips[0].viewMoreUrl.queryParams.key = cat.name
-        data.strips[0].titleDescription = cat.name
-        data.strips[0].request.searchV6.request.filters = {
-            ...data.strips[0].request.searchV6.request.filters,
-            resourceCategory: cat.name,
-
-        }
-        if (addFilters) {
+        if(data.strips.length){
+          data.strips[0].title = cat.name
+          data.strips[0].key = cat.name
+          data.strips[0].viewMoreUrl.queryParams.key = cat.name
+          data.strips[0].titleDescription = cat.name
           data.strips[0].request.searchV6.request.filters = {
-            ...data.strips[0].request.searchV6.request.filters,
-            ...addFilters,
+              ...data.strips[0].request.searchV6.request.filters,
+              resourceCategory: cat.name,
+
           }
-        }
-        if (this.searchControl && this.searchControl.value) {
-          data.strips[0].request.searchV6.request.query = this.searchControl.value
+          if (addFilters) {
+            data.strips[0].request.searchV6.request.filters = {
+              ...data.strips[0].request.searchV6.request.filters,
+              ...addFilters,
+            }
+          }
+          if (this.searchControl && this.searchControl.value) {
+            data.strips[0].request.searchV6.request.query = this.searchControl.value
+          }
         }
 
         localStripData.push(data)
@@ -140,18 +142,20 @@ export class GyaanKarmayogiHomeComponent implements OnInit {
   callPaticualrStrip(addFilters: any) {
       if (addFilters.resourceCategory) {
         const data = JSON.parse(JSON.stringify(this.route.parent && this.route.parent.snapshot.data.pageData.data.stripConfig))
-        data.strips[0].title = addFilters.resourceCategory
-        data.strips[0].key = addFilters.resourceCategory
-        data.strips[0].viewMoreUrl.queryParams.key = addFilters.resourceCategory
-        data.strips[0].titleDescription = addFilters.resourceCategory
-        data.strips[0].request.searchV6.request.filters = {
-            ...data.strips[0].request.searchV6.request.filters,
-            resourceCategory: addFilters.resourceCategory,
-        }
-        if (addFilters) {
-            data.strips[0].request.searchV6.request.filters = {
+        if(data.strips.length){
+          data.strips[0].title = addFilters.resourceCategory
+          data.strips[0].key = addFilters.resourceCategory
+          data.strips[0].viewMoreUrl.queryParams.key = addFilters.resourceCategory
+          data.strips[0].titleDescription = addFilters.resourceCategory
+          data.strips[0].request.searchV6.request.filters = {
               ...data.strips[0].request.searchV6.request.filters,
-              ...addFilters,
+              resourceCategory: addFilters.resourceCategory,
+          }
+          if (addFilters) {
+              data.strips[0].request.searchV6.request.filters = {
+                ...data.strips[0].request.searchV6.request.filters,
+                ...addFilters,
+            }
           }
         }
         this.hideAllStrip = true
@@ -159,21 +163,12 @@ export class GyaanKarmayogiHomeComponent implements OnInit {
         this.stripData = [data]
     setTimeout(() => {
       this.hideAllStrip = false
-    },         700)
+    },         gyaanConstants.timeOutDuration)
       }
   }
 
   getRandomColor() {
-    const items = [
-      'rgba(24, 68, 106, 0.16)',
-      'rgba(50, 183, 118, 0.16)',
-      'rgba(239, 149, 30, 0.16)',
-      'rgba(233, 77, 19, 0.16)',
-      'rgba(27, 33, 51, 0.16)',
-      'rgba(88, 209, 209, 0.16)',
-      'rgba(58, 131, 207, 0.16)',
-      'rgba(91, 58, 27, 0.16)',
-    ]
+    const items = gyaanConstants.colorConstants
     const item = items[Math.floor(Math.random() * items.length)]
     return item
   }

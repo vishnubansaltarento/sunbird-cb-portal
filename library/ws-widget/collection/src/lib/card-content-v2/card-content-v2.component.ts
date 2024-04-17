@@ -421,7 +421,7 @@ export class CardContentV2Component extends WidgetBaseComponent
     if(contentType) {
       this.router.navigate([`/app/gyaan-karmayogi/player/${VIEWER_ROUTE_FROM_MIME(content.mimeType)}/${content.identifier}`],{
         queryParams : {
-          primaryCategory: 'Learning Resource',
+          primaryCategory: this.primaryCategory.RESOURCE
           // preview: true
         }
       })

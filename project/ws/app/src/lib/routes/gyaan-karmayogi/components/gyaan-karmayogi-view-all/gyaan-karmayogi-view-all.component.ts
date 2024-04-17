@@ -3,6 +3,7 @@ import { ActivatedRoute } from '@angular/router'
 import { GyaanKarmayogiService } from '../../services/gyaan-karmayogi.service'
 import { NsContent } from '@sunbird-cb/utils/src/public-api'
 import * as _ from 'lodash'
+import { gyaanConstants } from '../../models/gyaan-contants.model'
 
 @Component({
   selector: 'ws-app-gyaan-karmayogi-view-all',
@@ -52,7 +53,11 @@ seeAllPageConfig: any
   constructor(private route: ActivatedRoute, private seeAllSvc: GyaanKarmayogiService) { }
 
   ngOnInit() {
-    this.seeAllPageConfig = this.route.snapshot.data.pageData.data.stripConfig.strips[0]
+    this.seeAllPageConfig = this.route.snapshot.data.pageData && 
+    this.route.snapshot.data.pageData.data &&
+    this.route.snapshot.data.pageData.data.stripConfig &&
+    this.route.snapshot.data.pageData.data.stripConfig.strips && 
+    this.route.snapshot.data.pageData.data.stripConfig.strips[0]
 
     this.contentDataList = this.transformSkeletonToWidgets(this.seeAllPageConfig)
     if (this.seeAllPageConfig.request && this.seeAllPageConfig.request.searchV6) {
@@ -65,7 +70,7 @@ seeAllPageConfig: any
     private transformSkeletonToWidgets(
     strip: any
   ) {
-    return [1, 2, 3, 4, 5, 6, 7, 7, 8, 9, 10].map(_content => ({
+    return gyaanConstants.emptyArray.map(_content => ({
       widgetType: 'card',
       widgetSubType: 'cardContent',
       widgetHostClass: 'mb-2',
@@ -121,7 +126,7 @@ seeAllPageConfig: any
           try {
             const response = await this.searchV6Request(strip, strip.request, calculateParentStatus)
             if (response && response.results) {
-              if (this.contentDataList[0].widgetData.content) {
+              if (this.contentDataList.length && this.contentDataList[0].widgetData.content) {
                 this.contentDataList =
                 _.concat(this.contentDataList, this.transformContentsToWidgets(response.results.result.content, strip))
               } else {

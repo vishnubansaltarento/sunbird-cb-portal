@@ -33,9 +33,6 @@ const routes: Routes = [
           pageId: 'all',
           module: 'Knowledge Resources',
         },
-        // resolve: {
-        //   allResources : AllResourceResolveService,
-        // },
       },
 
       {
@@ -49,17 +46,7 @@ const routes: Routes = [
         resolve: {
           pageData: PageResolve,
         },
-        // resolve: {
-        //   allResources : AllResourceResolveService,
-        // },
       },
-      // {
-      //   path: 'player',
-      //   component: GyaanPlayerComponent,
-      //   // resolve: {
-      //   //   allResources : AllResourceResolveService,
-      //   // },
-      // },
       {
         path: 'player',
         component: GyaanPlayerComponent,
@@ -86,8 +73,6 @@ const routes: Routes = [
             },
             resolve: {
               content: ViewerResolve,
-              // configData: ConfigurationsService,
-              // profileData: ProfileResolverService,
             },
           },
         ],
@@ -98,8 +83,6 @@ const routes: Routes = [
         },
         resolve: {
           content: ViewerResolve,
-          // configData: ConfigurationsService,
-          // profileData: ProfileResolverService,
         },
       },
     ],
