@@ -21,15 +21,17 @@
           <mat-icon class="profile-verified-check" *ngIf="portalProfile?.professionalDetails && portalProfile?.professionalDetails[0]?.verifiedKarmayogi">check_circle</mat-icon>
           <mat-icon class="cursor-pointer">edit</mat-icon>
         </div>
-        <div class="position">{{ portalProfile?.employmentDetails?.departmentName }}</div>
-        <ng-container *ngIf="portalProfile?.professionalDetails.length">
+        <ng-container *ngIf="currentUser?.professionalDetails?.length">
+          <div class="position">{{ currentUser?.professionalDetails[0]?.designation }}</div>
+        </ng-container>
+        <ng-container *ngIf="portalProfile?.professionalDetails?.length">
           <ng-container *ngIf="portalProfile?.professionalDetails[0]?.industry">
             <div class="flex flex-col sm:flex-row gap-4 sm:items-center">
               <div class="institute">{{ portalProfile?.professionalDetails[0]?.industry }}</div>
               <div class="flex flex-row">
-                <div class="flex flex-row gap-2 items-center make-transer">
-                  <div class="text-sm">Make Transfer Request</div>
-                  <mat-icon>info</mat-icon>
+                <div class="flex flex-row gap-2 items-center make-transfer-div">
+                  <div class="text-sm make-transer" (click)="handleTransferRequest()">Make Transfer Request</div>
+                  <mat-icon [matTooltipPosition]="'below'" #tooltip="matTooltip" matTooltip="If you make a transfer request, your profile will be unverified again">info</mat-icon>
                 </div>
               </div>
             </div>
@@ -126,8 +128,11 @@
                 <div class="info-value" *ngIf="!editDetails">{{ portalProfile?.personalDetails?.officialEmail || 'NA' }}</div>
                 <div class="flex" *ngIf="editDetails">
                   <mat-form-field class="profile-form-field">
-                    <input type="email" class="input-text" matInput formControlName="officialEmail" />
+                    <input type="email" class="input-text" matInput (keyup)="handleEmpty('officialEmail')" formControlName="officialEmail" />
                   </mat-form-field>
+                </div>
+                <div class="flex justify-end" *ngIf="verifyEmail">
+                  <span class="get-otp" (click)="handleGenerateEmailOTP('email')">Get OTP</span>
                 </div>
               </div>
               <div class="info-div">
@@ -145,9 +150,6 @@
                 <div class="flex flex-row gap-2" *ngIf="editDetails">
                   <div class="flex">
                     <mat-form-field class="mobile-form-field">
-                      <!-- <mat-select formControlName="countryCode">
-                        <mat-option *ngFor="let code of countryCodes" value="{{ code }}">{{ code }}</mat-option>
-                      </mat-select> -->
                       <input type="text" matInput class="input-text" aria-label="Country code" formControlName="countryCode" [matAutocomplete]="ccAuto" />
                       <mat-autocomplete #ccAuto="matAutocomplete">
                         <mat-option *ngFor="let code of countryCodes" [value]="code">
@@ -156,9 +158,14 @@
                       </mat-autocomplete>
                     </mat-form-field>
                   </div>
-                  <mat-form-field class="profile-form-field mobile-num">
-                    <input type="text" class="input-text mobile-text" matInput formControlName="mobile" />
-                  </mat-form-field>
+                  <div class="flex flex-col gap-1">
+                    <mat-form-field class="profile-form-field mobile-num">
+                      <input type="text" class="input-text mobile-text" (keyup)="handleEmpty('mobile')" matInput formControlName="mobile" />
+                    </mat-form-field>
+                    <div class="flex justify-end" *ngIf="verifyMobile">
+                      <span class="get-otp sm:mr-4" (click)="handleGenerateOTP('phone')">Get OTP</span>
+                    </div>
+                  </div>
                 </div>
               </div>
               <div class="info-div">
@@ -196,7 +203,7 @@
                 </div>
                 <div class="info-value flex" *ngIf="editDetails">
                   <mat-form-field class="profile-form-field">
-                    <input type="text" class="input-text" aria-label="Domicile Medium (Mother Tongue)" matInput formControlName="motherTongue"
+                    <input type="text" class="input-text" aria-label="Domicile Medium (Mother Tongue)" matInput formControlName="domicileMedium"
                       [matAutocomplete]="languageAuto">
                     <mat-autocomplete #languageAuto="matAutocomplete">
                       <mat-option *ngFor="let language of masterLanguages" [value]="language.name">
@@ -211,7 +218,7 @@
                 <div class="info-value" *ngIf="!editDetails">{{ portalProfile?.personalDetails?.category || 'NA' }}</div>
                 <div class="info-value flex" *ngIf="editDetails">
                   <mat-form-field class="profile-form-field">
-                    <mat-select formControlName="nationality">
+                    <mat-select formControlName="category">
                       <mat-option *ngFor="let category of eCategory" value="{{ category }}">{{ handleTranslateTo(category?.toLowerCase()) }}</mat-option>
                     </mat-select>
                   </mat-form-field>
@@ -222,7 +229,7 @@
                 <div class="info-value" *ngIf="!editDetails">{{ portalProfile?.personalDetails?.pincode || 'NA' }}</div>
                 <div class="flex" *ngIf="editDetails">
                   <mat-form-field class="profile-form-field">
-                    <input type="email" class="input-text" matInput formControlName="otherDetailsOfficePinCode" />
+                    <input type="email" class="input-text" matInput formControlName="pincode" />
                   </mat-form-field>
                 </div>
               </div>
@@ -234,11 +241,11 @@
                 <div class="info-value">NA</div>
               </div>
             </div>
-
+            
             <div class="grid-container" *ngIf="editDetails">
               <div class="flex flex-row gap-4">
-                <button class="outline-button" (click)="editDetails = !editDetails">Cancel</button>
-                <button class="save-button" (click)="handleSaveOtherDetails()">Save Changes</button>
+                <button class="outline-button" (click)="handleCancelUpdate()">Cancel</button>
+                <button class="save-button" [disabled]="otherDetailsForm?.invalid || verifyEmail || verifyMobile" [ngClass]="{'disable-button': otherDetailsForm?.invalid || verifyEmail || verifyMobile}" (click)="handleSaveOtherDetails()">Save Changes</button>
               </div>
             </div>
           </div>

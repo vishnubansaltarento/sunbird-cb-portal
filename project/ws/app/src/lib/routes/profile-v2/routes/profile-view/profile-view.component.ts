@@ -18,10 +18,13 @@ import { HomePageService } from 'src/app/services/home-page.service'
 import { DiscussService } from '../../../discuss/services/discuss.service'
 import { NetworkV2Service } from '../../../network-v2/services/network-v2.service'
 import { UserProfileService } from '../../../user-profile/services/user-profile.service'
+import { OtpService } from '../../../user-profile/services/otp.services'
 
 import { NSProfileDataV2 } from '../../models/profile-v2.model'
 import { NSNetworkDataV2 } from '../../../network-v2/models/network-v2.model'
 import { NsUserProfileDetails } from '../../../user-profile/models/NsUserProfile'
+import { VerifyOtpComponent } from '../../components/verify-otp/verify-otp.component'
+import { TransferRequestComponent } from '../../components/transfer-request/transfer-request.component'
 
 @Component({
   selector: 'app-profile-view',
@@ -54,7 +57,7 @@ export class ProfileViewComponent implements OnInit, AfterViewInit, OnDestroy {
   allCertificate: any = []
   pageData: any
   sideNavBarOpened = true
-  verifiedBadge = false
+  // verifiedBadge = false
   private defaultSideNavBarOpenedSubscription: any
   public screenSizeIsLtMedium = false
   isLtMedium$ = this.valueSvc.isLtMedium$
@@ -93,6 +96,8 @@ export class ProfileViewComponent implements OnInit, AfterViewInit, OnDestroy {
   isCurrentUser!: boolean
 
   // Latest variables...
+  verifyEmail = false
+  verifyMobile = false
   infoType = 'primary'
   countryCodes: any[] = []
   countryCodesBackUp: any[] = []
@@ -102,16 +107,16 @@ export class ProfileViewComponent implements OnInit, AfterViewInit, OnDestroy {
   eCategory = Object.keys(NsUserProfileDetails.ECategory)
   masterLanguages: any[] | undefined
   masterLanguageBackup: any[] | undefined
+  dateOfBirth: any | undefined
   otherDetailsForm = new FormGroup({
-    officialEmail: new FormControl('', [Validators.required]),
-    gender: new FormControl('', [Validators.required]),
-    dob: new FormControl('', [Validators.required]),
-    motherTongue: new FormControl('', []),
-    mobile: new FormControl('', [Validators.required]),
-    countryCode: new FormControl('', [Validators.required]),
-    maritalStatus: new FormControl('', [Validators.required]),
-    otherDetailsOfficePinCode: new FormControl('', [Validators.required]),
-    nationality: new FormControl('', [Validators.required]),
+    officialEmail: new FormControl('', [Validators.pattern(/^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/)]),
+    mobile: new FormControl('', [Validators.minLength(10), Validators.maxLength(10)]),
+    gender: new FormControl('', []),
+    dob: new FormControl('', []),
+    domicileMedium: new FormControl('', []),
+    countryCode: new FormControl('', []),
+    pincode: new FormControl('', []),
+    category: new FormControl('', []),
   })
 
   constructor(
@@ -127,10 +132,11 @@ export class ProfileViewComponent implements OnInit, AfterViewInit, OnDestroy {
     private matSnackBar: MatSnackBar,
     private userProfileService: UserProfileService,
     private translateService: TranslateService,
+    private otpService: OtpService
   ) {
 
-    if (this.otherDetailsForm.get('motherTongue')) {
-      this.otherDetailsForm.get('motherTongue')!.valueChanges
+    if (this.otherDetailsForm.get('domicileMedium')) {
+      this.otherDetailsForm.get('domicileMedium')!.valueChanges
       .pipe(
         debounceTime(250),
         distinctUntilChanged(),
@@ -157,6 +163,36 @@ export class ProfileViewComponent implements OnInit, AfterViewInit, OnDestroy {
       })
     }
 
+    // To check the email entered by the user is same or not, validating the email to show the Get OTP.
+    if (this.otherDetailsForm.get('officialEmail')) {
+      this.otherDetailsForm.get('officialEmail')!.valueChanges
+      .subscribe(res => {
+        if (res && res !== this.portalProfile.personalDetails.officialEmail) {
+          const emailRegex = /^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/
+          if (emailRegex.test(res)) {
+            this.verifyEmail = true
+          }
+        } else {
+          this.verifyEmail = false
+          // this.otherDetailsForm.setErrors({ valid: false })
+        }
+      })
+    }
+
+    if (this.otherDetailsForm.get('mobile')) {
+      this.otherDetailsForm.get('mobile')!.valueChanges
+      .subscribe(res => {
+        if (res && res !== this.portalProfile.personalDetails.mobile) {
+          const mobileRegex = /^\d{10}$/
+          if (mobileRegex.test(res)) {
+            this.verifyMobile = true
+          }
+        } else {
+          this.verifyMobile = false
+        }
+      })
+    }
+
     this.Math = Math
     this.pageData = this.route.parent && this.route.parent.snapshot.data.pageData.data
     this.currentUser = this.configSvc && this.configSvc.userProfile
@@ -168,23 +204,23 @@ export class ProfileViewComponent implements OnInit, AfterViewInit, OnDestroy {
         this.certificatesData = data.certificates.data
         this.fetchCertificates(this.certificatesData)
       }
-      if (data.profile.data.profileDetails.verifiedKarmayogi === true) {
-        this.verifiedBadge = true
-      }
+      // if (data.profile.data.profileDetails.verifiedKarmayogi === true) {
+      //   this.verifiedBadge = true
+      // }
       if (data.profile.data) {
         this.orgId = data.profile.data.rootOrgId
       }
 
       if (data.profile.data.profileDetails) {
         this.portalProfile = data.profile.data.profileDetails
-      } else {
-        this.portalProfile = data.profile.data
-        _.set(this.portalProfile, 'personalDetails.firstname', _.get(data.profile.data, 'firstName'))
-        // _.set(this.portalProfile, 'personalDetails.surname', _.get(data.profile.data, 'lastName'))
-        _.set(this.portalProfile, 'personalDetails.email', _.get(data.profile.data, 'email'))
-        _.set(this.portalProfile, 'personalDetails.userId', _.get(data.profile.data, 'userId'))
-        _.set(this.portalProfile, 'personalDetails.userName', _.get(data.profile.data, 'userName'))
       }
+      // else {
+      //   this.portalProfile = data.profile.data
+      //   _.set(this.portalProfile, 'personalDetails.firstname', _.get(data.profile.data, 'firstName'))
+      //   _.set(this.portalProfile, 'personalDetails.email', _.get(data.profile.data, 'email'))
+      //   _.set(this.portalProfile, 'personalDetails.userId', _.get(data.profile.data, 'userId'))
+      //   _.set(this.portalProfile, 'personalDetails.userName', _.get(data.profile.data, 'userName'))
+      // }
 
       const user = this.portalProfile.userId || this.portalProfile.id || _.get(data, 'profile.data.id') || ''
       if (this.portalProfile && !(this.portalProfile.id && this.portalProfile.userId)) {
@@ -240,6 +276,7 @@ export class ProfileViewComponent implements OnInit, AfterViewInit, OnDestroy {
       this.getKarmaCount()
     },                                1000)
 
+    // Latest code...
     this.nameInitials = this.currentUser.firstName.charAt(0)
     if (this.currentUser.lastName) {
       this.nameInitials += this.currentUser.lastName.charAt(0)
@@ -247,6 +284,7 @@ export class ProfileViewComponent implements OnInit, AfterViewInit, OnDestroy {
 
     this.getMasterNationality()
     this.getMasterLanguage()
+    this.prefillForm()
   }
 
   ngAfterViewInit() {
@@ -613,13 +651,141 @@ export class ProfileViewComponent implements OnInit, AfterViewInit, OnDestroy {
     return this.translateService.instant(translationKey)
   }
 
+  prefillForm(data ?: any): void {
+    if (data) {
+      this.portalProfile.personalDetails = data
+    }
+    const dateArray = this.portalProfile.personalDetails.dob.split('-')
+    this.dateOfBirth = new Date(`${dateArray[1]}/${dateArray[0]}/${dateArray[2]}`)
+    this.otherDetailsForm.patchValue({
+      officialEmail: this.portalProfile.personalDetails.officialEmail,
+      gender: this.portalProfile.personalDetails.gender && this.portalProfile.personalDetails.gender.toUpperCase(),
+      dob: this.dateOfBirth,
+      domicileMedium: this.portalProfile.personalDetails.domicileMedium,
+      mobile: this.portalProfile.personalDetails.mobile,
+      countryCode: this.portalProfile.personalDetails.countryCode || '+91',
+      pincode: this.portalProfile.personalDetails.pincode,
+      category: this.portalProfile.personalDetails.category && this.portalProfile.personalDetails.category.toUpperCase(),
+    })
+  }
+
+  handleCancelUpdate(): void {
+    this.editDetails = !this.editDetails
+    this.prefillForm()
+  }
+
   handleDateFormat(dateString: string): any {
     const dateArr = dateString.split('-')
     const newDateStr = `${dateArr[1]}/${dateArr[0]}/${dateArr[2]}`
     return moment(new Date(newDateStr)).format('D MMM YYYY')
   }
 
-  handleSaveOtherDetails(): void { }
+  handleVerifyOTP(verifyType: string, _value?: string): void {
+    const dialogRef = this.dialog.open(VerifyOtpComponent, {
+      data: { type: verifyType, value: _value },
+      disableClose: true,
+      panelClass: 'common-modal',
+    })
+
+    dialogRef.componentInstance.resendOTP.subscribe((data: string) => {
+      if (data !== 'email') {
+        this.handleGenerateOTP()
+      }
+    })
+
+    dialogRef.componentInstance.otpVerified.subscribe((data: string) => {
+      if (data === 'email') {
+        this.verifyEmail = false
+      } else {
+        this.verifyMobile = false
+      }
+    })
+  }
+
+  handleGenerateEmailOTP(verifyType?: any): void {
+    this.otpService.sendEmailOtp(this.otherDetailsForm.value['officialEmail'])
+    .pipe(takeUntil(this.destroySubject$))
+    .subscribe((_res: any) => {
+      this.matSnackBar.open('OTP sent to the email')
+      if (verifyType) {
+        this.handleVerifyOTP(verifyType, this.otherDetailsForm.value['officialEmail'])
+      }
+    },         (error: HttpErrorResponse) => {
+      if (!error.ok) {
+        this.matSnackBar.open('Unable to send OTP to given email id, please try again later')
+      }
+    })
+  }
+
+  handleGenerateOTP(verifyType?: string): void {
+    this.otpService.sendOtp(this.otherDetailsForm.value['mobile'])
+    .pipe(takeUntil(this.destroySubject$))
+    .subscribe((_res: any) => {
+      this.matSnackBar.open('OTP sent to the mobile number')
+      if (verifyType) {
+        this.handleVerifyOTP(verifyType, this.otherDetailsForm.value['mobile'])
+      }
+    },         (error: HttpErrorResponse) => {
+      if (!error.ok) {
+        this.matSnackBar.open('Unable to send OTP to given number, please try again later')
+      }
+    })
+  }
+
+  handleSaveOtherDetails(): void {
+    const dataToSubmit = { ...this.otherDetailsForm.value }
+    dataToSubmit.dob = `${dataToSubmit.dob.getDate()}-${dataToSubmit.dob.getMonth() + 1}-${dataToSubmit.dob.getFullYear()}`
+    delete dataToSubmit.countryCode
+
+    const payload = {
+      'request': {
+        'userId': this.configSvc.unMappedUser.id,
+        'profileDetails': {
+          'personalDetails': {},
+        },
+      },
+    }
+    payload.request.profileDetails.personalDetails = dataToSubmit
+    this.userProfileService.editProfileDetails(payload)
+    .pipe(takeUntil(this.destroySubject$))
+    .subscribe((_res: any) => {
+      this.matSnackBar.open('User details updated successfully!')
+      this.editDetails = !this.editDetails
+      this.prefillForm(dataToSubmit)
+    },         (error: HttpErrorResponse) => {
+      if (!error.ok) {
+        this.matSnackBar.open('Unable to update user profile details, please try again!')
+        this.editDetails = !this.editDetails
+        this.prefillForm()
+      }
+    })
+  }
+
+  handleTransferRequest(): void {
+    this.dialog.open(TransferRequestComponent, {
+      data: { portalProfile : this.portalProfile, currentUser: this.currentUser },
+      disableClose: true,
+      panelClass: 'common-modal',
+    })
+  }
+
+  handleEmpty(type: string): void {
+    if (type === 'mobile') {
+      if (this.portalProfile.personalDetails.mobile && !this.otherDetailsForm.value['mobile']) {
+        this.otherDetailsForm.setErrors({ valid: false })
+      }
+    }
+
+    if (type === 'officialEmail') {
+      // const emailRegex = /^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/
+      // if (!emailRegex.test(this.otherDetailsForm.value['officialEmail'])) {
+      //   this.otherDetailsForm.setErrors({ valid: false })
+      // }
+      if (!this.portalProfile.personalDetails.officialEmail && !this.otherDetailsForm.value['officialEmail']) {
+        this.otherDetailsForm.setErrors({ valid: false })
+      }
+    }
+  }
 
   ngOnDestroy() {
     if (this.tabs) {
