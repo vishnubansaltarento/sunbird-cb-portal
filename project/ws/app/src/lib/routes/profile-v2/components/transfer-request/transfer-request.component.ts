@@ -49,7 +49,7 @@ export class TransferRequestComponent implements OnInit, OnDestroy {
     this.getAllDeptData()
     this.getProfilePageMetaData()
 
-    // Working on fork join... 
+    // Working on fork join...
     // const source = [
     //   this.userProfileService.getProfilePageMeta(),
     //   this.userProfileService.getGroups(),

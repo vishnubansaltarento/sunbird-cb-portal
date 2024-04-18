@@ -657,7 +657,7 @@ export class ProfileViewComponent implements OnInit, AfterViewInit, OnDestroy {
     if (data) {
       this.portalProfile.personalDetails = data
     }
-    
+
     if (this.portalProfile.personalDetails.dob) {
       const dateArray = this.portalProfile.personalDetails.dob.split('-')
       this.dateOfBirth = new Date(`${dateArray[1]}/${dateArray[0]}/${dateArray[2]}`)
