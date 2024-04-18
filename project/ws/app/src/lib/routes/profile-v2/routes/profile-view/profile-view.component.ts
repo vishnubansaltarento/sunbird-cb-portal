@@ -279,9 +279,14 @@ export class ProfileViewComponent implements OnInit, AfterViewInit, OnDestroy {
     // Latest code...
     if (this.currentUser.lastName) {
       this.nameInitials = this.currentUser.firstName.charAt(0) + this.currentUser.lastName.charAt(0)
-    } else {
-      const nameArr = this.currentUser.firstName.split(' ')
-      this.nameInitials  = nameArr[0].charAt(0) + nameArr[1].charAt(0)
+    }
+    if (this.currentUser.firstName) {
+      if (this.currentUser.firstName.split(' ').length) {
+        const nameArr = this.currentUser.firstName.split(' ')
+        this.nameInitials = nameArr[0].charAt(0) + nameArr[1].charAt(0)
+      } else {
+        this.nameInitials = this.currentUser.firstName.charAt(0)
+      }
     }
 
     this.getMasterNationality()
