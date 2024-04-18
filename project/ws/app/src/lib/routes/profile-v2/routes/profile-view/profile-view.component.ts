@@ -109,7 +109,7 @@ export class ProfileViewComponent implements OnInit, AfterViewInit, OnDestroy {
   masterLanguageBackup: any[] | undefined
   dateOfBirth: any | undefined
   otherDetailsForm = new FormGroup({
-    officialEmail: new FormControl('', [Validators.pattern(/^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/)]),
+    primaryEmail: new FormControl('', [Validators.pattern(/^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/)]),
     mobile: new FormControl('', [Validators.minLength(10), Validators.maxLength(10)]),
     gender: new FormControl('', []),
     dob: new FormControl('', []),
@@ -164,10 +164,10 @@ export class ProfileViewComponent implements OnInit, AfterViewInit, OnDestroy {
     }
 
     // To check the email entered by the user is same or not, validating the email to show the Get OTP.
-    if (this.otherDetailsForm.get('officialEmail')) {
-      this.otherDetailsForm.get('officialEmail')!.valueChanges
+    if (this.otherDetailsForm.get('primaryEmail')) {
+      this.otherDetailsForm.get('primaryEmail')!.valueChanges
       .subscribe(res => {
-        if (res && res !== this.portalProfile.personalDetails.officialEmail) {
+        if (res && res !== this.portalProfile.personalDetails.primaryEmail) {
           const emailRegex = /^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/
           if (emailRegex.test(res)) {
             this.verifyEmail = true
@@ -277,9 +277,11 @@ export class ProfileViewComponent implements OnInit, AfterViewInit, OnDestroy {
     },                                1000)
 
     // Latest code...
-    this.nameInitials = this.currentUser.firstName.charAt(0)
     if (this.currentUser.lastName) {
-      this.nameInitials += this.currentUser.lastName.charAt(0)
+      this.nameInitials = this.currentUser.firstName.charAt(0) + this.currentUser.lastName.charAt(0)
+    } else {
+      const nameArr = this.currentUser.firstName.split(' ')
+      this.nameInitials  = nameArr[0].charAt(0) + nameArr[1].charAt(0)
     }
 
     this.getMasterNationality()
@@ -655,10 +657,13 @@ export class ProfileViewComponent implements OnInit, AfterViewInit, OnDestroy {
     if (data) {
       this.portalProfile.personalDetails = data
     }
-    const dateArray = this.portalProfile.personalDetails.dob.split('-')
-    this.dateOfBirth = new Date(`${dateArray[1]}/${dateArray[0]}/${dateArray[2]}`)
+    
+    if (this.portalProfile.personalDetails.dob) {
+      const dateArray = this.portalProfile.personalDetails.dob.split('-')
+      this.dateOfBirth = new Date(`${dateArray[1]}/${dateArray[0]}/${dateArray[2]}`)
+    }
     this.otherDetailsForm.patchValue({
-      officialEmail: this.portalProfile.personalDetails.officialEmail,
+      primaryEmail: this.portalProfile.personalDetails.primaryEmail,
       gender: this.portalProfile.personalDetails.gender && this.portalProfile.personalDetails.gender.toUpperCase(),
       dob: this.dateOfBirth,
       domicileMedium: this.portalProfile.personalDetails.domicileMedium,
@@ -703,12 +708,12 @@ export class ProfileViewComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   handleGenerateEmailOTP(verifyType?: any): void {
-    this.otpService.sendEmailOtp(this.otherDetailsForm.value['officialEmail'])
+    this.otpService.sendEmailOtp(this.otherDetailsForm.value['primaryEmail'])
     .pipe(takeUntil(this.destroySubject$))
     .subscribe((_res: any) => {
       this.matSnackBar.open('OTP sent to the email')
       if (verifyType) {
-        this.handleVerifyOTP(verifyType, this.otherDetailsForm.value['officialEmail'])
+        this.handleVerifyOTP(verifyType, this.otherDetailsForm.value['primaryEmail'])
       }
     },         (error: HttpErrorResponse) => {
       if (!error.ok) {
@@ -776,12 +781,8 @@ export class ProfileViewComponent implements OnInit, AfterViewInit, OnDestroy {
       }
     }
 
-    if (type === 'officialEmail') {
-      // const emailRegex = /^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/
-      // if (!emailRegex.test(this.otherDetailsForm.value['officialEmail'])) {
-      //   this.otherDetailsForm.setErrors({ valid: false })
-      // }
-      if (!this.portalProfile.personalDetails.officialEmail && !this.otherDetailsForm.value['officialEmail']) {
+    if (type === 'primaryEmail') {
+      if (!this.portalProfile.personalDetails.primaryEmail && !this.otherDetailsForm.value['primaryEmail']) {
         this.otherDetailsForm.setErrors({ valid: false })
       }
     }
