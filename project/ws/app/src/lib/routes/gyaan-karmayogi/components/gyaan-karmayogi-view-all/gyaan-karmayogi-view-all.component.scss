@@ -9,15 +9,14 @@
     width: 282px;
     border-radius: 12px 0px 0px 0px;
     border: 1px 0px 0px 0px;
-    opacity: 0px;
     background: rgba(255, 255, 255, 1);
     padding: 16px;
     p.title {
        font-family: Montserrat;
-font-size: 16px;
-font-weight: 600;
-line-height: 19.5px;
-text-align: left;
+        font-size: 16px;
+        font-weight: 600;
+        line-height: 19.5px;
+        text-align: left;
 
 
     }
@@ -38,7 +37,6 @@ text-align: left;
                 height: 42px;
                 padding-left: 48px;
                 border-radius: 4px;
-                opacity: 0px;
                 border: 1px solid rgba(0, 0, 0, 0.16)
             }
             mat-icon{
@@ -73,7 +71,6 @@ text-align: left;
         height: Fixed (40px)px;
         padding: 12px 32px 12px 32px;
         gap: 8px;
-        opacity: 0px;
         border-radius: 24px;
         border: none;
 
