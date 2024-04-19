@@ -1,0 +1,96 @@
+<div class="filter-wrapper">
+    <p class="title mb-4">Filter by</p>
+    <ng-container *ngIf="!filterDataLoading">
+        <ng-container *ngFor="let facet of facetsData  | keyvalue:returnZero">
+            <div class="individual-block">
+                <p class="title mb-4">{{facet.value.name}}</p>
+                <div class="search-filter mb-2">
+                    <input type="text" (keyup)="getSearch($event, facet?.key)" placeholder="Search {{facet?.value?.name}}">
+                    <mat-icon>search</mat-icon>
+                </div>
+                <div class="list mb-4">
+                    <ng-container *ngIf="facet?.value?.values?.length;else noData">
+                        <ng-container *ngFor="let sectors of facet?.value?.values">
+                            <div class="check-list">
+                                <mat-checkbox [checked]="sectors?.checked" (change)="changeSelection($event?.checked,facet?.key, sectors)" class="text-capitalize">{{sectors.name}}</mat-checkbox>
+                            </div>
+                        </ng-container>
+                    </ng-container>
+                    <ng-template #noData>
+                        <span class="text-captalize">No {{facet?.value?.name}}</span>
+                    </ng-template>
+                </div>
+                
+            </div>
+        </ng-container>
+
+    </ng-container>
+    <ng-container *ngIf="filterDataLoading">
+        <ng-container [ngTemplateOutlet]="skeletonLoader"></ng-container>
+    </ng-container>
+    <!-- <div class="individual-block">
+        <p class="title">Sectors</p>
+        <div class="search-filter">
+            <input type="text" placeholder="Search sector">
+            <mat-icon>search</mat-icon>
+        </div>
+        <div class="list">
+            <ng-container *ngFor="let sectors of sectorsList">
+                <div class="check-list">
+                    <mat-checkbox [checked]="sectors?.completed">{{sectors?.label}}</mat-checkbox>
+                </div>
+            </ng-container>
+        </div>
+    </div> -->
+</div>
+
+<ng-template #skeletonLoader>
+    <div class="mb-4">
+        <ws-widget-skeleton-loader [width]="'60px'" [height]="'16px'" [bindingClass]="'flex rounded mb-2'"></ws-widget-skeleton-loader>
+        <ws-widget-skeleton-loader [width]="'100%'" [height]="'48px'" [bindingClass]="'flex rounded mb-2'"></ws-widget-skeleton-loader>
+        <div class="flex w-full">
+            <ws-widget-skeleton-loader [width]="'16px'" [height]="'16px'" [bindingClass]="'mb-2 mr-2'"></ws-widget-skeleton-loader>
+            <ws-widget-skeleton-loader [width]="'120px'" [height]="'16px'" [bindingClass]="'mb-2'"></ws-widget-skeleton-loader>
+        </div>
+        <div class="flex w-full">
+            <ws-widget-skeleton-loader [width]="'16px'" [height]="'16px'" [bindingClass]="'mb-2 mr-2'"></ws-widget-skeleton-loader>
+            <ws-widget-skeleton-loader [width]="'120px'" [height]="'16px'" [bindingClass]="'mb-2'"></ws-widget-skeleton-loader>
+        </div>
+        <div class="flex w-full">
+            <ws-widget-skeleton-loader [width]="'16px'" [height]="'16px'" [bindingClass]="'mb-2 mr-2'"></ws-widget-skeleton-loader>
+            <ws-widget-skeleton-loader [width]="'120px'" [height]="'16px'" [bindingClass]="'mb-2'"></ws-widget-skeleton-loader>
+        </div>
+    </div>
+    <div class="mb-4">
+        <ws-widget-skeleton-loader [width]="'60px'" [height]="'16px'" [bindingClass]="'flex rounded mb-2'"></ws-widget-skeleton-loader>
+        <ws-widget-skeleton-loader [width]="'100%'" [height]="'48px'" [bindingClass]="'flex rounded mb-2'"></ws-widget-skeleton-loader>
+        <div class="flex w-full">
+            <ws-widget-skeleton-loader [width]="'16px'" [height]="'16px'" [bindingClass]="'mb-2 mr-2'"></ws-widget-skeleton-loader>
+            <ws-widget-skeleton-loader [width]="'120px'" [height]="'16px'" [bindingClass]="'mb-2'"></ws-widget-skeleton-loader>
+        </div>
+        <div class="flex w-full">
+            <ws-widget-skeleton-loader [width]="'16px'" [height]="'16px'" [bindingClass]="'mb-2 mr-2'"></ws-widget-skeleton-loader>
+            <ws-widget-skeleton-loader [width]="'120px'" [height]="'16px'" [bindingClass]="'mb-2'"></ws-widget-skeleton-loader>
+        </div>
+        <div class="flex w-full">
+            <ws-widget-skeleton-loader [width]="'16px'" [height]="'16px'" [bindingClass]="'mb-2 mr-2'"></ws-widget-skeleton-loader>
+            <ws-widget-skeleton-loader [width]="'120px'" [height]="'16px'" [bindingClass]="'mb-2'"></ws-widget-skeleton-loader>
+        </div>
+    </div>
+    <div class="mb-4">
+        <ws-widget-skeleton-loader [width]="'60px'" [height]="'16px'" [bindingClass]="'flex rounded mb-2'"></ws-widget-skeleton-loader>
+        <ws-widget-skeleton-loader [width]="'100%'" [height]="'48px'" [bindingClass]="'flex rounded mb-2'"></ws-widget-skeleton-loader>
+        <div class="flex w-full">
+            <ws-widget-skeleton-loader [width]="'16px'" [height]="'16px'" [bindingClass]="'mb-2 mr-2'"></ws-widget-skeleton-loader>
+            <ws-widget-skeleton-loader [width]="'120px'" [height]="'16px'" [bindingClass]="'mb-2'"></ws-widget-skeleton-loader>
+        </div>
+        <div class="flex w-full">
+            <ws-widget-skeleton-loader [width]="'16px'" [height]="'16px'" [bindingClass]="'mb-2 mr-2'"></ws-widget-skeleton-loader>
+            <ws-widget-skeleton-loader [width]="'120px'" [height]="'16px'" [bindingClass]="'mb-2'"></ws-widget-skeleton-loader>
+        </div>
+        <div class="flex w-full">
+            <ws-widget-skeleton-loader [width]="'16px'" [height]="'16px'" [bindingClass]="'mb-2 mr-2'"></ws-widget-skeleton-loader>
+            <ws-widget-skeleton-loader [width]="'120px'" [height]="'16px'" [bindingClass]="'mb-2'"></ws-widget-skeleton-loader>
+        </div>
+    </div>
+</ng-template>

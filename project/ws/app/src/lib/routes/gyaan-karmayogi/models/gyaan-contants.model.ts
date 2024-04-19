@@ -13,5 +13,5 @@ export const gyaanConstants = {
         'rgba(58, 131, 207, 0.16)',
         'rgba(91, 58, 27, 0.16)',
     ],
-    emptyArray:[1, 2, 3, 4, 5, 6, 7, 7, 8, 9, 10]
+    emptyArray: [1, 2, 3, 4, 5, 6, 7, 7, 8, 9, 10],
 }

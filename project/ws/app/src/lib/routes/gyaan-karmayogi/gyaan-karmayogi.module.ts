@@ -1,13 +1,13 @@
 import { NgModule } from '@angular/core'
-import { CommonModule } from '@angular/common'
+import { CommonModule, TitleCasePipe } from '@angular/common'
 
-import { MatFormFieldModule, MatIconModule, MatCheckboxModule, MatInputModule, MatSelectModule, MatSidenavModule } from '@angular/material'
+import { MatFormFieldModule, MatIconModule, MatCheckboxModule, MatInputModule, MatSelectModule, MatSidenavModule, MatBottomSheetModule } from '@angular/material'
 import { GyaanKarmayogiRoutingModule } from './gyaan-karmayogi-routing.module'
 import { GyaanKarmayogiHomeComponent } from './components/gyaan-karmayogi-home/gyaan-karmayogi-home.component'
 import { TranslateLoader, TranslateModule } from '@ngx-translate/core'
 import { HttpClient } from '@angular/common/http'
 import { TranslateHttpLoader } from '@ngx-translate/http-loader'
-import { ContentStripWithTabsModule } from '@sunbird-cb/collection/src/public-api'
+import { BtnPageBackModule, ContentStripWithTabsModule } from '@sunbird-cb/collection/src/public-api'
 import { PdfModule } from '@ws/viewer/src/lib/routes/pdf/pdf.module'
 import { GyaanPlayerComponent } from './components/gyaan-player/gyaan-player.component'
 import { GyaanKarmayogiComponent } from './gyaan-karmayogi.component'
@@ -22,6 +22,9 @@ import { GyaanVideoComponent } from './components/players/gyaan-video/gyaan-vide
 import { VideoModule } from '@ws/viewer/src/lib/routes/video/video.module'
 import { ViewerDataService } from '@ws/viewer/src/public-api'
 import { ReactiveFormsModule } from '@angular/forms'
+import { SkeletonLoaderModule } from '@sunbird-cb/collection/src/lib/_common/skeleton-loader/skeleton-loader.module'
+import { ShareTocModule } from '../app-toc/share-toc/share-toc.module'
+import { GyaanFilterComponent } from './components/gyaan-filter/gyaan-filter.component'
 
 // tslint:disable-next-line:function-name
 export function HttpLoaderFactory(http: HttpClient) {
@@ -31,7 +34,7 @@ export function HttpLoaderFactory(http: HttpClient) {
 @NgModule({
   declarations: [GyaanKarmayogiHomeComponent, GyaanPlayerComponent,
     GyaanKarmayogiComponent, GyaanKarmayogiViewAllComponent,
-     PdfComponent, GyaanVideoComponent],
+     PdfComponent, GyaanVideoComponent, GyaanFilterComponent],
   imports: [
     CommonModule,
     MatFormFieldModule,
@@ -47,6 +50,10 @@ export function HttpLoaderFactory(http: HttpClient) {
     VideoModule,
     MatSidenavModule,
     ReactiveFormsModule,
+    SkeletonLoaderModule,
+    BtnPageBackModule,
+    ShareTocModule,
+    MatBottomSheetModule,
    TranslateModule.forChild({
       loader: {
         provide: TranslateLoader,
@@ -55,6 +62,9 @@ export function HttpLoaderFactory(http: HttpClient) {
       },
     }),
   ],
-  providers: [ViewerResolve, PdfScormDataService, GyaanKarmayogiService, ViewerDataService],
+  entryComponents: [
+    GyaanFilterComponent,
+  ],
+  providers: [ViewerResolve, TitleCasePipe, PdfScormDataService, GyaanKarmayogiService, ViewerDataService],
 })
 export class GyaanKarmayogiModule { }
