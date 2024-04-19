@@ -1,10 +1,8 @@
-import { NgModule } from '@angular/core';
-import { CommonModule } from '@angular/common';
-import { MicrosotesComponent } from './microsotes.component';
-import { MatIconModule } from '@angular/material';
-import { ContentStripWithTabsModule, SlidersModule } from '@sunbird-cb/collection/src/public-api';
-
-
+import { NgModule } from '@angular/core'
+import { CommonModule } from '@angular/common'
+import { MicrosotesComponent } from './microsotes.component'
+import { MatIconModule } from '@angular/material'
+import { ContentStripWithTabsModule, SlidersModule } from '@sunbird-cb/collection/src/public-api'
 
 @NgModule({
   declarations: [MicrosotesComponent],
@@ -13,6 +11,6 @@ import { ContentStripWithTabsModule, SlidersModule } from '@sunbird-cb/collectio
     MatIconModule,
     SlidersModule,
     ContentStripWithTabsModule,
-  ]
+  ],
 })
 export class MicrositesModule { }
