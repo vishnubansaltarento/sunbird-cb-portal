@@ -1,34 +1,27 @@
+<ws-widget-btn-page-back
+[widgetData]="{ url: 'home', titles: titles  }">
+</ws-widget-btn-page-back>
+
 <div class="gyann-wrapper">
     <div class="flex ">
         <div class="container-balanced w-full">
+            <div class="block md:hidden">
+                <div class="flex items-center justify-between search-block m-2 md:mb-0 md:mt-16">
+                    <input type="text" placeholder="Search in Gyaan Karmayogi" [formControl]="searchControl"  class="flex-1">
+                    <mat-icon (click)="openBottomSheet()" class="">filter_list</mat-icon>
+                </div>
+            </div>
             <div class="grid grid-cols-12 gap-4">
-                <div class="col-span-9">
-                    <div class="flex flex-row flex-wrap content-container" >
+                <div class="col-span-12 md:col-span-9">
+                    <div class="flex flex-row flex-wrap justify-center md:justify-start content-container" >
                         <div class="mr-2 mb-5" *ngFor="let c of contentDataList">
-                            <ws-widget-card-content-v2 [widgetData]="c.widgetData"> </ws-widget-card-content-v2>
+                            <ws-widget-card-content-v2 [widgetData]="c?.widgetData"> </ws-widget-card-content-v2>
                         </div>
                     </div>
                 </div>
 
-                <div class="col-span-3">
-<div class="filter-wrapper">
-    <p class="title">Filter by</p>
-    <div class="individual-block">
-        <p class="title">Sectors</p>
-        <div class="search-filter">
-            <input type="text" placeholder="Search sector">
-            <mat-icon>search</mat-icon>
-        </div>
-        <div class="list">
-            <ng-container *ngFor="let sectors of sectorsList">
-                <div class="check-list">
-                    <mat-checkbox [checked]="sectors.completed">{{sectors.label}}</mat-checkbox>
-                </div>
-            </ng-container>
-        </div>
-        
-    </div>
-</div>
+                <div class="col-span-3 hidden md:block">
+                    <ws-app-gyaan-filter (filterChange)="filterChange($event)" [filterDataLoading]="filterDataLoading" [facetsDataCopy]="facetsDataCopy"  [facetsData]="facetsData"></ws-app-gyaan-filter>
                 </div>
             </div>
         </div>

@@ -4,6 +4,11 @@ import { GyaanKarmayogiService } from '../../services/gyaan-karmayogi.service'
 import { NsContent } from '@sunbird-cb/utils/src/public-api'
 import * as _ from 'lodash'
 import { gyaanConstants } from '../../models/gyaan-contants.model'
+import { TitleCasePipe } from '@angular/common'
+import { FormControl } from '@angular/forms'
+
+import { MatBottomSheet } from '@angular/material'
+import { GyaanFilterComponent } from '../gyaan-filter/gyaan-filter.component'
 
 @Component({
   selector: 'ws-app-gyaan-karmayogi-view-all',
@@ -11,63 +16,47 @@ import { gyaanConstants } from '../../models/gyaan-contants.model'
   styleUrls: ['./gyaan-karmayogi-view-all.component.scss'],
 })
 export class GyaanKarmayogiViewAllComponent implements OnInit {
-  sectorsList = [{
-    label: 'All Sectors',
-  },
-  {
-    label: 'Education',
-    bgColor: 'rgba(24, 68, 106, 0.16)',
-  },
-  {
-    label: 'Agriculture & Allied Services',
-    bgColor: 'rgba(50, 183, 118, 0.16)',
-  },
-  {
-    label: 'Energy',
-    bgColor: 'rgba(239, 149, 30, 0.16)',
-  },
-  {
-    label: 'Health & Nutrition',
-    bgColor: 'rgba(233, 77, 19, 0.16)',
-  },
-  {
-    label: 'Urbanization',
-    bgColor: 'rgba(27, 33, 51, 0.16)',
-  },
-  {
-    label: 'Water & Wash',
-    bgColor: 'rgba(88, 209, 209, 0.16)',
-  },
-  {
-    label: 'MSME',
-    bgColor: 'rgba(58, 131, 207, 0.16)',
-  },
-  {
-    label: 'Manufacturing',
-    bgColor: 'rgba(91, 58, 27, 0.16)',
-  },
+  sectorsList = []
+  keyData: any
+  filterDataLoading = false
+  searchControl = new FormControl('')
+  contentDataList: any = []
+  seeAllPageConfig: any
+  facetsData: any
+  facetsDataCopy: any
+  titles: any = []
+  selectedFilter: any = {}
+  constructor(private bottomSheet: MatBottomSheet,
+              private route: ActivatedRoute,
+              private seeAllSvc: GyaanKarmayogiService,
+              public titleCasePipe: TitleCasePipe) { }
 
-]
-contentDataList: any = []
-seeAllPageConfig: any
-  constructor(private route: ActivatedRoute, private seeAllSvc: GyaanKarmayogiService) { }
+  async ngOnInit() {
+    this.route.queryParams.subscribe((res: any) => {
+      this.keyData = (res.key) ? res.key : ''
+      this.titles = [
+        { title: 'Gyaan Karmayogi', url: '/app/gyaan-karmayogi/all', disableTranslate: true, icon: 'school' },
+        { title: this.titleCasePipe.transform(this.keyData), url: `none`, icon: '' },
+      ]
+      this.getFacetsData()
+  })
 
-  ngOnInit() {
-    this.seeAllPageConfig = this.route.snapshot.data.pageData && 
+    this.seeAllPageConfig = this.route.snapshot.data.pageData &&
     this.route.snapshot.data.pageData.data &&
     this.route.snapshot.data.pageData.data.stripConfig &&
-    this.route.snapshot.data.pageData.data.stripConfig.strips && 
+    this.route.snapshot.data.pageData.data.stripConfig.strips &&
     this.route.snapshot.data.pageData.data.stripConfig.strips[0]
 
     this.contentDataList = this.transformSkeletonToWidgets(this.seeAllPageConfig)
     if (this.seeAllPageConfig.request && this.seeAllPageConfig.request.searchV6) {
       this.fetchFromSearchV6(this.seeAllPageConfig)
-      this.seeAllPageConfig.request.searchV6.request.filters =
-      this.seeAllPageConfig.request.searchV6.request.filters
+      this.seeAllPageConfig.request.searchV6.request.filters = {
+        ...this.seeAllPageConfig.request.searchV6.request.filters,
+      }
     }
   }
-
-    private transformSkeletonToWidgets(
+  // the below method is used to convert cards to skeleton loader
+  private transformSkeletonToWidgets(
     strip: any
   ) {
     return gyaanConstants.emptyArray.map(_content => ({
@@ -81,6 +70,8 @@ seeAllPageConfig: any
       },
     }))
   }
+
+  // the below method is used to convert contents to widgetcard data
   private transformContentsToWidgets(
         contents: NsContent.IContent[],
         strip: any,
@@ -108,37 +99,50 @@ seeAllPageConfig: any
         }))
       }
 
+  // the below method is used to fetch data search api as promise
   async fetchFromSearchV6(strip: any, calculateParentStatus = true) {
-        if (strip.request && strip.request.searchV6 && Object.keys(strip.request.searchV6).length) {
-          // let originalFilters: any = []
-          if (strip.request &&
-            strip.request.searchV6 &&
-            strip.request.searchV6.request &&
-            strip.request.searchV6.request.filters) {
-            // originalFilters = strip.request.searchV6.request.filters
-            // strip.request.searchV6.request.filters = this.checkForDateFilters(strip.request.searchV6.request.filters)
-            // strip.request.searchV6.request.filters = this.getFiltersFromArray(
-            //   strip.request.searchV6.request.filters,
-            // )
-            // strip.request.searchV6.request.offset = this.offsetForPage
-          }
-
-          try {
-            const response = await this.searchV6Request(strip, strip.request, calculateParentStatus)
-            if (response && response.results) {
-              if (this.contentDataList.length && this.contentDataList[0].widgetData.content) {
-                this.contentDataList =
-                _.concat(this.contentDataList, this.transformContentsToWidgets(response.results.result.content, strip))
-              } else {
-                this.contentDataList = this.transformContentsToWidgets(response.results.result.content, strip)
-              }
-              // this.totalCount = response.results.result.count
-              // this.totalPages = Math.ceil(response.results.result.count / strip.request.searchV6.request.limit)
-            }
-          } catch (error) {}
-
+    const factes = {
+      'facets': [
+        'resourceCategory',
+        'subSectorName',
+        'sectorName',
+    ],
+    }
+    const addFilter = {
+      'resourceCategory': this.keyData,
+    }
+    if (strip.request && strip.request.searchV6 && Object.keys(strip.request.searchV6).length) {
+      if (strip.request &&
+        strip.request.searchV6 &&
+        strip.request.searchV6.request &&
+        strip.request.searchV6.request.filters) {
+        strip.request.searchV6.request.filters = {
+          ...strip.request.searchV6.request.filters,
+          ...addFilter,
+          ...this.selectedFilter,
+        }
+        strip.request.searchV6.request = {
+          ...strip.request.searchV6.request,
+          ...factes,
         }
       }
+
+      try {
+        const response = await this.searchV6Request(strip, strip.request, calculateParentStatus)
+        if (response && response.results) {
+          if (this.contentDataList.length && this.contentDataList[0].widgetData.content) {
+            this.contentDataList =
+            _.concat(this.contentDataList, this.transformContentsToWidgets(response.results.result.content, strip))
+          } else {
+            this.contentDataList = this.transformContentsToWidgets(response.results.result.content, strip)
+          }
+          // this.totalCount = response.results.result.count
+          // this.totalPages = Math.ceil(response.results.result.count / strip.request.searchV6.request.limit)
+        }
+      } catch (error) {}
+
+    }
+  }
 
   async searchV6Request(strip: any,
                         request: any,
@@ -181,7 +185,8 @@ seeAllPageConfig: any
       }
     })
   }
-    private transformSearchV6FiltersV2(v6filters: any) {
+  // search request filter form
+  private transformSearchV6FiltersV2(v6filters: any) {
     const filters: any = {}
     if (v6filters.constructor === Array) {
       v6filters.forEach(((f: any) => {
@@ -192,5 +197,80 @@ seeAllPageConfig: any
       return filters
     }
     return v6filters
+  }
+
+  // the bellow method is used to get initial facet data to filters
+  getFacetsData() {
+    this.filterDataLoading = true
+    const request = this.route.snapshot.data.pageData &&
+    this.route.snapshot.data.pageData.data &&
+    this.route.snapshot.data.pageData.data.facetReqData &&
+    this.route.snapshot.data.pageData.data.facetReqData
+    this.seeAllSvc.searchV6(request).subscribe((response: any) => {
+      if (response &&  response.result &&
+         response.result.facets) {
+          const localFacetData: any = {
+            sectorName: {
+              name: 'Sector',
+              values: 'values',
+            },
+            subSectorName: {
+              name: 'Sub sector',
+              values: 'values',
+            },
+            resourceCategory: {
+              name: 'Category',
+              values: 'values',
+            },
+          }
+          response.result.facets.forEach((facet: any) => {
+            if (localFacetData[facet.name]) {
+              facet.values.forEach((item: any) => {
+                if (item.name === this.keyData.toLowerCase()) {
+                  item['checked'] = true
+                  this.selectedFilter['resourceCategory'] = [item.name]
+                }
+              })
+              localFacetData[facet.name].values = facet.values
+            }
+          })
+
+          this.facetsData = localFacetData
+          this.facetsDataCopy = localFacetData
+
+         }
+         this.filterDataLoading = false
+    },                                         (_error: any) => {
+
+    })
+  }
+
+  // the below method is used to get emitted value from filter component
+  filterChange(event: any) {
+    this.changeSelection(event.event, event.key, event.keyData)
+  }
+
+  // the below method used to form the filters and call api
+  changeSelection(event: any, key: any, keyData: any) {
+    keyData['checked'] = event
+    if (this.selectedFilter[key] && this.selectedFilter[key].includes(keyData.name)) {
+      const index = this.selectedFilter[key].findIndex((x: any) => x === keyData.name)
+      this.selectedFilter[key].splice(index, 1)
+    } else {
+      if (this.selectedFilter[key] && this.selectedFilter[key].length) {
+        this.selectedFilter[key].push(keyData.name)
+      } else {
+        this.selectedFilter[key] = [keyData.name]
+      }
+    }
+    this.contentDataList = this.transformSkeletonToWidgets(this.seeAllPageConfig)
+    if (this.seeAllPageConfig.request && this.seeAllPageConfig.request.searchV6) {
+      this.fetchFromSearchV6(this.seeAllPageConfig)
+    }
+  }
+
+  // Bottom sheet open only in mobileview
+  openBottomSheet(): void {
+    this.bottomSheet.open(GyaanFilterComponent)
   }
 }

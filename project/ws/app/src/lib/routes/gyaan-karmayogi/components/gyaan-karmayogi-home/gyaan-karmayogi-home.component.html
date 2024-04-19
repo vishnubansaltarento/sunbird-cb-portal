@@ -3,7 +3,7 @@
     <div >
         <div class="flex flex-center headder-block">
             <div class="container-balanced">
-                <div class="grid grid-cols-2">
+                <div class="grid 2 md:grid-cols-2">
                     <div class="">
                         <p class="title mat-display-1 mb-2">{{'gyaanKarmayogi.title'| translate}}</p>
                         <p class="description mat-title">{{'gyaanKarmayogi.description'| translate}}</p>
@@ -28,25 +28,31 @@
     </div>
 
     
-    <div class="flex flex-center mt-8 mb-8">
+    <div class="flex flex-center mt-8 mb-8 p-2 md:p-0" *ngIf="sectorsList?.length > 1">
         <div class="container-balanced w-full">
-          <div class="flex sector-section justify-start items-start gap-2">
-            <div class="flex">
+            <div class="flex items-center justify-between sector-headding">
+                <p>Sectors</p>
+                <p *ngIf="sectorsList?.length > 9" class="flex items-center view-all">View All
+                    <mat-icon>chevron_right</mat-icon>
+                </p>
+            </div>
+          <div class="flex sector-section  justify-start items-start gap-2">
+            <div class="flex all-sector-wrapper col-span-2">
                 <div class="all-sector flex items-center justify-center {{sectorsList[0]?.name === selectedSector? 'selected-sector': ''}}" 
                  (click)="sectorFilter(sectorsList[0],'all')" >
                     {{sectorsList[0]?.name}}
                 </div> 
             </div>
-            <div class="flex flex-wrap gap-2">
-                <ng-container *ngFor="let sector of sectorsList|slice: 1:(sectorsList.length)">
-                   <div class="each-sector flex items-center justify-center {{sector?.name === selectedSector? 'selected-sector': ''}}"
+            <div class="grid grid-cols-2 md:grid-cols-4 w-full grid-flow-row  gap-2">
+                <ng-container *ngFor="let sector of sectorsList|slice: 1:9">
+                   <div class="each-sector flex items-center justify-start  {{sector?.name === selectedSector? 'selected-sector': ''}}"
                     (click)="sectorFilter(sector)" [style.background]="sector?.bgColor">
+                    <img class="mr-3" width="24px" height="25px" src="{{sector?.imgUrl}}" alt="">
                     {{sector?.name}}
                    </div> 
                 </ng-container>
             </div>
           </div>
-
         </div>
     </div>
     <div class="flex flex-center filter-section pt-4 pb-4 bg-primary">
@@ -54,11 +60,11 @@
             <!-- {{gyaanForm.value |json}} -->
             <ng-container *ngIf="gyaanForm">
                 <form [formGroup]="gyaanForm" (ngSubmit)="applyFilter(gyaanForm)">
-                    <div class="flex gap-2 items-end justify-between">
+                    <div class="flex gap-2 items-center flex-col md:flex-row md:items-end justify-between">
                             <div class="flex flex-col">
                                 <label for="">Sectors</label>
                                 <mat-form-field  appearance="outline"  class="filter-select">
-                                    <mat-select name="sectors" placeholder="Sector" (selectionChange)="doSomething($event)" formControlName="sectors">
+                                    <mat-select name="sectors" placeholder="Sector" (selectionChange)="sectorChange($event)" formControlName="sectors">
                                         <ng-container *ngFor="let sector of sectorsList">
                                             <mat-option [value]="sector">{{sector?.name}}</mat-option>
                                         </ng-container>
@@ -68,7 +74,7 @@
                             <div class="flex flex-col">
                                 <label for="">Sub-sectors</label>
                                 <mat-form-field   appearance="outline" class="filter-select">
-                                    <mat-select name="subSectors" placeholder="Sub-sectors" formControlName="subSectors" >
+                                    <mat-select name="subSectors" placeholder="Sub-sectors" (selectionChange)="subSectorChange($event)" formControlName="subSectors" >
                                     <ng-container *ngFor="let subData of subSector">
                                         <mat-option [value]="subData?.name">{{subData?.name}}</mat-option>
                                     </ng-container>
@@ -85,7 +91,7 @@
                                     </mat-select>
                                 </mat-form-field>
                             </div>
-                            <button class="apply-btn" type="submit" >Apply now</button>
+                            <button class="apply-btn mt-4 md:mt-0" type="submit" >Apply now</button>
                     </div>
                 </form>
             </ng-container>
@@ -94,8 +100,8 @@
 </div>
 
 <div class="flex flex-center filter-section  pb-4 bg-primary">
-    <div class="container-balanced">
-        <div class="flex gap-2 flex-wrap items-end justify-between">  
+    <div class="container-balanced w-full">
+        <div class="flex gap-2 pl-4 pr-4 md:pl-0 md:pr-0 flex-wrap items-end justify-between">  
            <ng-container *ngIf="!hideAllStrip">
                 <ng-container *ngFor="let strip of stripData">
                     <div class="w-full mt-4">
