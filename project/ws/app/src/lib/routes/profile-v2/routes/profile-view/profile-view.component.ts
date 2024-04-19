@@ -25,6 +25,7 @@ import { NSNetworkDataV2 } from '../../../network-v2/models/network-v2.model'
 import { NsUserProfileDetails } from '../../../user-profile/models/NsUserProfile'
 import { VerifyOtpComponent } from '../../components/verify-otp/verify-otp.component'
 import { TransferRequestComponent } from '../../components/transfer-request/transfer-request.component'
+import { WithdrawRequestComponent } from '../../components/withdraw-request/withdraw-request.component'
 
 @Component({
   selector: 'app-profile-view',
@@ -57,7 +58,6 @@ export class ProfileViewComponent implements OnInit, AfterViewInit, OnDestroy {
   allCertificate: any = []
   pageData: any
   sideNavBarOpened = true
-  // verifiedBadge = false
   private defaultSideNavBarOpenedSubscription: any
   public screenSizeIsLtMedium = false
   isLtMedium$ = this.valueSvc.isLtMedium$
@@ -98,7 +98,6 @@ export class ProfileViewComponent implements OnInit, AfterViewInit, OnDestroy {
   // Latest variables...
   verifyEmail = false
   verifyMobile = false
-  infoType = 'primary'
   countryCodes: any[] = []
   countryCodesBackUp: any[] = []
   nationalityData: any[] = []
@@ -174,7 +173,6 @@ export class ProfileViewComponent implements OnInit, AfterViewInit, OnDestroy {
           }
         } else {
           this.verifyEmail = false
-          // this.otherDetailsForm.setErrors({ valid: false })
         }
       })
     }
@@ -204,9 +202,7 @@ export class ProfileViewComponent implements OnInit, AfterViewInit, OnDestroy {
         this.certificatesData = data.certificates.data
         this.fetchCertificates(this.certificatesData)
       }
-      // if (data.profile.data.profileDetails.verifiedKarmayogi === true) {
-      //   this.verifiedBadge = true
-      // }
+
       if (data.profile.data) {
         this.orgId = data.profile.data.rootOrgId
       }
@@ -214,13 +210,6 @@ export class ProfileViewComponent implements OnInit, AfterViewInit, OnDestroy {
       if (data.profile.data.profileDetails) {
         this.portalProfile = data.profile.data.profileDetails
       }
-      // else {
-      //   this.portalProfile = data.profile.data
-      //   _.set(this.portalProfile, 'personalDetails.firstname', _.get(data.profile.data, 'firstName'))
-      //   _.set(this.portalProfile, 'personalDetails.email', _.get(data.profile.data, 'email'))
-      //   _.set(this.portalProfile, 'personalDetails.userId', _.get(data.profile.data, 'userId'))
-      //   _.set(this.portalProfile, 'personalDetails.userName', _.get(data.profile.data, 'userName'))
-      // }
 
       const user = this.portalProfile.userId || this.portalProfile.id || _.get(data, 'profile.data.id') || ''
       if (this.portalProfile && !(this.portalProfile.id && this.portalProfile.userId)) {
@@ -251,7 +240,6 @@ export class ProfileViewComponent implements OnInit, AfterViewInit, OnDestroy {
 
       if (!this.portalProfile.personalDetails && user === this.currentUser.userId) {
         _.set(this.portalProfile, 'personalDetails.firstname', _.get(this.configSvc, 'userProfile.firstName'))
-        // _.set(this.portalProfile, 'personalDetails.surname', _.get(this.configSvc, 'userProfile.lastName'))
       }
       /** // for loged in user only */
       this.decideAPICall()
@@ -774,6 +762,14 @@ export class ProfileViewComponent implements OnInit, AfterViewInit, OnDestroy {
   handleTransferRequest(): void {
     this.dialog.open(TransferRequestComponent, {
       data: { portalProfile : this.portalProfile, currentUser: this.currentUser },
+      disableClose: true,
+      panelClass: 'common-modal',
+    })
+  }
+
+  handleWithdrawRequest(): void {
+    this.dialog.open(WithdrawRequestComponent, {
+      data: {},
       disableClose: true,
       panelClass: 'common-modal',
     })
