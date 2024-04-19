@@ -201,8 +201,8 @@ export class ShareTocComponent implements OnInit {
         coursePosterImageUrl,
         courseProvider,
         primaryCategory,
-        recipients: '',
         courseLink,
+        recipients: '',
       },
     }
     const recipients: any = []
