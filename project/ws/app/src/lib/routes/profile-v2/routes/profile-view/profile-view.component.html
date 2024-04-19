@@ -24,19 +24,23 @@
         <ng-container *ngIf="currentUser?.professionalDetails?.length">
           <div class="position">{{ currentUser?.professionalDetails[0]?.designation }}</div>
         </ng-container>
-        <!-- <ng-container *ngIf="portalProfile?.professionalDetails?.length"> -->
-          <ng-container *ngIf="portalProfile?.employmentDetails?.departmentName">
-            <div class="flex flex-col sm:flex-row gap-4 sm:items-center">
-              <div class="institute">{{ portalProfile?.employmentDetails?.departmentName }}</div>
-              <div class="flex flex-row">
-                <div class="flex flex-row gap-2 items-center make-transfer-div">
-                  <div class="text-sm make-transer" (click)="handleTransferRequest()">Make Transfer Request</div>
-                  <mat-icon [matTooltipPosition]="'below'" #tooltip="matTooltip" matTooltip="If you make a transfer request, your profile will be unverified again">info_outline</mat-icon>
-                </div>
+        <ng-container *ngIf="portalProfile?.employmentDetails?.departmentName">
+          <div class="flex flex-col sm:flex-row gap-4 sm:items-center">
+            <div class="institute">{{ portalProfile?.employmentDetails?.departmentName }}</div>
+            <div class="flex flex-row">
+              <div class="flex flex-row gap-2 items-center make-transfer-div">
+                <div class="text-sm make-transer" (click)="handleTransferRequest()">Make Transfer Request</div>
+                <mat-icon [matTooltipPosition]="'below'" #tooltip="matTooltip" matTooltip="If you make a transfer request, your profile will be unverified again">info_outline</mat-icon>
               </div>
+
+              <!-- TO DO... Still working on the functionality -->
+              <!-- <div class="flex flex-row gap-2 items-center make-transfer-div">
+                <div class="text-sm make-transer" (click)="handleWithdrawRequest()">Withdraw Transfer Request</div>
+                <mat-icon [matTooltipPosition]="'below'" #tooltip="matTooltip" matTooltip="If you make a transfer request, your profile will be unverified again">info_outline</mat-icon>
+              </div> -->
             </div>
-          </ng-container>
-        <!-- </ng-container> -->
+          </div>
+        </ng-container>
         <div class="divider"></div>
       </div>
       <div class="flex flex-col sm:flex-row sm:items-center gap-5">
@@ -54,12 +58,7 @@
     </div>
   </div>
 
-  <div class="flex flex-row gap-4 items-center justify-center">
-    <div class="common-tab-css" [ngClass]="{'tab-active': infoType === 'primary'}" (click)="infoType = 'primary'">Primary Information</div>
-    <!-- <div class="common-tab-css" [ngClass]="{'tab-active': infoType === 'ehrms'}" (click)="infoType = 'ehrms'">eHRMS Information</div> -->
-  </div>
-
-  <div class="flex flex-col gap-5 p-4 pt-0 sm:p-0" *ngIf="infoType === 'primary'">
+  <div class="flex flex-col gap-5 p-4 pt-0 sm:p-0">
     <div class="common-card-css">
       <div class="flex flex-col gap-5">
         <div class="flex flex-row gap-4 items-center justify-between">
@@ -140,9 +139,6 @@
                 <div class="info-value" *ngIf="!editDetails">
                   <span class="flex flex-row gap-2 items-center" *ngIf="portalProfile?.personalDetails?.mobile">
                     +91 {{ portalProfile?.personalDetails?.mobile }}
-                    <!-- <span class="flex items-center" *ngIf="portalProfile?.personalDetails?.phoneVerified">
-                      <mat-icon class="verified-check">check_circle</mat-icon>
-                    </span> -->
                   </span>
                   <span *ngIf="!portalProfile?.personalDetails?.mobile">NA</span>
                 </div>
@@ -268,178 +264,6 @@
         <div class="font-medium" *ngIf="!portalProfile?.additionalProperties?.tag">
           No tags found!
         </div>
-      </div>
-    </div>
-  </div>
-
-  <div class="flex flex-col gap-5 p-4 pt-0 sm:p-0" *ngIf="infoType === 'ehrms'">
-    <div class="common-card-css">
-      <div class="flex flex-col gap-5">
-        <div class="flex flex-row title-div">
-          <div class="title">Basic Information</div>
-        </div>
-        <div class="flex flex-col gap-6 sm:gap-8">
-          <div class="grid-container">
-            <div class="info-div">
-              <div class="label">Salutation</div>
-              <div class="info-value">Shri.</div>
-            </div>
-            <div class="info-div">
-              <div class="label">First Name</div>
-              <div class="info-value">Vinod</div>
-            </div>
-            <div class="info-div">
-              <div class="label">Middle Name</div>
-              <div class="info-value">Kumar</div>
-            </div>
-            <div class="info-div">
-              <div class="label">Last Name</div>
-              <div class="info-value">Shyave</div>
-            </div>
-          </div>
-
-          <div class="grid-container">
-            <div class="info-div">
-              <div class="label">Date of Birth</div>
-              <div class="info-value">KB2468</div>
-            </div>
-            <div class="info-div">
-              <div class="label">Gender</div>
-              <div class="info-value">vinod.shyave@tarento.com</div>
-            </div>
-            <div class="info-div">
-              <div class="label">Category</div>
-              <div class="info-value">+91 9743289489</div>
-            </div>
-            <div class="info-div">
-              <div class="label">Differently Abled</div>
-              <div class="info-value">Male</div>
-            </div>
-          </div>
-
-          <div class="grid-container">
-            <div class="info-div">
-              <div class="label">Marital Status</div>
-              <div class="info-value">KB2468</div>
-            </div>
-            <div class="info-div">
-              <div class="label">Employee Code</div>
-              <div class="info-value">vinod.shyave@tarento.com</div>
-            </div>
-            <div class="info-div">
-              <div class="label">Service</div>
-              <div class="info-value">+91 9743289489</div>
-            </div>
-            <div class="info-div">
-              <div class="label">Designation</div>
-              <div class="info-value">Male</div>
-            </div>
-          </div>
-
-          <div class="grid-container">
-            <div class="info-div">
-              <div class="label">Ministry/Department/Organisation</div>
-              <div class="info-value">KB2468</div>
-            </div>
-            <div class="info-div">
-              <div class="label">Current Place of Posting</div>
-              <div class="info-value">vinod.shyave@tarento.com</div>
-            </div>
-            <div class="info-div">
-              <div class="label">Email ID (gov/nic)</div>
-              <div class="info-value">+91 9743289489</div>
-            </div>
-            <div class="info-div">
-              <div class="label">Mobile Number</div>
-              <div class="info-value">Male</div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <div class="common-card-css">
-      <div class="flex flex-col gap-5">
-        <div class="flex flex-row title-div">
-          <div class="title">Current Address</div>
-        </div>
-
-        <div class="grid grid-flow-row sm:grid-flow-col gap-6 grid-col-2-2">
-          <div class="info-div">
-            <div class="label">Address 1</div>
-            <div class="info-value">307 3rd Floor, Jawahar Lal Nehru University, Old JNU Campus,.</div>
-          </div>
-          <div class="info-div">
-            <div class="label">Address 2</div>
-            <div class="info-value">Munirka, New Delhi</div>
-          </div>
-        </div>
-
-        <div class="grid grid-flow-row sm:grid-flow-col gap-6 grid-col-1-1-2">
-          <div class="grid-container">
-            <div class="info-div">
-              <div class="label">State</div>
-              <div class="info-value">Delhi</div>
-            </div>
-          </div>
-
-          <div class="grid-container">
-            <div class="info-div">
-              <div class="label">District</div>
-              <div class="info-value">New Dehi</div>
-            </div>
-          </div>
-
-          <div class="grid-container">
-            <div class="info-div">
-              <div class="label">Pin Code</div>
-              <div class="info-value">110067</div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <div class="common-card-css">
-      <div class="flex flex-col gap-5">
-        <div class="flex flex-row title-div">
-          <div class="title">Permanent Address</div>
-        </div>
-
-        <div class="grid grid-flow-row sm:grid-flow-col gap-6 grid-col-2-2">
-          <div class="info-div">
-            <div class="label">Address 1</div>
-            <div class="info-value">307 3rd Floor, Jawahar Lal Nehru University, Old JNU Campus,.</div>
-          </div>
-          <div class="info-div">
-            <div class="label">Address 2</div>
-            <div class="info-value">Munirka, New Delhi</div>
-          </div>
-        </div>
-        
-        <div class="grid grid-flow-row sm:grid-flow-col gap-6 grid-col-1-1-2">
-          <div class="grid-container">
-            <div class="info-div">
-              <div class="label">State</div>
-              <div class="info-value">Delhi</div>
-            </div>
-          </div>
-        
-          <div class="grid-container">
-            <div class="info-div">
-              <div class="label">District</div>
-              <div class="info-value">New Dehi</div>
-            </div>
-          </div>
-        
-          <div class="grid-container">
-            <div class="info-div">
-              <div class="label">Pin Code</div>
-              <div class="info-value">110067</div>
-            </div>
-          </div>
-        </div>
-
       </div>
     </div>
   </div>

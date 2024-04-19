@@ -1,0 +1,12 @@
+<div class="flex flex-col items-center gap-4">
+    <div class="flex">
+        <mat-icon class="info-icon">info_outline</mat-icon>
+    </div>
+    <div class="text-base primary text-center">
+        Are you sure you want to withdraw your transfer request?
+    </div>
+    <div class="flex gap-4 mt-4">
+        <button class="outline-button" (click)="handleCloseModal()">No</button>
+        <button class="save-button" (click)="handleWithdrawRequest()">Yes</button>
+    </div>
+</div>
