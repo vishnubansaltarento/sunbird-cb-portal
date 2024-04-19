@@ -218,10 +218,10 @@ export class GyaanKarmayogiViewAllComponent implements OnInit {
               name: 'Sub sector',
               values: 'values',
             },
-            resourceCategory: {
-              name: 'Category',
-              values: 'values',
-            },
+            // resourceCategory: {
+            //   name: 'Category',
+            //   values: 'values',
+            // },
           }
           response.result.facets.forEach((facet: any) => {
             if (localFacetData[facet.name]) {
