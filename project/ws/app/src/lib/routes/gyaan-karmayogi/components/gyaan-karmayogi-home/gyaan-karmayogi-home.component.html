@@ -47,7 +47,7 @@
                 <ng-container *ngFor="let sector of sectorsList|slice: 1:9">
                    <div class="each-sector flex items-center justify-start  {{sector?.name === selectedSector? 'selected-sector': ''}}"
                     (click)="sectorFilter(sector)" [style.background]="sector?.bgColor">
-                    <img class="mr-3" width="24px" height="25px" src="{{sector?.imgUrl}}" alt="">
+                    <img class="mr-3" width="24px" height="25px" src="{{sector?.imgUrl}}" [alt]="sector?.name">
                     {{sector?.name}}
                    </div> 
                 </ng-container>

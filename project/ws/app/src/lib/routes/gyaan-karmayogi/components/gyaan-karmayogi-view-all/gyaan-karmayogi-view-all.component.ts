@@ -253,7 +253,7 @@ export class GyaanKarmayogiViewAllComponent implements OnInit {
   // the below method used to form the filters and call api
   changeSelection(event: any, key: any, keyData: any) {
     keyData['checked'] = event
-    if (this.selectedFilter[key] && this.selectedFilter[key].includes(keyData.name)) {
+    if (this.selectedFilter && this.selectedFilter[key] && this.selectedFilter[key].includes(keyData.name)) {
       const index = this.selectedFilter[key].findIndex((x: any) => x === keyData.name)
       this.selectedFilter[key].splice(index, 1)
     } else {
