@@ -39,7 +39,7 @@ export class CardContentV2Component extends WidgetBaseComponent
   downloadCertificateLoading: boolean = false
   cbPlanMapData: any
   cbPlanInterval: any
-
+  nsContentConstants: any = NsContent
   btnPlaylistConfig: NsPlaylist.IBtnPlaylist | null = null
   btnGoalsConfig: NsGoal.IBtnGoal | null = null
   prefChangeSubscription: Subscription | null = null
@@ -435,5 +435,10 @@ export class CardContentV2Component extends WidgetBaseComponent
     }
  
     
+  }
+
+  get getMimeType() {
+    let mimetype = this.widgetData && this.widgetData.content && this.widgetData.content.mimeType
+    return VIEWER_ROUTE_FROM_MIME(mimetype)
   }
 }

@@ -1,31 +1,76 @@
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core'
-import { MAT_BOTTOM_SHEET_DATA, MAT_BOTTOM_SHEET_DEFAULT_OPTIONS, MatBottomSheetRef } from '@angular/material'
+import { Component, EventEmitter, Inject, Input, OnInit, Output } from '@angular/core'
+import { MAT_BOTTOM_SHEET_DATA, MatBottomSheetRef } from '@angular/material'
 
 @Component({
   selector: 'ws-app-gyaan-filter',
   templateUrl: './gyaan-filter.component.html',
   styleUrls: ['./gyaan-filter.component.scss'],
-  // tslint:disable-next-line:max-line-length
-  providers: [{ provide: MatBottomSheetRef, useValue: { hasBackdrop: false } }, { provide: MAT_BOTTOM_SHEET_DEFAULT_OPTIONS, useValue: { hasBackdrop: false } }, { provide: MAT_BOTTOM_SHEET_DATA, useValue: { hasBackdrop: false } }],
-
 })
 export class GyaanFilterComponent implements OnInit {
 
+  categoryValue = ''
+  mobileSelectedFilter: any = {}
   @Input()  filterDataLoading = false
-
+  localFilterData: any
   @Input() facetsData: any
-  @Input() facetsDataCopy: any
-
+  @Input() private facetsDataCopy: any
   @Output() filterChange = new EventEmitter<any>()
-  constructor(private bottomSheetRef: MatBottomSheetRef<GyaanFilterComponent>) { }
+  constructor(
+    @Inject(MAT_BOTTOM_SHEET_DATA) public data: any,
+    private bottomSheetRef: MatBottomSheetRef<any>) { }
 
   ngOnInit() {
+
+    if (this.data && this.data.facetsDataCopy) {
+      this.facetsData = this.data.facetsData
+      this.facetsDataCopy = this.data.facetsDataCopy
+      this.filterDataLoading = this.data.filterDataLoading
+      this.localFilterData = JSON.parse(JSON.stringify(this.facetsDataCopy))
+      this.mobileSelectedFilter = this.data.selectedFilter
+      this.bindSelectedValue()
+    } else {
+      this.localFilterData = JSON.parse(JSON.stringify(this.facetsDataCopy))
+    }
+  }
+
+  bindSelectedValue() {
+    if (this.mobileSelectedFilter) {
+      Object.keys(this.mobileSelectedFilter).forEach((ele: any) => {
+        this.localFilterData[ele].values.forEach((subEle: any) => {
+          if (this.mobileSelectedFilter[ele].includes(subEle.name)) {
+
+            subEle['checked'] = true
+          }
+
+        })
+      })
+
+    }
   }
 
   // this openLink method is used to close the bottomsheet
-  openLink(event: MouseEvent): void {
-    this.bottomSheetRef.dismiss()
-    event.preventDefault()
+  openLink(type: any): void {
+    if (type === 'apply') {
+      this.bottomSheetRef.dismiss(this.mobileSelectedFilter)
+    } else {
+      this.bottomSheetRef.dismiss()
+    }
+  }
+
+  clearFilter() {
+    Object.keys(this.mobileSelectedFilter).forEach((ele: any) => {
+      if (ele !== 'resourceCategory') {
+        this.localFilterData[ele].values.forEach((subEle: any) => {
+          if (this.mobileSelectedFilter[ele].includes(subEle.name)) {
+            subEle['checked'] = false
+          }
+        })
+      }
+    })
+    this.mobileSelectedFilter = {
+      resourceCategory: this.mobileSelectedFilter.resourceCategory,
+    }
+    // this.bottomSheetRef.dismiss(this.mobileSelectedFilter)
   }
 
   // to remove object sorting
@@ -35,7 +80,35 @@ export class GyaanFilterComponent implements OnInit {
   // changeSelection method will trigger on
   // selection of sectors and subsectors
   changeSelection(event: any, key: any, keyData: any) {
+    if (window.innerWidth < 768) {
+      if (key === 'resourceCategory') {
+        this.mobileSelectedFilter[key] = keyData.name
+      } else {
+        if (this.mobileSelectedFilter && this.mobileSelectedFilter[key] && this.mobileSelectedFilter[key].includes(keyData.name)) {
+          const index = this.mobileSelectedFilter[key].findIndex((x: any) => x === keyData.name)
+          this.mobileSelectedFilter[key].splice(index, 1)
+        } else {
+          if (this.mobileSelectedFilter[key] && this.mobileSelectedFilter[key].length) {
+            this.mobileSelectedFilter[key].push(keyData.name)
+          } else {
+            this.mobileSelectedFilter[key] = [keyData.name]
+          }
+        }
+        keyData['checked'] = event
+    }
+  } else {
       keyData['checked'] = event
       this.filterChange.emit({ event, key, keyData })
+
+    }
+    }
+
+    getSearch(searchValue: any, keyData: any) {
+      const facetCopy: any = { ...this.facetsDataCopy }
+      const itemData = facetCopy[keyData]
+      const filteredValue =  itemData.values.filter((ele: any) => {
+        return ele.name.toLowerCase().includes(searchValue.toLowerCase())
+      })
+      this.localFilterData[keyData].values = filteredValue
     }
 }
