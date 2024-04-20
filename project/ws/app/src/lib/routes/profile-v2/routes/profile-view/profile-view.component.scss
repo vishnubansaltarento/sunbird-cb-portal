@@ -38,6 +38,11 @@ $border-color: rgba($color: #000000, $alpha: 0.16);
 }
 
 .edit-name {
+  .input-text {
+    max-width: 400px;
+    width: 100%;
+  }
+
   .save {
     color: $text-primary;
   }

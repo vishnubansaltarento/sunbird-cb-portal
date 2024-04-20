@@ -307,14 +307,8 @@ export class ProfileViewComponent implements OnInit, AfterViewInit, OnDestroy {
     if (this.currentUser.lastName) {
       this.nameInitials = this.currentUser.firstName.charAt(0) + this.currentUser.lastName.charAt(0)
     }
-    if (this.currentUser.firstName) {
-      if (this.currentUser.firstName.split(' ').length) {
-        const nameArr = this.currentUser.firstName.split(' ')
-        this.nameInitials = nameArr[0].charAt(0) + nameArr[1].charAt(0)
-      } else {
-        this.nameInitials = this.currentUser.firstName.charAt(0)
-      }
-    }
+
+    this.getInitials()
     this.profileName = this.currentUser.firstName + this.currentUser.lastName
 
     this.getMasterNationality()
@@ -322,6 +316,7 @@ export class ProfileViewComponent implements OnInit, AfterViewInit, OnDestroy {
     this.prefillForm()
     this.getGroupData()
     this.getProfilePageMetaData()
+    this.getSendApprovalStatus()
   }
 
   ngAfterViewInit() {
@@ -650,6 +645,17 @@ export class ProfileViewComponent implements OnInit, AfterViewInit, OnDestroy {
     })
   }
 
+  getInitials(): void {
+    if (this.currentUser.firstName) {
+      if (this.currentUser.firstName.split(' ').length > 1) {
+        const nameArr = this.currentUser.firstName.split(' ')
+        this.nameInitials = nameArr[0].charAt(0) + nameArr[1].charAt(0)
+      } else {
+        this.nameInitials = this.currentUser.firstName.charAt(0)
+      }
+    }
+  }
+
   getMasterNationality(): void {
     this.userProfileService.getMasterNationality()
     .pipe(takeUntil(this.destroySubject$))
@@ -855,12 +861,47 @@ export class ProfileViewComponent implements OnInit, AfterViewInit, OnDestroy {
     })
   }
 
+  getSendApprovalStatus(): void {
+    this.userProfileService.listApprovalPendingFields()
+    .pipe(takeUntil(this.destroySubject$))
+    .subscribe((_res: any) => {
+      // console.log('_res - ', _res)
+    },         (error: HttpErrorResponse) => {
+      if (!error.ok) {
+        this.matSnackBar.open('Unable to get approval status of all fields')
+      }
+    })
+  }
+
   handleSendApproval(): void {
     // console.log('primaryDetailsForm - ', this.primaryDetailsForm.value)
   }
 
   handleUpdateName(): void {
-    // console.log('this.profileName - ', this.profileName)
+    const postData = {
+      'request': {
+        'userId': this.configSvc.unMappedUser.id,
+        'profileDetails' : {
+          'personalDetails' : {
+            'firstname': this.profileName,
+          },
+        },
+      },
+    }
+
+    this.userProfileService.editProfileDetails(postData)
+    .pipe(takeUntil(this.destroySubject$))
+    .subscribe((_res: any) => {
+      this.currentUser.firstName = this.profileName
+      this.getInitials()
+      this.matSnackBar.open('User name updated successfully!')
+      this.editName = !this.editName
+    },         (error: HttpErrorResponse) => {
+      if (!error.ok) {
+        this.matSnackBar.open('Unable to update name, please try later!')
+      }
+      this.editName = !this.editName
+    })
   }
 
   async onSubmit() {

@@ -1,20 +1,23 @@
 <div class="flex flex-col w-full gap-5">
   <div class="flex flex-col sm:flex-row gap-4 profile-header">
-    <div class="profile-circle-container">
+    <div class="flex flex-col profile-circle-container">
       <ng-container *ngIf="portalProfile?.profileImageUrl">
-        <div class="flex flex-col">
           <img src="{{ portalProfile?.profileImageUrl }}" class="profile-pic shadow-md" alt="profile image" />
-          <div class="camera-icon" [matTooltipPosition]="'below'" #tooltip="matTooltip" matTooltip="Max file size: 1 MB. Supported file types: JPG, JPEG, PNG" (click)="uploadProfilePic.click(); $event.stopPropagation()" (keydown.enter)="uploadProfilePic.click(); $event.stopPropagation()">
-            <mat-icon>photo_camera</mat-icon>
-          </div>
-          <input id="uploadProfile" name="uploadProfileName" type="file" #uploadProfilePic class="hidden"
-            (change)="handleUploadProfileImg($event.target.files[0]); uploadProfilePic.value = null"
-            [accept]="imageTypes?.toString()" />
+      </ng-container>
+      <ng-container *ngIf="!portalProfile?.profileImageUrl">
+        <div class="flex items-center justify-center profile-circle">
+          {{ nameInitials }}
         </div>
       </ng-container>
-      <div class="flex items-center justify-center profile-circle" *ngIf="!portalProfile?.profileImageUrl">
-        {{ nameInitials }}
+      <div class="camera-icon" [matTooltipPosition]="'below'" #tooltip="matTooltip"
+        matTooltip="Max file size: 1 MB. Supported file types: JPG, JPEG, PNG"
+        (click)="uploadProfilePic.click(); $event.stopPropagation()"
+        (keydown.enter)="uploadProfilePic.click(); $event.stopPropagation()">
+        <mat-icon>photo_camera</mat-icon>
       </div>
+      <input id="uploadProfile" name="uploadProfileName" type="file" #uploadProfilePic class="hidden"
+        (change)="handleUploadProfileImg($event.target.files[0]); uploadProfilePic.value = null"
+        [accept]="imageTypes?.toString()" />
     </div>
     <div class="flex-1 profile-info">
       <div class="flex flex-col gap-2">
@@ -31,8 +34,8 @@
         </div>
         <div class="flex flex-row gap-4 items-center edit-name" *ngIf="editName">
           <input type="text" [(ngModel)]="profileName" class="input-text" />
-          <mat-icon class="save" (click)="handleUpdateName()" >check</mat-icon>
-          <mat-icon (click)="editName = !editName" class="cancel">close</mat-icon>
+          <mat-icon class="save cursor-pointer" (click)="handleUpdateName()" >check</mat-icon>
+          <mat-icon (click)="editName = !editName" class="cancel cursor-pointer">close</mat-icon>
         </div>
         <ng-container *ngIf="currentUser?.professionalDetails?.length">
           <div class="position">{{ currentUser?.professionalDetails[0]?.designation }}</div>
