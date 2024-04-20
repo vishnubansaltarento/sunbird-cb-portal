@@ -198,7 +198,7 @@
                   </div>
                   <div class="flex-1">
                     <mat-form-field class="profile-form-field mobile-num">
-                      <input type="text" class="input-text mobile-text" (keyup)="handleEmpty('mobile')" matInput formControlName="mobile" />
+                      <input type="text" class="input-text mobile-text" maxlength="10" (keyup)="handleEmpty('mobile')" matInput formControlName="mobile" />
                     </mat-form-field>
                     <div class="flex justify-end" *ngIf="verifyMobile">
                       <span class="get-otp sm:mr-4" (click)="handleGenerateOTP('phone')">Get OTP</span>
@@ -267,7 +267,7 @@
                 <div class="info-value" *ngIf="!editDetails">{{ portalProfile?.personalDetails?.pincode || 'NA' }}</div>
                 <div class="flex" *ngIf="editDetails">
                   <mat-form-field class="profile-form-field">
-                    <input type="email" class="input-text" matInput formControlName="pincode" />
+                    <input type="email" class="input-text" matInput maxlength="6" formControlName="pincode" />
                   </mat-form-field>
                 </div>
               </div>

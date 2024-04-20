@@ -17,7 +17,7 @@
             <mat-form-field class="profile-form-field">
                 <mat-select formControlName="group">
                     <mat-option value="" disabled>Choose a group</mat-option>
-                    <mat-option *ngFor="let group of groupData" value="{{group}}">{{ group }}</mat-option>
+                    <mat-option *ngFor="let group of data?.groupData" value="{{group}}">{{ group }}</mat-option>
                 </mat-select>
             </mat-form-field>
         </div>
@@ -27,7 +27,7 @@
             <mat-form-field class="profile-form-field">
                 <mat-select formControlName="designation">
                     <mat-option value="" disabled>Choose a Designation</mat-option>
-                    <mat-option *ngFor="let designation of profileMetaData?.designations?.designations" value="{{ designation.name }}">{{ designation.name }}</mat-option>
+                    <mat-option *ngFor="let designation of data?.profileMetaData?.designations?.designations" value="{{ designation.name }}">{{ designation.name }}</mat-option>
                 </mat-select>
             </mat-form-field>
         </div>

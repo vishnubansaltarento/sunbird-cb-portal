@@ -146,7 +146,7 @@ export class ProfileViewComponent implements OnInit, AfterViewInit, OnDestroy {
     dob: new FormControl('', []),
     domicileMedium: new FormControl('', []),
     countryCode: new FormControl('', []),
-    pincode: new FormControl('', []),
+    pincode: new FormControl('', [Validators.minLength(6), Validators.maxLength(6)]),
     category: new FormControl('', []),
   })
 
@@ -182,7 +182,7 @@ export class ProfileViewComponent implements OnInit, AfterViewInit, OnDestroy {
       )
       .subscribe(res => {
         if (this.masterLanguageBackup) {
-          this.masterLanguages = this.masterLanguageBackup.filter(item => item.name.toLowerCase().includes(res.toLowerCase()))
+          this.masterLanguages = this.masterLanguageBackup.filter(item => item.name.toLowerCase().includes(res && res.toLowerCase()))
         }
       })
     }
@@ -311,9 +311,9 @@ export class ProfileViewComponent implements OnInit, AfterViewInit, OnDestroy {
     this.getInitials()
     this.profileName = this.currentUser.firstName + this.currentUser.lastName
 
+    this.prefillForm()
     this.getMasterNationality()
     this.getMasterLanguage()
-    this.prefillForm()
     this.getGroupData()
     this.getProfilePageMetaData()
     this.getSendApprovalStatus()
@@ -809,7 +809,7 @@ export class ProfileViewComponent implements OnInit, AfterViewInit, OnDestroy {
 
   handleTransferRequest(): void {
     this.dialog.open(TransferRequestComponent, {
-      data: { portalProfile : this.portalProfile, currentUser: this.currentUser },
+      data: { portalProfile : this.portalProfile, groupData: this.groupData, profileMetaData: this.profileMetaData },
       disableClose: true,
       panelClass: 'common-modal',
     })

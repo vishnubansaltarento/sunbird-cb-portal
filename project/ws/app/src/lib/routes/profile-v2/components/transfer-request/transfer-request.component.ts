@@ -23,10 +23,8 @@ export class TransferRequestComponent implements OnInit, OnDestroy {
     group: new FormControl('', [Validators.required]),
     designation: new FormControl('', [Validators.required]),
   })
-  profileMetaData: any
   departmentData: any[] = []
   private destroySubject$ = new Subject()
-  groupData: any[] = []
 
   constructor(
     public dialogRef: MatDialogRef<TransferRequestComponent>,
@@ -45,9 +43,7 @@ export class TransferRequestComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
-    this.getGroupData()
     this.getAllDeptData()
-    this.getProfilePageMetaData()
   }
 
   handleCloseModal(): void {
@@ -80,30 +76,6 @@ export class TransferRequestComponent implements OnInit, OnDestroy {
     },         (error: HttpErrorResponse) => {
       if (!error.ok) {
         this.matSnackBar.open('Unable to do transfer request, please try again later!')
-      }
-    })
-  }
-
-  getProfilePageMetaData(): void {
-    this.userProfileService.getProfilePageMeta()
-    .pipe(takeUntil(this.destroySubject$))
-    .subscribe(res => {
-      this.profileMetaData = res
-    },         (error: HttpErrorResponse) => {
-      if (!error.ok) {
-        this.matSnackBar.open('Unable to fetch profile page meta data')
-      }
-    })
-  }
-
-  getGroupData(): void {
-    this.userProfileService.getGroups()
-    .pipe(takeUntil(this.destroySubject$))
-    .subscribe((res: any) => {
-      this.groupData = res.result && res.result.response
-    },         (error: HttpErrorResponse) => {
-      if (!error.ok) {
-        this.matSnackBar.open('Unable to fetch group meta data')
       }
     })
   }
