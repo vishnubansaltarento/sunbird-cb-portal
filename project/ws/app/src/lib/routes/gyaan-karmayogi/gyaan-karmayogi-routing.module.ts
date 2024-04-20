@@ -9,6 +9,8 @@ import { GyaanKarmayogiViewAllComponent } from './components/gyaan-karmayogi-vie
 import { PageResolve } from '@sunbird-cb/utils/src/public-api'
 import { GyaanVideoComponent } from './components/players/gyaan-video/gyaan-video.component'
 import { PdfComponent } from './components/players/pdf/pdf.component'
+import { GyaanAudioComponent } from './components/players/gyaan-audio/gyaan-audio.component'
+import { GyaanYoutubeComponent } from './components/players/gyaan-youtube/gyaan-youtube.component'
 
 const routes: Routes = [
   {
@@ -61,6 +63,30 @@ const routes: Routes = [
             },
             resolve: {
               content: ViewerResolve,
+            },
+          },
+          {
+            path: 'audio/:resourceId',
+            component: GyaanAudioComponent,
+            data: {
+              resourceType: 'audio',
+              module: 'Learn',
+              pageId: 'audio/:resourceId',
+            },
+            resolve: {
+              content: ViewerResolve
+            },
+          },
+          {
+            path: 'youtube/:resourceId',
+            component: GyaanYoutubeComponent,
+            data: {
+              resourceType: 'youtube',
+              module: 'Learn',
+              pageId: 'youtube/:resourceId',
+            },
+            resolve: {
+              content: ViewerResolve
             },
           },
           {

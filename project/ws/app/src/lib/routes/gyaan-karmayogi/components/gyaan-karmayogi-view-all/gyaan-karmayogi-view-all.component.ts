@@ -125,6 +125,7 @@ export class GyaanKarmayogiViewAllComponent implements OnInit {
           ...strip.request.searchV6.request,
           ...factes,
         }
+        strip.request.searchV6.request.query = this.searchControl && this.searchControl.value
       }
 
       try {
@@ -218,25 +219,25 @@ export class GyaanKarmayogiViewAllComponent implements OnInit {
               name: 'Sub sector',
               values: 'values',
             },
-            // resourceCategory: {
-            //   name: 'Category',
-            //   values: 'values',
-            // },
+            resourceCategory: {
+              name: 'Category',
+              values: 'values',
+            },
           }
           response.result.facets.forEach((facet: any) => {
             if (localFacetData[facet.name]) {
               facet.values.forEach((item: any) => {
                 if (item.name === this.keyData.toLowerCase()) {
                   item['checked'] = true
-                  this.selectedFilter['resourceCategory'] = [item.name]
+                  this.selectedFilter['resourceCategory'] = item.name
                 }
               })
               localFacetData[facet.name].values = facet.values
             }
           })
 
+          this.facetsDataCopy = { ...localFacetData }
           this.facetsData = localFacetData
-          this.facetsDataCopy = localFacetData
 
          }
          this.filterDataLoading = false
@@ -253,16 +254,25 @@ export class GyaanKarmayogiViewAllComponent implements OnInit {
   // the below method used to form the filters and call api
   changeSelection(event: any, key: any, keyData: any) {
     keyData['checked'] = event
-    if (this.selectedFilter && this.selectedFilter[key] && this.selectedFilter[key].includes(keyData.name)) {
-      const index = this.selectedFilter[key].findIndex((x: any) => x === keyData.name)
-      this.selectedFilter[key].splice(index, 1)
+    if (key === 'resourceCategory' &&  this.selectedFilter[key]) {
+      this.selectedFilter[key] = keyData.name
+      this.titles = [
+        { title: 'Gyaan Karmayogi', url: '/app/gyaan-karmayogi/all', disableTranslate: true, icon: 'school' },
+        { title: this.titleCasePipe.transform(keyData.name), url: `none`, icon: '' },
+      ]
     } else {
-      if (this.selectedFilter[key] && this.selectedFilter[key].length) {
-        this.selectedFilter[key].push(keyData.name)
+      if (this.selectedFilter && this.selectedFilter[key] && this.selectedFilter[key].includes(keyData.name)) {
+        const index = this.selectedFilter[key].findIndex((x: any) => x === keyData.name)
+        this.selectedFilter[key].splice(index, 1)
       } else {
-        this.selectedFilter[key] = [keyData.name]
+        if (this.selectedFilter[key] && this.selectedFilter[key].length) {
+          this.selectedFilter[key].push(keyData.name)
+        } else {
+          this.selectedFilter[key] = [keyData.name]
+        }
       }
     }
+
     this.contentDataList = this.transformSkeletonToWidgets(this.seeAllPageConfig)
     if (this.seeAllPageConfig.request && this.seeAllPageConfig.request.searchV6) {
       this.fetchFromSearchV6(this.seeAllPageConfig)
@@ -271,6 +281,33 @@ export class GyaanKarmayogiViewAllComponent implements OnInit {
 
   // Bottom sheet open only in mobileview
   openBottomSheet(): void {
-    this.bottomSheet.open(GyaanFilterComponent)
+    const bottomSheetRef = this.bottomSheet.open(GyaanFilterComponent, {
+      data: {
+        filterDataLoading: this.filterDataLoading,
+        facetsDataCopy: this.facetsDataCopy,
+        facetsData: this.facetsData,
+        selectedFilter: this.selectedFilter,
+    }, panelClass: 'filter-bottomsheet',
+  })
+  bottomSheetRef.afterDismissed().subscribe((result: any) => {
+   if (result) {
+      this.titles = [
+        { title: 'Gyaan Karmayogi', url: '/app/gyaan-karmayogi/all', disableTranslate: true, icon: 'school' },
+        { title: this.titleCasePipe.transform(result.resourceCategory), url: `none`, icon: '' },
+      ]
+      this.selectedFilter = result
+      this.contentDataList = this.transformSkeletonToWidgets(this.seeAllPageConfig)
+      if (this.seeAllPageConfig.request && this.seeAllPageConfig.request.searchV6) {
+        this.fetchFromSearchV6(this.seeAllPageConfig)
+      }
+   }
+  })
+  }
+
+  globalSearch() {
+    this.contentDataList = this.transformSkeletonToWidgets(this.seeAllPageConfig)
+    if (this.seeAllPageConfig.request && this.seeAllPageConfig.request.searchV6) {
+      this.fetchFromSearchV6(this.seeAllPageConfig)
+    }
   }
 }

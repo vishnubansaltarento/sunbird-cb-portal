@@ -1,7 +1,7 @@
-import { NgModule } from '@angular/core'
+import { CUSTOM_ELEMENTS_SCHEMA, NgModule } from '@angular/core'
 import { CommonModule, TitleCasePipe } from '@angular/common'
 
-import { MatFormFieldModule, MatIconModule, MatCheckboxModule, MatInputModule, MatSelectModule, MatSidenavModule, MatBottomSheetModule } from '@angular/material'
+import { MatFormFieldModule, MatIconModule, MatCheckboxModule, MatInputModule, MatSelectModule, MatSidenavModule, MatBottomSheetModule, MatRadioModule, MAT_BOTTOM_SHEET_DATA, MatBottomSheetRef } from '@angular/material'
 import { GyaanKarmayogiRoutingModule } from './gyaan-karmayogi-routing.module'
 import { GyaanKarmayogiHomeComponent } from './components/gyaan-karmayogi-home/gyaan-karmayogi-home.component'
 import { TranslateLoader, TranslateModule } from '@ngx-translate/core'
@@ -21,10 +21,14 @@ import { PdfComponent } from './components/players/pdf/pdf.component'
 import { GyaanVideoComponent } from './components/players/gyaan-video/gyaan-video.component'
 import { VideoModule } from '@ws/viewer/src/lib/routes/video/video.module'
 import { ViewerDataService } from '@ws/viewer/src/public-api'
-import { ReactiveFormsModule } from '@angular/forms'
+import { FormsModule, ReactiveFormsModule } from '@angular/forms'
 import { SkeletonLoaderModule } from '@sunbird-cb/collection/src/lib/_common/skeleton-loader/skeleton-loader.module'
 import { ShareTocModule } from '../app-toc/share-toc/share-toc.module'
 import { GyaanFilterComponent } from './components/gyaan-filter/gyaan-filter.component'
+import { GyaanAudioComponent } from './components/players/gyaan-audio/gyaan-audio.component'
+import { AudioModule } from '@ws/viewer/src/lib/routes/audio/audio.module'
+import { YoutubeModule } from '@ws/viewer/src/lib/routes/youtube/youtube.module'
+import { GyaanYoutubeComponent } from './components/players/gyaan-youtube/gyaan-youtube.component'
 
 // tslint:disable-next-line:function-name
 export function HttpLoaderFactory(http: HttpClient) {
@@ -34,13 +38,14 @@ export function HttpLoaderFactory(http: HttpClient) {
 @NgModule({
   declarations: [GyaanKarmayogiHomeComponent, GyaanPlayerComponent,
     GyaanKarmayogiComponent, GyaanKarmayogiViewAllComponent,
-     PdfComponent, GyaanVideoComponent, GyaanFilterComponent],
+     PdfComponent, GyaanVideoComponent, GyaanFilterComponent, GyaanAudioComponent, GyaanYoutubeComponent],
   imports: [
     CommonModule,
     MatFormFieldModule,
     MatIconModule,
     MatInputModule,
     MatSelectModule,
+    FormsModule,
     GyaanKarmayogiRoutingModule,
     DefaultThumbnailModule,
     ContentStripWithTabsModule,
@@ -48,12 +53,15 @@ export function HttpLoaderFactory(http: HttpClient) {
     CardContentV2Module,
     PdfModule,
     VideoModule,
+    AudioModule,
+    YoutubeModule,
     MatSidenavModule,
     ReactiveFormsModule,
     SkeletonLoaderModule,
     BtnPageBackModule,
     ShareTocModule,
     MatBottomSheetModule,
+    MatRadioModule,
    TranslateModule.forChild({
       loader: {
         provide: TranslateLoader,
@@ -65,6 +73,11 @@ export function HttpLoaderFactory(http: HttpClient) {
   entryComponents: [
     GyaanFilterComponent,
   ],
-  providers: [ViewerResolve, TitleCasePipe, PdfScormDataService, GyaanKarmayogiService, ViewerDataService],
+  schemas: [CUSTOM_ELEMENTS_SCHEMA],
+  providers: [{ provide: MAT_BOTTOM_SHEET_DATA, useValue: {} },
+     { provide: MatBottomSheetRef, useValue: {} },
+     ViewerResolve, TitleCasePipe,
+     PdfScormDataService, GyaanKarmayogiService,
+      ViewerDataService],
 })
 export class GyaanKarmayogiModule { }
