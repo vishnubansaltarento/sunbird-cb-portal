@@ -26,7 +26,7 @@ import { MatExpansionModule } from '@angular/material/expansion'
 import { MatDividerModule } from '@angular/material/divider'
 
 import { WidgetResolverModule } from '@sunbird-cb/resolver'
-import { PipeFilterModule, PipeHtmlTagRemovalModule, PipeOrderByModule, PipeRelativeTimeModule } from '@sunbird-cb/utils'
+import { PipeFilterModule, PipeHtmlTagRemovalModule, PipeOrderByModule, PipeRelativeTimeModule, PipeCertificateImageURL } from '@sunbird-cb/utils'
 import { AvatarPhotoModule, BtnPageBackModule } from '@sunbird-cb/collection'
 import { ProfileV2RoutingModule } from './profile-v2.rounting.module'
 import { DiscussModule } from '../discuss/discuss.module'
@@ -121,6 +121,7 @@ import { OtpService } from '../user-profile/services/otp.services'
     LoaderService,
     InitResolver,
     OtpService,
+    PipeCertificateImageURL,
   ],
 })
 export class ProfileV2Module {

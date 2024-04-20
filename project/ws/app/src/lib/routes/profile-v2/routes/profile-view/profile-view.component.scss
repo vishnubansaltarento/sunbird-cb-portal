@@ -33,6 +33,24 @@ $border-color: rgba($color: #000000, $alpha: 0.16);
   gap: 24px;
 }
 
+.grid-container-2 {
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+}
+
+.edit-name {
+  .save {
+    color: $text-primary;
+  }
+
+  .cancel {
+    color: rgba($color: #000, $alpha: 0.6);
+  }
+
+  .mat-icon {
+    @include custom-mat-icon(20px, 20px, 20px);
+  }
+}
+
 .info-div {
   display: flex;
   flex-direction: column;
@@ -216,7 +234,7 @@ $border-color: rgba($color: #000000, $alpha: 0.16);
 
 .mobile-num {
   .input-text {
-    width: calc(100% - 48px);
+    width: calc(100% - 36px);
   }
 }
 
@@ -234,6 +252,15 @@ $border-color: rgba($color: #000000, $alpha: 0.16);
   }
 }
 
+.country-code {
+  @extend .input-text;
+  margin: 0.4375em 0;
+  padding: 8px 0px;
+  text-align: center;
+  width: 60px;
+  display: block !important;
+}
+
 ::ng-deep .common-modal {
   width: 420px;
   padding: 0px;
@@ -241,6 +268,28 @@ $border-color: rgba($color: #000000, $alpha: 0.16);
   .mat-dialog-container {
     border-radius: 12px;
     background-color: #EEE !important;
+  }
+}
+
+.profile-circle-container { 
+  .camera-icon {
+    background-color: #0074b6;
+    padding: 4px;
+    border-radius: 50%;
+    width: 12px;
+    height: 12px;
+    justify-content: center;
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+    position: relative;
+    right: -88px;
+    top: -24px;
+  
+    .mat-icon {
+      @include custom-mat-icon(12px, 12px, 12px);
+      color: #FFF;
+    }
   }
 }
 
@@ -276,12 +325,6 @@ $border-color: rgba($color: #000000, $alpha: 0.16);
 
     .profile-info {
       padding: 20px;
-    }
-  }
-
-  .mobile-num {
-    .input-text {
-      width: 100% !important;
     }
   }
 

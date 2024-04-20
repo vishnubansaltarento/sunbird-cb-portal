@@ -48,18 +48,6 @@ export class TransferRequestComponent implements OnInit, OnDestroy {
     this.getGroupData()
     this.getAllDeptData()
     this.getProfilePageMetaData()
-
-    // Working on fork join...
-    // const source = [
-    //   this.userProfileService.getProfilePageMeta(),
-    //   this.userProfileService.getGroups(),
-    //   this.userProfileService.getAllDepartments()
-    // ]
-
-    // forkJoin(source)
-    // .subscribe(
-    //   console.log
-    // );
   }
 
   handleCloseModal(): void {

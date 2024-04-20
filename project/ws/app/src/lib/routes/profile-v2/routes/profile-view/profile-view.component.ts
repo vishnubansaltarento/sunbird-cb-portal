@@ -5,6 +5,8 @@ import { MatDialog } from '@angular/material/dialog'
 import { MatSnackBar, MatTabChangeEvent } from '@angular/material'
 import { FormControl, FormGroup, Validators } from '@angular/forms'
 import { TranslateService } from '@ngx-translate/core'
+import { MomentDateAdapter } from '@angular/material-moment-adapter'
+import { DateAdapter, MAT_DATE_FORMATS, MAT_DATE_LOCALE } from '@angular/material/core'
 
 /* tslint:disable */
 import _ from 'lodash'
@@ -12,8 +14,13 @@ import moment from 'moment'
 import { Subject } from 'rxjs'
 import { debounceTime, distinctUntilChanged, map, startWith, takeUntil } from 'rxjs/operators'
 
-import { ConfigurationsService, ValueService } from '@sunbird-cb/utils';
+import { ImageCropComponent, ConfigurationsService, ValueService } from '@sunbird-cb/utils';
 import { NsContent, WidgetContentService } from '@sunbird-cb/collection'
+import { LoaderService } from '@ws/author/src/public-api'
+import { PipeCertificateImageURL } from '@sunbird-cb/utils/src/public-api'
+import { IMAGE_MAX_SIZE, PROFILE_IMAGE_SUPPORT_TYPES } from '@ws/author/src/lib/constants/upload'
+import { Notify } from '@ws/author/src/lib/constants/notificationMessage'
+import { NOTIFICATION_TIME } from '@ws/author/src/lib/constants/constant'
 import { HomePageService } from 'src/app/services/home-page.service'
 import { DiscussService } from '../../../discuss/services/discuss.service'
 import { NetworkV2Service } from '../../../network-v2/services/network-v2.service'
@@ -26,6 +33,19 @@ import { NsUserProfileDetails } from '../../../user-profile/models/NsUserProfile
 import { VerifyOtpComponent } from '../../components/verify-otp/verify-otp.component'
 import { TransferRequestComponent } from '../../components/transfer-request/transfer-request.component'
 import { WithdrawRequestComponent } from '../../components/withdraw-request/withdraw-request.component'
+import { NotificationComponent } from '@ws/author/src/lib/modules/shared/components/notification/notification.component'
+
+export const MY_FORMATS = {
+  parse: {
+    dateInput: 'LL',
+  },
+  display: {
+    dateInput: 'DD-MM-YYYY',
+    monthYearLabel: 'YYYY',
+    dateA11yLabel: 'LL',
+    monthYearA11yLabel: 'YYYY',
+  },
+}
 
 @Component({
   selector: 'app-profile-view',
@@ -34,6 +54,10 @@ import { WithdrawRequestComponent } from '../../components/withdraw-request/with
   /* tslint:disable */
   host: { class: 'flex margin-top-l margin-bottom-l' },
   /* tslint:enable */
+  providers: [
+    { provide: DateAdapter, useClass: MomentDateAdapter, deps: [MAT_DATE_LOCALE] },
+    { provide: MAT_DATE_FORMATS, useValue: MY_FORMATS },
+  ],
 })
 
 export class ProfileViewComponent implements OnInit, AfterViewInit, OnDestroy {
@@ -102,12 +126,20 @@ export class ProfileViewComponent implements OnInit, AfterViewInit, OnDestroy {
   countryCodesBackUp: any[] = []
   nationalityData: any[] = []
   editDetails = false
+  editProfile = false
+  editName = false
   eUserGender = Object.keys(NsUserProfileDetails.EUserGender)
   eCategory = Object.keys(NsUserProfileDetails.ECategory)
   masterLanguages: any[] | undefined
   masterLanguageBackup: any[] | undefined
   dateOfBirth: any | undefined
+  groupData: any | undefined
+  profileMetaData: any | undefined
+  imageTypes = PROFILE_IMAGE_SUPPORT_TYPES
+  photoUrl!: string | ArrayBuffer | null
+  profileName = ''
   otherDetailsForm = new FormGroup({
+    employeeId: new FormControl('', []),
     primaryEmail: new FormControl('', [Validators.pattern(/^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/)]),
     mobile: new FormControl('', [Validators.minLength(10), Validators.maxLength(10)]),
     gender: new FormControl('', []),
@@ -116,6 +148,11 @@ export class ProfileViewComponent implements OnInit, AfterViewInit, OnDestroy {
     countryCode: new FormControl('', []),
     pincode: new FormControl('', []),
     category: new FormControl('', []),
+  })
+
+  primaryDetailsForm = new FormGroup({
+    group: new FormControl('', [Validators.required]),
+    designation: new FormControl('', [Validators.required]),
   })
 
   constructor(
@@ -131,7 +168,9 @@ export class ProfileViewComponent implements OnInit, AfterViewInit, OnDestroy {
     private matSnackBar: MatSnackBar,
     private userProfileService: UserProfileService,
     private translateService: TranslateService,
-    private otpService: OtpService
+    private otpService: OtpService,
+    private loader: LoaderService,
+    private pipeImgUrl: PipeCertificateImageURL
   ) {
 
     if (this.otherDetailsForm.get('domicileMedium')) {
@@ -276,10 +315,13 @@ export class ProfileViewComponent implements OnInit, AfterViewInit, OnDestroy {
         this.nameInitials = this.currentUser.firstName.charAt(0)
       }
     }
+    this.profileName = this.currentUser.firstName + this.currentUser.lastName
 
     this.getMasterNationality()
     this.getMasterLanguage()
     this.prefillForm()
+    this.getGroupData()
+    this.getProfilePageMetaData()
   }
 
   ngAfterViewInit() {
@@ -787,6 +829,127 @@ export class ProfileViewComponent implements OnInit, AfterViewInit, OnDestroy {
         this.otherDetailsForm.setErrors({ valid: false })
       }
     }
+  }
+
+  getGroupData(): void {
+    this.userProfileService.getGroups()
+    .pipe(takeUntil(this.destroySubject$))
+    .subscribe((res: any) => {
+      this.groupData = res.result && res.result.response
+    },         (error: HttpErrorResponse) => {
+      if (!error.ok) {
+        this.matSnackBar.open('Unable to fetch group meta data')
+      }
+    })
+  }
+
+  getProfilePageMetaData(): void {
+    this.userProfileService.getProfilePageMeta()
+    .pipe(takeUntil(this.destroySubject$))
+    .subscribe(res => {
+      this.profileMetaData = res
+    },         (error: HttpErrorResponse) => {
+      if (!error.ok) {
+        this.matSnackBar.open('Unable to fetch profile page meta data')
+      }
+    })
+  }
+
+  handleSendApproval(): void {
+    // console.log('primaryDetailsForm - ', this.primaryDetailsForm.value)
+  }
+
+  handleUpdateName(): void {
+    // console.log('this.profileName - ', this.profileName)
+  }
+
+  async onSubmit() {
+    const reqUpdates = {
+      request: {
+        userId: this.configSvc.unMappedUser.id,
+        profileDetails:
+        {
+          profileImageUrl: this.photoUrl,
+        },
+      },
+    }
+    this.userProfileService.editProfileDetails(reqUpdates).subscribe(
+      (_res: any) => {
+        this.matSnackBar.open('Profile image updated successfully!')
+        this.portalProfile.profileImageUrl = (this.photoUrl as any)
+
+      },
+      (err: HttpErrorResponse) => {
+        const errMsg = _.get(err, 'error.params.errmsg')
+        this.matSnackBar.open(errMsg || 'Unable to upload profile image, please try again later!')
+      }
+    )
+  }
+
+  handleUploadProfileImg(file: File) {
+    const formData = new FormData()
+    const fileName = file.name.replace(/[^A-Za-z0-9.]/g, '')
+    if (
+      !(
+        PROFILE_IMAGE_SUPPORT_TYPES.indexOf(
+          `.${fileName
+            .toLowerCase()
+            .split('.')
+            .pop()}`,
+        ) > -1
+      )
+    ) {
+      this.matSnackBar.openFromComponent(NotificationComponent, {
+        data: {
+          type: Notify.INVALID_IMG_FORMAT,
+        },
+        duration: NOTIFICATION_TIME * 1500,
+      })
+      return
+    }
+
+    if (file.size > IMAGE_MAX_SIZE) {
+      this.matSnackBar.openFromComponent(NotificationComponent, {
+        data: {
+          type: Notify.PROFILE_IMG_SIZE_ERROR,
+        },
+        duration: NOTIFICATION_TIME * 1500,
+      })
+      return
+    }
+
+    const dialogRef = this.dialog.open(ImageCropComponent, {
+      width: '70%',
+      data: {
+        isRoundCrop: true,
+        imageFile: file,
+        width: 272,
+        height: 148,
+        isThumbnail: true,
+        imageFileName: fileName,
+      },
+    })
+
+    dialogRef.afterClosed().subscribe({
+      next: (result: File) => {
+        if (result) {
+          formData.append('data', result, fileName)
+          this.createUrl(result, fileName)
+          this.loader.changeLoad.next(true)
+        }
+      },
+    })
+  }
+
+  createUrl(file: File, fileName: string) {
+    const formData = new FormData()
+    formData.append('data', file, fileName)
+    this.userProfileService.uploadProfilePhoto(formData).subscribe((res: any) => {
+      if (res && res.result) {
+        this.photoUrl = this.pipeImgUrl.transform(res.result.url)
+        this.onSubmit()
+      }
+    })
   }
 
   ngOnDestroy() {

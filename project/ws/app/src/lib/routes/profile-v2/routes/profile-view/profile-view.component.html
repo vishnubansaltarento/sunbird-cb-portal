@@ -2,7 +2,15 @@
   <div class="flex flex-col sm:flex-row gap-4 profile-header">
     <div class="profile-circle-container">
       <ng-container *ngIf="portalProfile?.profileImageUrl">
-        <img src="{{ portalProfile?.profileImageUrl }}" class="profile-pic" alt="profile image" />
+        <div class="flex flex-col">
+          <img src="{{ portalProfile?.profileImageUrl }}" class="profile-pic shadow-md" alt="profile image" />
+          <div class="camera-icon" [matTooltipPosition]="'below'" #tooltip="matTooltip" matTooltip="Max file size: 1 MB. Supported file types: JPG, JPEG, PNG" (click)="uploadProfilePic.click(); $event.stopPropagation()" (keydown.enter)="uploadProfilePic.click(); $event.stopPropagation()">
+            <mat-icon>photo_camera</mat-icon>
+          </div>
+          <input id="uploadProfile" name="uploadProfileName" type="file" #uploadProfilePic class="hidden"
+            (change)="handleUploadProfileImg($event.target.files[0]); uploadProfilePic.value = null"
+            [accept]="imageTypes?.toString()" />
+        </div>
       </ng-container>
       <div class="flex items-center justify-center profile-circle" *ngIf="!portalProfile?.profileImageUrl">
         {{ nameInitials }}
@@ -16,10 +24,15 @@
             <mat-icon>info_outline</mat-icon>
           </div>
         </div>
-        <div class="flex flex-row gap-4 items-center"> 
+        <div class="flex flex-row gap-4 items-center" *ngIf="!editName"> 
           <div class="name">{{ currentUser?.firstName }} {{ currentUser?.lastName }}</div>
           <mat-icon class="profile-verified-check" *ngIf="portalProfile?.professionalDetails && portalProfile?.professionalDetails[0]?.verifiedKarmayogi">check_circle</mat-icon>
-          <mat-icon class="cursor-pointer">edit</mat-icon>
+          <mat-icon class="cursor-pointer" (click)="editName = !editName">edit</mat-icon>
+        </div>
+        <div class="flex flex-row gap-4 items-center edit-name" *ngIf="editName">
+          <input type="text" [(ngModel)]="profileName" class="input-text" />
+          <mat-icon class="save" (click)="handleUpdateName()" >check</mat-icon>
+          <mat-icon (click)="editName = !editName" class="cancel">close</mat-icon>
         </div>
         <ng-container *ngIf="currentUser?.professionalDetails?.length">
           <div class="position">{{ currentUser?.professionalDetails[0]?.designation }}</div>
@@ -59,47 +72,75 @@
   </div>
 
   <div class="flex flex-col gap-5 p-4 pt-0 sm:p-0">
-    <div class="common-card-css">
-      <div class="flex flex-col gap-5">
-        <div class="flex flex-row gap-4 items-center justify-between">
-          <div class="flex flex-row gap-2 title-div items-center">
-            <div class="title">Primary Details</div>
-            <mat-icon class="custom-mat-icon" [matTooltipPosition]="'below'" #tooltip="matTooltip" matTooltip="These details go to your MDO Admin for approval">info_outline</mat-icon>
-          </div>
-          <div class="flex flex-row">
-            <div class="flex flex-row gap-2 items-center edit-button">
-              <mat-icon>edit</mat-icon>
-              Edit
+    <form [formGroup]="primaryDetailsForm">
+      <div class="common-card-css">
+        <div class="flex flex-col gap-5">
+          <div class="flex flex-row gap-4 items-center justify-between">
+            <div class="flex flex-row gap-2 title-div items-center">
+              <div class="title">Primary Details</div>
+              <mat-icon class="custom-mat-icon" [matTooltipPosition]="'below'" #tooltip="matTooltip" matTooltip="These details go to your MDO Admin for approval">info_outline</mat-icon>
             </div>
-          </div>
-        </div>
-
-        <div class="grid grid-flow-row sm:grid-flow-col gap-6 grid-col">
-          <div class="info-div">
-            <div class="label">Group</div>
-            <div class="flex flex-row gap-2 items-center info-value" *ngIf="currentUser?.professionalDetails?.length && currentUser?.professionalDetails[0]?.group">
-              {{ currentUser?.professionalDetails[0]?.group }}
-              <mat-icon class="verified-check">check_circle</mat-icon>
-            </div>
-            <div class="info-value" *ngIf="!currentUser?.professionalDetails?.length || !currentUser?.professionalDetails[0]?.group">NA</div>
-          </div>
-
-          <div class="info-div">
-            <div class="label">Designation</div>
-            <div class="flex flex-col sm:flex-row gap-2 sm:items-center info-value" *ngIf="currentUser?.professionalDetails?.length">
-              {{ currentUser?.professionalDetails[0]?.designation }}
-              <div class="flex flex-row">
-                <div class="profile-not-verified">
-                  <div class="text">Not verified</div>
-                  <mat-icon>info_outline</mat-icon>
-                </div>
+            <div class="flex flex-row">
+              <div class="flex flex-row gap-2 items-center edit-button" *ngIf="!editProfile" (click)="editProfile = !editProfile">
+                <mat-icon>edit</mat-icon>
+                Edit
               </div>
             </div>
-            <div class="info-value" *ngIf="!currentUser?.professionalDetails?.length">NA</div>
+          </div>
+
+          <div class="grid grid-flow-row sm:grid-flow-col gap-6 grid-col grid-container-2">
+            <div class="info-div">
+              <div class="label">Group</div>
+              <ng-container *ngIf="!editProfile">
+                <div class="flex flex-row gap-2 items-center info-value" *ngIf="currentUser?.professionalDetails?.length && currentUser?.professionalDetails[0]?.group">
+                  {{ currentUser?.professionalDetails[0]?.group }}
+                  <mat-icon class="verified-check">check_circle</mat-icon>
+                </div>
+                <div class="info-value" *ngIf="!currentUser?.professionalDetails?.length || !currentUser?.professionalDetails[0]?.group">NA</div>
+              </ng-container>
+              <ng-container *ngIf="editProfile">
+                <mat-form-field class="profile-form-field">
+                  <mat-select formControlName="group">
+                    <mat-option value="" disabled>Choose a group</mat-option>
+                    <mat-option *ngFor="let group of groupData" value="{{group}}">{{ group }}</mat-option>
+                  </mat-select>
+                </mat-form-field>
+              </ng-container>
+            </div>
+
+            <div class="info-div">
+              <div class="label">Designation</div>
+              <ng-container *ngIf="!editProfile">
+                <div class="flex flex-col sm:flex-row gap-2 sm:items-center info-value" *ngIf="currentUser?.professionalDetails?.length">
+                  {{ currentUser?.professionalDetails[0]?.designation }}
+                  <div class="flex flex-row">
+                    <div class="profile-not-verified">
+                      <div class="text">Not verified</div>
+                      <mat-icon>info_outline</mat-icon>
+                    </div>
+                  </div>
+                </div>
+                <div class="info-value" *ngIf="!currentUser?.professionalDetails?.length">NA</div>
+              </ng-container>
+              <ng-container *ngIf="editProfile">
+                <mat-form-field class="profile-form-field">
+                  <mat-select formControlName="designation">
+                    <mat-option value="" disabled>Choose a Designation</mat-option>
+                    <mat-option *ngFor="let designation of profileMetaData?.designations?.designations"
+                      value="{{ designation.name }}">{{ designation.name }}</mat-option>
+                  </mat-select>
+                </mat-form-field>
+              </ng-container>
+            </div>
+          </div>
+
+          <div class="flex flex-row gap-4" *ngIf="editProfile">
+            <button class="outline-button" (click)="editProfile = !editProfile">Cancel</button>
+            <button class="save-button" (click)="handleSendApproval()">Send for Approval</button>
           </div>
         </div>
       </div>
-    </div>
+    </form>
 
     <div class="common-card-css">
       <div class="flex flex-col gap-5">
@@ -120,7 +161,12 @@
             <div class="grid-container">
               <div class="info-div">
                 <div class="label">Employee ID</div>
-                <div class="info-value">NA</div>
+                <div class="info-value" *ngIf="!editDetails">NA</div>
+                <div class="flex" *ngIf="editDetails">
+                  <mat-form-field class="profile-form-field">
+                    <input type="text" class="input-text" matInput formControlName="employeeId" />
+                  </mat-form-field>
+                </div>
               </div>
               <div class="info-div">
                 <div class="label">Email</div>
@@ -144,17 +190,10 @@
                 </div>
 
                 <div class="flex flex-row gap-2" *ngIf="editDetails">
-                  <div class="flex">
-                    <mat-form-field class="mobile-form-field">
-                      <input type="text" matInput class="input-text" aria-label="Country code" formControlName="countryCode" [matAutocomplete]="ccAuto" />
-                      <mat-autocomplete #ccAuto="matAutocomplete">
-                        <mat-option *ngFor="let code of countryCodes" [value]="code">
-                          {{ code }}
-                        </mat-option>
-                      </mat-autocomplete>
-                    </mat-form-field>
+                  <div class="country-code">
+                    +91
                   </div>
-                  <div class="flex flex-col gap-1">
+                  <div class="flex-1">
                     <mat-form-field class="profile-form-field mobile-num">
                       <input type="text" class="input-text mobile-text" (keyup)="handleEmpty('mobile')" matInput formControlName="mobile" />
                     </mat-form-field>
@@ -186,7 +225,7 @@
                 </div>
                 <div class="info-value" *ngIf="editDetails">
                   <mat-form-field class="profile-form-field">
-                    <input matInput class="input-text" [matDatepicker]="picker" formControlName="dob" />
+                    <input matInput class="input-text" [matDatepicker]="picker" readonly formControlName="dob" />
                     <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
                     <mat-datepicker #picker></mat-datepicker>
                   </mat-form-field>
@@ -239,7 +278,7 @@
             </div>
             
             <div class="grid-container" *ngIf="editDetails">
-              <div class="flex flex-row gap-4">
+              <div class="flex flex-row gap-4 justify-center sm:justify-start">
                 <button class="outline-button" (click)="handleCancelUpdate()">Cancel</button>
                 <button class="save-button" [disabled]="otherDetailsForm?.invalid || verifyEmail || verifyMobile" [ngClass]="{'disable-button': otherDetailsForm?.invalid || verifyEmail || verifyMobile}" (click)="handleSaveOtherDetails()">Save Changes</button>
               </div>
