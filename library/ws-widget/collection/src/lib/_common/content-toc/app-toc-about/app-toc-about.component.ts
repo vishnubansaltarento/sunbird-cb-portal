@@ -171,7 +171,6 @@ export class AppTocAboutComponent implements OnInit, OnChanges, AfterViewInit, O
   timer: any = {}
   isMobile = false
   ngOnInit() {
-    console.log(this.content, "content============")
     if (window.innerWidth <= 1200) {
       this.isMobile = true
     } else {
