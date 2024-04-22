@@ -1,4 +1,7 @@
 import { Component, OnInit } from '@angular/core'
+import { ActivatedRoute, NavigationEnd, Router } from '@angular/router'
+import { TranslateService } from '@ngx-translate/core'
+import { VIEWER_ROUTE_FROM_MIME } from '@sunbird-cb/collection/src/public-api'
 import { ConfigurationsService } from '@sunbird-cb/utils/src/public-api'
 import { ViewerDataService } from '@ws/viewer/src/public-api'
 
@@ -13,10 +16,31 @@ export class GyaanPlayerComponent implements OnInit {
   enableShare = false
   rootOrgId: any
   resourceLink: any = ''
+  pageConfig: any
+  relatedContentStrip: any
 
   constructor(private viewerDataSvc: ViewerDataService,
               private configSvc: ConfigurationsService,
-  ) {
+              private route: ActivatedRoute,
+              public translate: TranslateService, private router: Router) {
+    if (this.route.parent && this.route.parent.snapshot.data.pageData
+      && this.route.parent.snapshot.data.pageData.data
+      && this.route.parent.snapshot.data.pageData.data.stripConfig) {
+        this.pageConfig = (this.route.parent && this.route.parent.snapshot.data.pageData.data)
+      }
+    this.router.events.subscribe(val => {
+        // see also
+        if (val instanceof NavigationEnd) {
+          this.resourceData = this.viewerDataSvc.resource
+          this.relatedContentStrip = {}
+          this.getRelatedContent()
+        }
+    })
+    if (localStorage.getItem('websiteLanguage')) {
+      this.translate.setDefaultLang('en')
+      const lang = localStorage.getItem('websiteLanguage')!
+      this.translate.use(lang)
+    }
     if (this.configSvc.userProfile) {
       this.rootOrgId = this.configSvc.userProfile.rootOrgId
     }
@@ -25,6 +49,7 @@ export class GyaanPlayerComponent implements OnInit {
 
   ngOnInit() {
     this.resourceData = this.viewerDataSvc.resource
+    this.getRelatedContent()
     this.titles = [
       { title: 'Gyaan Karmayogi', url: '/app/gyaan-karmayogi/all', icon: 'school' },
       { title: this.resourceData.resourceCategory, disableTranslate: true,
@@ -35,5 +60,28 @@ export class GyaanPlayerComponent implements OnInit {
   // this method is used to close the share popup
   resetEnableShare() {
     this.enableShare = false
+  }
+// the below method is used to get resource type
+  get getMimeType() {
+    if (this.resourceData) {
+      const mimetype = this.resourceData && this.resourceData.mimeType
+      return VIEWER_ROUTE_FROM_MIME(mimetype)
+    }
+    return ''
+  }
+  // the below method is used to form releated content request
+  getRelatedContent() {
+    if (this.resourceData && this.pageConfig.stripConfig) {
+      const stripData = this.pageConfig.stripConfig
+      stripData.strips[0].title = 'Related resources'
+      stripData.strips[0].request.searchV6.request.limit = 3
+      stripData.strips[0].request.searchV6.request.filters = {
+          ...stripData.strips[0].request.searchV6.request.filters,
+          ...(this.resourceData.sectorName ? { sectorName: this.resourceData.sectorName } : null),
+          ...(this.resourceData.subSectorName ? { subSectorName: this.resourceData.subSectorName } : null),
+          ...(this.resourceData.resourceCategory ? { resourceCategory: this.resourceData.resourceCategory } : null),
+      }
+      this.relatedContentStrip = stripData
+    }
   }
 }

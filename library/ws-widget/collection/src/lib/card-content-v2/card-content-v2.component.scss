@@ -1538,7 +1538,9 @@ $title-line-count: 2;
   height: 450px;
   margin: 20px 8px;
   display: flex;
-
+  @media screen and (max-width:768px){
+        width: calc(100vw - 48px);
+  }
   .icon_text {
     font-size: 12px;
     line-height: 16px;
@@ -1727,7 +1729,6 @@ $title-line-count: 2;
     padding: 8px;
     gap: 8px;
     border-radius: 4px ;
-    opacity: 0px;
     background: rgba(27, 76, 161, 1);
     top: 8px;
     left: 8px;
