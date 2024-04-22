@@ -1005,6 +1005,7 @@ export class AppTocHomeComponent implements OnInit, OnDestroy, AfterViewChecked,
 
   downloadCert(certIdArr: any) {
     if (certIdArr.length) {
+      certIdArr.sort((a: any, b: any) => new Date(b.lastIssuedOn).getTime() - new Date(a.lastIssuedOn).getTime())
       const certId = certIdArr[0].identifier
       this.certId = certId
 
@@ -1264,7 +1265,6 @@ export class AppTocHomeComponent implements OnInit, OnDestroy, AfterViewChecked,
       )
       this.actionSVC.setUpdateCompGroupO = this.resumeDataLink
       /* tslint:disable-next-line */
-      console.log(this.resumeDataLink,'=====> home resum data link <========')
     }
   }
 
