@@ -103,7 +103,7 @@ export class CbpPlanComponent implements OnInit {
       const vall = this.overDueList.length + this.upcommingList.length
       const overdueUncompleted: any = []
       this.overDueList.filter((data: any) => {
-        if(data && data.widgetData &&  data.widgetData.content && data.widgetData.content.contentStatus < 2) {
+        if (data && data.widgetData &&  data.widgetData.content && data.widgetData.content.contentStatus < 2) {
           overdueUncompleted.push(data)
         }
       })
