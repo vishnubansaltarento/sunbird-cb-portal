@@ -150,6 +150,14 @@ export class ProfileViewComponent implements OnInit, AfterViewInit, OnDestroy {
     category: new FormControl('', []),
   })
 
+  primaryInfo: any = {
+    group : {},
+    designation: {
+      approvalSent: true,
+      notVerified: false,
+      rejected: false,
+    },
+  }
   primaryDetailsForm = new FormGroup({
     group: new FormControl('', [Validators.required]),
     designation: new FormControl('', [Validators.required]),
@@ -495,6 +503,7 @@ export class ProfileViewComponent implements OnInit, AfterViewInit, OnDestroy {
 
   fetchCertificates(data: any) {
     const courses: NsContent.ICourse[] = data && data.courses
+    if (!courses || !courses.length) { return }
     courses.forEach((items: any) => {
       if (items.issuedCertificates && items.issuedCertificates.length > 0) {
         this.enrolledCourse.push(items)
@@ -713,6 +722,11 @@ export class ProfileViewComponent implements OnInit, AfterViewInit, OnDestroy {
       pincode: this.portalProfile.personalDetails.pincode,
       category: this.portalProfile.personalDetails.category && this.portalProfile.personalDetails.category.toUpperCase(),
     })
+
+    this.primaryDetailsForm.patchValue({
+      group: this.portalProfile.professionalDetails[0].group || '',
+      designation: this.portalProfile.professionalDetails[0].designation || '',
+    })
   }
 
   handleCancelUpdate(): void {
@@ -875,6 +889,47 @@ export class ProfileViewComponent implements OnInit, AfterViewInit, OnDestroy {
 
   handleSendApproval(): void {
     // console.log('primaryDetailsForm - ', this.primaryDetailsForm.value)
+    const data: any = {
+      'designation': this.primaryDetailsForm.value['designation'],
+      'group': this.primaryDetailsForm.value['group'],
+    }
+    const postData: any = {
+      'request': {
+        'userId': this.configSvc.unMappedUser.id,
+        'employmentDetails': {
+          'departmentName': this.primaryDetailsForm.value['designation'],
+        },
+        'profileDetails': {
+          'professionalDetails': [],
+        },
+      },
+    }
+
+    postData.request.profileDetails.professionalDetails.push(data)
+    // console.log('postData - ', postData)
+    this.userProfileService.editProfileDetails(postData)
+    .pipe(takeUntil(this.destroySubject$))
+    .subscribe((_res: any) => {
+      this.matSnackBar.open('Request sent successfully!')
+      this.editProfile = !this.editProfile
+    },         (error: HttpErrorResponse) => {
+      if (!error.ok) {
+        this.matSnackBar.open('Unable to do transfer request, please try again later!')
+      }
+    })
+
+  }
+
+  handleWithdrawDesignation(): void {
+    this.userProfileService.withDrawRequest(this.configSvc.unMappedUser.id, '')
+    .pipe(takeUntil(this.destroySubject$))
+    .subscribe((_res: any) => {
+      this.matSnackBar.open('Withdraw request done successfully!')
+    },         (error: HttpErrorResponse) => {
+      if (!error.ok) {
+        this.matSnackBar.open('Unable to withdraw request, please try again later!')
+      }
+    })
   }
 
   handleUpdateName(): void {

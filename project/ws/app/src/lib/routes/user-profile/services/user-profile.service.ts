@@ -32,6 +32,7 @@ const API_ENDPOINTS = {
   GET_GROUPS: '/api/user/v1/groups',
   getApprovalReqs: '/apis/protected/v8/workflowhandler/applicationsSearch',
   ehrmsDataRequest: '/apis/proxies/v8/ehrms/details',
+  withDrawRequest: '/v1/workflow/transition',
 }
 
 @Injectable()
@@ -115,6 +116,21 @@ export class UserProfileService {
 
   getApprovalReqs(data: any): Observable<any> {
     return this.http.post<any>(API_ENDPOINTS.getApprovalReqs, data)
+  }
+
+  withDrawRequest(userId: string, wfId: string): Observable<any> {
+    const payload = {
+      'action': 'WITHDRAW',
+      'state': 'SEND_FOR_APPROVAL',
+      'userId': userId,
+      'applicationId': userId,
+      'actorUserId': userId,
+      'wfId': wfId,
+      'serviceName': 'profile',
+      'updateFieldValues': [],
+      'comment': '',
+    }
+    return this.http.post<any>(API_ENDPOINTS.withDrawRequest, payload)
   }
 
   fetchEhrmsDetails() {

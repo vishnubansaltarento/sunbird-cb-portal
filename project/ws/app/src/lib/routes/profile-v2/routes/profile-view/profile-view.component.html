@@ -1,6 +1,6 @@
 <div class="flex flex-col w-full gap-5">
   <div class="flex flex-col sm:flex-row gap-4 profile-header">
-    <div class="flex flex-col profile-circle-container">
+    <div class="flex flex-row sm:flex-col justify-center sm:justify-start items-center profile-circle-container">
       <ng-container *ngIf="portalProfile?.profileImageUrl">
           <img src="{{ portalProfile?.profileImageUrl }}" class="profile-pic shadow-md" alt="profile image" />
       </ng-container>
@@ -37,8 +37,8 @@
           <mat-icon class="save cursor-pointer" (click)="handleUpdateName()" >check</mat-icon>
           <mat-icon (click)="editName = !editName" class="cancel cursor-pointer">close</mat-icon>
         </div>
-        <ng-container *ngIf="currentUser?.professionalDetails?.length">
-          <div class="position">{{ currentUser?.professionalDetails[0]?.designation }}</div>
+        <ng-container *ngIf="portalProfile?.professionalDetails?.length">
+          <div class="position">{{ portalProfile?.professionalDetails[0]?.designation }}</div>
         </ng-container>
         <ng-container *ngIf="portalProfile?.employmentDetails?.departmentName">
           <div class="flex flex-col sm:flex-row gap-4 sm:items-center">
@@ -95,11 +95,11 @@
             <div class="info-div">
               <div class="label">Group</div>
               <ng-container *ngIf="!editProfile">
-                <div class="flex flex-row gap-2 items-center info-value" *ngIf="currentUser?.professionalDetails?.length && currentUser?.professionalDetails[0]?.group">
-                  {{ currentUser?.professionalDetails[0]?.group }}
+                <div class="flex flex-row gap-2 items-center info-value" *ngIf="portalProfile?.professionalDetails?.length && portalProfile?.professionalDetails[0]?.group">
+                  {{ portalProfile?.professionalDetails[0]?.group }}
                   <mat-icon class="verified-check">check_circle</mat-icon>
                 </div>
-                <div class="info-value" *ngIf="!currentUser?.professionalDetails?.length || !currentUser?.professionalDetails[0]?.group">NA</div>
+                <div class="info-value" *ngIf="!portalProfile?.professionalDetails?.length || !portalProfile?.professionalDetails[0]?.group">NA</div>
               </ng-container>
               <ng-container *ngIf="editProfile">
                 <mat-form-field class="profile-form-field">
@@ -114,25 +114,47 @@
             <div class="info-div">
               <div class="label">Designation</div>
               <ng-container *ngIf="!editProfile">
-                <div class="flex flex-col sm:flex-row gap-2 sm:items-center info-value" *ngIf="currentUser?.professionalDetails?.length">
-                  {{ currentUser?.professionalDetails[0]?.designation }}
-                  <div class="flex flex-row">
-                    <div class="profile-not-verified">
-                      <div class="text">Not verified</div>
-                      <mat-icon>info_outline</mat-icon>
+                <div class="flex flex-col gap-2 info-value" *ngIf="portalProfile?.professionalDetails?.length">
+                  <div class="flex flex-row gap-2 items-center">
+                    <div class="flex">
+                      {{ portalProfile?.professionalDetails[0]?.designation }}
+                    </div>
+                    <div class="flex flex-row gap-2">
+                      <div class="profile-not-verified approval-sent text-sm font-bold" *ngIf="primaryInfo?.designation?.approvalSent">
+                        Sent For Approval
+                      </div>
+                      <div class="profile-not-verified" *ngIf="primaryInfo?.designation?.notVerified">
+                        <div class="text">Not verified</div>
+                        <mat-icon>info_outline</mat-icon>
+                      </div>
+  
+                      <div class="profile-rejected" *ngIf="primaryInfo?.designation?.rejected">
+                        <div class="text">Rejected</div>
+                        <mat-icon>cancel</mat-icon>
+                      </div>
                     </div>
                   </div>
+                  <div class="flex flex-col sm:flex-row gap-2 sm:items-center">
+                    <div class="flex items-center gap-1 info-text">
+                      <mat-icon>info</mat-icon>
+                      Your designation approval request is rejected for so and so reason.
+                    </div>
+                    <div class="withdraw-text" (click)="handleWithdrawDesignation()">Withdraw Designation Request</div>
+                  </div>
                 </div>
-                <div class="info-value" *ngIf="!currentUser?.professionalDetails?.length">NA</div>
+                <div class="info-value" *ngIf="!portalProfile?.professionalDetails?.length">NA</div>
               </ng-container>
               <ng-container *ngIf="editProfile">
-                <mat-form-field class="profile-form-field">
-                  <mat-select formControlName="designation">
-                    <mat-option value="" disabled>Choose a Designation</mat-option>
-                    <mat-option *ngFor="let designation of profileMetaData?.designations?.designations"
-                      value="{{ designation.name }}">{{ designation.name }}</mat-option>
-                  </mat-select>
-                </mat-form-field>
+                <div class="flex flex-col designation">
+                  <mat-form-field class="profile-form-field">
+                    <mat-select formControlName="designation">
+                      <mat-option value="" disabled>Choose a Designation</mat-option>
+                      <mat-option *ngFor="let designation of profileMetaData?.designations?.designations"
+                        value="{{ designation.name }}">{{ designation.name }}</mat-option>
+                    </mat-select>
+                  </mat-form-field>
+                  <div class="flex justify-end primary-text">Request My Designation</div>
+                </div>
               </ng-container>
             </div>
           </div>

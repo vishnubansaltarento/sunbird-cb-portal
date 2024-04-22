@@ -35,7 +35,7 @@ export class TransferRequestComponent implements OnInit, OnDestroy {
   ) {
     if (this.data.portalProfile.professionalDetails && this.data.portalProfile.professionalDetails.length) {
       this.transferRequestForm.controls.group.setValue(this.data.portalProfile.professionalDetails[0].group)
-      this.transferRequestForm.controls.designation.setValue(this.data.portalProfile.professionalDetails[0].designation)
+      this.transferRequestForm.controls.designation.setValue(this.data.portalProfile.professionalDetails[0].designation || '')
     }
     if (this.data.portalProfile.employmentDetails) {
       this.transferRequestForm.controls.organization.setValue(this.data.portalProfile.employmentDetails.departmentName)
