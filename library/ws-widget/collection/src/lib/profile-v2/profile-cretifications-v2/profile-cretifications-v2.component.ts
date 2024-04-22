@@ -92,7 +92,7 @@ if (data.length > 0) {
       if (value.issuedCertificates.length !== 0) {
         const certData = value.issuedCertificates
         certData.sort((a: any, b: any) => new Date(b.lastIssuedOn).getTime() - new Date(a.lastIssuedOn).getTime())
-        if (certData[0].identifier === element.identifier) {
+        if (certData && certData[0].identifier === element.identifier) {
           const cet = element.dataUrl
           const courseDoId = value.courseId
           const certId = element.identifier
