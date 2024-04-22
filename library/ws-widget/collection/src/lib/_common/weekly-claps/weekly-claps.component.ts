@@ -3,7 +3,7 @@ import { MatDialog } from '@angular/material'
 import { InfoDialogComponent } from '../info-dialog/info-dialog.component'
 import { TranslateService } from '@ngx-translate/core'
 import { MultilingualTranslationsService } from '@sunbird-cb/utils/src/lib/services/multilingual-translations.service'
-import { EventService, WsEvents }  from '@sunbird-cb/utils'
+import { EventService, WsEvents } from '@sunbird-cb/utils'
 @Component({
   selector: 'ws-widget-weekly-claps',
   templateUrl: './weekly-claps.component.html',

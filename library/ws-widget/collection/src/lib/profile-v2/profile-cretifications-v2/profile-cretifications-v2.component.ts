@@ -91,7 +91,7 @@ if (data.length > 0) {
     this.widgetData.certificates.forEach((element: any) => {
       if (value.issuedCertificates.length !== 0) {
         const certData = value.issuedCertificates
-        certData.sort((a:any, b:any) => new Date(b.lastIssuedOn).getTime() - new Date(a.lastIssuedOn).getTime())
+        certData.sort((a: any, b: any) => new Date(b.lastIssuedOn).getTime() - new Date(a.lastIssuedOn).getTime())
         if (certData[0].identifier === element.identifier) {
           const cet = element.dataUrl
           const courseDoId = value.courseId
