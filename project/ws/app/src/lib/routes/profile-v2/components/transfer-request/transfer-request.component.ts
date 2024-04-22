@@ -24,6 +24,7 @@ export class TransferRequestComponent implements OnInit, OnDestroy {
     designation: new FormControl('', [Validators.required]),
   })
   departmentData: any[] = []
+  otherDetails = false
   private destroySubject$ = new Subject()
 
   constructor(
@@ -40,6 +41,16 @@ export class TransferRequestComponent implements OnInit, OnDestroy {
     if (this.data.portalProfile.employmentDetails) {
       this.transferRequestForm.controls.organization.setValue(this.data.portalProfile.employmentDetails.departmentName)
     }
+
+    this.transferRequestForm.get('organization')!.valueChanges
+    .subscribe((value: string) => {
+      if (value !== this.data.portalProfile.employmentDetails.departmentName) {
+        this.otherDetails = true
+      } else {
+        this.otherDetails = false
+      }
+    })
+
   }
 
   ngOnInit() {

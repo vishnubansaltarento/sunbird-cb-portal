@@ -139,6 +139,7 @@ export class ProfileViewComponent implements OnInit, AfterViewInit, OnDestroy {
   imageTypes = PROFILE_IMAGE_SUPPORT_TYPES
   photoUrl!: string | ArrayBuffer | null
   profileName = ''
+  enableWTR = false
   otherDetailsForm = new FormGroup({
     employeeId: new FormControl('', []),
     primaryEmail: new FormControl('', [Validators.pattern(/^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/)]),
@@ -797,6 +798,7 @@ export class ProfileViewComponent implements OnInit, AfterViewInit, OnDestroy {
     const dataToSubmit = { ...this.otherDetailsForm.value }
     dataToSubmit.dob = `${dataToSubmit.dob.getDate()}-${dataToSubmit.dob.getMonth() + 1}-${dataToSubmit.dob.getFullYear()}`
     delete dataToSubmit.countryCode
+    delete dataToSubmit.employeeId
 
     const payload = {
       'request': {
@@ -831,10 +833,16 @@ export class ProfileViewComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   handleWithdrawRequest(): void {
-    this.dialog.open(WithdrawRequestComponent, {
-      data: {},
+    const dialogRef = this.dialog.open(WithdrawRequestComponent, {
+      data: { approvalPendingFields: this.approvalPendingFields },
       disableClose: true,
       panelClass: 'common-modal',
+    })
+
+    dialogRef.componentInstance.enableMakeTransfer.subscribe((value: boolean) => {
+      if (value) {
+        this.enableWTR = false
+      }
     })
   }
 
@@ -876,11 +884,17 @@ export class ProfileViewComponent implements OnInit, AfterViewInit, OnDestroy {
     })
   }
 
+  approvalPendingFields = []
   getSendApprovalStatus(): void {
     this.userProfileService.listApprovalPendingFields()
     .pipe(takeUntil(this.destroySubject$))
     .subscribe((_res: any) => {
-      // console.log('_res - ', _res)
+      this.approvalPendingFields = _res.result.data
+      _res.result.data.forEach((obj: any) => {
+        if (obj.hasOwnProperty('name')) {
+          this.enableWTR = true
+        }
+      })
     },         (error: HttpErrorResponse) => {
       if (!error.ok) {
         this.matSnackBar.open('Unable to get approval status of all fields')

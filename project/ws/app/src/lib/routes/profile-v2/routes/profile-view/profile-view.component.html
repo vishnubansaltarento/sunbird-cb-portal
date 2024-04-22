@@ -44,16 +44,19 @@
           <div class="flex flex-col sm:flex-row gap-4 sm:items-center">
             <div class="institute">{{ portalProfile?.employmentDetails?.departmentName }}</div>
             <div class="flex flex-row">
-              <div class="flex flex-row gap-2 items-center make-transfer-div">
-                <div class="text-sm make-transer" (click)="handleTransferRequest()">Make Transfer Request</div>
-                <mat-icon [matTooltipPosition]="'below'" #tooltip="matTooltip" matTooltip="If you make a transfer request, your profile will be unverified again">info_outline</mat-icon>
-              </div>
+              <ng-container *ngIf="!enableWTR">
+                <div class="flex flex-row gap-2 items-center make-transfer-div">
+                  <div class="text-sm make-transer" (click)="handleTransferRequest()">Make Transfer Request</div>
+                  <mat-icon [matTooltipPosition]="'below'" #tooltip="matTooltip" matTooltip="If you make a transfer request, your profile will be unverified again">info_outline</mat-icon>
+                </div>
+              </ng-container>
 
-              <!-- TO DO... Still working on the functionality -->
-              <!-- <div class="flex flex-row gap-2 items-center make-transfer-div">
-                <div class="text-sm make-transer" (click)="handleWithdrawRequest()">Withdraw Transfer Request</div>
-                <mat-icon [matTooltipPosition]="'below'" #tooltip="matTooltip" matTooltip="If you make a transfer request, your profile will be unverified again">info_outline</mat-icon>
-              </div> -->
+              <ng-container *ngIf="enableWTR">
+                <div class="flex flex-row gap-2 items-center make-transfer-div">
+                  <div class="text-sm make-transer" (click)="handleWithdrawRequest()">Withdraw Transfer Request</div>
+                  <mat-icon [matTooltipPosition]="'below'" #tooltip="matTooltip" matTooltip="If you make a transfer request, your profile will be unverified again">info_outline</mat-icon>
+                </div>
+              </ng-container>
             </div>
           </div>
         </ng-container>
