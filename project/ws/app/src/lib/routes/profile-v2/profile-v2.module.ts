@@ -49,6 +49,7 @@ import { ProfileKarmapointsComponent } from './routes/profile-karmapoints/profil
 import { VerifyOtpComponent } from './components/verify-otp/verify-otp.component'
 import { TransferRequestComponent } from './components/transfer-request/transfer-request.component'
 import { WithdrawRequestComponent } from './components/withdraw-request/withdraw-request.component'
+import { DesignationRequestComponent } from './components/designation-request/designation-request.component'
 
 import { LoaderService } from '@ws/author/src/lib/services/loader.service'
 import { InitResolver } from './resolvers/init-resolve.service'
@@ -64,6 +65,7 @@ import { OtpService } from '../user-profile/services/otp.services'
     VerifyOtpComponent,
     TransferRequestComponent,
     WithdrawRequestComponent,
+    DesignationRequestComponent,
   ],
   imports: [
     CommonModule,
@@ -116,6 +118,7 @@ import { OtpService } from '../user-profile/services/otp.services'
     VerifyOtpComponent,
     TransferRequestComponent,
     WithdrawRequestComponent,
+    DesignationRequestComponent,
   ],
   providers: [
     LoaderService,

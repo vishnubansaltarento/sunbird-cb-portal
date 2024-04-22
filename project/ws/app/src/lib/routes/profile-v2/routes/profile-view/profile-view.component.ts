@@ -34,6 +34,7 @@ import { VerifyOtpComponent } from '../../components/verify-otp/verify-otp.compo
 import { TransferRequestComponent } from '../../components/transfer-request/transfer-request.component'
 import { WithdrawRequestComponent } from '../../components/withdraw-request/withdraw-request.component'
 import { NotificationComponent } from '@ws/author/src/lib/modules/shared/components/notification/notification.component'
+import { DesignationRequestComponent } from '../../components/designation-request/designation-request.component'
 
 export const MY_FORMATS = {
   parse: {
@@ -1045,6 +1046,14 @@ export class ProfileViewComponent implements OnInit, AfterViewInit, OnDestroy {
         this.photoUrl = this.pipeImgUrl.transform(res.result.url)
         this.onSubmit()
       }
+    })
+  }
+
+  handleDesignationRequest(): void {
+    this.dialog.open(DesignationRequestComponent, {
+      data: { portalProfile: this.portalProfile },
+      disableClose: true,
+      panelClass: 'common-modal',
     })
   }
 
