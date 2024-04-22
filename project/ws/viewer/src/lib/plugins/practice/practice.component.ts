@@ -1253,7 +1253,6 @@ export class PracticeComponent implements OnInit, OnChanges, OnDestroy {
     return this.sanitized.bypassSecurityTrustHtml(newText)
   }
 
-
   raiseEvent(state: WsEvents.EnumTelemetrySubType, data: NsContent.IContent) {
     const event = {
         eventType: WsEvents.WsEventType.Telemetry,

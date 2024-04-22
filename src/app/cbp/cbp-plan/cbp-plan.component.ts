@@ -101,9 +101,15 @@ export class CbpPlanComponent implements OnInit {
       this.upcommingList = this.transformContentsToWidgets(this.upcommingList, this.cbpAllConfig.cbpUpcomingStrips)
       this.overDueList = this.transformContentsToWidgets(this.overDueList, this.cbpAllConfig.cbpUpcomingStrips)
       const vall = this.overDueList.length + this.upcommingList.length
+      const overdueUncompleted: any = []
+      this.overDueList.filter((data: any) => {
+        if (data && data.widgetData &&  data.widgetData.content && data.widgetData.content.contentStatus < 2) {
+          overdueUncompleted.push(data)
+        }
+      })
       this.usersCbpCount = {
         upcoming: this.upcommingList.length,
-        overdue: this.overDueList.length,
+        overdue: overdueUncompleted.length,
         all: vall,
       }
     } else {
