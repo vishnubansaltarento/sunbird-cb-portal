@@ -21,21 +21,21 @@ export class GyaanPlayerComponent implements OnInit {
 
   constructor(private viewerDataSvc: ViewerDataService,
               private configSvc: ConfigurationsService,
-              private route:ActivatedRoute,
-              public translate: TranslateService,private router: Router) {
-    if(this.route.parent && this.route.parent.snapshot.data.pageData 
-      && this.route.parent.snapshot.data.pageData.data 
-      && this.route.parent.snapshot.data.pageData.data.stripConfig){
+              private route: ActivatedRoute,
+              public translate: TranslateService, private router: Router) {
+    if (this.route.parent && this.route.parent.snapshot.data.pageData
+      && this.route.parent.snapshot.data.pageData.data
+      && this.route.parent.snapshot.data.pageData.data.stripConfig) {
         this.pageConfig = (this.route.parent && this.route.parent.snapshot.data.pageData.data)
       }
-    this.router.events.subscribe((val) => {
-        // see also 
-        if(val instanceof NavigationEnd){
+    this.router.events.subscribe(val => {
+        // see also
+        if (val instanceof NavigationEnd) {
           this.resourceData = this.viewerDataSvc.resource
           this.relatedContentStrip = {}
           this.getRelatedContent()
         }
-    });
+    })
     if (localStorage.getItem('websiteLanguage')) {
       this.translate.setDefaultLang('en')
       const lang = localStorage.getItem('websiteLanguage')!
@@ -63,22 +63,22 @@ export class GyaanPlayerComponent implements OnInit {
   }
 // the below method is used to get resource type
   get getMimeType() {
-    if(this.resourceData){
-      let mimetype = this.resourceData && this.resourceData.mimeType
+    if (this.resourceData) {
+      const mimetype = this.resourceData && this.resourceData.mimeType
       return VIEWER_ROUTE_FROM_MIME(mimetype)
     }
     return ''
   }
   // the below method is used to form releated content request
-  getRelatedContent(){
-    if(this.resourceData && this.pageConfig.stripConfig) {
-      let stripData = this.pageConfig.stripConfig
+  getRelatedContent() {
+    if (this.resourceData && this.pageConfig.stripConfig) {
+      const stripData = this.pageConfig.stripConfig
       stripData.strips[0].title = 'Related resources'
       stripData.strips[0].request.searchV6.request.limit = 3
       stripData.strips[0].request.searchV6.request.filters = {
           ...stripData.strips[0].request.searchV6.request.filters,
           ...(this.resourceData.sectorName ? { sectorName: this.resourceData.sectorName } : null),
-          ...(this.resourceData.subSectorName ? { subSectorName: this.resourceData.subSectorName, } : null),
+          ...(this.resourceData.subSectorName ? { subSectorName: this.resourceData.subSectorName } : null),
           ...(this.resourceData.resourceCategory ? { resourceCategory: this.resourceData.resourceCategory } : null),
       }
       this.relatedContentStrip = stripData

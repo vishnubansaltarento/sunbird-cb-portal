@@ -74,7 +74,7 @@ const routes: Routes = [
               pageId: 'audio/:resourceId',
             },
             resolve: {
-              content: ViewerResolve
+              content: ViewerResolve,
             },
           },
           {
@@ -86,7 +86,7 @@ const routes: Routes = [
               pageId: 'youtube/:resourceId',
             },
             resolve: {
-              content: ViewerResolve
+              content: ViewerResolve,
             },
           },
           {
