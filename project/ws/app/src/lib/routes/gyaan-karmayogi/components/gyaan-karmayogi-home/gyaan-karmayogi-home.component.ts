@@ -1,7 +1,7 @@
 
 import { Component, OnInit } from '@angular/core'
 import { FormControl, FormGroup } from '@angular/forms'
-import { ActivatedRoute } from '@angular/router'
+import { ActivatedRoute, Router } from '@angular/router'
 import { TranslateService } from '@ngx-translate/core'
 import * as _ from 'lodash'
 import { gyaanConstants } from '../../models/gyaan-contants.model'
@@ -17,6 +17,7 @@ export class GyaanKarmayogiHomeComponent implements OnInit {
   pageConfig: any
   facetsdata: any
   hideAllStrip = false
+  sectorNames: any = []
   searchControl = new FormControl('')
   selectedSector: any = gyaanConstants.allSectors
   categories: any = [{
@@ -35,7 +36,10 @@ export class GyaanKarmayogiHomeComponent implements OnInit {
 
   gyaanForm: FormGroup | undefined
 
-  constructor(public translate: TranslateService, private route: ActivatedRoute, private seeAllSvc: GyaanKarmayogiService) {
+  constructor(public translate: TranslateService,
+              private route: ActivatedRoute,
+              private router: Router,
+              private seeAllSvc: GyaanKarmayogiService) {
     if (localStorage.getItem('websiteLanguage')) {
       this.translate.setDefaultLang('en')
       const lang = localStorage.getItem('websiteLanguage')!
@@ -55,7 +59,11 @@ export class GyaanKarmayogiHomeComponent implements OnInit {
     if (this.facetsdata && this.facetsdata.length) {
       this.factesAssign(this.facetsdata)
     }
-    this.callStrips()
+    const addFilters: any = {}
+    if (this.selectedSector === gyaanConstants.allSectors) {
+      addFilters[gyaanConstants.sectorName] = this.sectorNames
+    }
+    this.callStrips(addFilters)
   }
 
   // this method is used for multi-lingual
@@ -114,13 +122,13 @@ export class GyaanKarmayogiHomeComponent implements OnInit {
     const addFilters: any = {}
 
     if (form.value.sectors && form.value.sectors.name !== gyaanConstants.allSectors) {
-      addFilters['sectorName'] = form.value.sectors.name
+      addFilters[gyaanConstants.sectorName] = form.value.sectors.name
     }
     if (form.value.subSectors && form.value.subSectors !== gyaanConstants.allSubSector) {
-      addFilters['subSectorName'] = form.value.subSectors
+      addFilters[gyaanConstants.subSectorName] = form.value.subSectors
     }
     if (form.value.category && form.value.category !== gyaanConstants.allCategories) {
-      addFilters['resourceCategory'] = form.value.category
+      addFilters[gyaanConstants.resourceCategory] = form.value.category
     }
     if (form.value.sectors && form.value.subSectors && form.value.category) {
       this.callPaticualrStrip(addFilters)
@@ -177,9 +185,12 @@ export class GyaanKarmayogiHomeComponent implements OnInit {
     this.searchControl.setValue('')
     const addFilters: any = {}
     if (sectorData && !type) {
-      addFilters['sectorName'] = sectorData.name
+      addFilters[gyaanConstants.sectorName] = sectorData.name
     }
     this.selectedSector = sectorData.name
+    if (this.gyaanForm) {
+      this.gyaanForm.reset()
+    }
     this.callStrips(addFilters)
   }
 
@@ -188,6 +199,9 @@ export class GyaanKarmayogiHomeComponent implements OnInit {
     const addFilters: any = {}
     this.callStrips(addFilters)
     this.selectedSector = gyaanConstants.allSectors
+    if (this.gyaanForm) {
+      this.gyaanForm.reset()
+    }
   }
 
   // on change of sector dropdown will call this method
@@ -197,7 +211,7 @@ export class GyaanKarmayogiHomeComponent implements OnInit {
       this.subSector = this.subSectorDefault
       this.selectedSector = gyaanConstants.allSectors
     } else {
-      addFilter['sectorName'] = event.value.name
+      addFilter[gyaanConstants.sectorName] = event.value.name
       this.selectedSector = event.value.name
     }
     this.callFacetApi(addFilter)
@@ -211,10 +225,10 @@ export class GyaanKarmayogiHomeComponent implements OnInit {
     } else {
       if (this.gyaanForm) {
         if (this.gyaanForm.value.sectors.name !== gyaanConstants.allSectors) {
-          addFilter['sectorName'] = this.gyaanForm.value.sectors.name
+          addFilter[gyaanConstants.sectorName] = this.gyaanForm.value.sectors.name
         }
       }
-      addFilter['subSectorName'] = event.value
+      addFilter[gyaanConstants.subSectorName] = event.value
     }
     this.callFacetApi(addFilter)
   }
@@ -240,8 +254,8 @@ export class GyaanKarmayogiHomeComponent implements OnInit {
             'lastUpdatedOn': 'desc',
         },
         'facets': [
-            'resourceCategory',
-            'subSectorName',
+            gyaanConstants.resourceCategory,
+            gyaanConstants.subSectorName,
         ],
     },
     }
@@ -257,24 +271,34 @@ export class GyaanKarmayogiHomeComponent implements OnInit {
   factesAssign(factesData: any) {
     if (factesData && factesData.length) {
       factesData.forEach((ele: any) => {
-        if (ele.name === 'subSectorName') {
+        if (ele.name === gyaanConstants.subSectorName) {
           this.subSector = ele.values
         }
-        if (ele.name === 'sectorName') {
+        if (ele.name === gyaanConstants.sectorName) {
           ele.values.forEach((sec: any) => {
             sec['identifier'] = sec.name
           })
+          this.sectorNames = ele.values.map((sectorName: any) => sectorName.name)
           const data: any = _.intersectionBy(this.pageConfig.gyaanData.sector.data, ele.values, (item: any) => _.toLower(item.name))
           data.forEach((sector: any) => {
             sector['bgColor'] = this.getRandomColor()
           })
           this.sectorsList = [...this.sectorsList, ...data]
         }
-        if (ele.name === 'resourceCategory')  {
+        if (ele.name === gyaanConstants.resourceCategory)  {
           this.categories = [...ele.values]
         }
       })
 
     }
+  }
+// viewAllSector method is used to move to view all page
+  viewAllSector() {
+    this.router.navigate([`/app/gyaan-karmayogi/view-all`], {
+      queryParams : {
+        sector: this.selectedSector,
+        // preview: true
+      },
+    })
   }
 }

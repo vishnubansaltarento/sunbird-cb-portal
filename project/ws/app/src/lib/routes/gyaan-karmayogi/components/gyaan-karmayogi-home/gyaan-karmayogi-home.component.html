@@ -32,7 +32,7 @@
         <div class="container-balanced w-full">
             <div class="flex items-center justify-between sector-headding">
                 <p>{{'gyaanKarmayogi.sectors'| translate}}</p>
-                <p *ngIf="sectorsList?.length > 9" class="flex items-center view-all">{{'gyaanKarmayogi.viewAll'| translate}}
+                <p *ngIf="sectorsList?.length > 9" (click)="viewAllSector()" class="flex items-center view-all cursor-pointer">{{'gyaanKarmayogi.viewAll'| translate}}
                     <mat-icon>chevron_right</mat-icon>
                 </p>
             </div>

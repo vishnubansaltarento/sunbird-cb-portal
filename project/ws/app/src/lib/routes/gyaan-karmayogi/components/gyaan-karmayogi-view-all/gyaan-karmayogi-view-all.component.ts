@@ -26,6 +26,8 @@ export class GyaanKarmayogiViewAllComponent implements OnInit {
   facetsDataCopy: any
   titles: any = []
   selectedFilter: any = {}
+  sectorNames: any = []
+  selectedSector: any = ''
   constructor(private bottomSheet: MatBottomSheet,
               private route: ActivatedRoute,
               private seeAllSvc: GyaanKarmayogiService,
@@ -34,12 +36,15 @@ export class GyaanKarmayogiViewAllComponent implements OnInit {
   async ngOnInit() {
     this.route.queryParams.subscribe((res: any) => {
       this.keyData = (res.key) ? res.key : ''
+      this.selectedSector = res.sector ? res.sector : ''
+      const breadCrumb = this.keyData ? this.titleCasePipe.transform(this.keyData) :
+      this.titleCasePipe.transform(this.selectedSector)
       this.titles = [
         { title: 'Gyaan Karmayogi', url: '/app/gyaan-karmayogi/all', disableTranslate: true, icon: 'school' },
-        { title: this.titleCasePipe.transform(this.keyData), url: `none`, icon: '' },
+        { title: breadCrumb, url: `none`, icon: '' },
       ]
-      this.getFacetsData()
   })
+  this.getFacetsData()
 
     this.seeAllPageConfig = this.route.snapshot.data.pageData &&
     this.route.snapshot.data.pageData.data &&
@@ -49,6 +54,14 @@ export class GyaanKarmayogiViewAllComponent implements OnInit {
 
     this.contentDataList = this.transformSkeletonToWidgets(this.seeAllPageConfig)
     if (this.seeAllPageConfig.request && this.seeAllPageConfig.request.searchV6) {
+      if (this.selectedSector === gyaanConstants.allSectors)  {
+        this.selectedFilter[gyaanConstants.sectorName]  = this.sectorNames
+      } else if (this.selectedSector) {
+        this.selectedFilter[gyaanConstants.sectorName] = [this.selectedSector]
+      }
+      if (this.keyData)  {
+        this.selectedFilter[gyaanConstants.resourceCategory] = this.keyData
+      }
       this.fetchFromSearchV6(this.seeAllPageConfig)
       this.seeAllPageConfig.request.searchV6.request.filters = {
         ...this.seeAllPageConfig.request.searchV6.request.filters,
@@ -103,14 +116,14 @@ export class GyaanKarmayogiViewAllComponent implements OnInit {
   async fetchFromSearchV6(strip: any, calculateParentStatus = true) {
     const factes = {
       'facets': [
-        'resourceCategory',
-        'subSectorName',
-        'sectorName',
+        gyaanConstants.resourceCategory,
+        gyaanConstants.subSectorName,
+        gyaanConstants.sectorName,
     ],
     }
-    const addFilter = {
-      'resourceCategory': this.keyData,
-    }
+    // const addFilter = {
+    //   gyaanConstants.resourceCategory: this.keyData,
+    // }
     if (strip.request && strip.request.searchV6 && Object.keys(strip.request.searchV6).length) {
       if (strip.request &&
         strip.request.searchV6 &&
@@ -118,7 +131,7 @@ export class GyaanKarmayogiViewAllComponent implements OnInit {
         strip.request.searchV6.request.filters) {
         strip.request.searchV6.request.filters = {
           ...strip.request.searchV6.request.filters,
-          ...addFilter,
+          // ...addFilter,
           ...this.selectedFilter,
         }
         strip.request.searchV6.request = {
@@ -226,11 +239,32 @@ export class GyaanKarmayogiViewAllComponent implements OnInit {
           }
           response.result.facets.forEach((facet: any) => {
             if (localFacetData[facet.name]) {
+              if (facet.name === gyaanConstants.sectorName) {
+                this.sectorNames = facet.values.map((sectorName: any) => sectorName.name)
+              }
               facet.values.forEach((item: any) => {
                 if (item.name === this.keyData.toLowerCase()) {
                   item['checked'] = true
-                  this.selectedFilter['resourceCategory'] = item.name
+                  this.selectedFilter[gyaanConstants.resourceCategory] = item.name
                 }
+                if (facet.name === gyaanConstants.sectorName) {
+                  if (this.selectedSector === gyaanConstants.allSectors) {
+                    if (this.selectedSector.toLowerCase()) {
+                      item['checked'] = true
+                      if (this.selectedFilter[gyaanConstants.sectorName]) {
+                        this.selectedFilter[gyaanConstants.sectorName].push(item.name)
+                      } else {
+                        this.selectedFilter[gyaanConstants.sectorName] = [item.name]
+                      }
+                    }
+                  } else {
+                    if (item.name === this.selectedSector.toLowerCase()) {
+                      item['checked'] = true
+                      this.selectedFilter[gyaanConstants.sectorName] = [item.name]
+                    }
+                  }
+                }
+
               })
               localFacetData[facet.name].values = facet.values
             }
@@ -254,7 +288,7 @@ export class GyaanKarmayogiViewAllComponent implements OnInit {
   // the below method used to form the filters and call api
   changeSelection(event: any, key: any, keyData: any) {
     keyData['checked'] = event
-    if (key === 'resourceCategory' &&  this.selectedFilter[key]) {
+    if (key === gyaanConstants.resourceCategory) {
       this.selectedFilter[key] = keyData.name
       this.titles = [
         { title: 'Gyaan Karmayogi', url: '/app/gyaan-karmayogi/all', disableTranslate: true, icon: 'school' },
@@ -303,7 +337,7 @@ export class GyaanKarmayogiViewAllComponent implements OnInit {
    }
   })
   }
-
+  // free text search functionality
   globalSearch() {
     this.contentDataList = this.transformSkeletonToWidgets(this.seeAllPageConfig)
     if (this.seeAllPageConfig.request && this.seeAllPageConfig.request.searchV6) {
