@@ -279,7 +279,7 @@ export class ProfileViewComponent implements OnInit, AfterViewInit, OnDestroy {
   profileName = ''
   enableWTR = false
   enableWR = false
-  toolTipMessage = ""
+  toolTipMessage = ''
   otherDetailsForm = new FormGroup({
     employeeId: new FormControl('', []),
     primaryEmail: new FormControl('', [Validators.pattern(/^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/)]),
@@ -888,10 +888,10 @@ export class ProfileViewComponent implements OnInit, AfterViewInit, OnDestroy {
       _res.result.data.forEach((obj: any) => {
         if (obj.hasOwnProperty('name')) {
           this.enableWTR = true
-          this.toolTipMessage = "You can't edit when you requested for Transfer request"
+          this.toolTipMessage = 'You can\'t edit when you requested for Transfer request'
         } else {
           this.enableWR = true
-          this.toolTipMessage = "You request is in progress, hence you can't edit till it is approved or rejected by MDO"
+          this.toolTipMessage = 'You request is in progress, hence you can\'t edit till it is approved or rejected by MDO'
         }
       })
     },         (error: HttpErrorResponse) => {
