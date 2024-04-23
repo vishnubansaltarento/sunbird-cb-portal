@@ -45,7 +45,12 @@
                         </div>
                         <div class="content-details">
                             <p class="title-label">{{'gyaanKarmayogi.resourceType'| translate}}</p>
-                            <p class="title-value">{{getMimeType || '-'}}</p>
+                            <p class="title-value">
+                                <span  *ngIf="getMimeType === 'pdf';else otherResource" class="uppsercase">{{getMimeType || '-'}}</span>
+                                <ng-template #otherResource>
+                                    <span class="capitalize">{{getMimeType || '-'}}</span>
+                                </ng-template>
+                            </p>
                         </div>
                     </div>
                 </div>

@@ -225,15 +225,15 @@ export class GyaanKarmayogiViewAllComponent implements OnInit {
          response.result.facets) {
           const localFacetData: any = {
             sectorName: {
-              name: 'Sector',
+              name: gyaanConstants.sectors,
               values: 'values',
             },
             subSectorName: {
-              name: 'Sub sector',
+              name: gyaanConstants.subSectors,
               values: 'values',
             },
             resourceCategory: {
-              name: 'Category',
+              name: gyaanConstants.category,
               values: 'values',
             },
           }

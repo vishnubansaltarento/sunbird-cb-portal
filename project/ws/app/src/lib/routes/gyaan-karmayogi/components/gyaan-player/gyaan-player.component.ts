@@ -72,6 +72,13 @@ export class GyaanPlayerComponent implements OnInit {
   // the below method is used to form releated content request
   getRelatedContent() {
     if (this.resourceData && this.pageConfig.stripConfig) {
+      let negetContent: any = {
+        "name": {
+          "!=": [
+              this.resourceData.name
+          ]
+        }
+      }
       const stripData = this.pageConfig.stripConfig
       stripData.strips[0].title = 'Related resources'
       stripData.strips[0].request.searchV6.request.limit = 3
@@ -80,6 +87,7 @@ export class GyaanPlayerComponent implements OnInit {
           ...(this.resourceData.sectorName ? { sectorName: this.resourceData.sectorName } : null),
           ...(this.resourceData.subSectorName ? { subSectorName: this.resourceData.subSectorName } : null),
           ...(this.resourceData.resourceCategory ? { resourceCategory: this.resourceData.resourceCategory } : null),
+          ...negetContent
       }
       this.relatedContentStrip = stripData
     }

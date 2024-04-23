@@ -8,7 +8,7 @@
     <div class="flex sticky filter-headder justify-between">
         <p class="main-title  mat-body-2 mb-4">Filter by</p>
 
-        <p (click)="clearFilter()" class="title mb-4 cursor-pointer">Clear all</p>
+        <p (click)="clearFilter()" class="title mb-4 cursor-pointer">{{'gyaanKarmayogi.clearAll'| translate}}</p>
     </div>
     <div class="filter-body">
         <ng-container [ngTemplateOutlet]="filter"></ng-container>
@@ -19,8 +19,8 @@
 </div>
     <div class="sticky bottom-nav-wrapper md:hidden">
         <div class=" footer-block">
-            <button class="btn btn-primary clear-btn" (click)="openLink('cancel')">clear</button>
-            <button class="btn btn-primary apply-btn" (click)="openLink('apply')">Apply filter</button>
+            <button class="btn btn-primary clear-btn" (click)="openLink('cancel')">{{'gyaanKarmayogi.cancel'| translate}}</button>
+            <button class="btn btn-primary apply-btn" (click)="openLink('apply')">{{'gyaanKarmayogi.apply'| translate}}</button>
         </div>
     </div>
 

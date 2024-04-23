@@ -1,5 +1,6 @@
 import { Component, EventEmitter, Inject, Input, OnInit, Output } from '@angular/core'
 import { MAT_BOTTOM_SHEET_DATA, MatBottomSheetRef } from '@angular/material'
+import { TranslateService } from '@ngx-translate/core'
 
 @Component({
   selector: 'ws-app-gyaan-filter',
@@ -17,7 +18,14 @@ export class GyaanFilterComponent implements OnInit {
   @Output() filterChange = new EventEmitter<any>()
   constructor(
     @Inject(MAT_BOTTOM_SHEET_DATA) public data: any,
-    private bottomSheetRef: MatBottomSheetRef<any>) { }
+    public translate: TranslateService,
+    private bottomSheetRef: MatBottomSheetRef<any>) {
+      if (localStorage.getItem('websiteLanguage')) {
+        this.translate.setDefaultLang('en')
+        const lang = localStorage.getItem('websiteLanguage')!
+        this.translate.use(lang)
+      }
+     }
 
   ngOnInit() {
 
@@ -64,6 +72,8 @@ export class GyaanFilterComponent implements OnInit {
           if (this.mobileSelectedFilter[ele].includes(subEle.name)) {
             subEle['checked'] = false
           }
+          const index = this.mobileSelectedFilter[ele].findIndex((x: any) => x === subEle.name)
+          this.mobileSelectedFilter[ele].splice(index, 1)
         })
       }
     })
