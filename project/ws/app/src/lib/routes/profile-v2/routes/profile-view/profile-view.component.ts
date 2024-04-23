@@ -278,6 +278,8 @@ export class ProfileViewComponent implements OnInit, AfterViewInit, OnDestroy {
   photoUrl!: string | ArrayBuffer | null
   profileName = ''
   enableWTR = false
+  enableWR = false
+  toolTipMessage = ""
   otherDetailsForm = new FormGroup({
     employeeId: new FormControl('', []),
     primaryEmail: new FormControl('', [Validators.pattern(/^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/)]),
@@ -290,14 +292,6 @@ export class ProfileViewComponent implements OnInit, AfterViewInit, OnDestroy {
     category: new FormControl('', []),
   })
 
-  primaryInfo: any = {
-    group : {},
-    designation: {
-      approvalSent: true,
-      notVerified: false,
-      rejected: false,
-    },
-  }
   primaryDetailsForm = new FormGroup({
     group: new FormControl('', [Validators.required]),
     designation: new FormControl('', [Validators.required]),
@@ -834,7 +828,7 @@ export class ProfileViewComponent implements OnInit, AfterViewInit, OnDestroy {
     })
   }
 
-  handleWithdrawRequest(): void {
+  handleWithdrawTransferRequest(): void {
     const dialogRef = this.dialog.open(WithdrawRequestComponent, {
       data: { approvalPendingFields: this.approvalPendingFields },
       disableClose: true,
@@ -885,6 +879,7 @@ export class ProfileViewComponent implements OnInit, AfterViewInit, OnDestroy {
       }
     })
   }
+
   getSendApprovalStatus(): void {
     this.userProfileService.listApprovalPendingFields()
     .pipe(takeUntil(this.destroySubject$))
@@ -893,6 +888,10 @@ export class ProfileViewComponent implements OnInit, AfterViewInit, OnDestroy {
       _res.result.data.forEach((obj: any) => {
         if (obj.hasOwnProperty('name')) {
           this.enableWTR = true
+          this.toolTipMessage = "You can't edit when you requested for Transfer request"
+        } else {
+          this.enableWR = true
+          this.toolTipMessage = "You request is in progress, hence you can't edit till it is approved or rejected by MDO"
         }
       })
     },         (error: HttpErrorResponse) => {
@@ -921,12 +920,12 @@ export class ProfileViewComponent implements OnInit, AfterViewInit, OnDestroy {
     }
 
     postData.request.profileDetails.professionalDetails.push(data)
-    // console.log('postData - ', postData)
     this.userProfileService.editProfileDetails(postData)
     .pipe(takeUntil(this.destroySubject$))
     .subscribe((_res: any) => {
       this.matSnackBar.open('Request sent successfully!')
       this.editProfile = !this.editProfile
+      this.enableWR = true
     },         (error: HttpErrorResponse) => {
       if (!error.ok) {
         this.matSnackBar.open('Unable to do transfer request, please try again later!')
@@ -935,15 +934,18 @@ export class ProfileViewComponent implements OnInit, AfterViewInit, OnDestroy {
 
   }
 
-  handleWithdrawDesignation(): void {
-    this.userProfileService.withDrawRequest(this.configSvc.unMappedUser.id, '')
-    .pipe(takeUntil(this.destroySubject$))
-    .subscribe((_res: any) => {
-      this.matSnackBar.open('Withdraw request done successfully!')
-    },         (error: HttpErrorResponse) => {
-      if (!error.ok) {
-        this.matSnackBar.open('Unable to withdraw request, please try again later!')
-      }
+  handleWithdrawRequest(): void {
+    this.approvalPendingFields.forEach((_obj: any) => {
+      this.userProfileService.withDrawRequest(this.configSvc.unMappedUser.id, _obj.wfId)
+      .pipe(takeUntil(this.destroySubject$))
+      .subscribe((_res: any) => {
+        this.matSnackBar.open('Withdraw request done successfully!')
+        this.enableWR = false
+      },         (error: HttpErrorResponse) => {
+        if (!error.ok) {
+          this.matSnackBar.open('Unable to withdraw request, please try again later!')
+        }
+      })
     })
   }
 
