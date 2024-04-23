@@ -295,7 +295,7 @@ export class ProfileViewComponent implements OnInit, AfterViewInit, OnDestroy {
   unVerifiedObj = {
     designation: '',
     group: '',
-    organization: ''
+    organization: '',
   }
 
   primaryDetailsForm = new FormGroup({
@@ -922,7 +922,7 @@ export class ProfileViewComponent implements OnInit, AfterViewInit, OnDestroy {
         this.enableWTR = true
       } else {
         this.enableWR = true
-        this.feedbackInfo = "Your new designation request is under process."
+        this.feedbackInfo = 'Your new designation request is under process.'
       }
     },         (error: HttpErrorResponse) => {
       if (!error.ok) {
