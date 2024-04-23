@@ -821,10 +821,17 @@ export class ProfileViewComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   handleTransferRequest(): void {
-    this.dialog.open(TransferRequestComponent, {
+    const dialogRef = this.dialog.open(TransferRequestComponent, {
       data: { portalProfile : this.portalProfile, groupData: this.groupData, profileMetaData: this.profileMetaData },
       disableClose: true,
       panelClass: 'common-modal',
+    })
+
+    dialogRef.componentInstance.enableWithdraw.subscribe((value: boolean) => {
+      if (value) {
+        this.enableWTR = true
+        this.toolTipMessage = 'You can\'t edit when you requested for Transfer request'
+      }
     })
   }
 
@@ -838,6 +845,7 @@ export class ProfileViewComponent implements OnInit, AfterViewInit, OnDestroy {
     dialogRef.componentInstance.enableMakeTransfer.subscribe((value: boolean) => {
       if (value) {
         this.enableWTR = false
+        this.toolTipMessage = ''
       }
     })
   }
@@ -885,15 +893,17 @@ export class ProfileViewComponent implements OnInit, AfterViewInit, OnDestroy {
     .pipe(takeUntil(this.destroySubject$))
     .subscribe((_res: any) => {
       this.approvalPendingFields = _res.result.data
-      _res.result.data.forEach((obj: any) => {
-        if (obj.hasOwnProperty('name')) {
-          this.enableWTR = true
-          this.toolTipMessage = 'You can\'t edit when you requested for Transfer request'
-        } else {
-          this.enableWR = true
-          this.toolTipMessage = 'You request is in progress, hence you can\'t edit till it is approved or rejected by MDO'
-        }
-      })
+      if (!this.approvalPendingFields || !this.approvalPendingFields.length) { return }
+      const exists = this.approvalPendingFields.filter((obj: any) => {
+        return obj.hasOwnProperty('name')
+      }).length > 0
+
+      if (exists) {
+        this.enableWTR = true
+        this.toolTipMessage = 'You can\'t edit when you requested for Transfer request'
+      } else {
+        this.enableWR = true
+      }
     },         (error: HttpErrorResponse) => {
       if (!error.ok) {
         this.matSnackBar.open('Unable to get approval status of all fields')

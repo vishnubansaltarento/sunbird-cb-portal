@@ -1,4 +1,4 @@
-import { Component, OnInit, Inject, OnDestroy } from '@angular/core'
+import { Component, OnInit, Inject, OnDestroy, Output, EventEmitter } from '@angular/core'
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog'
 import { FormControl, FormGroup, Validators } from '@angular/forms'
 import { HttpErrorResponse } from '@angular/common/http'
@@ -18,6 +18,7 @@ import { ConfigurationsService } from '@sunbird-cb/utils/src/public-api'
 
 export class TransferRequestComponent implements OnInit, OnDestroy {
 
+  @Output() enableWithdraw = new EventEmitter<boolean>()
   transferRequestForm = new FormGroup({
     organization: new FormControl('', [Validators.required]),
     group: new FormControl('', [Validators.required]),
@@ -83,6 +84,7 @@ export class TransferRequestComponent implements OnInit, OnDestroy {
     .pipe(takeUntil(this.destroySubject$))
     .subscribe((_res: any) => {
       this.matSnackBar.open('Request sent successfully!')
+      this.enableWithdraw.emit(true)
       this.handleCloseModal()
     },         (error: HttpErrorResponse) => {
       if (!error.ok) {

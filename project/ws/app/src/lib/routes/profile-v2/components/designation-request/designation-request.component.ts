@@ -1,4 +1,4 @@
-import { Component, OnInit, Inject, OnDestroy } from '@angular/core'
+import { Component, Inject, OnDestroy } from '@angular/core'
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog'
 import { HttpErrorResponse } from '@angular/common/http'
 import { MatSnackBar } from '@angular/material'
@@ -15,7 +15,7 @@ import { RequestService } from 'src/app/routes/public/public-request/request.ser
   styleUrls: ['./designation-request.component.scss'],
 })
 
-export class DesignationRequestComponent implements OnInit, OnDestroy {
+export class DesignationRequestComponent implements OnDestroy {
 
   private destroySubject$ = new Subject()
   designation = ''
@@ -26,9 +26,6 @@ export class DesignationRequestComponent implements OnInit, OnDestroy {
     private requestService: RequestService,
     private matSnackBar: MatSnackBar
   ) { }
-
-  ngOnInit() {
-  }
 
   handleCloseModal(): void {
     this.dialogRef.close()
