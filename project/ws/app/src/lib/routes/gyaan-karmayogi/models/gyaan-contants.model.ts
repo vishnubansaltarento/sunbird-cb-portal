@@ -2,6 +2,9 @@ export const gyaanConstants = {
     allCategories: 'All Categories',
     allSectors: 'All Sectors',
     allSubSector: 'All Sub sector',
+    sectorName: 'sectorName',
+    subSectorName: 'subSectorName',
+    resourceCategory: 'resourceCategory',
     timeOutDuration: 700,
     colorConstants: [
         'rgba(24, 68, 106, 0.16)',
