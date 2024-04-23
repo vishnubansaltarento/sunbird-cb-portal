@@ -279,7 +279,8 @@ export class ProfileViewComponent implements OnInit, AfterViewInit, OnDestroy {
   profileName = ''
   enableWTR = false
   enableWR = false
-  toolTipMessage = ''
+  feedbackInfo = ''
+  toolTipMessage = 'You need to withdraw Primary details request before making a Transfer Request'
   otherDetailsForm = new FormGroup({
     employeeId: new FormControl('', []),
     primaryEmail: new FormControl('', [Validators.pattern(/^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/)]),
@@ -291,6 +292,11 @@ export class ProfileViewComponent implements OnInit, AfterViewInit, OnDestroy {
     pincode: new FormControl('', [Validators.minLength(6), Validators.maxLength(6)]),
     category: new FormControl('', []),
   })
+  unVerifiedObj = {
+    designation: '',
+    group: '',
+    organization: ''
+  }
 
   primaryDetailsForm = new FormGroup({
     group: new FormControl('', [Validators.required]),
@@ -721,10 +727,17 @@ export class ProfileViewComponent implements OnInit, AfterViewInit, OnDestroy {
       category: this.portalProfile.personalDetails.category && this.portalProfile.personalDetails.category.toUpperCase(),
     })
 
-    this.primaryDetailsForm.patchValue({
-      group: this.portalProfile.professionalDetails[0].group || '',
-      designation: this.portalProfile.professionalDetails[0].designation || '',
-    })
+    if ((this.portalProfile.professionalDetails && this.portalProfile.professionalDetails.length)) {
+      this.primaryDetailsForm.patchValue({
+        group: this.portalProfile.professionalDetails[0].group,
+        designation: this.portalProfile.professionalDetails[0].designation,
+      })
+    } else {
+      this.primaryDetailsForm.patchValue({
+        group: '',
+        designation: '',
+      })
+    }
   }
 
   handleCancelUpdate(): void {
@@ -830,7 +843,6 @@ export class ProfileViewComponent implements OnInit, AfterViewInit, OnDestroy {
     dialogRef.componentInstance.enableWithdraw.subscribe((value: boolean) => {
       if (value) {
         this.enableWTR = true
-        this.toolTipMessage = 'You can\'t edit when you requested for Transfer request'
       }
     })
   }
@@ -845,7 +857,6 @@ export class ProfileViewComponent implements OnInit, AfterViewInit, OnDestroy {
     dialogRef.componentInstance.enableMakeTransfer.subscribe((value: boolean) => {
       if (value) {
         this.enableWTR = false
-        this.toolTipMessage = ''
       }
     })
   }
@@ -895,14 +906,23 @@ export class ProfileViewComponent implements OnInit, AfterViewInit, OnDestroy {
       this.approvalPendingFields = _res.result.data
       if (!this.approvalPendingFields || !this.approvalPendingFields.length) { return }
       const exists = this.approvalPendingFields.filter((obj: any) => {
+        if (obj.hasOwnProperty('name')) {
+          this.unVerifiedObj.organization = obj.name
+        }
+        if (obj.hasOwnProperty('group')) {
+          this.unVerifiedObj.group = obj.group
+        }
+        if (obj.hasOwnProperty('designation')) {
+          this.unVerifiedObj.designation = obj.designation
+        }
         return obj.hasOwnProperty('name')
       }).length > 0
 
       if (exists) {
         this.enableWTR = true
-        this.toolTipMessage = 'You can\'t edit when you requested for Transfer request'
       } else {
         this.enableWR = true
+        this.feedbackInfo = "Your new designation request is under process."
       }
     },         (error: HttpErrorResponse) => {
       if (!error.ok) {
@@ -936,6 +956,7 @@ export class ProfileViewComponent implements OnInit, AfterViewInit, OnDestroy {
       this.matSnackBar.open('Request sent successfully!')
       this.editProfile = !this.editProfile
       this.enableWR = true
+      this.getSendApprovalStatus()
     },         (error: HttpErrorResponse) => {
       if (!error.ok) {
         this.matSnackBar.open('Unable to do transfer request, please try again later!')
@@ -949,6 +970,9 @@ export class ProfileViewComponent implements OnInit, AfterViewInit, OnDestroy {
       this.userProfileService.withDrawRequest(this.configSvc.unMappedUser.id, _obj.wfId)
       .pipe(takeUntil(this.destroySubject$))
       .subscribe((_res: any) => {
+        this.unVerifiedObj.group = ''
+        this.unVerifiedObj.designation = ''
+        this.feedbackInfo = ''
         this.matSnackBar.open('Withdraw request done successfully!')
         this.enableWR = false
       },         (error: HttpErrorResponse) => {

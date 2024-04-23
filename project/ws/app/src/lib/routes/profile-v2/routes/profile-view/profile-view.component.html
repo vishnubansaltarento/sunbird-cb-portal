@@ -46,15 +46,21 @@
             <div class="flex flex-row">
               <ng-container *ngIf="!enableWTR">
                 <div class="flex flex-row gap-2 items-center make-transfer-div">
-                  <div class="text-sm make-transer" (click)="handleTransferRequest()">Make Transfer Request</div>
-                  <mat-icon [matTooltipPosition]="'below'" #tooltip="matTooltip" matTooltip="If you make a transfer request, your profile will be unverified again">info_outline</mat-icon>
+                  <ng-container *ngIf="!enableWR">
+                    <div class="text-sm make-transer" (click)="handleTransferRequest()">Make Transfer Request</div>
+                  </ng-container>
+                  <ng-container *ngIf="enableWR">
+                    <div class="text-sm make-transer disable-button" [matTooltipPosition]="'below'"
+                      #MTRTooltip="matTooltip" matTooltip="{{ toolTipMessage }}" (click)="MTRTooltip.toggle()">Make Transfer Request</div>
+                  </ng-container>
+                  <mat-icon [matTooltipPosition]="'below'" #tooltip="matTooltip" matTooltip="If you make a transfer request, your profile will be unverified again" (click)="tooltip.toggle()">info_outline</mat-icon>
                 </div>
               </ng-container>
 
               <ng-container *ngIf="enableWTR">
                 <div class="flex flex-row gap-2 items-center make-transfer-div">
                   <div class="text-sm make-transer" (click)="handleWithdrawTransferRequest()">Withdraw Transfer Request</div>
-                  <mat-icon [matTooltipPosition]="'below'" #tooltip="matTooltip" matTooltip="If you make a transfer request, your profile will be unverified again">info_outline</mat-icon>
+                  <mat-icon [matTooltipPosition]="'below'" #wTooltip="matTooltip" matTooltip="If you make a transfer request, your profile will be unverified again" (click)="wTooltip.toggle()">info_outline</mat-icon>
                 </div>
               </ng-container>
             </div>
@@ -84,7 +90,7 @@
           <div class="flex flex-row gap-4 items-center justify-between">
             <div class="flex flex-row gap-2 title-div items-center">
               <div class="title">Primary Details</div>
-              <mat-icon class="custom-mat-icon" [matTooltipPosition]="'below'" #tooltip="matTooltip" matTooltip="These details go to your MDO Admin for approval">info_outline</mat-icon>
+              <mat-icon class="custom-mat-icon" [matTooltipPosition]="'below'" #pTooltip="matTooltip" matTooltip="These details go to your MDO Admin for approval" (click)="pTooltip.toggle()">info_outline</mat-icon>
             </div>
             <ng-container *ngIf="!enableWTR && !enableWR">
               <div class="flex flex-row">
@@ -96,7 +102,7 @@
             </ng-container>
             <ng-container *ngIf="enableWTR">
               <div class="flex flex-row">
-                <div class="flex flex-row gap-2 items-center edit-button disable-button" [matTooltipPosition]="'below'" #tooltip="matTooltip" matTooltip="{{ toolTipMessage }}">
+                <div class="flex flex-row gap-2 items-center edit-button disable-button" [matTooltipPosition]="'below'" #WRTooltip="matTooltip" matTooltip="You can't edit when you requested for Transfer request" (click)="WRTooltip.toggle()">
                   <mat-icon>edit</mat-icon>
                   Edit
                 </div>
@@ -110,11 +116,22 @@
             <div class="info-div">
               <div class="label">Group</div>
               <ng-container *ngIf="!editProfile">
-                <div class="flex flex-row gap-2 items-center info-value" *ngIf="portalProfile?.professionalDetails?.length && portalProfile?.professionalDetails[0]?.group">
-                  {{ portalProfile?.professionalDetails[0]?.group }}
-                  <mat-icon class="verified-check">check_circle</mat-icon>
-                </div>
-                <div class="info-value" *ngIf="!portalProfile?.professionalDetails?.length || !portalProfile?.professionalDetails[0]?.group">NA</div>
+                <ng-container *ngIf="unVerifiedObj.group">
+                  <div class="flex flex-row gap-2 items-center info-value">
+                    <div class="flex">{{ unVerifiedObj.group }}</div>
+                    <div class="profile-not-verified">
+                      <div class="text">Not verified</div>
+                      <mat-icon>info_outline</mat-icon>
+                    </div>
+                  </div>
+                </ng-container>
+                <ng-container *ngIf="!unVerifiedObj.group && portalProfile?.professionalDetails?.length && portalProfile?.professionalDetails[0]?.group">
+                  <div class="flex flex-row gap-2 items-center">
+                    <div class="flex">{{ portalProfile?.professionalDetails[0]?.group }}</div>
+                    <mat-icon class="verified-check">check_circle</mat-icon>
+                  </div>
+                </ng-container>
+                <div class="info-value" *ngIf="!unVerifiedObj.group && (!portalProfile?.professionalDetails?.length || !portalProfile?.professionalDetails[0]?.group)">NA</div>
               </ng-container>
               <ng-container *ngIf="editProfile">
                 <mat-form-field class="profile-form-field">
@@ -130,24 +147,18 @@
               <div class="label">Designation</div>
               <ng-container *ngIf="!editProfile">
                 <div class="flex flex-col gap-2 info-value" *ngIf="portalProfile?.professionalDetails?.length">
-                  <div class="flex flex-col sm:flex-row gap-2 sm:items-center">
+                  <div class="flex flex-row gap-2 items-center">
                     <div class="flex">
-                      {{ portalProfile?.professionalDetails[0]?.designation }}
+                      {{ unVerifiedObj.designation || portalProfile?.professionalDetails[0]?.designation }}
                     </div>
-                    <div class="flex flex-row gap-2">
-                      <div class="profile-not-verified approval-sent text-sm font-bold" *ngIf="enableWR">
-                        Sent For Approval
-                      </div>
-
-                      <div class="profile-not-verified" *ngIf="primaryInfo?.designation?.notVerified">
-                        <div class="text">Not verified</div>
-                        <mat-icon>info_outline</mat-icon>
-                      </div>
-  
-                      <div class="profile-rejected" *ngIf="primaryInfo?.designation?.rejected">
-                        <div class="text">Rejected</div>
-                        <mat-icon>cancel</mat-icon>
-                      </div>
+                    <div class="profile-not-verified" *ngIf="unVerifiedObj.designation">
+                      <div class="text">Not verified</div>
+                      <mat-icon>info_outline</mat-icon>
+                    </div>
+                    
+                    <div class="profile-rejected" *ngIf="primaryInfo?.designation?.rejected">
+                      <div class="text">Rejected</div>
+                      <mat-icon>cancel</mat-icon>
                     </div>
                   </div>
                 </div>
@@ -169,10 +180,10 @@
             </div>
           </div>
 
-          <div class="flex flex-col sm:flex-row gap-2 sm:items-center">
+          <div class="flex flex-col sm:flex-row gap-2 sm:items-center" *ngIf="feedbackInfo">
             <div class="flex items-center gap-1 info-text">
               <mat-icon>info</mat-icon>
-              Your designation approval request is rejected for so and so reason.
+              {{ feedbackInfo }}
             </div>
           </div>
 
