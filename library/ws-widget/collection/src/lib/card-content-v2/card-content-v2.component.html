@@ -1648,9 +1648,12 @@
                 <img [src]="widgetData?.content?.creatorLogo" class="source-icon" [wsUtilsDefaultThumbnail]="defaultSLogo"
                   [alt]="(widgetData?.content?.sourceName + '_' + widgetData?.content?.identifier)" />
               </div>
-              <span class="absolute resourse-type uppercase">
+              <span class="absolute resourse-type">
                 <img class="stats-icon " height="16" src="{{widgetData?.content?.mimeType === nsContentConstants?.EMimeTypes?.PDF ?  '/assets/icons/home/pdf.svg' :'/assets/icons/home/play.svg'}}" width="16">
-                {{getMimeType}}
+                <span *ngIf="widgetData?.content?.mimeType === nsContentConstants?.EMimeTypes?.PDF;else otherResource" class="uppercase">{{getMimeType}}</span>
+                <ng-template #otherResource>
+                  <span class="capitalize">{{getMimeType}}</span>
+                </ng-template>
               </span>
             </div>
             <ng-container *ngIf="widgetData?.content?.cbPlanEndDate">
