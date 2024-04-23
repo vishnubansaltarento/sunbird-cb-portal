@@ -62,108 +62,6 @@ export const MY_FORMATS = {
 })
 
 export class ProfileViewComponent implements OnInit, AfterViewInit, OnDestroy {
-  @ViewChild('stickyMenu', { static: true }) menuElement!: ElementRef
-  private destroySubject$ = new Subject()
-  /* tslint:disable */
-  Math: any
-  /* tslint:enable */
-  elementPosition: any
-  currentFilter = 'timestamp'
-  discussionList!: any
-  discussProfileData!: any
-  portalProfile!: NSProfileDataV2.IProfile
-  userDetails: any
-  location!: string | null
-  tabs: any
-  tabsData: NSProfileDataV2.IProfileTab[]
-  currentUser: any
-  connectionRequests!: NSNetworkDataV2.INetworkUser[]
-  currentUsername: any
-  enrolledCourse: any = []
-  allCertificate: any = []
-  pageData: any
-  sideNavBarOpened = true
-  private defaultSideNavBarOpenedSubscription: any
-  public screenSizeIsLtMedium = false
-  isLtMedium$ = this.valueSvc.isLtMedium$
-  insightsData: any
-  mode$ = this.isLtMedium$.pipe(map(isMedium => (isMedium ? 'over' : 'side')))
-  orgId: any
-  selectedTabIndex: any
-  nameInitials = ''
-
-  pendingRequestData: any = []
-  pendingRequestSkeleton = true
-  insightsDataLoading = true
-
-  countdata = 0
-  enrollInterval: any
-
-  discussion = {
-    loadSkeleton: false,
-    data: undefined,
-    error: false,
-  }
-  recentRequests = {
-    data: undefined,
-    error: false,
-    loadSkeleton: false,
-  }
-  updatesPosts = {
-    data: undefined,
-    error: false,
-    loadSkeleton: false,
-  }
-  certificatesData: any
-  showCreds = false
-  credMessage = 'View my credentials'
-  assessmentsData: any
-  isCurrentUser!: boolean
-
-  // Latest variables...
-  verifyEmail = false
-  verifyMobile = false
-  countryCodes: any[] = []
-  countryCodesBackUp: any[] = []
-  nationalityData: any[] = []
-  editDetails = false
-  editProfile = false
-  editName = false
-  eUserGender = Object.keys(NsUserProfileDetails.EUserGender)
-  eCategory = Object.keys(NsUserProfileDetails.ECategory)
-  masterLanguages: any[] | undefined
-  masterLanguageBackup: any[] | undefined
-  dateOfBirth: any | undefined
-  groupData: any | undefined
-  profileMetaData: any | undefined
-  imageTypes = PROFILE_IMAGE_SUPPORT_TYPES
-  photoUrl!: string | ArrayBuffer | null
-  profileName = ''
-  enableWTR = false
-  otherDetailsForm = new FormGroup({
-    employeeId: new FormControl('', []),
-    primaryEmail: new FormControl('', [Validators.pattern(/^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/)]),
-    mobile: new FormControl('', [Validators.minLength(10), Validators.maxLength(10)]),
-    gender: new FormControl('', []),
-    dob: new FormControl('', []),
-    domicileMedium: new FormControl('', []),
-    countryCode: new FormControl('', []),
-    pincode: new FormControl('', [Validators.minLength(6), Validators.maxLength(6)]),
-    category: new FormControl('', []),
-  })
-
-  primaryInfo: any = {
-    group : {},
-    designation: {
-      approvalSent: true,
-      notVerified: false,
-      rejected: false,
-    },
-  }
-  primaryDetailsForm = new FormGroup({
-    group: new FormControl('', [Validators.required]),
-    designation: new FormControl('', [Validators.required]),
-  })
 
   constructor(
     public dialog: MatDialog,
@@ -302,6 +200,110 @@ export class ProfileViewComponent implements OnInit, AfterViewInit, OnDestroy {
       }
     })
   }
+  @ViewChild('stickyMenu', { static: true }) menuElement!: ElementRef
+  private destroySubject$ = new Subject()
+  /* tslint:disable */
+  Math: any
+  /* tslint:enable */
+  elementPosition: any
+  currentFilter = 'timestamp'
+  discussionList!: any
+  discussProfileData!: any
+  portalProfile!: NSProfileDataV2.IProfile
+  userDetails: any
+  location!: string | null
+  tabs: any
+  tabsData: NSProfileDataV2.IProfileTab[]
+  currentUser: any
+  connectionRequests!: NSNetworkDataV2.INetworkUser[]
+  currentUsername: any
+  enrolledCourse: any = []
+  allCertificate: any = []
+  pageData: any
+  sideNavBarOpened = true
+  private defaultSideNavBarOpenedSubscription: any
+  public screenSizeIsLtMedium = false
+  isLtMedium$ = this.valueSvc.isLtMedium$
+  insightsData: any
+  mode$ = this.isLtMedium$.pipe(map(isMedium => (isMedium ? 'over' : 'side')))
+  orgId: any
+  selectedTabIndex: any
+  nameInitials = ''
+
+  pendingRequestData: any = []
+  pendingRequestSkeleton = true
+  insightsDataLoading = true
+
+  countdata = 0
+  enrollInterval: any
+
+  discussion = {
+    loadSkeleton: false,
+    data: undefined,
+    error: false,
+  }
+  recentRequests = {
+    data: undefined,
+    error: false,
+    loadSkeleton: false,
+  }
+  updatesPosts = {
+    data: undefined,
+    error: false,
+    loadSkeleton: false,
+  }
+  certificatesData: any
+  showCreds = false
+  credMessage = 'View my credentials'
+  assessmentsData: any
+  isCurrentUser!: boolean
+
+  // Latest variables...
+  verifyEmail = false
+  verifyMobile = false
+  countryCodes: any[] = []
+  countryCodesBackUp: any[] = []
+  nationalityData: any[] = []
+  editDetails = false
+  editProfile = false
+  editName = false
+  eUserGender = Object.keys(NsUserProfileDetails.EUserGender)
+  eCategory = Object.keys(NsUserProfileDetails.ECategory)
+  masterLanguages: any[] | undefined
+  masterLanguageBackup: any[] | undefined
+  dateOfBirth: any | undefined
+  groupData: any | undefined
+  profileMetaData: any | undefined
+  imageTypes = PROFILE_IMAGE_SUPPORT_TYPES
+  photoUrl!: string | ArrayBuffer | null
+  profileName = ''
+  enableWTR = false
+  otherDetailsForm = new FormGroup({
+    employeeId: new FormControl('', []),
+    primaryEmail: new FormControl('', [Validators.pattern(/^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/)]),
+    mobile: new FormControl('', [Validators.minLength(10), Validators.maxLength(10)]),
+    gender: new FormControl('', []),
+    dob: new FormControl('', []),
+    domicileMedium: new FormControl('', []),
+    countryCode: new FormControl('', []),
+    pincode: new FormControl('', [Validators.minLength(6), Validators.maxLength(6)]),
+    category: new FormControl('', []),
+  })
+
+  primaryInfo: any = {
+    group : {},
+    designation: {
+      approvalSent: true,
+      notVerified: false,
+      rejected: false,
+    },
+  }
+  primaryDetailsForm = new FormGroup({
+    group: new FormControl('', [Validators.required]),
+    designation: new FormControl('', [Validators.required]),
+  })
+
+  approvalPendingFields = []
 
   ngOnInit() {
     this.defaultSideNavBarOpenedSubscription = this.isLtMedium$.subscribe(isLtMedium => {
@@ -883,8 +885,6 @@ export class ProfileViewComponent implements OnInit, AfterViewInit, OnDestroy {
       }
     })
   }
-
-  approvalPendingFields = []
   getSendApprovalStatus(): void {
     this.userProfileService.listApprovalPendingFields()
     .pipe(takeUntil(this.destroySubject$))

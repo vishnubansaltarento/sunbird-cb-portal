@@ -42,7 +42,7 @@ export class WithdrawRequestComponent implements OnInit, OnDestroy {
         this.matSnackBar.open('Withdrawn transfer request successfully!')
         this.handleCloseModal()
         this.enableMakeTransfer.emit(true)
-      }, (error: HttpErrorResponse) => {
+      },         (error: HttpErrorResponse) => {
         if (!error.ok) {
           this.matSnackBar.open(`Unable to withdraw transfer request for ${_obj.name || _obj.designation || _obj.group}`)
         }
