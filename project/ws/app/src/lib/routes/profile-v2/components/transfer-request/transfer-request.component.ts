@@ -1,4 +1,4 @@
-import { Component, OnInit, Inject, OnDestroy } from '@angular/core'
+import { Component, OnInit, Inject, OnDestroy, Output, EventEmitter } from '@angular/core'
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog'
 import { FormControl, FormGroup, Validators } from '@angular/forms'
 import { HttpErrorResponse } from '@angular/common/http'
@@ -18,15 +18,15 @@ import { ConfigurationsService } from '@sunbird-cb/utils/src/public-api'
 
 export class TransferRequestComponent implements OnInit, OnDestroy {
 
+  @Output() enableWithdraw = new EventEmitter<boolean>()
   transferRequestForm = new FormGroup({
     organization: new FormControl('', [Validators.required]),
     group: new FormControl('', [Validators.required]),
     designation: new FormControl('', [Validators.required]),
   })
-  profileMetaData: any
   departmentData: any[] = []
+  otherDetails = false
   private destroySubject$ = new Subject()
-  groupData: any[] = []
 
   constructor(
     public dialogRef: MatDialogRef<TransferRequestComponent>,
@@ -37,29 +37,25 @@ export class TransferRequestComponent implements OnInit, OnDestroy {
   ) {
     if (this.data.portalProfile.professionalDetails && this.data.portalProfile.professionalDetails.length) {
       this.transferRequestForm.controls.group.setValue(this.data.portalProfile.professionalDetails[0].group)
-      this.transferRequestForm.controls.designation.setValue(this.data.portalProfile.professionalDetails[0].designation)
+      this.transferRequestForm.controls.designation.setValue(this.data.portalProfile.professionalDetails[0].designation || '')
     }
     if (this.data.portalProfile.employmentDetails) {
       this.transferRequestForm.controls.organization.setValue(this.data.portalProfile.employmentDetails.departmentName)
     }
+
+    this.transferRequestForm.get('organization')!.valueChanges
+    .subscribe((value: string) => {
+      if (value !== this.data.portalProfile.employmentDetails.departmentName) {
+        this.otherDetails = true
+      } else {
+        this.otherDetails = false
+      }
+    })
+
   }
 
   ngOnInit() {
-    this.getGroupData()
     this.getAllDeptData()
-    this.getProfilePageMetaData()
-
-    // Working on fork join...
-    // const source = [
-    //   this.userProfileService.getProfilePageMeta(),
-    //   this.userProfileService.getGroups(),
-    //   this.userProfileService.getAllDepartments()
-    // ]
-
-    // forkJoin(source)
-    // .subscribe(
-    //   console.log
-    // );
   }
 
   handleCloseModal(): void {
@@ -88,34 +84,11 @@ export class TransferRequestComponent implements OnInit, OnDestroy {
     .pipe(takeUntil(this.destroySubject$))
     .subscribe((_res: any) => {
       this.matSnackBar.open('Request sent successfully!')
+      this.enableWithdraw.emit(true)
       this.handleCloseModal()
     },         (error: HttpErrorResponse) => {
       if (!error.ok) {
         this.matSnackBar.open('Unable to do transfer request, please try again later!')
-      }
-    })
-  }
-
-  getProfilePageMetaData(): void {
-    this.userProfileService.getProfilePageMeta()
-    .pipe(takeUntil(this.destroySubject$))
-    .subscribe(res => {
-      this.profileMetaData = res
-    },         (error: HttpErrorResponse) => {
-      if (!error.ok) {
-        this.matSnackBar.open('Unable to fetch profile page meta data')
-      }
-    })
-  }
-
-  getGroupData(): void {
-    this.userProfileService.getGroups()
-    .pipe(takeUntil(this.destroySubject$))
-    .subscribe((res: any) => {
-      this.groupData = res.result && res.result.response
-    },         (error: HttpErrorResponse) => {
-      if (!error.ok) {
-        this.matSnackBar.open('Unable to fetch group meta data')
       }
     })
   }

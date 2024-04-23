@@ -26,7 +26,7 @@ import { MatExpansionModule } from '@angular/material/expansion'
 import { MatDividerModule } from '@angular/material/divider'
 
 import { WidgetResolverModule } from '@sunbird-cb/resolver'
-import { PipeFilterModule, PipeHtmlTagRemovalModule, PipeOrderByModule, PipeRelativeTimeModule } from '@sunbird-cb/utils'
+import { PipeFilterModule, PipeHtmlTagRemovalModule, PipeOrderByModule, PipeRelativeTimeModule, PipeCertificateImageURL } from '@sunbird-cb/utils'
 import { AvatarPhotoModule, BtnPageBackModule } from '@sunbird-cb/collection'
 import { ProfileV2RoutingModule } from './profile-v2.rounting.module'
 import { DiscussModule } from '../discuss/discuss.module'
@@ -49,6 +49,7 @@ import { ProfileKarmapointsComponent } from './routes/profile-karmapoints/profil
 import { VerifyOtpComponent } from './components/verify-otp/verify-otp.component'
 import { TransferRequestComponent } from './components/transfer-request/transfer-request.component'
 import { WithdrawRequestComponent } from './components/withdraw-request/withdraw-request.component'
+import { DesignationRequestComponent } from './components/designation-request/designation-request.component'
 
 import { LoaderService } from '@ws/author/src/lib/services/loader.service'
 import { InitResolver } from './resolvers/init-resolve.service'
@@ -64,6 +65,7 @@ import { OtpService } from '../user-profile/services/otp.services'
     VerifyOtpComponent,
     TransferRequestComponent,
     WithdrawRequestComponent,
+    DesignationRequestComponent,
   ],
   imports: [
     CommonModule,
@@ -116,11 +118,13 @@ import { OtpService } from '../user-profile/services/otp.services'
     VerifyOtpComponent,
     TransferRequestComponent,
     WithdrawRequestComponent,
+    DesignationRequestComponent,
   ],
   providers: [
     LoaderService,
     InitResolver,
     OtpService,
+    PipeCertificateImageURL,
   ],
 })
 export class ProfileV2Module {

@@ -136,6 +136,7 @@ export namespace NSProfileDataV2 {
     osid: string
     responsibilities: string
     verifiedKarmayogi: boolean
+    group: string
   }
   export interface ISkills {
     additionalSkills: string
