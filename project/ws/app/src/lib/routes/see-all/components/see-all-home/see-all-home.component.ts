@@ -75,11 +75,8 @@ export class SeeAllHomeComponent implements OnInit, OnDestroy {
       this.seeAllPageConfig.tabs &&
       this.seeAllPageConfig.tabs.length
       ) {
-      this.tabResults = this.seeAllPageConfig.tabs
-      this.dynamicTabIndex = _.findIndex(
-      this.tabResults,
-      (v: any) => v.label === this.tabSelected
-      )
+        this.tabResults = this.seeAllPageConfig.tabs
+        this.dynamicTabIndex = _.findIndex(this.tabResults, (v: any) => v.label === this.tabSelected)
       }
     this.contentDataList = this.transformSkeletonToWidgets(this.seeAllPageConfig)
     if (this.seeAllPageConfig.request && this.seeAllPageConfig.request.searchV6) {
