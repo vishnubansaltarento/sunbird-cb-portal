@@ -22,7 +22,7 @@ export class VerifyOtpComponent implements OnInit, OnDestroy {
   @ViewChild('timerDiv', { static: false }) timerDiv !: any
   @Output() resendOTP = new EventEmitter<string>()
   @Output() otpVerified = new EventEmitter<string>()
-  timeLeft = 90
+  timeLeft = 150
   interval: any
   showResendOTP = false
   otpEntered = ''

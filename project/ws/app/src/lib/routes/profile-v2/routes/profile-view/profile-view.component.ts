@@ -282,7 +282,7 @@ export class ProfileViewComponent implements OnInit, AfterViewInit, OnDestroy {
   feedbackInfo = ''
   toolTipMessage = 'You need to withdraw Primary details request before making a Transfer Request'
   otherDetailsForm = new FormGroup({
-    employeeId: new FormControl('', []),
+    employeeCode: new FormControl('', []),
     primaryEmail: new FormControl('', [Validators.pattern(/^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/)]),
     mobile: new FormControl('', [Validators.minLength(10), Validators.maxLength(10)]),
     gender: new FormControl('', []),
@@ -717,6 +717,7 @@ export class ProfileViewComponent implements OnInit, AfterViewInit, OnDestroy {
       this.dateOfBirth = new Date(`${dateArray[1]}/${dateArray[0]}/${dateArray[2]}`)
     }
     this.otherDetailsForm.patchValue({
+      employeeCode: this.portalProfile.employmentDetails && this.portalProfile.employmentDetails.employeeCode,
       primaryEmail: this.portalProfile.personalDetails.primaryEmail,
       gender: this.portalProfile.personalDetails.gender && this.portalProfile.personalDetails.gender.toUpperCase(),
       dob: this.dateOfBirth,
@@ -807,17 +808,21 @@ export class ProfileViewComponent implements OnInit, AfterViewInit, OnDestroy {
     const dataToSubmit = { ...this.otherDetailsForm.value }
     dataToSubmit.dob = `${dataToSubmit.dob.getDate()}-${dataToSubmit.dob.getMonth() + 1}-${dataToSubmit.dob.getFullYear()}`
     delete dataToSubmit.countryCode
-    delete dataToSubmit.employeeId
+    delete dataToSubmit.employeeCode
 
     const payload = {
       'request': {
         'userId': this.configSvc.unMappedUser.id,
         'profileDetails': {
           'personalDetails': {},
+          'employmentDetails': {
+            'employeeCode': this.otherDetailsForm.value['employeeCode'],
+          },
         },
       },
     }
     payload.request.profileDetails.personalDetails = dataToSubmit
+
     this.userProfileService.editProfileDetails(payload)
     .pipe(takeUntil(this.destroySubject$))
     .subscribe((_res: any) => {

@@ -6,10 +6,10 @@
         You requested for transfer with following details:
     </div> -->
     <div class="text-base primary text-center">
-        Are you sure you want to withdraw your transfer request?
+        {{ 'profileInfo.withdrawWarnMsg' | translate }}
     </div>
     <div class="flex gap-4 mt-4">
-        <button class="outline-button" (click)="handleCloseModal()">No</button>
-        <button class="save-button" (click)="handleWithdrawRequest()">Yes</button>
+        <button class="outline-button" (click)="handleCloseModal()">{{ 'profileInfo.no' | translate }}</button>
+        <button class="save-button" (click)="handleWithdrawRequest()">{{ 'profileInfo.yes' | translate }}</button>
     </div>
 </div>

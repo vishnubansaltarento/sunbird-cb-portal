@@ -1,12 +1,12 @@
 <div class="flex flex-col gap-4">
-    <div class="text-base font-semibold text-center">Select all the fields to make transfer request.</div>
+    <div class="text-base font-semibold text-center">{{ 'profileInfo.transferHeader' | translate }}</div>
 
     <form class="flex flex-col gap-4" [formGroup]="transferRequestForm">
         <div class="flex flex-col">
-            <div class="text-sm font-bold required">Organization</div>
+            <div class="text-sm font-bold required">{{ 'profileInfo.organization' | translate }}</div>
             <mat-form-field class="profile-form-field">
                 <mat-select formControlName="organization"  >
-                    <mat-option value="" disabled>Choose an Organization</mat-option>
+                    <mat-option value="" disabled>{{ 'profileInfo.chooseOrganization' | translate }}</mat-option>
                     <mat-option *ngFor="let dept of departmentData" value="{{ dept }}">{{ dept }}</mat-option>
                 </mat-select>
             </mat-form-field>
@@ -14,20 +14,20 @@
     
         <ng-container *ngIf="otherDetails">
             <div class="flex flex-col">
-                <div class="text-sm font-bold required">Group</div>
+                <div class="text-sm font-bold required">{{ 'profileInfo.group' | translate }}</div>
                 <mat-form-field class="profile-form-field">
                     <mat-select formControlName="group">
-                        <mat-option value="" disabled>Choose a group</mat-option>
+                        <mat-option value="" disabled>{{ 'profileInfo.chooseAGroup' | translate }}</mat-option>
                         <mat-option *ngFor="let group of data?.groupData" value="{{group}}">{{ group }}</mat-option>
                     </mat-select>
                 </mat-form-field>
             </div>
         
             <div class="flex flex-col">
-                <div class="text-sm font-bold required">Designation</div>
+                <div class="text-sm font-bold required">{{ 'profileInfo.designation' | translate }}</div>
                 <mat-form-field class="profile-form-field">
                     <mat-select formControlName="designation">
-                        <mat-option value="" disabled>Choose a Designation</mat-option>
+                        <mat-option value="" disabled>{{ 'profileInfo.chooseADesignation' | translate }}</mat-option>
                         <mat-option *ngFor="let designation of data?.profileMetaData?.designations?.designations" value="{{ designation.name }}">{{ designation.name }}</mat-option>
                     </mat-select>
                 </mat-form-field>
@@ -36,12 +36,12 @@
 
         <div class="flex flex-row gap-1 info-div">
             <mat-icon>info</mat-icon>
-            <div>If you make a transfer request, your profile will need verification again.</div>
+            <div>{{ 'profileInfo.transferWarnMsg' | translate }}</div>
         </div>
         
         <div class="flex flex-row justify-between mt-2">
-            <button class="outline-button" (click)="handleCloseModal()">Cancel</button>
-            <button class="save-button" [disabled]="transferRequestForm?.invalid" [ngClass]="{'disable-button': transferRequestForm?.invalid}" (click)="handleSubmitRequest()">Submit request</button>
+            <button class="outline-button" (click)="handleCloseModal()">{{ 'profileInfo.cancel' | translate }}</button>
+            <button class="save-button" [disabled]="transferRequestForm?.invalid" [ngClass]="{'disable-button': transferRequestForm?.invalid}" (click)="handleSubmitRequest()">{{ 'profileInfo.submitRequest' | translate }}</button>
         </div>
     </form>
 </div>

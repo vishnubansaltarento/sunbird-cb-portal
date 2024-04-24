@@ -1,8 +1,9 @@
 import { NgModule } from '@angular/core'
 import { CommonModule } from '@angular/common'
+import { HttpClient } from '@angular/common/http'
 import { RouterModule } from '@angular/router'
 import { ReactiveFormsModule, FormsModule } from '@angular/forms'
-import { TranslateModule } from '@ngx-translate/core'
+import { TranslateModule, TranslateLoader } from '@ngx-translate/core'
 import {
   MatIconModule,
   MatListModule,
@@ -24,6 +25,7 @@ import { MatAutocompleteModule } from '@angular/material/autocomplete'
 import { MatGridListModule } from '@angular/material/grid-list'
 import { MatExpansionModule } from '@angular/material/expansion'
 import { MatDividerModule } from '@angular/material/divider'
+import { HttpLoaderFactory } from 'src/app/app.module'
 
 import { WidgetResolverModule } from '@sunbird-cb/resolver'
 import { PipeFilterModule, PipeHtmlTagRemovalModule, PipeOrderByModule, PipeRelativeTimeModule, PipeCertificateImageURL } from '@sunbird-cb/utils'
@@ -109,10 +111,17 @@ import { OtpService } from '../user-profile/services/otp.services'
     DiscussionsModule,
     RecentRequestsModule,
     PendingRequestModule,
-    TranslateModule,
     MatTooltipModule,
     MatDatepickerModule,
     MatAutocompleteModule,
+    TranslateModule,
+    TranslateModule.forRoot({
+      loader: {
+        provide: TranslateLoader,
+        useFactory: HttpLoaderFactory,
+        deps: [HttpClient],
+      },
+    }),
   ],
   entryComponents: [
     VerifyOtpComponent,
