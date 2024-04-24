@@ -299,14 +299,16 @@ export class ProfileViewComponent implements OnInit, AfterViewInit, OnDestroy {
     group: '',
     organization: '',
   }
-
+  rejectedFields: any = {
+    name: '',
+    group: '',
+    designation: '',
+  }
   primaryDetailsForm = new FormGroup({
     group: new FormControl('', [Validators.required]),
     designation: new FormControl('', [Validators.required]),
   })
-
   approvalPendingFields = []
-
   contextToken: any
 
   ngOnInit() {
@@ -333,6 +335,7 @@ export class ProfileViewComponent implements OnInit, AfterViewInit, OnDestroy {
     this.getGroupData()
     this.getProfilePageMetaData()
     this.getSendApprovalStatus()
+    this.getRejectedStatus()
   }
 
   ngAfterViewInit() {
@@ -993,6 +996,30 @@ export class ProfileViewComponent implements OnInit, AfterViewInit, OnDestroy {
     },         (error: HttpErrorResponse) => {
       if (!error.ok) {
         this.matSnackBar.open('Unable to get approval status of all fields')
+      }
+    })
+  }
+
+  getRejectedStatus(): void {
+    this.userProfileService.listRejectedFields()
+    .pipe(takeUntil(this.destroySubject$))
+    .subscribe((res: any) => {
+      if (res.result && res.result.data) {
+        res.result.data.forEach((obj: any) => {
+          if (obj.hasOwnProperty('name')) {
+            this.rejectedFields.name = obj.name
+          }
+          if (obj.hasOwnProperty('group')) {
+            this.rejectedFields.group = obj.group
+          }
+          if (obj.hasOwnProperty('designation')) {
+            this.rejectedFields.designation = obj.designation
+          }
+        })
+      }
+    },         (error: HttpErrorResponse) => {
+      if (!error.ok) {
+        this.matSnackBar.open('Unable to fetch rejected status fields')
       }
     })
   }
