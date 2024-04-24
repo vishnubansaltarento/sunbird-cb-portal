@@ -29,7 +29,7 @@ export class CbpPlanComponent implements OnInit {
   upcommingList: any = []
   overDueList: any = []
   overdueUncompleted: any = []
-	upcomingUncompleted: any = []
+	 upcomingUncompleted: any = []
   toggleFilter = false
   cbpOriginalData: any
   filteredData: any
