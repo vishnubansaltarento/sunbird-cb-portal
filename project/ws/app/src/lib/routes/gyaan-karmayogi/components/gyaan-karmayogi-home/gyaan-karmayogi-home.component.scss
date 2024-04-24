@@ -7,7 +7,14 @@
 .gyann-wrapper {
     .headder-block {
         background: var(--Linear, linear-gradient(101deg, #3A83CF 4.01%, #1B4CA1 79.78%));
-        padding: 54px;
+        
+        // background-image: url('assets/instances/eagle/banners/hubs/knowledgeresource/graphics.svg');
+        .section{
+            padding: 54px;
+            background-image: url(/assets/instances/eagle/banners/hubs/knowledgeresource/graphics.svg);
+            background-position: right bottom; /*Positioning*/
+            background-repeat: no-repeat;
+        }
         .title {
             color: var(--themes_envytheme_com_edali_remote-training__2056x1031_default-Nero, #FFF);
             font-family: Montserrat;
@@ -205,7 +212,11 @@
     .gyann-wrapper {
         .headder-block {
             background: var(--Linear, linear-gradient(101deg, #3A83CF 4.01%, #1B4CA1 79.78%));
-            padding: 16px;
+
+            .section{
+                padding: 16px;
+                background-image:unset;
+            }
             .title {
                 color: var(--themes_envytheme_com_edali_remote-training__2056x1031_default-Nero, #FFF);
                 font-family: Montserrat;

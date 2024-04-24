@@ -1,6 +1,7 @@
 import { Component, EventEmitter, Inject, Input, OnInit, Output } from '@angular/core'
 import { MAT_BOTTOM_SHEET_DATA, MatBottomSheetRef } from '@angular/material'
 import { TranslateService } from '@ngx-translate/core'
+import { gyaanConstants } from '../../models/gyaan-contants.model'
 
 @Component({
   selector: 'ws-app-gyaan-filter',
@@ -33,8 +34,10 @@ export class GyaanFilterComponent implements OnInit {
       this.facetsData = this.data.facetsData
       this.facetsDataCopy = this.data.facetsDataCopy
       this.filterDataLoading = this.data.filterDataLoading
-      this.localFilterData = JSON.parse(JSON.stringify(this.facetsDataCopy))
-      this.mobileSelectedFilter = this.data.selectedFilter
+      this.localFilterData = JSON.parse(JSON.stringify(Object.keys(this.data.selectedFilter).length ?
+      this.data.facetsDataCopy : {}))
+      this.mobileSelectedFilter = JSON.parse(JSON.stringify(
+        Object.keys(this.data.selectedFilter).length ? this.data.selectedFilter : {}))
       this.bindSelectedValue()
     } else {
       this.localFilterData = JSON.parse(JSON.stringify(this.facetsDataCopy))
@@ -59,27 +62,35 @@ export class GyaanFilterComponent implements OnInit {
   // this openLink method is used to close the bottomsheet
   openLink(type: any): void {
     if (type === 'apply') {
-      this.bottomSheetRef.dismiss(this.mobileSelectedFilter)
+      this.bottomSheetRef.dismiss({
+        filter: this.mobileSelectedFilter,
+        facetData: this.facetsData,
+      })
     } else {
-      this.bottomSheetRef.dismiss()
+      this.bottomSheetRef.dismiss({
+        filter: this.data.selectedFilter,
+        facetData: this.facetsData,
+      })
     }
   }
 
   clearFilter() {
     Object.keys(this.mobileSelectedFilter).forEach((ele: any) => {
       if (ele !== 'resourceCategory') {
-        this.localFilterData[ele].values.forEach((subEle: any) => {
+        this.facetsData[ele].values.forEach((subEle: any) => {
           if (this.mobileSelectedFilter[ele].includes(subEle.name)) {
             subEle['checked'] = false
           }
           const index = this.mobileSelectedFilter[ele].findIndex((x: any) => x === subEle.name)
           this.mobileSelectedFilter[ele].splice(index, 1)
         })
+        if (Object.keys(this.facetsData).length) {
+          this.localFilterData = JSON.parse(JSON.stringify(this.facetsData))
+        }
+      } else {
+        this.mobileSelectedFilter[gyaanConstants.resourceCategory] = ''
       }
     })
-    this.mobileSelectedFilter = {
-      resourceCategory: this.mobileSelectedFilter.resourceCategory,
-    }
     // this.bottomSheetRef.dismiss(this.mobileSelectedFilter)
   }
 

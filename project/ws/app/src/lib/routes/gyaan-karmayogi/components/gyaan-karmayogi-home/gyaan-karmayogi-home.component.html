@@ -2,24 +2,26 @@
 <div class="gyann-wrapper">
     <div >
         <div class="flex flex-center headder-block">
-            <div class="container-balanced">
-                <div class="grid 2 md:grid-cols-2">
-                    <div class="">
-                        <p class="title mat-display-1 mb-2">{{'gyaanKarmayogi.title'| translate}}</p>
-                        <p class="description mat-title">{{'gyaanKarmayogi.description'| translate}}</p>
-                        <div class="flex search-block mt-16">
-                            <input type="text" placeholder="Search in Gyaan Karmayogi" [formControl]="searchControl"  class="flex-1">
-                            <button type="button" (click)="searchFilter()" class="btn cursor-pointer">Search</button>
+            <div class="section w-full">
+                <div class="container-balanced ">
+                    <div class="grid 2 md:grid-cols-2">
+                        <div class="">
+                            <p class="title mat-display-1 mb-2">{{'gyaanKarmayogi.title'| translate}}</p>
+                            <p class="description mat-title">{{'gyaanKarmayogi.description'| translate}}</p>
+                            <div class="flex search-block mt-16">
+                                <input type="text" placeholder="{{'gyaanKarmayogi.placeholder' | translate}}" [formControl]="searchControl"  class="flex-1">
+                                <button type="button" (click)="searchFilter()" class="btn cursor-pointer">{{'gyaanKarmayogi.search' | translate}}</button>
+                            </div>
                         </div>
-                    </div>
-
-                    <div class="img-container flex justify-end gap-8">
-                        <img class="img1" src="assets/instances/eagle/banners/hubs/knowledgeresource/1.png" alt="">
-                        <div class="flex gap-4 flex-col">
-
-                        <img class="img2"  src="assets/instances/eagle/banners/hubs/knowledgeresource/222.png" alt="">
-
-                        <img  class="img3" src="assets/instances/eagle/banners/hubs/knowledgeresource/333.png" alt="">
+    
+                        <div class="img-container flex justify-end gap-8">
+                            <img class="img1" src="assets/instances/eagle/banners/hubs/knowledgeresource/banner-1.jpg" alt="">
+                            <div class="flex gap-4 flex-col">
+    
+                            <img class="img2"  src="assets/instances/eagle/banners/hubs/knowledgeresource/banner-2.jpg" alt="">
+    
+                            <img  class="img3" src="assets/instances/eagle/banners/hubs/knowledgeresource/banner-3.jpg" alt="">
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -64,7 +66,7 @@
                             <div class="flex flex-col">
                                 <label for="">{{'gyaanKarmayogi.sectors'| translate}}</label>
                                 <mat-form-field  appearance="outline"  class="filter-select">
-                                    <mat-select name="sectors" placeholder="Sector" (selectionChange)="sectorChange($event)" formControlName="sectors">
+                                    <mat-select name="sectors" placeholder="{{'gyaanKarmayogi.sectors' | translate}}" (selectionChange)="sectorChange($event)" formControlName="sectors">
                                         <ng-container *ngFor="let sector of sectorsList">
                                             <mat-option [value]="sector">{{sector?.name}}</mat-option>
                                         </ng-container>
@@ -74,7 +76,7 @@
                             <div class="flex flex-col">
                                 <label for="">{{'gyaanKarmayogi.subSectors'| translate}}</label>
                                 <mat-form-field   appearance="outline" class="filter-select">
-                                    <mat-select name="subSectors" placeholder="Sub-sectors" (selectionChange)="subSectorChange($event)" formControlName="subSectors" >
+                                    <mat-select name="subSectors" placeholder="{{'gyaanKarmayogi.subSectors' | translate}}" (selectionChange)="subSectorChange($event)" formControlName="subSectors" >
                                     <ng-container *ngFor="let subData of subSector">
                                         <mat-option [value]="subData?.name">{{subData?.name}}</mat-option>
                                     </ng-container>

@@ -51,22 +51,8 @@ export class GyaanKarmayogiViewAllComponent implements OnInit {
     this.route.snapshot.data.pageData.data.stripConfig &&
     this.route.snapshot.data.pageData.data.stripConfig.strips &&
     this.route.snapshot.data.pageData.data.stripConfig.strips[0]
-
     this.contentDataList = this.transformSkeletonToWidgets(this.seeAllPageConfig)
-    if (this.seeAllPageConfig.request && this.seeAllPageConfig.request.searchV6) {
-      if (this.selectedSector === gyaanConstants.allSectors)  {
-        this.selectedFilter[gyaanConstants.sectorName]  = this.sectorNames
-      } else if (this.selectedSector) {
-        this.selectedFilter[gyaanConstants.sectorName] = [this.selectedSector]
-      }
-      if (this.keyData)  {
-        this.selectedFilter[gyaanConstants.resourceCategory] = this.keyData
-      }
-      this.fetchFromSearchV6(this.seeAllPageConfig)
-      this.seeAllPageConfig.request.searchV6.request.filters = {
-        ...this.seeAllPageConfig.request.searchV6.request.filters,
-      }
-    }
+
   }
   // the below method is used to convert cards to skeleton loader
   private transformSkeletonToWidgets(
@@ -139,6 +125,17 @@ export class GyaanKarmayogiViewAllComponent implements OnInit {
           ...factes,
         }
         strip.request.searchV6.request.query = this.searchControl && this.searchControl.value
+        if (!(this.selectedFilter[gyaanConstants.sectorName] &&
+          this.selectedFilter[gyaanConstants.sectorName].length)) {
+          delete strip.request.searchV6.request.filters.sectorName
+        }
+        if (!(this.selectedFilter[gyaanConstants.subSectorName] &&
+          this.selectedFilter[gyaanConstants.subSectorName].length)) {
+          delete strip.request.searchV6.request.filters.subSectorName
+        }
+        if (!this.selectedFilter[gyaanConstants.resourceCategory]) {
+          delete strip.request.searchV6.request.filters.resourceCategory
+        }
       }
 
       try {
@@ -214,7 +211,7 @@ export class GyaanKarmayogiViewAllComponent implements OnInit {
   }
 
   // the bellow method is used to get initial facet data to filters
-  getFacetsData() {
+  async getFacetsData() {
     this.filterDataLoading = true
     const request = this.route.snapshot.data.pageData &&
     this.route.snapshot.data.pageData.data &&
@@ -268,11 +265,25 @@ export class GyaanKarmayogiViewAllComponent implements OnInit {
               })
               localFacetData[facet.name].values = facet.values
             }
+
           })
 
           this.facetsDataCopy = { ...localFacetData }
           this.facetsData = localFacetData
-
+          if (this.seeAllPageConfig.request && this.seeAllPageConfig.request.searchV6) {
+            if (this.selectedSector === gyaanConstants.allSectors)  {
+              this.selectedFilter[gyaanConstants.sectorName]  = this.sectorNames
+            } else if (this.selectedSector) {
+              this.selectedFilter[gyaanConstants.sectorName] = [this.selectedSector]
+            }
+            if (this.keyData)  {
+              this.selectedFilter[gyaanConstants.resourceCategory] = this.keyData
+            }
+            this.fetchFromSearchV6(this.seeAllPageConfig)
+            this.seeAllPageConfig.request.searchV6.request.filters = {
+              ...this.seeAllPageConfig.request.searchV6.request.filters,
+            }
+          }
          }
          this.filterDataLoading = false
     },                                         (_error: any) => {
@@ -325,11 +336,15 @@ export class GyaanKarmayogiViewAllComponent implements OnInit {
   })
   bottomSheetRef.afterDismissed().subscribe((result: any) => {
    if (result) {
+    const filter = result.filter
       this.titles = [
         { title: 'Gyaan Karmayogi', url: '/app/gyaan-karmayogi/all', disableTranslate: true, icon: 'school' },
-        { title: this.titleCasePipe.transform(result.resourceCategory), url: `none`, icon: '' },
+        { title: this.titleCasePipe.transform(filter[gyaanConstants.resourceCategory] ?
+           filter[gyaanConstants.resourceCategory] : ''), url: `none`, icon: '' },
       ]
-      this.selectedFilter = result
+      this.facetsData = result.facetData
+      this.facetsDataCopy = result.facetData
+      this.selectedFilter = filter
       this.contentDataList = this.transformSkeletonToWidgets(this.seeAllPageConfig)
       if (this.seeAllPageConfig.request && this.seeAllPageConfig.request.searchV6) {
         this.fetchFromSearchV6(this.seeAllPageConfig)
