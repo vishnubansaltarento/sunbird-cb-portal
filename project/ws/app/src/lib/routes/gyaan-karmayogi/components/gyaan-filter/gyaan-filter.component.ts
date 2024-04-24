@@ -34,8 +34,10 @@ export class GyaanFilterComponent implements OnInit {
       this.facetsData = this.data.facetsData
       this.facetsDataCopy = this.data.facetsDataCopy
       this.filterDataLoading = this.data.filterDataLoading
-      this.localFilterData = JSON.parse(JSON.stringify(this.facetsDataCopy))
-      this.mobileSelectedFilter = JSON.parse(JSON.stringify(this.data.selectedFilter))
+      this.localFilterData = JSON.parse(JSON.stringify(Object.keys(this.data.selectedFilter).length ?
+      this.data.facetsDataCopy : {}))
+      this.mobileSelectedFilter = JSON.parse(JSON.stringify(
+        Object.keys(this.data.selectedFilter).length ? this.data.selectedFilter : {}))
       this.bindSelectedValue()
     } else {
       this.localFilterData = JSON.parse(JSON.stringify(this.facetsDataCopy))
@@ -82,7 +84,9 @@ export class GyaanFilterComponent implements OnInit {
           const index = this.mobileSelectedFilter[ele].findIndex((x: any) => x === subEle.name)
           this.mobileSelectedFilter[ele].splice(index, 1)
         })
-        this.localFilterData = JSON.parse(JSON.stringify(this.facetsData))
+        if (Object.keys(this.facetsData).length) {
+          this.localFilterData = JSON.parse(JSON.stringify(this.facetsData))
+        }
       } else {
         this.mobileSelectedFilter[gyaanConstants.resourceCategory] = ''
       }
