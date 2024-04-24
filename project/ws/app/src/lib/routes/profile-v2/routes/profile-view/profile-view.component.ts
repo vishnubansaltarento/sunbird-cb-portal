@@ -864,7 +864,7 @@ export class ProfileViewComponent implements OnInit, AfterViewInit, OnDestroy {
 
     const dataToSubmit = { ...this.otherDetailsForm.value }
     if (dataToSubmit.dob) {
-      dataToSubmit.dob = 
+      dataToSubmit.dob =
       `${new Date(dataToSubmit.dob).getDate()}-${new Date(dataToSubmit.dob).getMonth() + 1}-${new Date(dataToSubmit.dob).getFullYear()}`
     }
     delete dataToSubmit.countryCode
