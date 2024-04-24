@@ -139,6 +139,17 @@ export class GyaanKarmayogiViewAllComponent implements OnInit {
           ...factes,
         }
         strip.request.searchV6.request.query = this.searchControl && this.searchControl.value
+        if (!(this.selectedFilter[gyaanConstants.sectorName] &&
+          this.selectedFilter[gyaanConstants.sectorName].length)) {
+          delete strip.request.searchV6.request.filters.sectorName
+        }
+        if (!(this.selectedFilter[gyaanConstants.subSectorName] &&
+          this.selectedFilter[gyaanConstants.subSectorName].length)) {
+          delete strip.request.searchV6.request.filters.subSectorName
+        }
+        if (!this.selectedFilter[gyaanConstants.resourceCategory]) {
+          delete strip.request.searchV6.request.filters.resourceCategory
+        }
       }
 
       try {
@@ -325,11 +336,14 @@ export class GyaanKarmayogiViewAllComponent implements OnInit {
   })
   bottomSheetRef.afterDismissed().subscribe((result: any) => {
    if (result) {
+    const filter = result.filter
       this.titles = [
         { title: 'Gyaan Karmayogi', url: '/app/gyaan-karmayogi/all', disableTranslate: true, icon: 'school' },
-        { title: this.titleCasePipe.transform(result.resourceCategory), url: `none`, icon: '' },
+        { title: this.titleCasePipe.transform(filter.resourceCategory), url: `none`, icon: '' },
       ]
-      this.selectedFilter = result
+      this.facetsData = result.facetData
+      this.facetsDataCopy = result.facetData
+      this.selectedFilter = filter
       this.contentDataList = this.transformSkeletonToWidgets(this.seeAllPageConfig)
       if (this.seeAllPageConfig.request && this.seeAllPageConfig.request.searchV6) {
         this.fetchFromSearchV6(this.seeAllPageConfig)
