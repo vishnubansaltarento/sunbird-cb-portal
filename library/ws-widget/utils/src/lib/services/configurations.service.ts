@@ -58,6 +58,7 @@ export class ConfigurationsService {
   positions: any
   overrideThemeChanges: any
   profileTimelyNudges: any
+  verifiedKarmayogi = false
 
   // pinnedApps
   pinnedApps = new BehaviorSubject<Set<string>>(new Set())

@@ -225,18 +225,20 @@ export class HomeComponent implements OnInit, AfterViewInit {
 
   handleUpdateMobileNudge() {
     if (this.configSvc.unMappedUser && this.configSvc.unMappedUser.id) {
-      this.fetchProfileById(this.configSvc.unMappedUser.id).subscribe(x => {
-        // console.log(x.profileDetails, "x.profileDetails====")
-        // if (x.profileDetails.mandatoryFieldsExists) {
-        //   this.isNudgeOpen = false
-        // }
-        const profilePopUp = sessionStorage.getItem('hideUpdateProfilePopUp')
-        if (profilePopUp !== null) {
-          this.isNudgeOpen = false
-        } else if (x && x.profileDetails && x.profileDetails.mandatoryFieldsExists) {
-          this.isNudgeOpen = false
+      this.fetchProfileById(this.configSvc.unMappedUser.id).subscribe((_obj: any) => {
+        if (this.configSvc.userProfile) {
+          if (!this.configSvc.verifiedKarmayogi) {
+            this.isNudgeOpen = true
+          } else {
+            this.isNudgeOpen = false
+          }
+        } else {
+          this.isNudgeOpen = true
         }
-        // if (x && x.profileDetails && x.profileDetails.personalDetails && x.profileDetails.personalDetails.phoneVerified) {
+        // const profilePopUp = sessionStorage.getItem('hideUpdateProfilePopUp')
+        // if (profilePopUp !== null) {
+        //   this.isNudgeOpen = false
+        // } else if (x && x.profileDetails && x.profileDetails.mandatoryFieldsExists) {
         //   this.isNudgeOpen = false
         // }
       })

@@ -440,6 +440,7 @@ export class InitService {
             profileImageUrl: _.get(userPidProfile, 'profileDetails.profileImageUrl') || '',
             professionalDetails: _.get(userPidProfile, 'profileDetails.professionalDetails') || [],
           }
+          this.configSvc.verifiedKarmayogi = _.get(userPidProfile, 'profileDetails.verifiedKarmayogi')
 
           this.configSvc.userProfileV2 = {
             userId: _.get(profileV2, 'userId') || userPidProfile.userId,
