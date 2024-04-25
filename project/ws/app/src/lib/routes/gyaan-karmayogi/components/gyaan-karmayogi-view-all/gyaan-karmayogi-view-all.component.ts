@@ -28,6 +28,14 @@ export class GyaanKarmayogiViewAllComponent implements OnInit {
   selectedFilter: any = {}
   sectorNames: any = []
   selectedSector: any = ''
+  limit = 5
+  page = 0
+  totalPages!: number | 0
+  totalCount = 0
+  newQueryParam: any
+  throttle = 100
+  scrollDistance = 0.2
+
   constructor(private bottomSheet: MatBottomSheet,
               private route: ActivatedRoute,
               private seeAllSvc: GyaanKarmayogiService,
@@ -136,8 +144,10 @@ export class GyaanKarmayogiViewAllComponent implements OnInit {
         if (!this.selectedFilter[gyaanConstants.resourceCategory]) {
           delete strip.request.searchV6.request.filters.resourceCategory
         }
+        strip.request.searchV6['request']['limit'] = this.limit
+        strip.request.searchV6['request']['offset'] = 0
       }
-
+      this.newQueryParam = strip.request
       try {
         const response = await this.searchV6Request(strip, strip.request, calculateParentStatus)
         if (response && response.results) {
@@ -147,8 +157,9 @@ export class GyaanKarmayogiViewAllComponent implements OnInit {
           } else {
             this.contentDataList = this.transformContentsToWidgets(response.results.result.content, strip)
           }
-          // this.totalCount = response.results.result.count
-          // this.totalPages = Math.ceil(response.results.result.count / strip.request.searchV6.request.limit)
+          this.totalCount = response.results.result.count
+          this.page = 0
+          this.totalPages = Math.ceil(response.results.result.count / strip.request.searchV6.request.limit)
         }
       } catch (error) {}
 
@@ -357,6 +368,30 @@ export class GyaanKarmayogiViewAllComponent implements OnInit {
     this.contentDataList = this.transformSkeletonToWidgets(this.seeAllPageConfig)
     if (this.seeAllPageConfig.request && this.seeAllPageConfig.request.searchV6) {
       this.fetchFromSearchV6(this.seeAllPageConfig)
+    }
+  }
+  async onScrollEnd() {
+    this.page += 1
+    if (this.page <= this.totalPages && this.contentDataList.length < this.totalCount) {
+      const queryparam = this.newQueryParam
+      if (queryparam.searchV6.request) {
+        queryparam.searchV6.request['offset'] += 5
+      }
+      // this.searchSrvc.fetchSearchDataByCategory(queryparam).subscribe((response: any) => {
+      //   const array2 = response.result.content
+      //   this.searchResults = this.searchResults.concat(array2)
+      // })
+      try {
+        const response = await this.searchV6Request(this.seeAllPageConfig, queryparam, true)
+        if (response && response.results) {
+          if (this.contentDataList.length && this.contentDataList[0].widgetData.content) {
+            this.contentDataList =
+            _.concat(this.contentDataList, this.transformContentsToWidgets(response.results.result.content, this.seeAllPageConfig))
+          } else {
+            this.contentDataList = this.transformContentsToWidgets(response.results.result.content, this.seeAllPageConfig)
+          }
+        }
+      } catch (error) {}
     }
   }
 }
