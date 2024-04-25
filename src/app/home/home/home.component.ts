@@ -250,9 +250,10 @@ export class HomeComponent implements OnInit, AfterViewInit {
     if (this.configSvc.unMappedUser && this.configSvc.unMappedUser.id) {
       this.fetchProfileById(this.configSvc.unMappedUser.id).subscribe((_obj: any) => {
         const profilePopUp = sessionStorage.getItem('hideUpdateProfilePopUp')
+
         if (_obj.profileDetails) {
           if (!_obj.profileDetails.verifiedKarmayogi && (this.pendingApprovalList && this.pendingApprovalList.length)
-            && profilePopUp === 'true') {
+            && (profilePopUp === 'true' || profilePopUp === null)) {
             this.isNudgeOpen = false
           } else {
             this.isNudgeOpen = true
