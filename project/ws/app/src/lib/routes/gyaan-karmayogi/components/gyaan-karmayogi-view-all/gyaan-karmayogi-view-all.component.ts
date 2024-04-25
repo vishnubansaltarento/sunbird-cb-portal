@@ -28,7 +28,7 @@ export class GyaanKarmayogiViewAllComponent implements OnInit {
   selectedFilter: any = {}
   sectorNames: any = []
   selectedSector: any = ''
-  limit = 5
+  limit = 50
   page = 0
   totalPages!: number | 0
   totalCount = 0
@@ -375,7 +375,7 @@ export class GyaanKarmayogiViewAllComponent implements OnInit {
     if (this.page <= this.totalPages && this.contentDataList.length < this.totalCount) {
       const queryparam = this.newQueryParam
       if (queryparam.searchV6.request) {
-        queryparam.searchV6.request['offset'] += 5
+        queryparam.searchV6.request['offset'] += 50
       }
       // this.searchSrvc.fetchSearchDataByCategory(queryparam).subscribe((response: any) => {
       //   const array2 = response.result.content
