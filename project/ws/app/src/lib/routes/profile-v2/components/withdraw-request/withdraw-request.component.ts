@@ -1,6 +1,7 @@
 import { Component, OnInit, Inject, OnDestroy, Output, EventEmitter } from '@angular/core'
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog'
 import { MatSnackBar } from '@angular/material'
+import { TranslateService } from '@ngx-translate/core'
 
 import { Subject } from 'rxjs'
 import { takeUntil } from 'rxjs/operators'
@@ -23,7 +24,8 @@ export class WithdrawRequestComponent implements OnInit, OnDestroy {
     @Inject(MAT_DIALOG_DATA) public data: any,
     private matSnackBar: MatSnackBar,
     private userProfileService: UserProfileService,
-    private configService: ConfigurationsService
+    private configService: ConfigurationsService,
+    private translateService: TranslateService
   ) {
   }
 
@@ -39,15 +41,21 @@ export class WithdrawRequestComponent implements OnInit, OnDestroy {
       this.userProfileService.withDrawRequest(this.configService.unMappedUser.id, _obj.wfId)
       .pipe(takeUntil(this.destroySubject$))
       .subscribe((_res: any) => {
-        this.matSnackBar.open('Withdrawn transfer request successfully!')
+        this.matSnackBar.open(this.handleTranslateTo('withdrawTransferSuccess'))
         this.handleCloseModal()
         this.enableMakeTransfer.emit(true)
       },         (error: HttpErrorResponse) => {
         if (!error.ok) {
-          this.matSnackBar.open(`Unable to withdraw transfer request for ${_obj.name || _obj.designation || _obj.group}`)
+          this.matSnackBar.open(this.handleTranslateTo('withdrawTransferFailed'))
         }
       })
     })
+  }
+
+  handleTranslateTo(menuName: string): string {
+    // tslint:disable-next-line: prefer-template
+    const translationKey = 'profileInfo.' + menuName.replace(/\s/g, '')
+    return this.translateService.instant(translationKey)
   }
 
   ngOnDestroy(): void {

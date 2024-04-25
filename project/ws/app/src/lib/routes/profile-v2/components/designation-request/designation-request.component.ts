@@ -2,6 +2,7 @@ import { Component, Inject, OnDestroy } from '@angular/core'
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog'
 import { HttpErrorResponse } from '@angular/common/http'
 import { MatSnackBar } from '@angular/material'
+import { TranslateService } from '@ngx-translate/core'
 
 import { Subject } from 'rxjs'
 import { takeUntil } from 'rxjs/operators'
@@ -24,7 +25,8 @@ export class DesignationRequestComponent implements OnDestroy {
     @Inject(MAT_DIALOG_DATA) public data: any,
     private configService: ConfigurationsService,
     private requestService: RequestService,
-    private matSnackBar: MatSnackBar
+    private matSnackBar: MatSnackBar,
+    private translateService: TranslateService
   ) { }
 
   handleCloseModal(): void {
@@ -58,14 +60,20 @@ export class DesignationRequestComponent implements OnDestroy {
     this.requestService.createPosition(postData)
     .pipe(takeUntil(this.destroySubject$))
     .subscribe((_res: any) => {
-      this.matSnackBar.open('Your designation request has been submitted successfully!')
+      this.matSnackBar.open(this.handleTranslateTo('designationRequestSent'))
       this.handleCloseModal()
     },         (error: HttpErrorResponse) => {
       if (!error.ok) {
-        this.matSnackBar.open('Unable to request given designation, please try again later')
+        this.matSnackBar.open(this.handleTranslateTo('designationRequestFailed'))
         this.handleCloseModal()
       }
     })
+  }
+
+  handleTranslateTo(menuName: string): string {
+    // tslint:disable-next-line: prefer-template
+    const translationKey = 'profileInfo.' + menuName.replace(/\s/g, '')
+    return this.translateService.instant(translationKey)
   }
 
   ngOnDestroy(): void {
