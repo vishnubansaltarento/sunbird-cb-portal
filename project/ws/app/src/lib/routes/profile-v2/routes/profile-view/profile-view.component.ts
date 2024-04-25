@@ -283,6 +283,7 @@ export class ProfileViewComponent implements OnInit, AfterViewInit, OnDestroy {
   enableWR = false
   feedbackInfo = ''
   toolTipMessage = 'You need to withdraw Primary details request before making a Transfer Request'
+  skeletonLoader = false
   otherDetailsForm = new FormGroup({
     employeeCode: new FormControl('', []),
     primaryEmail: new FormControl('', [Validators.pattern(/^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/)]),
@@ -969,6 +970,7 @@ export class ProfileViewComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   getSendApprovalStatus(): void {
+    this.skeletonLoader = true
     this.userProfileService.listApprovalPendingFields()
     .pipe(takeUntil(this.destroySubject$))
     .subscribe((_res: any) => {
@@ -993,10 +995,12 @@ export class ProfileViewComponent implements OnInit, AfterViewInit, OnDestroy {
         this.enableWR = true
         this.feedbackInfo = 'Your new designation request is under process.'
       }
+      this.skeletonLoader = false
     },         (error: HttpErrorResponse) => {
       if (!error.ok) {
         this.matSnackBar.open('Unable to get approval status of all fields')
       }
+      this.skeletonLoader = false
     })
   }
 

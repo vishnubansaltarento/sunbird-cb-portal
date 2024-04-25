@@ -239,19 +239,19 @@ export class HomeComponent implements OnInit, AfterViewInit {
     .subscribe((res: any) => {
       this.pendingApprovalList = res.result.data
       this.handleUpdateMobileNudge()
-    }, (error: HttpErrorResponse) => {
+    },         (error: HttpErrorResponse) => {
       if (!error.ok) {
-        this.matSnackBar.open("Unable to fetch pending approval list")
+        this.matSnackBar.open('Unable to fetch pending approval list')
       }
     })
   }
 
   handleUpdateMobileNudge() {
     if (this.configSvc.unMappedUser && this.configSvc.unMappedUser.id) {
-      this.fetchProfileById(this.configSvc.unMappedUser.id).subscribe((_obj: any) => {        
+      this.fetchProfileById(this.configSvc.unMappedUser.id).subscribe((_obj: any) => {
         const profilePopUp = sessionStorage.getItem('hideUpdateProfilePopUp')
         if (_obj.profileDetails) {
-          if (!_obj.profileDetails.verifiedKarmayogi && (this.pendingApprovalList && this.pendingApprovalList.length) 
+          if (!_obj.profileDetails.verifiedKarmayogi && (this.pendingApprovalList && this.pendingApprovalList.length)
             && profilePopUp === 'true') {
             this.isNudgeOpen = false
           } else {
