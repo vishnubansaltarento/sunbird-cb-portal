@@ -196,7 +196,9 @@ export class GyaanKarmayogiHomeComponent implements OnInit {
 
   // global search method
   searchFilter() {
-    const addFilters: any = {}
+    const addFilters: any = {
+      sectorName: this.sectorNames,
+    }
     this.callStrips(addFilters)
     this.selectedSector = gyaanConstants.allSectors
     if (this.gyaanForm) {
