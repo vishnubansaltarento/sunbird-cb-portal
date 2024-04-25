@@ -1,22 +1,26 @@
 <div class="verify-otp-dialog">
     <div class="flex flex-col gap-4">
-        <div class="text-base font-semibold text-center mb-4">Enter the OTP sent to your {{ data.type === 'email' ? 'email' : 'mobile number' }}.</div>
+        <div class="text-base font-semibold text-center mb-4">
+            {{ 'profileInfo.otpHeaderText' | translate }}&nbsp;
+            <span *ngIf="data.type === 'email'" class="lowercase">{{ 'profileInfo.email' | translate }}</span>
+            <span *ngIf="data.type !== 'email'" class="lowercase">{{ 'profileInfo.mobileNumber' | translate }}</span>
+        </div>
         <div class="flex flex-col gap-1">
-            <div class="text-sm font-bold">Enter OTP</div>
-            <input type="text" class="input-text" placeholder="Enter the OTP" maxlength="6" [(ngModel)]="otpEntered"  />
+            <div class="text-sm font-bold">{{ 'profileInfo.enterOTP' | translate }}</div>
+            <input type="text" class="input-text" placeholder="{{ 'profileInfo.enterTheOTP' | translate }}" maxlength="6" [(ngModel)]="otpEntered"  />
         </div>
         <div class="flex flex-row gap-2 items-center justify-center timer-div" *ngIf="!showResendOTP">
             <div class="flex flex-row gap-1 time-remaining text-sm ">
-                Time remaining to resend OTP: <div #timerDiv></div>
+                {{ 'profileInfo.timeRemaining' | translate }}: <div #timerDiv></div>
             </div>
         </div>
         <div class="flex justify-end" *ngIf="showResendOTP">
-            <div class="resend-otp" (click)="handleResendOTP()">Resend OTP</div>
+            <div class="resend-otp" (click)="handleResendOTP()">{{ 'profileInfo.resentOTP' | translate }}</div>
         </div>
 
         <div class="flex flex-row justify-between">
-            <button class="outline-button" (click)="handleCloseModal()">Cancel</button>
-            <button class="save-button" (click)="handleVerifyOTP()">Submit</button>
+            <button class="outline-button" (click)="handleCloseModal()">{{ 'profileInfo.cancel' | translate }}</button>
+            <button class="save-button" (click)="handleVerifyOTP()">{{ 'profileInfo.submit' | translate }}</button>
         </div>
     </div>
 </div>

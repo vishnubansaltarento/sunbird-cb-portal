@@ -117,9 +117,11 @@ export class ProfileViewComponent implements OnInit, AfterViewInit, OnDestroy {
           const emailRegex = /^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/
           if (emailRegex.test(res)) {
             this.verifyEmail = true
+            this.otherDetailsForm.setErrors({ invalid: false })
           }
         } else {
           this.verifyEmail = false
+          this.otherDetailsForm.setErrors({ invalid: false })
         }
       })
     }
@@ -279,25 +281,36 @@ export class ProfileViewComponent implements OnInit, AfterViewInit, OnDestroy {
   profileName = ''
   enableWTR = false
   enableWR = false
-  toolTipMessage = ''
+  feedbackInfo = ''
+  toolTipMessage = 'You need to withdraw Primary details request before making a Transfer Request'
+  skeletonLoader = false
   otherDetailsForm = new FormGroup({
-    employeeId: new FormControl('', []),
+    employeeCode: new FormControl('', []),
     primaryEmail: new FormControl('', [Validators.pattern(/^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/)]),
     mobile: new FormControl('', [Validators.minLength(10), Validators.maxLength(10)]),
     gender: new FormControl('', []),
     dob: new FormControl('', []),
     domicileMedium: new FormControl('', []),
     countryCode: new FormControl('', []),
-    pincode: new FormControl('', [Validators.minLength(6), Validators.maxLength(6)]),
+    pincode: new FormControl('', [Validators.minLength(6), Validators.maxLength(6), Validators.pattern(/^[1-9][0-9]{5}$/)]),
     category: new FormControl('', []),
   })
-
+  unVerifiedObj = {
+    designation: '',
+    group: '',
+    organization: '',
+  }
+  rejectedFields: any = {
+    name: '',
+    group: '',
+    designation: '',
+  }
   primaryDetailsForm = new FormGroup({
     group: new FormControl('', [Validators.required]),
     designation: new FormControl('', [Validators.required]),
   })
-
   approvalPendingFields = []
+  contextToken: any
 
   ngOnInit() {
     this.defaultSideNavBarOpenedSubscription = this.isLtMedium$.subscribe(isLtMedium => {
@@ -323,6 +336,7 @@ export class ProfileViewComponent implements OnInit, AfterViewInit, OnDestroy {
     this.getGroupData()
     this.getProfilePageMetaData()
     this.getSendApprovalStatus()
+    this.getRejectedStatus()
   }
 
   ngAfterViewInit() {
@@ -652,6 +666,21 @@ export class ProfileViewComponent implements OnInit, AfterViewInit, OnDestroy {
     })
   }
 
+  handleEditOtherDetails(): void {
+    if (this.portalProfile.personalDetails.primaryEmail) {
+      if (this.otherDetailsForm.get('officialEmail')) {
+        this.otherDetailsForm.get('officialEmail')!.setValidators(Validators.required)
+        this.otherDetailsForm.get('officialEmail')!.updateValueAndValidity()
+      }
+    }
+    if (this.portalProfile.personalDetails.mobile) {
+      if (this.otherDetailsForm.get('mobile')) {
+        this.otherDetailsForm.get('mobile')!.setValidators(Validators.required)
+        this.otherDetailsForm.get('mobile')!.updateValueAndValidity()
+      }
+    }
+  }
+
   getInitials(): void {
     if (this.currentUser.firstName) {
       if (this.currentUser.firstName.split(' ').length > 1) {
@@ -703,14 +732,24 @@ export class ProfileViewComponent implements OnInit, AfterViewInit, OnDestroy {
 
   prefillForm(data ?: any): void {
     if (data) {
-      this.portalProfile.personalDetails = data
+      this.portalProfile.personalDetails.gender = data.dataToSubmit.gender
+      this.portalProfile.personalDetails.dob = data.dataToSubmit.dob
+      this.portalProfile.personalDetails.domicileMedium = data.dataToSubmit.domicileMedium
+      this.portalProfile.personalDetails.category = data.dataToSubmit.category
+      this.portalProfile.personalDetails.pincode = data.dataToSubmit.pincode
+      this.portalProfile.personalDetails.mobile = data.dataToSubmit.mobile
+      if (this.portalProfile.employmentDetails) {
+        this.portalProfile.employmentDetails.employeeCode = data.employeeCode
+      }
     }
 
     if (this.portalProfile.personalDetails.dob) {
       const dateArray = this.portalProfile.personalDetails.dob.split('-')
       this.dateOfBirth = new Date(`${dateArray[1]}/${dateArray[0]}/${dateArray[2]}`)
     }
+
     this.otherDetailsForm.patchValue({
+      employeeCode: this.portalProfile.employmentDetails && this.portalProfile.employmentDetails.employeeCode || '',
       primaryEmail: this.portalProfile.personalDetails.primaryEmail,
       gender: this.portalProfile.personalDetails.gender && this.portalProfile.personalDetails.gender.toUpperCase(),
       dob: this.dateOfBirth,
@@ -721,10 +760,17 @@ export class ProfileViewComponent implements OnInit, AfterViewInit, OnDestroy {
       category: this.portalProfile.personalDetails.category && this.portalProfile.personalDetails.category.toUpperCase(),
     })
 
-    this.primaryDetailsForm.patchValue({
-      group: this.portalProfile.professionalDetails[0].group || '',
-      designation: this.portalProfile.professionalDetails[0].designation || '',
-    })
+    if ((this.portalProfile.professionalDetails && this.portalProfile.professionalDetails.length)) {
+      this.primaryDetailsForm.patchValue({
+        group: this.portalProfile.professionalDetails[0].group,
+        designation: this.portalProfile.professionalDetails[0].designation,
+      })
+    } else {
+      this.primaryDetailsForm.patchValue({
+        group: '',
+        designation: '',
+      })
+    }
   }
 
   handleCancelUpdate(): void {
@@ -737,7 +783,6 @@ export class ProfileViewComponent implements OnInit, AfterViewInit, OnDestroy {
     const newDateStr = `${dateArr[1]}/${dateArr[0]}/${dateArr[2]}`
     return moment(new Date(newDateStr)).format('D MMM YYYY')
   }
-
   handleVerifyOTP(verifyType: string, _value?: string): void {
     const dialogRef = this.dialog.open(VerifyOtpComponent, {
       data: { type: verifyType, value: _value },
@@ -745,14 +790,15 @@ export class ProfileViewComponent implements OnInit, AfterViewInit, OnDestroy {
       panelClass: 'common-modal',
     })
 
-    dialogRef.componentInstance.resendOTP.subscribe((data: string) => {
+    dialogRef.componentInstance.resendOTP.subscribe((data: any) => {
       if (data !== 'email') {
         this.handleGenerateOTP()
       }
     })
 
-    dialogRef.componentInstance.otpVerified.subscribe((data: string) => {
-      if (data === 'email') {
+    dialogRef.componentInstance.otpVerified.subscribe((data: any) => {
+      this.contextToken = data.token
+      if (data.type === 'email') {
         this.verifyEmail = false
       } else {
         this.verifyMobile = false
@@ -790,27 +836,64 @@ export class ProfileViewComponent implements OnInit, AfterViewInit, OnDestroy {
     })
   }
 
+  updateEmail(email: string): void {
+    const postData = {
+      request: {
+        'userId': this.configSvc.unMappedUser.id,
+        'contextToken': this.contextToken,
+        'profileDetails': {
+          'personalDetails': {
+            'primaryEmail': email,
+          },
+        },
+      },
+    }
+
+    this.userProfileService.updatePrimaryEmailDetails(postData)
+    .pipe(takeUntil(this.destroySubject$))
+    .subscribe((_res: any) => {
+      this.portalProfile.personalDetails.primaryEmail = email
+      this.matSnackBar.open('Email updated successfully')
+    },         (error: HttpErrorResponse) => {
+      if (!error.ok) {
+        this.matSnackBar.open('Unable to update email')
+      }
+    })
+  }
+
   handleSaveOtherDetails(): void {
+    if (this.portalProfile.personalDetails.primaryEmail !== this.otherDetailsForm.value['primaryEmail']) {
+      this.updateEmail(this.otherDetailsForm.value['primaryEmail'])
+    }
+
     const dataToSubmit = { ...this.otherDetailsForm.value }
-    dataToSubmit.dob = `${dataToSubmit.dob.getDate()}-${dataToSubmit.dob.getMonth() + 1}-${dataToSubmit.dob.getFullYear()}`
+    if (dataToSubmit.dob) {
+      dataToSubmit.dob =
+      `${new Date(dataToSubmit.dob).getDate()}-${new Date(dataToSubmit.dob).getMonth() + 1}-${new Date(dataToSubmit.dob).getFullYear()}`
+    }
     delete dataToSubmit.countryCode
-    delete dataToSubmit.employeeId
+    delete dataToSubmit.employeeCode
+    delete dataToSubmit.primaryEmail
 
     const payload = {
       'request': {
         'userId': this.configSvc.unMappedUser.id,
         'profileDetails': {
           'personalDetails': {},
+          'employmentDetails': {
+            'employeeCode': this.otherDetailsForm.value['employeeCode'],
+          },
         },
       },
     }
     payload.request.profileDetails.personalDetails = dataToSubmit
+
     this.userProfileService.editProfileDetails(payload)
     .pipe(takeUntil(this.destroySubject$))
     .subscribe((_res: any) => {
       this.matSnackBar.open('User details updated successfully!')
       this.editDetails = !this.editDetails
-      this.prefillForm(dataToSubmit)
+      this.prefillForm({ dataToSubmit, ...{ 'employeeCode': this.otherDetailsForm.value['employeeCode'] } })
     },         (error: HttpErrorResponse) => {
       if (!error.ok) {
         this.matSnackBar.open('Unable to update user profile details, please try again!')
@@ -830,7 +913,6 @@ export class ProfileViewComponent implements OnInit, AfterViewInit, OnDestroy {
     dialogRef.componentInstance.enableWithdraw.subscribe((value: boolean) => {
       if (value) {
         this.enableWTR = true
-        this.toolTipMessage = 'You can\'t edit when you requested for Transfer request'
       }
     })
   }
@@ -845,7 +927,6 @@ export class ProfileViewComponent implements OnInit, AfterViewInit, OnDestroy {
     dialogRef.componentInstance.enableMakeTransfer.subscribe((value: boolean) => {
       if (value) {
         this.enableWTR = false
-        this.toolTipMessage = ''
       }
     })
   }
@@ -889,24 +970,60 @@ export class ProfileViewComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   getSendApprovalStatus(): void {
+    this.skeletonLoader = true
     this.userProfileService.listApprovalPendingFields()
     .pipe(takeUntil(this.destroySubject$))
     .subscribe((_res: any) => {
       this.approvalPendingFields = _res.result.data
       if (!this.approvalPendingFields || !this.approvalPendingFields.length) { return }
       const exists = this.approvalPendingFields.filter((obj: any) => {
+        if (obj.hasOwnProperty('name')) {
+          this.unVerifiedObj.organization = obj.name
+        }
+        if (obj.hasOwnProperty('group')) {
+          this.unVerifiedObj.group = obj.group
+        }
+        if (obj.hasOwnProperty('designation')) {
+          this.unVerifiedObj.designation = obj.designation
+        }
         return obj.hasOwnProperty('name')
       }).length > 0
 
       if (exists) {
         this.enableWTR = true
-        this.toolTipMessage = 'You can\'t edit when you requested for Transfer request'
       } else {
         this.enableWR = true
+        this.feedbackInfo = 'Your new designation request is under process.'
       }
+      this.skeletonLoader = false
     },         (error: HttpErrorResponse) => {
       if (!error.ok) {
         this.matSnackBar.open('Unable to get approval status of all fields')
+      }
+      this.skeletonLoader = false
+    })
+  }
+
+  getRejectedStatus(): void {
+    this.userProfileService.listRejectedFields()
+    .pipe(takeUntil(this.destroySubject$))
+    .subscribe((res: any) => {
+      if (res.result && res.result.data) {
+        res.result.data.forEach((obj: any) => {
+          if (obj.hasOwnProperty('name')) {
+            this.rejectedFields.name = obj.name
+          }
+          if (obj.hasOwnProperty('group')) {
+            this.rejectedFields.group = obj.group
+          }
+          if (obj.hasOwnProperty('designation')) {
+            this.rejectedFields.designation = obj.designation
+          }
+        })
+      }
+    },         (error: HttpErrorResponse) => {
+      if (!error.ok) {
+        this.matSnackBar.open('Unable to fetch rejected status fields')
       }
     })
   }
@@ -936,6 +1053,7 @@ export class ProfileViewComponent implements OnInit, AfterViewInit, OnDestroy {
       this.matSnackBar.open('Request sent successfully!')
       this.editProfile = !this.editProfile
       this.enableWR = true
+      this.getSendApprovalStatus()
     },         (error: HttpErrorResponse) => {
       if (!error.ok) {
         this.matSnackBar.open('Unable to do transfer request, please try again later!')
@@ -949,6 +1067,9 @@ export class ProfileViewComponent implements OnInit, AfterViewInit, OnDestroy {
       this.userProfileService.withDrawRequest(this.configSvc.unMappedUser.id, _obj.wfId)
       .pipe(takeUntil(this.destroySubject$))
       .subscribe((_res: any) => {
+        this.unVerifiedObj.group = ''
+        this.unVerifiedObj.designation = ''
+        this.feedbackInfo = ''
         this.matSnackBar.open('Withdraw request done successfully!')
         this.enableWR = false
       },         (error: HttpErrorResponse) => {

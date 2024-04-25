@@ -21,8 +21,8 @@ export class VerifyOtpComponent implements OnInit, OnDestroy {
   private destroySubject$ = new Subject()
   @ViewChild('timerDiv', { static: false }) timerDiv !: any
   @Output() resendOTP = new EventEmitter<string>()
-  @Output() otpVerified = new EventEmitter<string>()
-  timeLeft = 90
+  @Output() otpVerified = new EventEmitter<any>()
+  timeLeft = 150
   interval: any
   showResendOTP = false
   otpEntered = ''
@@ -63,7 +63,7 @@ export class VerifyOtpComponent implements OnInit, OnDestroy {
     .subscribe((_res: any) => {
       this.matSnackbar.open("OTP verification done successfully!")
       this.handleCloseModal()
-      this.otpVerified.emit('email')
+      this.otpVerified.emit({type: 'email', token: _res.result.contextToken})
     }, (error: HttpErrorResponse) => {
       if (!error.ok) {
         this.matSnackbar.open(_.get(error, 'error.params.errmsg') || "OTP verification failed! Please try again later!")
@@ -78,7 +78,7 @@ export class VerifyOtpComponent implements OnInit, OnDestroy {
     .subscribe((_res: any) => {
       this.matSnackbar.open("OTP verification done successfully!")
       this.handleCloseModal()
-      this.otpVerified.emit('mobile')
+      this.otpVerified.emit({type: 'mobile'})
     }, (error: HttpErrorResponse) => {
       if (!error.ok) {
         this.matSnackbar.open(_.get(error, 'error.params.errmsg') || "OTP verification failed! Please try again later!")
@@ -92,7 +92,7 @@ export class VerifyOtpComponent implements OnInit, OnDestroy {
   }
 
   handleResendOTP(): void {
-    this.timeLeft = 90
+    this.timeLeft = 150
     this.showResendOTP = !this.resendOTP
     this.startTimer()
     this.resendOTP.emit(this.data.type)

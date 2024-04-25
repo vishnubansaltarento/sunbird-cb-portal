@@ -1,16 +1,20 @@
 import { AfterViewInit, Component, HostListener, OnInit } from '@angular/core'
-import { HttpClient } from '@angular/common/http'
+import { HttpClient, HttpErrorResponse } from '@angular/common/http'
 import { ActivatedRoute, Router } from '@angular/router'
-import { ConfigurationsService } from '@sunbird-cb/utils/src/lib/services/configurations.service'
-import { IUserProfileDetailsFromRegistry } from '@ws/app/src/lib/routes/user-profile/models/user-profile.model'
-import { Observable } from 'rxjs'
-import { map } from 'rxjs/operators'
+import { TranslateService } from '@ngx-translate/core'
+import { MatSnackBar } from '@angular/material'
 /* tslint:disable */
 import _ from 'lodash'
 /* tslint:enable */
-import { BtnSettingsService } from '@sunbird-cb/collection'
+import { Observable, Subject } from 'rxjs'
+import { map, takeUntil } from 'rxjs/operators'
+
+import { ConfigurationsService } from '@sunbird-cb/utils/src/lib/services/configurations.service'
 import { MobileAppsService } from '../../services/mobile-apps.service'
-import { TranslateService } from '@ngx-translate/core'
+import { UserProfileService } from '@ws/app/src/lib/routes/user-profile/services/user-profile.service'
+import { IUserProfileDetailsFromRegistry } from '@ws/app/src/lib/routes/user-profile/models/user-profile.model'
+import { BtnSettingsService } from '@sunbird-cb/collection'
+
 const API_END_POINTS = {
   fetchProfileById: (id: string) => `/apis/proxies/v8/api/user/v2/read/${id}`,
 }
@@ -20,6 +24,7 @@ const API_END_POINTS = {
   styleUrls: ['./home.component.scss'],
 })
 export class HomeComponent implements OnInit, AfterViewInit {
+  private destroySubject$ = new Subject()
   widgetData = {}
   sliderData = {}
   contentStripData: any = {}
@@ -28,7 +33,7 @@ export class HomeComponent implements OnInit, AfterViewInit {
   carrierStripData = {}
   clientList: {} | undefined
   homeConfig: any = {}
-  isNudgeOpen = true
+  isNudgeOpen: any
   currentPosition: any
   mobileTopHeaderVisibilityStatus: any = true
   sectionList: any = []
@@ -37,6 +42,7 @@ export class HomeComponent implements OnInit, AfterViewInit {
   enrollData: any
   enrollInterval: any
   jan26Change: any
+  pendingApprovalList: any
 
   constructor(
     private activatedRoute: ActivatedRoute,
@@ -45,7 +51,10 @@ export class HomeComponent implements OnInit, AfterViewInit {
     private http: HttpClient,
     public mobileAppsService: MobileAppsService,
     private router: Router,
-    private translate: TranslateService) { }
+    private translate: TranslateService,
+    private userProfileService: UserProfileService,
+    private matSnackBar: MatSnackBar
+  ) { }
 
   ngOnInit() {
     if (this.configSvc) {
@@ -179,6 +188,7 @@ export class HomeComponent implements OnInit, AfterViewInit {
     this.sectionList.push({ section: 'discuss', isVisible: false })
     this.sectionList.push({ section: 'network', isVisible: false })
 
+    this.getListPendingApproval()
     this.handleUpdateMobileNudge()
     this.handleDefaultFontSetting()
 
@@ -223,22 +233,33 @@ export class HomeComponent implements OnInit, AfterViewInit {
     return this.translate.instant(translationKey)
   }
 
+  getListPendingApproval(): void {
+    this.userProfileService.listApprovalPendingFields()
+    .pipe(takeUntil(this.destroySubject$))
+    .subscribe((res: any) => {
+      this.pendingApprovalList = res.result.data
+      this.handleUpdateMobileNudge()
+    },         (error: HttpErrorResponse) => {
+      if (!error.ok) {
+        this.matSnackBar.open('Unable to fetch pending approval list')
+      }
+    })
+  }
+
   handleUpdateMobileNudge() {
     if (this.configSvc.unMappedUser && this.configSvc.unMappedUser.id) {
-      this.fetchProfileById(this.configSvc.unMappedUser.id).subscribe(x => {
-        // console.log(x.profileDetails, "x.profileDetails====")
-        // if (x.profileDetails.mandatoryFieldsExists) {
-        //   this.isNudgeOpen = false
-        // }
+      this.fetchProfileById(this.configSvc.unMappedUser.id).subscribe((_obj: any) => {
         const profilePopUp = sessionStorage.getItem('hideUpdateProfilePopUp')
-        if (profilePopUp !== null) {
-          this.isNudgeOpen = false
-        } else if (x && x.profileDetails && x.profileDetails.mandatoryFieldsExists) {
-          this.isNudgeOpen = false
+        if (_obj.profileDetails) {
+          if (!_obj.profileDetails.verifiedKarmayogi && (this.pendingApprovalList && this.pendingApprovalList.length)
+            && profilePopUp === 'true') {
+            this.isNudgeOpen = false
+          } else {
+            this.isNudgeOpen = true
+          }
+        } else {
+          this.isNudgeOpen = true
         }
-        // if (x && x.profileDetails && x.profileDetails.personalDetails && x.profileDetails.personalDetails.phoneVerified) {
-        //   this.isNudgeOpen = false
-        // }
       })
     }
   }
@@ -269,22 +290,6 @@ export class HomeComponent implements OnInit, AfterViewInit {
       }
     }
 
-    // let scroll = e.scrollTop;
-    // console.log('scroll');
-    // if (scroll > this.currentPosition) {
-    //   console.log("scrollDown");
-    // } else {
-    //   console.log("scrollUp");
-    // }
-    // this.currentPosition = scroll;
-    // // var insightsResults = document.getElementsByClassName(
-    // //   'insights-results'
-    // // )[0];
-    // // var childInsights = insightsResults?.scrollHeight;
-    // // var windowScroll = window.scrollY;
-    // // if (Math.floor(windowScroll) >= Math.floor(childInsights)) {
-    // //     this.loadMore();
-    // // }
   }
 
   checkSectionVisibility(className: string) {
@@ -322,11 +327,7 @@ export class HomeComponent implements OnInit, AfterViewInit {
     }
   }
 
-  //  loadMore(): void {
-  //   this.page++;
-  // }
-
-  remindlater() {
+  handleRemindLater() {
     sessionStorage.setItem('hideUpdateProfilePopUp', 'true')
     this.isNudgeOpen = false
   }

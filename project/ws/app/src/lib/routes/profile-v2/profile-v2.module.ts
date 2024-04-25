@@ -1,8 +1,9 @@
 import { NgModule } from '@angular/core'
 import { CommonModule } from '@angular/common'
+import { HttpClient } from '@angular/common/http'
 import { RouterModule } from '@angular/router'
 import { ReactiveFormsModule, FormsModule } from '@angular/forms'
-import { TranslateModule } from '@ngx-translate/core'
+import { TranslateModule, TranslateLoader } from '@ngx-translate/core'
 import {
   MatIconModule,
   MatListModule,
@@ -24,7 +25,9 @@ import { MatAutocompleteModule } from '@angular/material/autocomplete'
 import { MatGridListModule } from '@angular/material/grid-list'
 import { MatExpansionModule } from '@angular/material/expansion'
 import { MatDividerModule } from '@angular/material/divider'
+import { SkeletonLoaderModule } from '@sunbird-cb/collection/src/lib/_common/skeleton-loader/skeleton-loader.module'
 
+import { HttpLoaderFactory } from 'src/app/app.module'
 import { WidgetResolverModule } from '@sunbird-cb/resolver'
 import { PipeFilterModule, PipeHtmlTagRemovalModule, PipeOrderByModule, PipeRelativeTimeModule, PipeCertificateImageURL } from '@sunbird-cb/utils'
 import { AvatarPhotoModule, BtnPageBackModule } from '@sunbird-cb/collection'
@@ -32,7 +35,6 @@ import { ProfileV2RoutingModule } from './profile-v2.rounting.module'
 import { DiscussModule } from '../discuss/discuss.module'
 import { EditorSharedModule } from '@ws/author/src/lib/routing/modules/editor/shared/shared.module'
 import { ProfileCertificateDialogModule } from './components/profile-certificate-dialog/profile-certificate-dialog.module'
-import { SkeletonLoaderModule } from '@sunbird-cb/collection/src/lib/_common/skeleton-loader/skeleton-loader.module'
 import { ProfileCardStatsModule } from '@sunbird-cb/collection/src/lib/_common/profile-card-stats/profile-card-stats.module'
 import { WeeklyClapsModule } from '@sunbird-cb/collection/src/lib/_common/weekly-claps/weekly-claps.module'
 import { UpdatePostsModule } from '@sunbird-cb/collection/src/lib/_common/update-posts/update-posts.module'
@@ -109,10 +111,17 @@ import { OtpService } from '../user-profile/services/otp.services'
     DiscussionsModule,
     RecentRequestsModule,
     PendingRequestModule,
-    TranslateModule,
     MatTooltipModule,
     MatDatepickerModule,
     MatAutocompleteModule,
+    TranslateModule,
+    TranslateModule.forRoot({
+      loader: {
+        provide: TranslateLoader,
+        useFactory: HttpLoaderFactory,
+        deps: [HttpClient],
+      },
+    }),
   ],
   entryComponents: [
     VerifyOtpComponent,
