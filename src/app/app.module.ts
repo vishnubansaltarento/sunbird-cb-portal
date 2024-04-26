@@ -1,7 +1,7 @@
 import { FullscreenOverlayContainer, OverlayContainer } from '@angular/cdk/overlay'
 import { APP_BASE_HREF, PlatformLocation } from '@angular/common'
 import { HttpClient, HttpClientJsonpModule, HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http'
-import { APP_INITIALIZER, Injectable, NgModule, ErrorHandler } from '@angular/core'
+import { APP_INITIALIZER, Injectable, NgModule, ErrorHandler, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core'
 import {
   GestureConfig,
   MatButtonModule,
@@ -268,5 +268,6 @@ export function HttpLoaderFactory(http: HttpClient) {
     { provide: 'environment', useValue: environment },
     GuidedTourService,
   ],
+  schemas: [CUSTOM_ELEMENTS_SCHEMA]
 })
 export class AppModule { }
