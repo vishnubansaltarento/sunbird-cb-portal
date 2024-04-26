@@ -36,8 +36,6 @@ import { AppTocAboutComponent } from './app-toc-about/app-toc-about.component'
 import { AppTocContentComponent } from './app-toc-content/app-toc-content.component'
 import { ReviewsContentComponent } from './reviews-content/reviews-content.component'
 import { AppTocContentCardV2Component } from './app-toc-content-card-v2/app-toc-content-card-v2.component'
-import { ConfirmationModalComponent } from './confirmation-modal/confirmation-modal.component'
-import { EnrollModalComponent } from './enroll-modal/enroll-modal.component'
 import { AppTocSessionCardNewComponent } from './app-toc-session-card-new/app-toc-session-card-new.component'
 import { AppTocSessionsNewComponent } from './app-toc-sessions-new/app-toc-sessions-new.component'
 import { AppTocContentCardV2SkeletonComponent } from './app-toc-content-card-v2-skeleton/app-toc-content-card-v2-skeleton.component'
@@ -49,8 +47,6 @@ import { AppTocContentCardV2SkeletonComponent } from './app-toc-content-card-v2-
     AppTocContentComponent,
     AppTocContentCardV2Component,
     ReviewsContentComponent,
-    ConfirmationModalComponent,
-    EnrollModalComponent,
     AppTocSessionCardNewComponent,
     AppTocSessionsNewComponent,
     AppTocContentCardV2SkeletonComponent,
@@ -97,13 +93,9 @@ import { AppTocContentCardV2SkeletonComponent } from './app-toc-content-card-v2-
     AppTocAboutComponent,
     AppTocContentComponent,
     ReviewsContentComponent,
-    ConfirmationModalComponent,
-    EnrollModalComponent,
   ],
   entryComponents: [
     ReviewsContentComponent,
-    ConfirmationModalComponent,
-    EnrollModalComponent,
   ],
 })
 

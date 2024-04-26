@@ -99,6 +99,8 @@
   @include breakpoint-lt-m {
     padding: 0px;
   }
+  width:98%;
+  word-wrap: break-word;
 }
 .mtf-flag {
   margin-left: auto;
