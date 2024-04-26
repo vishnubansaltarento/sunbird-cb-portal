@@ -295,12 +295,12 @@ export class SeeAllHomeComponent implements OnInit, OnDestroy {
         strip.request.searchV6.request.offset = this.offsetForPage
       }
       if (strip.tabs && strip.tabs.length) {
-        const firstTab = strip.tabs[0]
+        const firstTab = strip.tabs[this.dynamicTabIndex]
         if (firstTab.requestRequired) {
           if (this.seeAllPageConfig.tabs) {
             const allTabs = this.seeAllPageConfig.tabs
-            const currentTabFromMap = (allTabs && allTabs.length && allTabs[0]) as NsContentStripWithTabs.IContentStripTab
-            this.getTabDataByNewReqSearchV6(strip, 0, currentTabFromMap, calculateParentStatus)
+            const currentTabFromMap = (allTabs && allTabs.length && allTabs[this.dynamicTabIndex]) as NsContentStripWithTabs.IContentStripTab
+            this.getTabDataByNewReqSearchV6(strip, this.dynamicTabIndex, currentTabFromMap, calculateParentStatus)
           }
         }
 
@@ -379,12 +379,12 @@ export class SeeAllHomeComponent implements OnInit, OnDestroy {
       }
       if (strip.tabs && strip.tabs.length) {
         // TODO: Have to extract requestRequired to outer level of tabs config
-        const firstTab = strip.tabs[0]
+        const firstTab = strip.tabs[this.dynamicTabIndex]
         if (firstTab.requestRequired) {
           if (this.seeAllPageConfig.tabs) {
             const allTabs = this.seeAllPageConfig.tabs
-            const currentTabFromMap = (allTabs && allTabs.length && allTabs[0]) as NsContentStripWithTabs.IContentStripTab
-            this.getTabDataByNewReqTrending(strip, 0, currentTabFromMap, calculateParentStatus)
+            const currentTabFromMap = (allTabs && allTabs.length && allTabs[this.dynamicTabIndex]) as NsContentStripWithTabs.IContentStripTab
+            this.getTabDataByNewReqTrending(strip, this.dynamicTabIndex, currentTabFromMap, calculateParentStatus)
           }
         }
 
