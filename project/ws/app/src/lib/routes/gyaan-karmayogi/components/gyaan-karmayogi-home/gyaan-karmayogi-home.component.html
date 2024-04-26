@@ -9,7 +9,7 @@
                             <p class="title mat-display-1 mb-2">{{'gyaanKarmayogi.title'| translate}}</p>
                             <p class="description mat-title">{{'gyaanKarmayogi.description'| translate}}</p>
                             <div class="flex search-block mt-16">
-                                <input type="text" placeholder="{{'gyaanKarmayogi.placeholder' | translate}}" [formControl]="searchControl"  class="flex-1">
+                                <input type="text" placeholder="{{'gyaanKarmayogi.placeholder' | translate}}" (keyup.enter)="searchFilter()" [formControl]="searchControl"  class="flex-1">
                                 <button type="button" (click)="searchFilter()" class="btn cursor-pointer">{{'gyaanKarmayogi.search' | translate}}</button>
                             </div>
                         </div>

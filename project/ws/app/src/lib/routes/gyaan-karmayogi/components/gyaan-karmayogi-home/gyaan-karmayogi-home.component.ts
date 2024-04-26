@@ -87,30 +87,33 @@ export class GyaanKarmayogiHomeComponent implements OnInit {
     const localStripData: any = []
     this.categories.forEach((cat: any) => {
       if (!cat.name.includes('All')) {
-        const data = JSON.parse(JSON.stringify(this.route.parent &&
-          this.route.parent.snapshot.data.pageData.data.stripConfig))
-        if (data.strips.length) {
-          data.strips[0].title = cat.name
-          data.strips[0].key = cat.name
-          data.strips[0].viewMoreUrl.queryParams.key = cat.name
-          data.strips[0].titleDescription = cat.name
-          data.strips[0].request.searchV6.request.filters = {
-              ...data.strips[0].request.searchV6.request.filters,
-              resourceCategory: cat.name,
-
-          }
-          if (addFilters) {
+        if(this.route.parent && this.route.parent.snapshot.data.pageData.data.stripConfig) {
+          const data = JSON.parse(JSON.stringify(this.route.parent &&
+            this.route.parent.snapshot.data.pageData.data.stripConfig))
+          if (data.strips.length) {
+            data.strips[0].title = cat.name
+            data.strips[0].key = cat.name
+            data.strips[0].viewMoreUrl.queryParams.key = cat.name
+            data.strips[0].titleDescription = cat.name
             data.strips[0].request.searchV6.request.filters = {
-              ...data.strips[0].request.searchV6.request.filters,
-              ...addFilters,
+                ...data.strips[0].request.searchV6.request.filters,
+                resourceCategory: cat.name,
+  
+            }
+            if (addFilters) {
+              data.strips[0].request.searchV6.request.filters = {
+                ...data.strips[0].request.searchV6.request.filters,
+                ...addFilters,
+              }
+            }
+            if (this.searchControl && this.searchControl.value) {
+              data.strips[0].request.searchV6.request.query = this.searchControl.value
             }
           }
-          if (this.searchControl && this.searchControl.value) {
-            data.strips[0].request.searchV6.request.query = this.searchControl.value
-          }
+  
+          localStripData.push(data)
         }
-
-        localStripData.push(data)
+        
       }
     })
     this.hideAndCallStrip()
