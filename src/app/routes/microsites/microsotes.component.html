@@ -1,12 +1,14 @@
-<div class="container-balanced">
+<div class="container-fluid">
     <div class="flex flex-col flex-1 gap-6">
         <ng-container *ngFor="let section of sectionList">
             <ng-container *ngIf="section.enabled">
                 <section id="{{section.key}}" class="w-full grid grid-cols-12 gap-4">
                     <ng-container *ngFor="let column of section.column">
-                        <div class="col-span-{{column.colspan || 12}}">
+                        <div id="{{column.key}}" class="col-span-{{column.colspan || 12}} christy1">
                             <ng-container *ngIf="column.enabled" [ngSwitch]="column.key">
                                 <ng-container *ngSwitchCase="'banner'" [ngTemplateOutlet]="banner"
+                                    [ngTemplateOutletContext]="{data: column.data}"></ng-container>
+                                    <ng-container *ngSwitchCase="'topSection'" [ngTemplateOutlet]="topSection"
                                     [ngTemplateOutletContext]="{data: column.data}"></ng-container>
                                 <ng-container *ngSwitchCase="'stats'" [ngTemplateOutlet]="stats"
                                     [ngTemplateOutletContext]="{stats: column.data}"></ng-container>
@@ -85,6 +87,36 @@
             <ws-widget-sliders [widgetData]="data.sliders"></ws-widget-sliders>
         </div>
     </div>
+</ng-template>
+
+<ng-template #topSection let-data="data">
+    <!-- <div class="w-full grid grid-cols-12 gap-4"> -->
+        <div class="col-span-12 christy">
+            <div class="grid grid-cols-12">
+                <div class="col-span-8">
+                    <div class="slider" *ngIf="data.sliders">
+                        <ws-widget-sliders [widgetData]="data.sliders"></ws-widget-sliders>
+                    </div>
+                </div>
+                <div class="col-span-4">
+                    Data & key compoennt 
+                </div>
+            </div>
+        </div>
+        <div class="col-span-12 title-section py-5">
+            <div class="container flex">
+                <div class="mr-4 logo-box-container">
+                    <div class="flex logo-box-rounded top mr-4">
+                        <img alt="Application Logo" class="logo-img" [src]="data.logo">
+                    </div>
+                </div>
+                <div class="flex-1 flex flex-col">
+                    <h1>{{data.title}}</h1>
+                    <p>{{data.description}}</p>
+                </div>
+            </div>
+        </div>
+    <!-- </div> -->
 </ng-template>
 
 
