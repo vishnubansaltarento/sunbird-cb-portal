@@ -9,7 +9,7 @@
                                 <ng-container *ngSwitchCase="'banner'" [ngTemplateOutlet]="banner"
                                     [ngTemplateOutletContext]="{data: column.data}"></ng-container>
                                     <ng-container *ngSwitchCase="'topSection'" [ngTemplateOutlet]="topSection"
-                                    [ngTemplateOutletContext]="{data: column.data}"></ng-container>
+                                    [ngTemplateOutletContext]="{columnData: column}"></ng-container>
                                 <ng-container *ngSwitchCase="'stats'" [ngTemplateOutlet]="stats"
                                     [ngTemplateOutletContext]="{stats: column.data}"></ng-container>
                                 <ng-container *ngSwitchCase="'contentStrip'" [ngTemplateOutlet]="contentStrip"
@@ -18,8 +18,14 @@
                                     [ngTemplateOutletContext]="{calendar: column.data}"></ng-container>
                                 <ng-container *ngSwitchCase="'users'" [ngTemplateOutlet]="users"
                                     [ngTemplateOutletContext]="{users: column.data}"></ng-container>
-                                <ng-container *ngSwitchCase="'competency'" [ngTemplateOutlet]="competency"
-                                    [ngTemplateOutletContext]="{competency: column.data}"></ng-container>
+                                <!-- <ng-container *ngSwitchCase="'competency'" [ngTemplateOutlet]="competency"
+                                    [ngTemplateOutletContext]="{competency: column.data}"></ng-container> -->
+                                <ng-container *ngSwitchCase="'bmetrics'" [ngTemplateOutlet]="bmetrics"
+                                    [ngTemplateOutletContext]="{bmetrics: column}"></ng-container>
+                                <ng-container *ngSwitchCase="'mbmetrics'" [ngTemplateOutlet]="mbmetrics"
+                                    [ngTemplateOutletContext]="{mbmetrics: column}"></ng-container>
+                                <ng-container *ngSwitchCase="'infra'" [ngTemplateOutlet]="infra"
+                                    [ngTemplateOutletContext]="{infra: column}"></ng-container>
                             </ng-container>
                         </div>
                     </ng-container>
@@ -89,17 +95,17 @@
     </div>
 </ng-template>
 
-<ng-template #topSection let-data="data">
+<ng-template #topSection let-columnData="columnData">
     <!-- <div class="w-full grid grid-cols-12 gap-4"> -->
         <div class="col-span-12 christy">
             <div class="grid grid-cols-12">
                 <div class="col-span-8">
-                    <div class="slider" *ngIf="data.sliders">
-                        <ws-widget-sliders [widgetData]="data.sliders"></ws-widget-sliders>
+                    <div class="slider" *ngIf="columnData.data.sliders">
+                        <ws-widget-sliders [widgetData]="columnData.data.sliders"></ws-widget-sliders>
                     </div>
                 </div>
-                <div class="col-span-4">
-                    Data & key compoennt 
+                <div class="col-span-4 {{columnData.background}}">
+                    <sb-uic-data-points [objectData]="columnData.data.metrics" [layoutType]="'multipleRows'"></sb-uic-data-points>
                 </div>
             </div>
         </div>
@@ -107,12 +113,12 @@
             <div class="container flex">
                 <div class="mr-4 logo-box-container">
                     <div class="flex logo-box-rounded top mr-4">
-                        <img alt="Application Logo" class="logo-img" [src]="data.logo">
+                        <img alt="Application Logo" class="logo-img" [src]="columnData.data.logo">
                     </div>
                 </div>
                 <div class="flex-1 flex flex-col">
-                    <h1>{{data.title}}</h1>
-                    <p>{{data.description}}</p>
+                    <h1>{{columnData.data.title}}</h1>
+                    <p>{{columnData.data.description}}</p>
                 </div>
             </div>
         </div>
@@ -162,5 +168,15 @@
 <ng-template #competency let-competency="competency">
     <div class="w-full">
         <h1 class="">Competency coming soon...</h1>
+    </div>
+</ng-template>
+
+<ng-template #mbmetrics let-mbmetrics="mbmetrics">
+    <sb-uic-data-points [objectData]="mbmetrics" [layoutType]="'singleRow'"></sb-uic-data-points>
+</ng-template>
+
+<ng-template #infra let-infra="infra">
+    <div class="{{infra.background}}">
+        <sb-uic-data-points [objectData]="infra" [layoutType]="'gridLayout'"></sb-uic-data-points>
     </div>
 </ng-template>
