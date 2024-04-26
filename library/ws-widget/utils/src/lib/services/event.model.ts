@@ -62,6 +62,9 @@ export namespace WsEvents {
     Search = 'Search',
     Feedback = 'Feedback',
     Impression = 'Impression',
+    Chatbot = 'Chatbot',
+    GetStarted = 'Get Started',
+    PlatformRating = 'PlatformRating',
   }
 
   export interface ITelemetryPageContext {
@@ -192,13 +195,15 @@ export namespace WsEvents {
     HOME = 'home',
     DASHBOARD = 'dashboard',
     SEARCH = 'search',
-    DISCUSS = 'discuss',
+    DISCUSS = 'Discuss',
     COMPETENCY = 'competency',
     EVENTS = 'events',
     CAREER = 'career',
     PROFILE = 'profile',
     NETWORK = 'network',
     SUPPORT = 'support',
+    KARMAPOINTS = 'karmapoints',
+    PLATFORM_RATING = 'platformrating',
   }
   export enum EnumInteractTypes {
     CLICK = 'click',
@@ -212,5 +217,9 @@ export namespace WsEvents {
     DISCUSS_TAB = 'discuss-tab',
     EVENTS_TAB = 'events-tab',
     SIDE_MENU = 'side-menu',
+    HOME_PAGE_STRIP_TABS = 'home-page-strip-tabs',
+    HUB_MENU = 'hub-menu',
+    PORTAL_NUDGE = 'portal_nudge',
+    CERTIFICATE = 'certificate',
   }
 }

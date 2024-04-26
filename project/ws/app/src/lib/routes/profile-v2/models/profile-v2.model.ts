@@ -33,6 +33,18 @@ export namespace NSProfileDataV2 {
     result: any
     userName: any
     profileDetails: any
+    karmapoints?: IKarmapoints[]
+    profileImageUrl: string
+    additionalProperties: any
+  }
+
+  export interface IKarmapoints {
+    name: string,
+    courseName: string,
+    date: string,
+    points: number,
+    bonus: number
+    additionalProperties: IAdditionalProperties
   }
   export interface IAcademics {
     nameOfInstitute: string
@@ -62,6 +74,10 @@ export namespace NSProfileDataV2 {
     payType: string
     pinCode: string
     service: string
+  }
+  export interface IAdditionalProperties {
+    externalSystem: string
+    externalSystemId: string
   }
 
   export interface IInterests {
@@ -119,6 +135,8 @@ export namespace NSProfileDataV2 {
     osUpdatedBy: string
     osid: string
     responsibilities: string
+    verifiedKarmayogi: boolean
+    group: string
   }
   export interface ISkills {
     additionalSkills: string

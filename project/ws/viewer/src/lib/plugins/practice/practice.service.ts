@@ -1,12 +1,16 @@
 import { Injectable } from '@angular/core'
 import { HttpClient } from '@angular/common/http'
 import { NSPractice } from './practice.model'
-import { BehaviorSubject, Observable, of } from 'rxjs'
+import { BehaviorSubject, Observable, Subject, of } from 'rxjs'
 import { map, retry } from 'rxjs/operators'
+// tslint:disable-next-line
+import _ from 'lodash'
 
 const API_END_POINTS = {
   ASSESSMENT_SUBMIT_V2: `/apis/protected/v8/user/evaluate/assessment/submit/v2`,
   ASSESSMENT_SUBMIT_V3: `/apis/protected/v8/user/evaluate/assessment/submit/v3`,
+  ASSESSMENT_SUBMIT_V4: `/apis/protected/v8/user/evaluate/assessment/submit/v4`,
+  ASSESSMENT_RESULT_V4: `/apis/proxies/v8/user/assessment/v4/result`,
   QUESTION_PAPER_SECTIONS: `/apis/proxies/v8/assessment/read`,
   QUESTION_PAPER_QUESTIONS: `/apis/proxies/v8/question/read`,
   CAN_ATTEMPT: (assessmentId: any) => `/apis/proxies/v8/user/assessment/retake/${assessmentId}`,
@@ -24,6 +28,7 @@ export class PracticeService {
   currentSection: BehaviorSubject<Partial<NSPractice.IPaperSection>> = new BehaviorSubject<Partial<NSPractice.IPaperSection>>({})
   // questionAnswerHashV2:BehaviorSubject<NSPractice.IQAnswer> = new BehaviorSubject<NSPractice.IQAnswer>({})
   displayCorrectAnswer: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false)
+  checkAlreadySubmitAssessment = new Subject()
   constructor(
     private http: HttpClient,
   ) { }
@@ -61,7 +66,6 @@ export class PracticeService {
   }
   qAnsHash(value: any) {
     // tslint:disable-next-line
-    // console.log(value, '=====')
     this.questionAnswerHash.next(value)
   }
   submitQuizV2(req: NSPractice.IQuizSubmitRequest): Observable<NSPractice.IQuizSubmitResponse> {
@@ -71,67 +75,19 @@ export class PracticeService {
     return this.http.post<{ result: NSPractice.IQuizSubmitResponseV2 }>(API_END_POINTS.ASSESSMENT_SUBMIT_V3, req).pipe(map(response => {
       return response.result
     }))
-    // if (req) {
-    // const response = {
-    //   "id": "api.questions.list",
-    //   "ver": "3.0",
-    //   "ts": "2022-03-14T09:35:34ZZ",
-    //   "params": {
-    //     "resmsgid": "92ae178e-3f81-4fe5-8d48-47859a8d3c0e",
-    //     "msgid": null,
-    //     "err": null,
-    //     "status": "successful",
-    //     "errmsg": null
-    //   },
-    //   "responseCode": "OK",
-    //   "result": {
-    //     "identifier": "do_11331189852786688015725",
-    //     "isAssessment": true,
-    //     "objectType": "QuestionSet",
-    //     "primaryCategory": "Practice Question Set",
-    //     "children": [
-    //       {
-    //         "identifier": "do_113471599969681408116",
-    //         "objectType": "QuestionSet",
-    //         "primaryCategory": "Practice Question Set",
-    //         "scoreCutoffType": "SectionLevel",
-    //         "minimumPassPercentage": 60,
-    //         "result": 50,
-    //         "total": 4,
-    //         "blank": 0,
-    //         "correct": 2,
-    //         "passPercent": 60,
-    //         "inCorrect": 2,
-    //         "pass": false
-    //       },
-    //       {
-    //         "identifier": "xyz",
-    //         "objectType": "QuestionSet",
-    //         "primaryCategory": "Practice Question Set",
-    //         "scoreCutoffType": "SectionLevel",
-    //         "result": 66.66666666666667,
-    //         "total": 3,
-    //         "blank": 0,
-    //         "correct": 2,
-    //         "passPercent": 60,
-    //         "inCorrect": 1,
-    //         "pass": true
-    //       }
-    //     ],
-    //     "overallResult": 66.66666666666667,
-    //     "total": 7,
-    //     "blank": 0,
-    //     "correct": 6,
-    //     "passPercent": 60,
-    //     "inCorrect": 1,
-    //     "pass": false
-    //   },
-    // }
-    // tslint:disable-next-line
-    //   return of(JSON.parse(JSON.stringify(response.result)))
-    // }
-    // return EMPTY
   }
+  submitQuizV4(req: NSPractice.IQuizSubmit): Observable<any> {
+    return this.http.post<{ result: NSPractice.IQuizSubmitResponseV2 }>(API_END_POINTS.ASSESSMENT_SUBMIT_V4, req).pipe(map(response => {
+      return response
+    }))
+  }
+
+  quizResult(req: any) {
+    return this.http.post<{ result: NSPractice.IQuizSubmitResponseV2 }>(API_END_POINTS.ASSESSMENT_RESULT_V4, req).pipe(map(response => {
+      return response
+    }))
+  }
+
   createAssessmentSubmitRequest(
     identifier: string,
     title: string,
@@ -172,12 +128,16 @@ export class PracticeService {
       } else if (question.questionType === 'mtf') {
         for (let i = 0; i < question.options.length; i += 1) {
           // this.mtfSrc['']
-          if (mtfSrc[question.questionId] && mtfSrc[question.questionId].source[i] && mtfSrc[question.questionId].target[i]) {
-            for (let j = 0; j < mtfSrc[question.questionId].source.length; j += 1) {
-              if (question.options[i].text.trim() === mtfSrc[question.questionId].source[j].trim()) {
-                question.options[i].response = mtfSrc[question.questionId].target[j].trim()
-              }
-            }
+          // if (mtfSrc[question.questionId] && mtfSrc[question.questionId].source[i] && mtfSrc[question.questionId].target[i]) {
+          //   for (let j = 0; j < question.options.length; j += 1) {
+              const opText = question.options[i].text.trim()
+              if (mtfSrc[question.questionId] && mtfSrc[question.questionId].source.length
+                && mtfSrc[question.questionId].source.includes(opText)) {
+                const idxOfSource = _.indexOf(mtfSrc[question.questionId].source, question.options[i].text.trim())
+                question.options[i].response = mtfSrc[question.questionId].target[idxOfSource].trim()
+                question.options[i].userSelected = true
+              // }
+            // }
           } else {
             question.options[i].response = ''
           }
@@ -248,11 +208,11 @@ export class PracticeService {
       return this.http.get<any>(API_END_POINTS.CAN_ATTEMPT(identifier)).pipe(map(r => r.result))
     }
     return of({
-      retakeMinutesLeft: 0,
-      retakeAssessments: true,
-      retakeAssessmentDuration: 0,
+      attemptsMade: 0,
+      attemptsAllowed: 1,
     })
   }
+
   shCorrectAnswer(val: boolean) {
     this.displayCorrectAnswer.next(val)
   }

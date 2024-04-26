@@ -38,16 +38,41 @@ export class ConnectionNameComponent implements OnInit, AfterViewInit {
     let name = 'Guest'
     if (this.hoverUser && !this.hoverUser.personalDetails) {
       if (this.hoverUser.firstName) {
-        name = `${this.hoverUser.firstName} ${this.hoverUser.lastName}`
+        if (this.hoverUser.lastName && this.hoverUser.lastName !== null && this.hoverUser.lastName !== undefined) {
+          name = `${this.hoverUser.firstName} ${this.hoverUser.lastName}`
+        } else  {
+          name = `${this.hoverUser.firstName}`
+        }
+      } else if (this.hoverUser.fullName) {
+        name = `${this.hoverUser.fullName}`
       } else {
         name = `${this.hoverUser.name}`
       }
     } else if (this.hoverUser && this.hoverUser.personalDetails) {
       if (this.hoverUser.personalDetails.middlename) {
-        // tslint:disable-next-line: max-line-length
-        name = `${this.hoverUser.personalDetails.firstname} ${this.hoverUser.personalDetails.middlename} ${this.hoverUser.personalDetails.surname}`
-      } else {
-        name = `${this.hoverUser.personalDetails.firstname} ${this.hoverUser.personalDetails.surname}`
+        // tslint:disable-next-line:max-line-length
+        if (this.hoverUser.personalDetails.surname && this.hoverUser.personalDetails.surname !== null && this.hoverUser.personalDetails.surname !== undefined) {
+          // tslint:disable-next-line: max-line-length
+          name = `${this.hoverUser.personalDetails.firstname} ${this.hoverUser.personalDetails.middlename} ${this.hoverUser.personalDetails.surname}`
+        } else {
+          name = `${this.hoverUser.personalDetails.firstname} ${this.hoverUser.personalDetails.middlename}`
+        }
+      } else if (this.hoverUser.personalDetails.firstname) {
+        // tslint:disable-next-line:max-line-length
+        if (this.hoverUser.personalDetails.surname && this.hoverUser.personalDetails.surname !== null && this.hoverUser.personalDetails.surname !== undefined) {
+          // tslint:disable-next-line: max-line-length
+          name = `${this.hoverUser.personalDetails.firstname} ${this.hoverUser.personalDetails.surname}`
+        } else {
+          name = `${this.hoverUser.personalDetails.firstname}`
+        }
+      } else if (this.hoverUser.personalDetails.firstName) {
+        // tslint:disable-next-line:max-line-length
+        if (this.hoverUser.personalDetails.surname && this.hoverUser.personalDetails.surname !== null && this.hoverUser.personalDetails.surname !== undefined) {
+          // tslint:disable-next-line: max-line-length
+          name = `${this.hoverUser.personalDetails.firstName} ${this.hoverUser.personalDetails.surname}`
+        } else {
+          name = `${this.hoverUser.personalDetails.firstName}`
+        }
       }
     }
     // if (this.hoverUser) {

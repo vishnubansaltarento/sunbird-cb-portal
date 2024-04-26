@@ -9,6 +9,7 @@ import { LoggerService } from './logger.service'
 import { NsContent } from './widget-content.model'
 import { environment } from 'src/environments/environment'
 import { Router, NavigationStart } from '@angular/router'
+import { NPSGridService } from '@sunbird-cb/collection/src/lib/grid-layout/nps-grid.service'
 
 declare var $t: any
 
@@ -21,7 +22,7 @@ export class TelemetryService {
   pData: any = null
   contextCdata = []
   isAnonymousTelemetry = true
-
+  telArray: any = []
   externalApps: any = {
     RBCP: 'rbcp-web-ui',
   }
@@ -31,6 +32,7 @@ export class TelemetryService {
     // private authSvc: AuthKeycloakService,
     private logger: LoggerService,
     private router: Router,
+    private npsSvc: NPSGridService,
   ) {
     const instanceConfig = this.configSvc.instanceConfig
     this.navigationStart()
@@ -43,6 +45,9 @@ export class TelemetryService {
     this.addSearchListener()
     this.addHearbeatListener()
     this.addCustomImpressionListener()
+    this.addCustomListener()
+    this.addCustomListenerForGetStart()
+    this.addCustomListenerForPlatformRating()
   }
 
   private navigationStart() {
@@ -102,6 +107,16 @@ export class TelemetryService {
       return this.configSvc.userProfile.rootOrgId
     }
     return ''
+  }
+
+  triggerNPSUpdate(data: any) {
+    this.telArray.push(data)
+    if (this.telArray && this.telArray.length === 4) {
+      if (localStorage.getItem('ratingformID')) {
+        this.telArray = []
+        this.npsSvc.updateTelemetryData(true)
+      }
+    }
   }
 
   start(edata: any, data: any, pageContext?: WsEvents.ITelemetryPageContext) {
@@ -212,7 +227,8 @@ export class TelemetryService {
     }
   }
 
-  impression(data?: any) {
+  impression(data?: any, objectType?: any) {
+    this.triggerNPSUpdate(data)
     try {
       const page = this.getPageDetails()
       if (data && data.pageContext) {
@@ -235,9 +251,13 @@ export class TelemetryService {
           },
           object: {
             id: page.objectId,
+            type: objectType,
             // This will override above id if the data has object in it.
             ...(data && data.object),
           },
+        }
+        if (!page.objectId || !objectType) {
+          config.object = {}
         }
         $t.impression(edata, config)
       } else {
@@ -262,6 +282,7 @@ export class TelemetryService {
   }
 
   externalImpression(impressionData: any) {
+    // this.triggerNPSUpdate(impressionData)
     try {
       const page = this.getPageDetails()
       if (this.externalApps[impressionData.subApplicationName]) {
@@ -289,6 +310,196 @@ export class TelemetryService {
       // tslint:disable-next-line: no-console
       console.log('Error in telemetry externalImpression', e)
     }
+  }
+
+  // for Plartform rating
+  addCustomListenerForPlatformRating() {
+    this.eventsSvc.getPREvents$
+      .pipe(
+        filter(
+          event =>
+            event &&
+            event.eventType === WsEvents.WsEventType.Telemetry &&
+            event.data.eventSubType === WsEvents.EnumTelemetrySubType.PlatformRating &&
+            event.data.mode &&
+            event.data,
+        ),
+      )
+      .subscribe(event => {
+        if (event.data.state === WsEvents.EnumTelemetrySubType.Loaded) {
+          this.start(
+            {
+              type: event.data.type || WsEvents.WsTimeSpentType.Player,
+              mode: event.data.mode || WsEvents.WsTimeSpentMode.Play,
+            },
+            {},
+            event.pageContext
+          )
+        }
+        if (
+          event.data.state === WsEvents.EnumTelemetrySubType.Unloaded
+        ) {
+          this.end({
+            type: event.data.type || WsEvents.WsTimeSpentType.Player,
+            mode: event.data.mode || WsEvents.WsTimeSpentMode.Play,
+          },
+                   event.data.object,
+                   event.pageContext
+          )
+        }
+        if (
+          event.data.state === WsEvents.EnumTelemetrySubType.Interact
+        ) {
+          $t.interact(
+            {
+              type: event.data.edata.type,
+              subtype: event.data.edata.subType,
+              id: (event.data.edata && event.data.edata.id) ?
+                event.data.edata.id
+                : '',
+              pageid: event.pageContext && event.pageContext.pageId || '',
+            },
+            {
+              context: {
+                pdata: {
+                  ...this.pData,
+                  id: this.pData.id,
+                },
+                ...(event.pageContext && event.pageContext.module ? { env: event.pageContext.module } : null),
+              },
+              object: {
+                ...event.data.object,
+              },
+            })
+        }
+
+      })
+  }
+
+  addCustomListenerForGetStart() {
+    this.eventsSvc.getStartEvents$
+      .pipe(
+        filter(
+          event =>
+            event &&
+            event.eventType === WsEvents.WsEventType.Telemetry &&
+            event.data.eventSubType === WsEvents.EnumTelemetrySubType.GetStarted &&
+            event.data.mode &&
+            event.data,
+        ),
+      )
+      .subscribe(event => {
+        if (event.data.state === WsEvents.EnumTelemetrySubType.Loaded) {
+          this.start(
+            {
+              type: event.data.type || WsEvents.WsTimeSpentType.Player,
+              mode: event.data.mode || WsEvents.WsTimeSpentMode.Play,
+            },
+            {},
+            event.pageContext
+          )
+        }
+        if (
+          event.data.state === WsEvents.EnumTelemetrySubType.Unloaded
+        ) {
+          this.end({
+            type: event.data.type || WsEvents.WsTimeSpentType.Player,
+            mode: event.data.mode || WsEvents.WsTimeSpentMode.Play,
+          },
+                   event.data.object,
+                   event.pageContext
+          )
+        }
+        if (
+          event.data.state === WsEvents.EnumTelemetrySubType.Interact
+        ) {
+          $t.interact(
+            {
+              type: event.data.edata.type,
+              subtype: event.data.edata.subType,
+              id: (event.data.edata && event.data.edata.id) ?
+                event.data.edata.id
+                : '',
+              pageid: event.pageContext && event.pageContext.pageId || '',
+            },
+            {
+              context: {
+                pdata: {
+                  ...this.pData,
+                  id: this.pData.id,
+                },
+                ...(event.pageContext && event.pageContext.module ? { env: event.pageContext.module } : null),
+              },
+              object: {
+                ...event.data.object,
+              },
+            })
+        }
+
+      })
+  }
+
+  addCustomListener() {
+    this.eventsSvc.chatbotEvents$
+      .pipe(
+        filter(
+          event =>
+            event &&
+            event.eventType === WsEvents.WsEventType.Telemetry &&
+            event.data.eventSubType === WsEvents.EnumTelemetrySubType.Chatbot &&
+            event.data.mode &&
+            event.data,
+        ),
+      )
+      .subscribe(event => {
+        if (event.data.state === WsEvents.EnumTelemetrySubType.Loaded) {
+          this.start(
+            {
+              type: event.data.type || WsEvents.WsTimeSpentType.Player,
+              mode: event.data.mode || WsEvents.WsTimeSpentMode.Play,
+            },
+            {},
+            event.pageContext
+          )
+        }
+        if (
+          event.data.state === WsEvents.EnumTelemetrySubType.Unloaded
+        ) {
+          this.end({
+            type: event.data.type || WsEvents.WsTimeSpentType.Player,
+            mode: event.data.mode || WsEvents.WsTimeSpentMode.Play,
+          },
+                   {},
+                   event.pageContext
+          )
+        }
+        if (
+          event.data.state === WsEvents.EnumTelemetrySubType.Interact
+        ) {
+          $t.interact(
+            {
+              type: event.data.edata.type,
+              subtype: event.data.edata.subType,
+              id: (event.data.edata && event.data.edata.id) ?
+                event.data.edata.id
+                : '',
+              pageid: event.pageContext && event.pageContext.pageId || '',
+            },
+            {
+              context: {
+                pdata: {
+                  ...this.pData,
+                  id: this.pData.id,
+                },
+                ...(event.pageContext && event.pageContext.module ? { env: event.pageContext.module } : null),
+              },
+              object: {
+                ...event.data.object,
+              },
+            })
+        }
+
+      })
   }
 
   addCustomImpressionListener() {
@@ -349,6 +560,7 @@ export class TelemetryService {
   }
 
   addCustomEventListener() {
+
     this.eventsSvc.events$
       .pipe(
         filter(
@@ -437,6 +649,8 @@ export class TelemetryService {
   }
 
   addInteractListener() {
+    const data = this.getPageDetails()
+    this.triggerNPSUpdate(data.pageid)
     this.eventsSvc.events$
       .pipe(
         filter(
@@ -487,7 +701,7 @@ export class TelemetryService {
                     ...this.pData,
                     id: this.pData.id,
                   },
-                  ...(event.data.pageContext && event.data.pageContext.module ? { env: event.data.pageContext.module } : null),
+                  ...(event.pageContext && event.pageContext.module ? { env: event.pageContext.module } : null),
                 },
                 object: {
                   ...event.data.object,
@@ -634,13 +848,17 @@ export class TelemetryService {
   getPageDetails() {
     const path = window.location.pathname.replace('/', '')
     const url = path + window.location.search
+    let moduleValue = ''
+    if (path.includes('discussion-forum')) {
+      moduleValue = 'Discuss'
+    }
     return {
       pageid: path,
       pageUrl: url,
       pageUrlParts: path.split('/'),
       refferUrl: this.previousUrl,
       objectId: this.extractContentIdFromUrlParts(path.split('/')),
-      module: '',
+      module: moduleValue,
     }
   }
 

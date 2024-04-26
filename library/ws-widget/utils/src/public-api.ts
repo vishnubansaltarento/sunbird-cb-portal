@@ -14,6 +14,7 @@ export * from './lib/directives/permission/permission.module'
 export * from './lib/helpers/functions/getStringifiedQueryParams'
 // helpers
 export * from './lib/helpers/horizontal-scroller/horizontal-scroller.module'
+export * from './lib/helpers/horizontal-scroller-v2/horizontal-scroller-v2.module'
 export * from './lib/helpers/logout/logout.component'
 export * from './lib/helpers/logout/logout.module'
 export * from './lib/pipes/pipe-concise-date-range/pipe-concise-date-range.module'
@@ -34,6 +35,9 @@ export * from './lib/pipes/pipe-html-tag-removal/pipe-html-tag-removal.pipe'
 
 export * from './lib/pipes/pipe-filter/pipe-filter.module'
 export * from './lib/pipes/pipe-filter/pipe-filter.pipe'
+
+export * from './lib/pipes/pipe-email/pipe-email.module'
+export * from './lib/pipes/pipe-email/pipe-email.pipe'
 
 export * from './lib/pipes/pipe-filter-v2/pipe-filter-v2.module'
 export * from './lib/pipes/pipe-filter-v2/pipe-filter-v2.pipe'
@@ -77,6 +81,7 @@ export * from './lib/resolvers/page.model'
 // resolvers
 export * from './lib/resolvers/page.resolver'
 export * from './lib/resolvers/page-name.resolver'
+export * from './lib/resolvers/module-name.resolver'
 export * from './lib/resolvers/resolver.model'
 // services
 export * from './lib/services/auth-keycloak.service'
@@ -93,6 +98,7 @@ export * from './lib/services/user-preference.model'
 export * from './lib/services/user-preference.service'
 export * from './lib/services/utility.service'
 export * from './lib/services/value.service'
+export * from './lib/services/multilingual-translations.service'
 
 export * from './lib/services/widget-content.service'
 export * from './lib/services/subapplication-respond.service'

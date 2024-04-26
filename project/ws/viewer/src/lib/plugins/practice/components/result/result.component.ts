@@ -1,24 +1,43 @@
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core'
-import { NsContent } from '@sunbird-cb/utils/src/public-api'
+import { Component, EventEmitter, Input, OnInit, OnChanges, Output, ViewChild } from '@angular/core'
+import { NsContent, MultilingualTranslationsService } from '@sunbird-cb/utils/src/public-api'
 import { NSPractice } from '../../practice.model'
-
+import { MatAccordion } from '@angular/material/expansion'
 @Component({
   selector: 'viewer-result',
   templateUrl: './result.component.html',
   styleUrls: ['./result.component.scss'],
 })
-export class ResultComponent implements OnInit {
+export class ResultComponent implements OnInit, OnChanges {
   @Input() percentage = 0
   @Input() levelText!: string
   @Input() isPassed = false
   @Input() quizCategory!: NsContent.EPrimaryCategory
   @Input() quizResponse!: NSPractice.IQuizSubmitResponseV2
   @Output() userSelection = new EventEmitter<string>()
+  @Output() fetchResult = new EventEmitter<string>()
+  @ViewChild(MatAccordion, { static: true }) accordion: MatAccordion | undefined
   staticImage = '/assets/images/exam/practice-result.png'
   questionTYP = NsContent.EPrimaryCategory
-  constructor() { }
+  selectedQuestionData: any
+  activeQuestionSet: any = ''
+  color = 'warn'
+  mode = 'determinate'
+  value = 45
+  showText = 'Rating'
+  isMobile = false
+  constructor(private langtranslations: MultilingualTranslationsService) {
+
+  }
 
   ngOnInit() {
+    if (window.innerWidth < 768) {
+      this.isMobile = true
+    } else {
+      this.isMobile = false
+    }
+  }
+
+  ngOnChanges() {
   }
 
   action(event: NSPractice.TUserSelectionType) {
@@ -26,5 +45,33 @@ export class ResultComponent implements OnInit {
   }
   get isOnlySection(): boolean {
     return this.quizResponse.children.length === 1
+  }
+
+  checkRes() {
+    if (this.quizResponse) {
+      if (typeof this.quizResponse === 'string') {
+        return true
+      }
+    }
+    return false
+  }
+
+  retryResult() {
+    this.fetchResult.emit()
+  }
+  getQuestionCount(data: any, activeQuestionSet: any) {
+    this.activeQuestionSet = activeQuestionSet
+    this.selectedQuestionData = data
+  }
+
+  updateProgress(value: any) {
+    const progress: any = document.querySelector('.circular-progress')
+    progress.style.setProperty('--percentage', `${value * 3.6}deg`)
+    progress.style.setProperty('--passPercentage', value)
+    progress.innerText = `${value}%`
+  }
+
+  translateLabels(label: string, type: any) {
+    return this.langtranslations.translateLabelWithoutspace(label, type, '')
   }
 }

@@ -62,6 +62,7 @@ export class PlayerPdfComponent extends WidgetBaseComponent
   private runnerSubs: Subscription | null = null
   private routerSubs: Subscription | null = null
   public isInFullScreen = false
+  public isMobile = false
   constructor(
     private activatedRoute: ActivatedRoute,
     private router: Router,
@@ -149,6 +150,24 @@ export class PlayerPdfComponent extends WidgetBaseComponent
       })
       this.eventDispatcher(WsEvents.EnumTelemetrySubType.Init)
     }
+
+    this.viewerSvc.markAsCompleteSubject.subscribe((data: any) => {
+
+      if (data) {
+        this.currentPage.reset()
+        this.currentPage.setValue(this.totalPages)
+        if (this.identifier) {
+          this.saveContinueLearning(this.identifier)
+          this.fireRealTimeProgress(this.identifier)
+        }
+      }
+    })
+
+    if (window.innerWidth <= 1200) {
+      this.isMobile = true
+    } else {
+      this.isMobile = false
+    }
   }
   ngOnChanges() {
     // if (this.widgetData !== this.oldData) {
@@ -172,7 +191,7 @@ export class PlayerPdfComponent extends WidgetBaseComponent
     )
     if (this.widgetData && this.widgetData.pdfUrl) {
       // this.loadDocument(this.widgetData.pdfUrl)
-      const publicUrl = this.viewerSvc.getPublicUrl(this.widgetData.pdfUrl)
+      const publicUrl = this.viewerSvc.getCdnUrl(this.widgetData.pdfUrl)
       this.loadDocument(publicUrl)
       if (this.widgetData.identifier) {
         this.identifier = this.widgetData.identifier
@@ -298,10 +317,10 @@ export class PlayerPdfComponent extends WidgetBaseComponent
         max_size: this.totalPages,
         current: this.current,
       }
-      const collectionId = this.activatedRoute.snapshot.queryParams.collectionId ?
-        this.activatedRoute.snapshot.queryParams.collectionId : this.widgetData.identifier
-      const batchId = this.activatedRoute.snapshot.queryParams.batchId ?
-        this.activatedRoute.snapshot.queryParams.batchId : this.widgetData.identifier
+      const resData = this.viewerSvc.getBatchIdAndCourseId(this.activatedRoute.snapshot.queryParams.collectionId,
+                                                           this.activatedRoute.snapshot.queryParams.batchId, id)
+      const collectionId = (resData && resData.courseId) ? resData.courseId : this.widgetData.identifier
+      const batchId = (resData && resData.batchId) ? resData.batchId : this.widgetData.identifier
       this.viewerSvc.realTimeProgressUpdate(id, realTimeProgressRequest, collectionId, batchId)
     }
     return

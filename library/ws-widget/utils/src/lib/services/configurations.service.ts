@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core'
 import { NSProfileDataV3 } from '@ws/app/src/lib/routes/profile-v3/models/profile-v3.models'
-import { BehaviorSubject, ReplaySubject } from 'rxjs'
+import { BehaviorSubject, ReplaySubject, Subject } from 'rxjs'
 // import { environment } from '../../../../../../src/environments/environment'
 import { NsPage } from '../resolvers/page.model'
 import { NsAppsConfig, NsInstanceConfig, NsUser } from './configurations.model'
@@ -56,6 +56,8 @@ export class ConfigurationsService {
   isNewUser = false
   portalUrls: IPortalUrls | undefined
   positions: any
+  overrideThemeChanges: any
+  profileTimelyNudges: any
 
   // pinnedApps
   pinnedApps = new BehaviorSubject<Set<string>>(new Set())
@@ -67,6 +69,15 @@ export class ConfigurationsService {
 
   private updateProfile = new BehaviorSubject(false)
   updateProfileObservable = this.updateProfile.asObservable()
+
+  updateTourGuide = new BehaviorSubject(true)
+  updateTourGuideObservable = this.updateTourGuide.asObservable()
+
+  // platform rating
+  updatePlatformRating = new BehaviorSubject({ bottom: '120px' })
+  updatePlatformRatingObservable$ = this.updatePlatformRating.asObservable()
+
+  languageTranslationFlag = new Subject()
 
   // Preference Related Values
   activeThemeObject: NsInstanceConfig.ITheme | null = null
@@ -95,7 +106,21 @@ export class ConfigurationsService {
   // )}`
   // setHostPath = (sitePath: string) => (sitePath).replace(':', '_')
   welcomeTabs: NSProfileDataV3.IProfileTab | null = null
+
+  // variable setting for csJwtToken
+  cstoken = ''
+
+  changeNavBarFullView = new Subject()
+  openExploreMenuForMWeb = new Subject()
   updateGlobalProfile(state: boolean) {
     this.updateProfile.next(state)
+  }
+
+  updateTourGuideMethod(state: boolean) {
+    this.updateTourGuide.next(state)
+  }
+
+  updatePlatformRatingMethod(state: any) {
+    this.updatePlatformRating.next(state)
   }
 }

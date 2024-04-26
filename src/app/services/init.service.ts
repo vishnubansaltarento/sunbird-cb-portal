@@ -28,6 +28,9 @@ import { map } from 'rxjs/operators'
 import { v4 as uuid } from 'uuid'
 import { Subscription } from 'rxjs'
 import { NSProfileDataV3 } from '@ws/app/src/lib/routes/profile-v3/models/profile-v3.models'
+import { NPSGridService } from '@sunbird-cb/collection/src/lib/grid-layout/nps-grid.service'
+import moment from 'moment'
+import { TranslateService } from '@ngx-translate/core'
 // import { of } from 'rxjs'
 /* tslint:enable */
 // interface IDetailsResponse {
@@ -50,6 +53,7 @@ const endpoint = {
   // profileV2: '/apis/protected/v8/user/profileRegistry/getUserRegistryById',
   // details: `/apis/protected/v8/user/details?ts=${Date.now()}`,
   CREATE_USER_API: `${PROXY_CREATE_V8}/discussion/user/v1/create`,
+  FIRST_LOGIN_API: '/apis/proxies/v8/login/entry',
 }
 
 @Injectable({
@@ -76,6 +80,8 @@ export class InitService {
     private settingsSvc: BtnSettingsService,
     private userPreference: UserPreferenceService,
     private http: HttpClient,
+    private npsSvc: NPSGridService,
+    private translate: TranslateService,
     // private widgetContentSvc: WidgetContentService,
 
     @Inject(APP_BASE_HREF) private baseHref: string,
@@ -156,6 +162,8 @@ export class InitService {
     })
     // this.logger.removeConsoleAccess()
     await this.fetchDefaultConfig()
+    await this.profileNudgeConfig()
+    await this.themeOverrideConfig()
     // const authenticated = await this.authSvc.initAuth()
     // if (!authenticated) {
     //   this.settingsSvc.initializePrefChanges(environment.production)
@@ -214,6 +222,13 @@ export class InitService {
     //   .catch(() => {
     //     // throw new DataResponseError('COOKIE_SET_FAILURE')
     //   })
+    if (
+      !(window.location.href.includes('/public/') ||
+      window.location.href.includes('/certs') ||
+      window.location.href.includes('/viewer'))
+    ) {
+      this.logFirstLogin()
+    }
     return true
   }
   async initFeatured() {
@@ -251,6 +266,38 @@ export class InitService {
     // Apply the settings using settingsService
     this.settingsSvc.initializePrefChanges(environment.production)
     this.userPreference.initialize()
+
+    // lang selection
+    if (this.configSvc.instanceConfig && this.configSvc.instanceConfig.isMultilingualEnabled) {
+      if (this.configSvc.unMappedUser) {
+        if (this.configSvc.unMappedUser.profileDetails && this.configSvc.unMappedUser.profileDetails
+          && this.configSvc.unMappedUser.profileDetails.additionalProperties
+          && this.configSvc.unMappedUser.profileDetails.additionalProperties.webPortalLang) {
+          const lang = this.configSvc.unMappedUser.profileDetails.additionalProperties.webPortalLang
+          this.translate.use(lang)
+          localStorage.setItem('websiteLanguage', lang)
+        } else {
+          if (localStorage.getItem('websiteLanguage')) {
+            let lang = JSON.stringify(localStorage.getItem('websiteLanguage'))
+            lang = lang.replace(/\"/g, '')
+            this.translate.use(lang)
+          } else {
+            this.translate.setDefaultLang('en')
+            localStorage.setItem('websiteLanguage', 'en')
+          }
+        }
+      } else if (localStorage.getItem('websiteLanguage')) {
+        let lang = JSON.stringify(localStorage.getItem('websiteLanguage'))
+        lang = lang.replace(/\"/g, '')
+        this.translate.use(lang)
+      } else {
+        this.translate.setDefaultLang('en')
+        localStorage.setItem('websiteLanguage', 'en')
+      }
+    } else {
+      this.translate.setDefaultLang('en')
+      localStorage.setItem('websiteLanguage', 'en')
+    }
   }
   // private reloadAccordingToLocale() {
   //   if (window.location.origin.indexOf('http://localhost:') > -1) {
@@ -297,6 +344,22 @@ export class InitService {
     return publicConfig
   }
 
+  private async profileNudgeConfig(): Promise<NsInstanceConfig.IConfig> {
+    const publicConfig: NsInstanceConfig.IConfig = await this.http
+      .get<NsInstanceConfig.IConfig>(`${this.baseUrl}/profile-nudge.json`)
+      .toPromise()
+    this.configSvc.profileTimelyNudges = publicConfig.profileTimelyNudges
+    return publicConfig
+  }
+
+  private async themeOverrideConfig(): Promise<NsInstanceConfig.IConfig> {
+    const publicConfig: NsInstanceConfig.IConfig = await this.http
+      .get<NsInstanceConfig.IConfig>(`${this.baseUrl}/theme-override-config.json`)
+      .toPromise()
+      this.configSvc.overrideThemeChanges = publicConfig.overrideThemeChanges
+    return publicConfig
+  }
+
   get locale(): string {
     return this.baseHref && this.baseHref.replace(/\//g, '')
       ? this.baseHref.replace(/\//g, '')
@@ -320,6 +383,16 @@ export class InitService {
       localStorage.removeItem('telemetrySessionId')
     }
     localStorage.setItem('telemetrySessionId', uuid())
+  }
+
+  private logFirstLogin() {
+    if (!localStorage.getItem('firsLogin')) {
+      this.http.get<any>(endpoint.FIRST_LOGIN_API).pipe(map((res: any) => {
+        if (res && res.result) {
+          localStorage.setItem('firsLogin', 'true')
+        }
+      })).toPromise()
+    }
   }
   private async fetchStartUpDetails(): Promise<any> {
     // const userRoles: string[] = []
@@ -363,6 +436,9 @@ export class InitService {
             departmentName: userPidProfile.channel,
             dealerCode: null,
             isManager: false,
+            profileUpdateCompletion: _.get(userPidProfile, 'profileUpdateCompletion') || 0,
+            profileImageUrl: _.get(userPidProfile, 'profileDetails.profileImageUrl') || '',
+            professionalDetails: _.get(userPidProfile, 'profileDetails.professionalDetails') || [],
           }
 
           this.configSvc.userProfileV2 = {
@@ -383,6 +459,7 @@ export class InitService {
             systemTopics: _.get(profileV2, 'systemTopics') || [],
             desiredTopics: _.get(profileV2, 'desiredTopics') || [],
             userRoles: _.get(profileV2, 'userRoles') || [],
+            webPortalLang: _.get(profileV2, 'additionalProperties.webPortalLang') || '',
           }
 
           if (!this.configSvc.nodebbUserProfile) {
@@ -412,6 +489,17 @@ export class InitService {
         this.configSvc.userRoles = new Set((details.roles || []).map((v: string) => v.toLowerCase()))
         this.configSvc.isActive = details.isActive
         this.configSvc.welcomeTabs = await this.fetchWelcomeConfig()
+
+        // nps check
+        if (localStorage.getItem('platformratingTime')) {
+          const date = localStorage.getItem('platformratingTime') || ''
+          const isNextDay = moment().subtract(24, 'hours').isBefore(moment(new Date(date)))
+          if (isNextDay) {
+            this.checkUserFeed()
+          }
+        } else {
+          this.checkUserFeed()
+        }
         return details
       } catch (e) {
         this.configSvc.userProfile = null
@@ -475,6 +563,9 @@ export class InitService {
             departmentName: userPidProfile.channel,
             dealerCode: null,
             isManager: false,
+            profileUpdateCompletion: _.get(userPidProfile, 'profileUpdateCompletion') || 0,
+            profileImageUrl: _.get(userPidProfile, 'profileDetails.profileImageUrl') || '',
+            professionalDetails: _.get(userPidProfile, 'profileDetails.professionalDetails') || [],
           }
           this.configSvc.userProfileV2 = {
             userId: _.get(profileV2, 'userId') || userPidProfile.userId,
@@ -494,6 +585,7 @@ export class InitService {
             systemTopics: _.get(profileV2, 'systemTopics') || [],
             desiredTopics: _.get(profileV2, 'desiredTopics') || [],
             userRoles: _.get(profileV2, 'userRoles') || [],
+            webPortalLang: _.get(profileV2, 'additionalProperties.webPortalLang') || '',
           }
 
           if (!this.configSvc.nodebbUserProfile) {
@@ -722,5 +814,22 @@ export class InitService {
       }
     })
     return returnValue
+  }
+
+  // for NPS user feed check
+  private checkUserFeed() {
+    this.npsSvc.getFeedStatus(this.configSvc.unMappedUser.id).subscribe((res: any) => {
+      if (res.result.response.userFeed && res.result.response.userFeed.length > 0) {
+        const feed = res.result.response.userFeed
+        feed.forEach((item: any) => {
+          if (item.category === 'NPS' && item.data.actionData.formId) {
+              const currentTime = moment()
+              localStorage.platformratingTime = currentTime
+              localStorage.setItem('ratingformID', JSON.stringify(item.data.actionData.formId))
+              localStorage.setItem('ratingfeedID', JSON.stringify(item.id))
+          }
+        })
+      }
+    })
   }
 }

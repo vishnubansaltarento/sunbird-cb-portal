@@ -7,9 +7,10 @@ import {
   QueryList,
   SimpleChanges,
   ViewChild, ViewChildren,
+  Renderer2,
 } from '@angular/core'
 import { MatDialog, MatSidenav, MatSnackBar } from '@angular/material'
-import { interval, Subscription } from 'rxjs'
+import { Subscription, interval } from 'rxjs'
 import { filter, map } from 'rxjs/operators'
 import { NSPractice } from './practice.model'
 import { QuestionComponent } from './components/question/question.component'
@@ -23,6 +24,9 @@ import { ViewerUtilService } from '../../viewer-util.service'
 import _ from 'lodash'
 import { NSQuiz } from '../quiz/quiz.model'
 import { environment } from 'src/environments/environment'
+import { DomSanitizer, SafeHtml } from '@angular/platform-browser'
+import { ViewerDataService } from '../../viewer-data.service'
+import { ViewerHeaderSideBarToggleService } from './../../viewer-header-side-bar-toggle.service'
 // import { ViewerDataService } from '../../viewer-data.service'
 export type FetchStatus = 'hasMore' | 'fetching' | 'done' | 'error' | 'none'
 @Component({
@@ -69,6 +73,9 @@ export class PracticeComponent implements OnInit, OnChanges, OnDestroy {
   @ViewChildren('questionsReference') questionsReference: QueryList<QuestionComponent> | null = null
   @ViewChild('sidenav', { static: false }) sideNav: MatSidenav | null = null
   @ViewChild('submitModal', { static: false }) submitModal: ElementRef | null = null
+  @ViewChild('itemTooltip', { static: false }) itemTooltip: ElementRef | null = null
+  @ViewChild('tooltipTrigger', { static: false }) tooltipTrigger: ElementRef | null = null
+  resourceName: string | null = this.viewerDataSvc.resource ? this.viewerDataSvc.resource.name : ''
   currentQuestionIndex = 0
   currentTheme = ''
   fetchingResultsStatus: FetchStatus = 'none'
@@ -93,7 +100,7 @@ export class PracticeComponent implements OnInit, OnChanges, OnDestroy {
   telemetrySubscription: Subscription | null = null
   attemptSubData!: NSPractice.ISecAttempted[]
   attemptSubscription: Subscription | null = null
-  timeLeft = 0
+  timeLeft = 55
   timerSubscription: Subscription | null = null
   viewState: NSPractice.TQuizViewMode = 'initial'
   paramSubscription: Subscription | null = null
@@ -107,6 +114,11 @@ export class PracticeComponent implements OnInit, OnChanges, OnDestroy {
   showAnswer = false
   matchHintDisplay: any[] = []
   canAttempt!: NSPractice.IRetakeAssessment
+  isMobile = false
+  questionAttemptedCount = 0
+  expandFalse = true
+  showOverlay = false
+  showToolTip = false
   constructor(
     private events: EventService,
     public dialog: MatDialog,
@@ -116,17 +128,44 @@ export class PracticeComponent implements OnInit, OnChanges, OnDestroy {
     private router: Router,
     private valueSvc: ValueService,
     // private vws: ViewerDataService,
-    public snackbar: MatSnackBar
+    public snackbar: MatSnackBar,
+    private sanitized: DomSanitizer,
+    private viewerDataSvc: ViewerDataService,
+    private viewerHeaderSideBarToggleService: ViewerHeaderSideBarToggleService,
+    private renderer: Renderer2
+
   ) {
     if (environment.assessmentBuffer) {
       this.assessmentBuffer = environment.assessmentBuffer
     }
+    this.renderer.listen('window', 'click', event => {
+      const infoToolTip: any = document.getElementById('toolTipSection')
+      if (infoToolTip && !infoToolTip.contains(event.target)) {
+        this.showToolTip = false
+      }
+    })
+  }
+
+  toggleToolTip() {
+    const tooltipStatus = this.showToolTip
+    if (tooltipStatus) {
+      this.showToolTip = false
+    } else if (tooltipStatus === false) {
+      this.showToolTip = true
+    }
   }
   init() {
+
+    if (window.innerWidth < 768) {
+      this.isMobile = true
+    } else {
+      this.isMobile = false
+    }
     // this.getSections()
     this.isSubmitted = false
     this.markedQuestions = new Set([])
     this.questionAnswerHash = {}
+    this.quizSvc.mtfSrc.next({})
     // quizSvc.questionAnswerHash.subscribe(qaHash => {
     //   this.questionAnswerHash = qaHash
     // })
@@ -150,6 +189,13 @@ export class PracticeComponent implements OnInit, OnChanges, OnDestroy {
     this.valueSvc.isXSmall$.subscribe(isXSmall => {
       this.isXsmall = isXSmall
     })
+
+    this.quizSvc.checkAlreadySubmitAssessment.subscribe(result => {
+      if (result) {
+        this.isSubmitted = true
+        this.viewState = 'answer' || 'review'
+      }
+    })
   }
   @HostListener('window:beforeunload', ['$event'])
   beforeUnloadHander(e: any) {
@@ -162,21 +208,26 @@ export class PracticeComponent implements OnInit, OnChanges, OnDestroy {
     return
   }
   canAttend() {
-    this.quizSvc.canAttend(this.identifier).subscribe(response => {
-      if (response) {
-        this.canAttempt = response
-      }
-      if (this.primaryCategory !== NsContent.EPrimaryCategory.FINAL_ASSESSMENT) {
-        // ** Except final assessment user can retake all assessment without time boundaries */
-        this.canAttempt = {
-          retakeMinutesLeft: 0,
-          retakeAssessments: true,
-          retakeAssessmentDuration: 0,
-        }
+    if (this.primaryCategory === NsContent.EPrimaryCategory.PRACTICE_RESOURCE) {
+      this.canAttempt = {
+        attemptsAllowed: 1,
+        attemptsMade: 0,
       }
       this.init()
       this.updateVisivility()
-    })
+    } else {
+      this.quizSvc.canAttend(this.identifier).subscribe(response => {
+        if (response) {
+           this.canAttempt = response
+          //  this.canAttempt = {
+          //   attemptsAllowed: 1,
+          //   attemptsMade: 0,
+          // }
+        }
+        this.init()
+        this.updateVisivility()
+      })
+    }
   }
   ngOnInit() {
     this.canAttend()
@@ -353,7 +404,6 @@ export class PracticeComponent implements OnInit, OnChanges, OnDestroy {
     return this.quizSvc.getQuestions(ids, this.identifier).toPromise()
   }
   getOptions(question: NSPractice.IQuestionV2): NSPractice.IOption[] {
-    // debugger
     const options: NSPractice.IOption[] = []
     if (question && question.qType) {
       const qTyp = question.qType
@@ -425,9 +475,10 @@ export class PracticeComponent implements OnInit, OnChanges, OnDestroy {
                 response: '',
                 userSelected: false,
                 matchForView: '',
-                match: this.primaryCategory === NsContent.EPrimaryCategory.PRACTICE_RESOURCE
-                  ? _.get(_.nth(question.editorState && question.editorState.options, idx), 'answer')
-                  : _.nth(question.rhsChoices, idx),
+                match: _.nth(question.rhsChoices, idx),
+                // this.primaryCategory === NsContent.EPrimaryCategory.PRACTICE_RESOURCE
+                //   ? _.get(_.nth(question.editorState && question.editorState.options, idx), 'answer')
+                //   : _.nth(question.rhsChoices, idx),
               })
             })
           break
@@ -458,6 +509,7 @@ export class PracticeComponent implements OnInit, OnChanges, OnDestroy {
         this.sideNav.close()
       }
     }
+
     // const questionElement = document.getElementById(`question${qIndex}`)
     // if (questionElement) {
     //   questionElement.scrollIntoView({ behavior: 'smooth', block: 'start' })
@@ -533,10 +585,14 @@ export class PracticeComponent implements OnInit, OnChanges, OnDestroy {
   updateProgress(status: number) {
     // status = 1 indicates started
     // status = 2 indicates completed
-    const collectionId = this.activatedRoute.snapshot.queryParams.collectionId ?
-      this.activatedRoute.snapshot.queryParams.collectionId : ''
-    const batchId = this.activatedRoute.snapshot.queryParams.batchId ?
-      this.activatedRoute.snapshot.queryParams.batchId : ''
+    const resData = this.viewerSvc.getBatchIdAndCourseId(this.activatedRoute.snapshot.queryParams.collectionId,
+                                                         this.activatedRoute.snapshot.queryParams.batchId, this.identifier)
+    const collectionId = (resData && resData.courseId) ? resData.courseId : ''
+    const batchId = (resData && resData.batchId) ? resData.batchId : ''
+    // const collectionId = this.activatedRoute.snapshot.queryParams.collectionId ?
+    //   this.activatedRoute.snapshot.queryParams.collectionId : ''
+    // const batchId = this.activatedRoute.snapshot.queryParams.batchId ?
+    //   this.activatedRoute.snapshot.queryParams.batchId : ''
     this.viewerSvc.realTimeProgressUpdateQuiz(this.identifier, collectionId, batchId, status)
   }
 
@@ -615,8 +671,6 @@ export class PracticeComponent implements OnInit, OnChanges, OnDestroy {
       this.questionAnswerHash[question.questionId] = [optionId]
     }
     // tslint:disable-next-line
-    // debugger
-    // console.log(this.questionAnswerHash, '+++++')
     if (question.questionType && question.questionType === 'mtf') {
       const mTfval = this.quizSvc.mtfSrc.getValue()
       mTfval[question.questionId] = {
@@ -633,6 +687,9 @@ export class PracticeComponent implements OnInit, OnChanges, OnDestroy {
     const answered = (this.quizSvc.questionAnswerHash.getValue() || [])
     if (this.markSectionAsComplete(answered) && this.selectedSection) {
       this.quizSvc.setFullAttemptSection(this.selectedSection)
+    }
+    if (this.questionAnswerHash) {
+      this.questionAttemptedCount = Object.keys(this.questionAnswerHash).length
     }
   }
   markSectionAsComplete(answered: any): boolean {
@@ -718,6 +775,7 @@ export class PracticeComponent implements OnInit, OnChanges, OnDestroy {
           case 'mcq-mca':
             const mcqMca: NSPractice.IMCQ_MCA = {
               identifier: sq.questionId,
+              question: sq.question,
               mimeType: NsContent.EMimeTypes.QUESTION,
               objectType: 'Question',
               primaryCategory: NsContent.EPrimaryCategory.MULTIPLE_CHOICE_QUESTION,
@@ -740,6 +798,7 @@ export class PracticeComponent implements OnInit, OnChanges, OnDestroy {
               identifier: sq.questionId,
               mimeType: NsContent.EMimeTypes.QUESTION,
               objectType: 'Question',
+              question: sq.question,
               primaryCategory: NsContent.EPrimaryCategory.SINGLE_CHOICE_QUESTION,
               qType: 'MCQ-SCA',
               editorState: {
@@ -760,6 +819,7 @@ export class PracticeComponent implements OnInit, OnChanges, OnDestroy {
               identifier: sq.questionId,
               mimeType: NsContent.EMimeTypes.QUESTION,
               objectType: 'Question',
+              question: sq.question,
               primaryCategory: NsContent.EPrimaryCategory.FTB_QUESTION,
               qType: 'FTB',
               editorState: {
@@ -786,11 +846,12 @@ export class PracticeComponent implements OnInit, OnChanges, OnDestroy {
               identifier: sq.questionId,
               mimeType: NsContent.EMimeTypes.QUESTION,
               objectType: 'Question',
+              question: sq.question,
               primaryCategory: NsContent.EPrimaryCategory.MTF_QUESTION,
               qType: 'MTF',
               editorState: {
                 options: _.compact(_.map(sq.options, (_o: NSPractice.IOption) => {
-                  if (_o.response) {
+                  if (_o.userSelected) {
                     return {
                       index: (_o.optionId).toString(),
                       selectedAnswer: _o.response,
@@ -806,94 +867,65 @@ export class PracticeComponent implements OnInit, OnChanges, OnDestroy {
     }
     return responseQ
   }
-  submitQuiz() {
+  async submitQuiz() {
     this.raiseTelemetry('quiz', null, 'submit')
+    if (this.primaryCategory !== NsContent.EPrimaryCategory.PRACTICE_RESOURCE) {
+      this.showOverlay = true
+      setTimeout(() => {
+        this.showOverlay = false
+        this.viewerHeaderSideBarToggleService.visibilityStatus.next(true)
+      },         5000)
+    } else {
+      this.viewerHeaderSideBarToggleService.visibilityStatus.next(true)
+    }
+
     this.isSubmitted = true
     this.ngOnDestroy()
-    // debugger
-    //  this.generateRequest
-    /// this above line have new response
-    // if (response.identifier) {
-    //   const submitQuizJson = JSON.parse(JSON.stringify(this.quizJson))
-    //   let req = this.quizSvc.createAssessmentSubmitRequest(
-    //     this.identifier,
-    //     this.name,
-    //     {
-    //       ...submitQuizJson,
-    //       timeLimit: this.quizJson.timeLimit * 1000,
-    //     },
-    //     this.questionAnswerHash,
-    //   )
-    //   console.log(req)
-    // }
     if (!this.quizJson.isAssessment) {
       this.viewState = 'review'
       // this.calculateResults()
     } else {
       this.viewState = 'answer'
     }
-    // const submitQuizJson = JSON.parse(JSON.stringify(this.quizJson))
-    this.fetchingResultsStatus = 'fetching'
-    // const requestData: NSPractice.IQuizSubmitRequest = this.quizSvc.createAssessmentSubmitRequest(
-    //   this.identifier,
-    //   this.name,
-    //   {
-    //     ...submitQuizJson,
-    //     timeLimit: this.quizJson.timeLimit * 1000,
+    const quizV4Res: any = await this.quizSvc.submitQuizV4(this.generateRequest).toPromise().catch(_error => {})
+    if (quizV4Res && quizV4Res.params && quizV4Res.params.status.toLowerCase() === 'success') {
+      if (quizV4Res.result.primaryCategory === 'Course Assessment') {
+        setTimeout(() => {
+          this.getQuizResult()
+        },         environment.quizResultTimeout)
+      } else if (quizV4Res.result.primaryCategory === 'Practice Question Set') {
+        this.assignQuizResult(quizV4Res.result)
+      }
+    }
+    // this.quizSvc.submitQuizV3(this.generateRequest).subscribe(
+    //   (res: NSPractice.IQuizSubmitResponseV2) => {
+    //     // call content progress with status 2 i.e, completed
+    //     this.updateProgress(2)
+    //     this.finalResponse = res
+    //     if (this.quizJson.isAssessment) {
+    //       this.isIdeal = true
+    //     }
+    //     this.clearQuizJson()
+    //     this.fetchingResultsStatus = 'done'
+    //     this.numCorrectAnswers = res.correct
+    //     this.numIncorrectAnswers = res.incorrect
+    //     this.numUnanswered = res.blank
+    //     this.passPercentage = res.passPercentage
+    //     this.result = res.overallResult
+    //     if (this.result >= this.passPercentage) {
+    //       this.isCompleted = true
+    //     }
+    //     const top = document.getElementById('quiz-end')
+    //     if (top !== null) {
+    //       top.scrollIntoView({ behavior: 'smooth', block: 'start' })
+    //     }
+    //     this.clearStoragePartial()
     //   },
-    //   this.questionAnswerHash,
+    //   (_error: any) => {
+    //     this.fetchingResultsStatus = 'error'
+    //     this.snackbar.open(_error.error.params.errmsg)
+    //   },
     // )
-
-    // const sanitizedRequestData: NSPractice.IQuizSubmitRequest = this.quizSvc.sanitizeAssessmentSubmitRequest(requestData)
-
-    this.quizSvc.submitQuizV3(this.generateRequest).subscribe(
-      (res: NSPractice.IQuizSubmitResponseV2) => {
-        // call content progress with status 2 i.e, completed
-        this.updateProgress(2)
-        this.finalResponse = res
-        if (this.quizJson.isAssessment) {
-          this.isIdeal = true
-        }
-        this.clearQuizJson()
-        this.fetchingResultsStatus = 'done'
-        this.numCorrectAnswers = res.correct
-        this.numIncorrectAnswers = res.incorrect
-        this.numUnanswered = res.blank
-        this.passPercentage = res.passPercentage
-        this.result = res.overallResult
-        if (this.result >= this.passPercentage) {
-          this.isCompleted = true
-        }
-        // const result = {
-        //   result: (this.numCorrectAnswers * 100.0) / this.processedContent.quiz.questions.length,
-        //   total: this.processedContent.quiz.questions.length,
-        //   blank: res.blank,
-        //   correct: res.correct,
-        //   inCorrect: res.inCorrect,
-        //   passPercentage: res.passPercent,
-        // }
-        // this.quizSvc.firePlayerTelemetryEvent(
-        //   this.processedContent.content.identifier,
-        //   this.collectionId,
-        //   MIME_TYPE.quiz,
-        //   result,
-        //   this.isCompleted,
-        //   'DONE',
-        //   this.isIdeal,
-        //   true,
-        // )
-        const top = document.getElementById('quiz-end')
-        if (top !== null) {
-          top.scrollIntoView({ behavior: 'smooth', block: 'start' })
-        }
-        this.clearStoragePartial()
-      },
-      (_error: any) => {
-        this.fetchingResultsStatus = 'error'
-        this.snackbar.open(_error.error.params.errmsg)
-      },
-    )
-    // this.fetchingResultsStatus = 'done'
   }
   showAnswers() {
     this.showMtfAnswers()
@@ -1129,6 +1161,7 @@ export class PracticeComponent implements OnInit, OnChanges, OnDestroy {
     this.attemptSubData = []
     this.currentQuestionIndex = 0
     this.currentQuestion = null
+
     // this.viewState = 'initial'
     // this.isSubmitted = true
   }
@@ -1144,6 +1177,10 @@ export class PracticeComponent implements OnInit, OnChanges, OnDestroy {
       primaryCategory: NsContent.EPrimaryCategory.PRACTICE_RESOURCE,
     }
   }
+  toggleExpandforMobile() {
+    this.expandFalse = !this.expandFalse
+  }
+
   ngOnDestroy() {
     this.clearStorage()
     if (this.attemptSubscription) {
@@ -1156,4 +1193,61 @@ export class PracticeComponent implements OnInit, OnChanges, OnDestroy {
       this.telemetrySubscription.unsubscribe()
     }
   }
+
+  async getQuizResult() {
+    const req = {
+      request: {
+        assessmentId: this.generateRequest.identifier,
+        batchId: this.generateRequest.batchId,
+        courseId: this.generateRequest.courseId,
+      },
+    }
+    const resultRes: any = await this.quizSvc.quizResult(req).toPromise().catch(_error => {})
+    if (resultRes && resultRes.params && resultRes.params.status.toLowerCase() === 'success') {
+      if (resultRes.result) {
+        this.fetchingResultsStatus = (resultRes.result.isInProgress) ?  'fetching' : 'done'
+        this.assignQuizResult(resultRes.result)
+      }
+    } else if (resultRes && resultRes.params && resultRes.params.status.toLowerCase() === 'failed') {
+      this.finalResponse = resultRes.responseCode
+    }
+  }
+
+  assignQuizResult(res: NSPractice.IQuizSubmitResponseV2) {
+    this.updateProgress(2)
+    this.finalResponse = res
+    if (this.quizJson.isAssessment) {
+      this.isIdeal = true
+    }
+    this.clearQuizJson()
+    this.fetchingResultsStatus = 'done'
+    this.numCorrectAnswers = res.correct
+    this.numIncorrectAnswers = res.incorrect
+    this.numUnanswered = res.blank
+    this.passPercentage = res.passPercentage
+    this.result = res.overallResult
+    if (this.result >= this.passPercentage) {
+      this.isCompleted = true
+    }
+    const top = document.getElementById('quiz-end')
+    if (top !== null) {
+      top.scrollIntoView({ behavior: 'smooth', block: 'start' })
+    }
+    this.clearStoragePartial()
+  }
+  formate(text: string): SafeHtml {
+    let newText = '<ul>'
+    if (text) {
+      const splitTest = text.split('\n')
+      for (let index = 0; index < text.split('\n').length; index += 1) {
+        const text1 = splitTest[index]
+        if (text1 && text1.trim()) {
+          newText += `<li>${text1.trim()}</li>`
+        }
+      }
+    }
+    newText += `</ul>`
+    return this.sanitized.bypassSecurityTrustHtml(newText)
+  }
+
 }

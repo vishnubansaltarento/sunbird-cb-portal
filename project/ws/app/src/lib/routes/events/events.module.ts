@@ -23,10 +23,10 @@ import { EventsComponent } from './routes/events/events.component'
 import { LoaderService } from '@ws/author/src/public-api'
 import { InitResolver } from '@ws/author/src/lib/services/init-resolve.service'
 import { ReactiveFormsModule, FormsModule } from '@angular/forms'
-import { BtnPageBackModule } from '@sunbird-cb/collection/src/public-api'
+import { BtnPageBackModule, ContentStripWithTabsModule } from '@sunbird-cb/collection/src/public-api'
 import { PipeOrderByModule } from '@sunbird-cb/utils/src/lib/pipes/pipe-order-by/pipe-order-by.module'
 import { AvatarPhotoModule } from '@sunbird-cb/collection/src/lib/_common/avatar-photo/avatar-photo.module'
-import { PipeHtmlTagRemovalModule, PipeFilterV2Module, PipePublicURLModule } from '@sunbird-cb/utils'
+import { PipeHtmlTagRemovalModule, PipeFilterV2Module, PipePublicURLModule, HorizontalScrollerV2Module } from '@sunbird-cb/utils'
 import { PipeRelativeTimeModule } from '@sunbird-cb/utils/src/lib/pipes/pipe-relative-time/pipe-relative-time.module'
 import { PipeFilterSearchModule } from '@sunbird-cb/utils/src/lib/pipes/pipe-filter-search/pipe-filter-search.module'
 import { PipeFilterModule } from '@sunbird-cb/utils/src/lib/pipes/pipe-filter/pipe-filter.module'
@@ -38,6 +38,7 @@ import { WidgetResolverModule } from '@sunbird-cb/resolver'
 import { RightMenuCardComponent } from './components/right-menu-card/right-menu-card.component'
 import { PresenterCardComponent } from './components/presenter-card/presenter-card.component'
 import { EventService } from './services/events.service'
+import { TranslateModule } from '@ngx-translate/core'
 
 @NgModule({
   declarations: [
@@ -80,6 +81,9 @@ import { EventService } from './services/events.service'
     BtnPageBackModule,
     WidgetResolverModule,
     MatTabsModule,
+    TranslateModule,
+    HorizontalScrollerV2Module,
+    ContentStripWithTabsModule,
   ],
   providers: [
     LoaderService,

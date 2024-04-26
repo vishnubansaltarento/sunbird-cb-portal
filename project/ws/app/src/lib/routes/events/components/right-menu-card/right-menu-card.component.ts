@@ -1,5 +1,8 @@
 import { Component, OnDestroy, OnInit, Input } from '@angular/core'
 import moment from 'moment'
+import { EventService, WsEvents } from '@sunbird-cb/utils'
+import { environment } from 'src/environments/environment'
+import { TranslateService } from '@ngx-translate/core'
 // import { ActivatedRoute } from '@angular/router'
 // import { ConfigurationsService } from '@ws-widget/utils'
 // import { NSProfileDataV2 } from '../../models/profile-v2.model'
@@ -20,6 +23,7 @@ export class RightMenuCardComponent implements OnInit, OnDestroy {
   pastEvent = false
   futureEvent = false
   currentEvent = false
+  isSpvEvent = false
   // completedPercent!: number
   // badgesSubscription: any
   // portalProfile!: NSProfileDataV2.IProfile
@@ -28,13 +32,14 @@ export class RightMenuCardComponent implements OnInit, OnDestroy {
   constructor(
     // private route: ActivatedRoute,
     // configSvc: ConfigurationsService,
+    private events: EventService,
+    private translate: TranslateService
   ) {
-    // this.currentEvent = configSvc.userProfile && configSvc.userProfile.eventId
-    // this.badgesSubscription = this.route.data.subscribe(response => {
-    //   this.badges = response && response.badges && response.badges.data
-    //   this.portalProfile = response && response.profile && response.profile.data[0]
-    //   this.completedPercent = this.calculatePercent(this.portalProfile || null)
-    // })
+    if (localStorage.getItem('websiteLanguage')) {
+      this.translate.setDefaultLang('en')
+      const lang = localStorage.getItem('websiteLanguage')!
+      this.translate.use(lang)
+    }
   }
   ngOnInit(): void {
     // this.completedPercent = 86
@@ -50,6 +55,12 @@ export class RightMenuCardComponent implements OnInit, OnDestroy {
       const today = moment(now).format('YYYY-MM-DD HH:mm')
 
       const isToday = this.compareDate(eventDate, eventendDate, this.eventData)
+
+      const spvOrgId = environment.spvorgID
+      if (this.eventData.createdFor && this.eventData.createdFor[0] === spvOrgId) {
+        this.isSpvEvent =  true
+      }
+
       if (isToday) {
         this.currentEvent = true
         this.futureEvent = false
@@ -137,5 +148,30 @@ export class RightMenuCardComponent implements OnInit, OnDestroy {
     // if (this.badgesSubscription) {
     //   this.badgesSubscription.unsubscribe()
     // }
+  }
+
+  raiseTelemetry(name: string) {
+    this.events.raiseInteractTelemetry(
+      {
+        type: 'click',
+        subType: `btn-${name}`,
+        id: this.eventData.identifier,
+      },
+      {
+        id: this.eventData.identifier,
+        type: 'event',
+      },
+      {
+        pageIdExt: 'event',
+        module: WsEvents.EnumTelemetrymodules.EVENTS,
+    })
+  }
+
+  getLink() {
+    if (this.eventData && this.eventData.recordedLinks && this.eventData.recordedLinks.length > 0) {
+      return this.eventData.recordedLinks[0]
+    }
+      return this.eventData.registrationLink
+
   }
 }

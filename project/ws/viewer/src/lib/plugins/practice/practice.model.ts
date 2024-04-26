@@ -93,6 +93,7 @@ export namespace NSPractice {
     passPercentage: number
     incorrect: number
     pass: boolean
+    isInProgress?: boolean
   }
 
   export interface IQPaper {
@@ -291,6 +292,7 @@ export namespace NSPractice {
     primaryCategory: NsContent.EPrimaryCategory.SINGLE_CHOICE_QUESTION
     mimeType: NsContent.EMimeTypes.QUESTION
     qType: 'MCQ-SCA',
+    question: String,
     editorState: {
       options: IResponseOptions[]
     }
@@ -300,6 +302,7 @@ export namespace NSPractice {
     primaryCategory: NsContent.EPrimaryCategory.MULTIPLE_CHOICE_QUESTION
     mimeType: NsContent.EMimeTypes.QUESTION
     qType: 'MCQ-MCA',
+    question: String,
     editorState: {
       options: IResponseOptions[]
     }
@@ -309,6 +312,7 @@ export namespace NSPractice {
     primaryCategory: NsContent.EPrimaryCategory.MTF_QUESTION
     mimeType: NsContent.EMimeTypes.QUESTION
     qType: 'MTF',
+    question: String,
     editorState: {
       options: IResponseOptions[]
     }
@@ -318,6 +322,7 @@ export namespace NSPractice {
     primaryCategory: NsContent.EPrimaryCategory.FTB_QUESTION
     mimeType: NsContent.EMimeTypes.QUESTION
     qType: 'FTB'
+    question: String,
     editorState: {
       // selectedAnswer: string | null
       options: IResponseOptions[]
@@ -341,8 +346,7 @@ export namespace NSPractice {
     children: ISubSec[]
   }
   export interface IRetakeAssessment {
-    retakeMinutesLeft: number
-    retakeAssessments: boolean
-    retakeAssessmentDuration: number
+    attemptsMade: number,
+    attemptsAllowed: number
   }
 }

@@ -21,6 +21,7 @@ export namespace NsContent {
     complexityLevel: string
     contentId: string
     contentType: EContentTypes
+    difficultyLevel: string
     primaryCategory: EPrimaryCategory
     contentUrlAtSource: string
     creatorContacts: ICreator[]
@@ -77,6 +78,7 @@ export namespace NsContent {
     }
     proctorUrl?: string
     progress?: IMarkAsCompleteProgress
+    programDuration?: any
     publishedOn: string
     recentCertificationAttemptScore?: number
     recommendationReasons?: string[]
@@ -125,6 +127,8 @@ export namespace NsContent {
     references?: { url: string; title: string }[]
     resumePage?: number // For player WebModule in UI
     [key: string]: any
+    optionalReading: boolean
+    additionalTags?: string[]
   }
 
   export enum EPrimaryCategory {
@@ -141,6 +145,8 @@ export namespace NsContent {
     MULTIPLE_CHOICE_QUESTION = 'Multiple Choice Question',
     SINGLE_CHOICE_QUESTION = 'Single Choice Question',
     MANDATORY_COURSE_GOAL = 'Mandatory Course Goal',
+    BLENDED_PROGRAM = 'Blended Program',
+    OFFLINE_SESSION = 'Offline Session',
     // following will not be available soon
     /**
      * @deprecated The type should not be used
@@ -176,7 +182,7 @@ export namespace NsContent {
     name: string
     creatorDetails: ICreator[]
     creatorContacts: ICreator[]
-    PosterImage: string
+    PosterImage?: string
     resourceType?: string
     totalRating?: number
   }
@@ -334,6 +340,7 @@ export namespace NsContent {
     QUESTION_SET = 'application/vnd.sunbird.questionset',
     QUESTION = 'application/vnd.sunbird.question',
     UNKNOWN = 'application/unknown',
+    OFFLINE_SESSION = 'application/offline',
   }
   export enum EDisplayContentTypes {
     ASSESSMENT = 'ASSESSMENT',

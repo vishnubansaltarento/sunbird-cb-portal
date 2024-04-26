@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core'
 import { ActivatedRoute } from '@angular/router'
+import { TranslateService } from '@ngx-translate/core'
 
 @Component({
   selector: 'ws-app-global-search',
@@ -7,18 +8,25 @@ import { ActivatedRoute } from '@angular/router'
   styleUrls: ['./global-search.component.scss'],
 })
 export class GlobalSearchComponent implements OnInit {
-  searchParam: any
+  searchParam = ''
+  userValue = ''
   searchparamFilters: any
   filtersPanel!: string | null
   selectedTab = 1
   tabs = ['All', 'Learn', 'Network', 'Discuss', 'Careers']
 
-  constructor(private activated: ActivatedRoute) {
-
+  constructor(private activated: ActivatedRoute, private translate: TranslateService) {
+    if (localStorage.getItem('websiteLanguage')) {
+      this.translate.setDefaultLang('en')
+      const lang = localStorage.getItem('websiteLanguage')!
+      this.translate.use(lang)
+    }
   }
 
   ngOnInit() {
     this.activated.queryParamMap.subscribe(queryParams => {
+      this.searchParam = ''
+      this.userValue = ''
       if (queryParams.has('tab')) {
         const tabn = queryParams.get('tab')
         this.tabs.forEach((t: any, index: number) => {
@@ -29,6 +37,10 @@ export class GlobalSearchComponent implements OnInit {
       }
       if (queryParams.has('q')) {
         this.searchParam = queryParams.get('q') || ''
+      }
+      if (queryParams.has('t')) {
+        this.searchParam = 'moderatedCourses' || ''
+        this.userValue = 'moderatedCourses'
       }
       if (queryParams.has('f')) {
         const sfilters = JSON.parse(queryParams.get('f') || '{}')
@@ -58,6 +70,12 @@ export class GlobalSearchComponent implements OnInit {
         this.filtersPanel = queryParams.get('filtersPanel')
       }
     })
+  }
+
+  translateTo(menuName: string): string {
+    // tslint:disable-next-line: prefer-template
+    const translationKey = 'globalsearch.' + menuName.replace(/\s/g, '')
+    return this.translate.instant(translationKey)
   }
 
 }

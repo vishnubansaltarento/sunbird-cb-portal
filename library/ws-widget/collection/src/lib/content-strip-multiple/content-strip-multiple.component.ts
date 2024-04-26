@@ -10,6 +10,7 @@ import {
   EventService,
   ConfigurationsService,
   UtilityService,
+  MultilingualTranslationsService,
 } from '@sunbird-cb/utils'
 import { Subscription } from 'rxjs'
 import { filter } from 'rxjs/operators'
@@ -18,6 +19,10 @@ import { WidgetUserService } from '../_services/widget-user.service'
 // tslint:disable-next-line
 import _ from 'lodash'
 import { HttpClient } from '@angular/common/http'
+import { environment } from 'src/environments/environment'
+import { NSSearch } from '@sunbird-cb/collection'
+import { SearchApiService } from '../_services/search-api.service'
+
 interface IStripUnitContentData {
   key: string
   canHideStrip: boolean
@@ -64,8 +69,10 @@ export class ContentStripMultipleComponent extends WidgetBaseComponent
   contentAvailable = true
   isFromAuthoring = false
   baseUrl = this.configSvc.sitePath || ''
+  veifiedKarmayogi = false
 
   changeEventSubscription: Subscription | null = null
+  environment!: any
 
   constructor(
     private contentStripSvc: ContentStripMultipleService,
@@ -76,15 +83,21 @@ export class ContentStripMultipleComponent extends WidgetBaseComponent
     protected utilitySvc: UtilityService,
     private userSvc: WidgetUserService,
     private http: HttpClient,
+    private searchApiService: SearchApiService,
+    private langtranslations: MultilingualTranslationsService
   ) {
     super()
   }
 
   ngOnInit() {
+    this.environment = environment
     const url = window.location.href
     this.isFromAuthoring = this.searchArray.some((word: string) => {
       return url.indexOf(word) > -1
     })
+    if (this.configSvc.unMappedUser && this.configSvc.unMappedUser.profileDetails) {
+      this.veifiedKarmayogi = this.configSvc.unMappedUser.profileDetails.verifiedKarmayogi
+    }
     this.initData()
   }
 
@@ -93,6 +106,25 @@ export class ContentStripMultipleComponent extends WidgetBaseComponent
       this.changeEventSubscription.unsubscribe()
     }
   }
+
+  isStripShowing(data: any) {
+    let count = 0
+    if (data && data.key === this.environment.programStripKey &&
+      data.stripTitle === this.environment.programStripName && data.widgets.length > 0) {
+      data.widgets.forEach((key: any) => {
+        if (key && key.widgetData.content.primaryCategory === this.environment.programStripPrimaryCategory) {
+          count = count + 1
+        }
+      })
+      if (count > 0) {
+        data.showStrip = true
+      } else {
+        data.showStrip = false
+      }
+    }
+    return data.showStrip
+  }
+
   get isMobile() {
     return this.utilitySvc.isMobile || false
   }
@@ -207,23 +239,100 @@ export class ContentStripMultipleComponent extends WidgetBaseComponent
     strip: NsContentStripMultiple.IContentStripUnit,
     calculateParentStatus = true,
   ) {
-    // setting initial values
-    this.processStrip(strip, [], 'fetching', false, null)
-    this.fetchFromApi(strip, calculateParentStatus)
-    this.fetchFromSearch(strip, calculateParentStatus)
-    this.fetchFromSearchRegionRecommendation(strip, calculateParentStatus)
-    this.fetchFromSearchV6(strip, calculateParentStatus)
-    this.fetchFromIds(strip, calculateParentStatus)
-    this.fetchFromEnrollmentList(strip, calculateParentStatus)
-    this.fetchRelatedCBP(strip, calculateParentStatus)
-    this.fetchRecommendedCourses(strip, calculateParentStatus)
-    this.fetchMandatoryCourses(strip, calculateParentStatus)
-    this.fetchBasedOnInterest(strip, calculateParentStatus)
-    this.fetchMicrosoftCourses(strip, calculateParentStatus)
-    this.fetchDAKSHTACourses(strip, calculateParentStatus)
-    this.fetchprarambhCourse(strip, calculateParentStatus)
-    this.fetchCuratedCollections(strip, calculateParentStatus)
+      // setting initial values
+      this.processStrip(strip, [], 'fetching', false, null)
+      this.fetchFromApi(strip, calculateParentStatus)
+      this.fetchFromSearch(strip, calculateParentStatus)
+      this.fetchFromSearchRegionRecommendation(strip, calculateParentStatus)
+      this.fetchFromSearchV6(strip, calculateParentStatus)
+      this.fetchFromIds(strip, calculateParentStatus)
+      this.fetchFromEnrollmentList(strip, calculateParentStatus)
+      this.fetchRelatedCBP(strip, calculateParentStatus)
+      this.fetchRecommendedCourses(strip, calculateParentStatus)
+      this.fetchMandatoryCourses(strip, calculateParentStatus)
+      this.fetchBasedOnInterest(strip, calculateParentStatus)
+      this.fetchMicrosoftCourses(strip, calculateParentStatus)
+      this.fetchDAKSHTACourses(strip, calculateParentStatus)
+      this.fetchprarambhCourse(strip, calculateParentStatus)
+      this.fetchCuratedCollections(strip, calculateParentStatus)
+      this.fetchModeratedCourses(strip, calculateParentStatus)
+      // if (this.veifiedKarmayogi) {
+      //  this.fetchModeratedCourses(strip, calculateParentStatus)
+      // }
   }
+
+  fetchModeratedCourses(strip: NsContentStripMultiple.IContentStripUnit, calculateParentStatus = true) {
+    if (strip.request && strip.request.moderatedCourses && Object.keys(strip.request.moderatedCourses).length) {
+      let orgId = ''
+      if (this.configSvc && this.configSvc.userProfile && this.configSvc.userProfile.rootOrgId) {
+        orgId = this.configSvc.userProfile.rootOrgId
+      }
+      const moderatedCoursesRequestBody: NSSearch.ISearchV6RequestV3 = {
+        request: {
+          query: '',
+          filters: {
+            courseCategory: [NsContent.ECourseCategory.MODERATED_COURSE,
+              NsContent.ECourseCategory.MODERATED_PROGRAM, NsContent.ECourseCategory.MODERATED_ASSESSEMENT],
+              'secureSettings.organisation': orgId,
+            contentType: ['Course'],
+              status: [
+                  'Live',
+              ],
+          },
+          sort_by: {
+              lastUpdatedOn: 'desc',
+          },
+          facets: [
+              'mimeType',
+          ],
+          limit : 20,
+        },
+      }
+      if (!this.veifiedKarmayogi) {
+        moderatedCoursesRequestBody.request.filters = {
+          ...moderatedCoursesRequestBody.request.filters,
+          'secureSettings.isVerifiedKarmayogi': 'No',
+        }
+      }
+
+      this.searchApiService.getSearchV4Results(moderatedCoursesRequestBody).subscribe(results => {
+        const showViewMore = Boolean(
+          results.result.content && results.result.content.length > 5 && strip.stripConfig && strip.stripConfig.postCardForSearch,
+        )
+        let contentList: any = []
+        if (results && results.result && results.result.content && results.result.content.length) {
+          contentList = results.result.content
+          // if (this.veifiedKarmayogi) {
+          //   contentList = results.result.content
+          // } else {
+          //   contentList = results.result.content.filter((ele: any) => {
+          //     return ele.secureSettings && ele.secureSettings.isVerifiedKarmayogi === 'No'
+          //   })
+          // }
+        }
+        const viewMoreUrl = showViewMore
+            ? {
+              path: '/app/globalsearch',
+              queryParams: {
+                t: 'moderatedCourses',
+              },
+            } : null
+
+            this.processStrip(
+              strip,
+              this.transformContentsToWidgets(contentList, strip),
+              'done',
+              calculateParentStatus,
+              viewMoreUrl,
+            )
+      },
+                                                                                      () => {
+        this.processStrip(strip, [], 'error', calculateParentStatus, null)
+      }
+      )
+    }
+  }
+
   fetchFromApi(strip: NsContentStripMultiple.IContentStripUnit, calculateParentStatus = true) {
     if (strip.request && strip.request.api && Object.keys(strip.request.api).length) {
       this.contentStripSvc.getContentStripResponseApi(strip.request.api).subscribe(
@@ -317,6 +426,18 @@ export class ContentStripMultipleComponent extends WidgetBaseComponent
         )
     }
   }
+
+  checkForDateFilters(filters: any) {
+    if (filters && filters.hasOwnProperty('batches.endDate')) {
+      // tslint:disable-next-line
+      filters['batches.endDate']['>='] = eval(filters['batches.endDate']['>='])
+    } else if (filters && filters.hasOwnProperty('batches.enrollmentEndDate')) {
+      // tslint:disable-next-line
+      filters['batches.enrollmentEndDate']['>='] = eval(filters['batches.enrollmentEndDate']['>='])
+    }
+    return filters
+  }
+
   fetchFromSearchV6(strip: NsContentStripMultiple.IContentStripUnit, calculateParentStatus = true) {
     if (strip.request && strip.request.searchV6 && Object.keys(strip.request.searchV6).length) {
       // if (!(strip.request.searchV6.locale && strip.request.searchV6.locale.length > 0)) {
@@ -332,14 +453,16 @@ export class ContentStripMultipleComponent extends WidgetBaseComponent
         strip.request.searchV6.request &&
         strip.request.searchV6.request.filters) {
         originalFilters = strip.request.searchV6.request.filters
+
+        strip.request.searchV6.request.filters = this.checkForDateFilters(strip.request.searchV6.request.filters)
         strip.request.searchV6.request.filters = this.getFiltersFromArray(
           strip.request.searchV6.request.filters,
-        )
+          )
       }
       this.contentSvc.searchV6(strip.request.searchV6).subscribe(
         results => {
           const showViewMore = Boolean(
-            results.result.content.length > 5 && strip.stripConfig && strip.stripConfig.postCardForSearch,
+            results.result.content && results.result.content.length > 5 && strip.stripConfig && strip.stripConfig.postCardForSearch,
           )
           const viewMoreUrl = showViewMore
             ? {
@@ -408,7 +531,8 @@ export class ContentStripMultipleComponent extends WidgetBaseComponent
       }
       // tslint:disable-next-line: deprecation
       this.userSvc.fetchUserBatchList(userId, queryParams).subscribe(
-        courses => {
+        (result: any) => {
+          const courses = result && result.courses
           const showViewMore = Boolean(
             courses.length > 5 && strip.stripConfig && strip.stripConfig.postCardForSearch,
           )
@@ -429,7 +553,7 @@ export class ContentStripMultipleComponent extends WidgetBaseComponent
             }
             : null
           if (courses && courses.length) {
-            content = courses.map(c => {
+            content = courses.map((c: any) => {
               const contentTemp: NsContent.IContent = c.content
               contentTemp.completionPercentage = c.completionPercentage || c.progress || 0
               contentTemp.completionStatus = c.completionStatus || c.status || 0
@@ -548,9 +672,9 @@ export class ContentStripMultipleComponent extends WidgetBaseComponent
       const searchRequest = strip.request.curatedCollections
       this.contentSvc.searchRelatedCBPV6(searchRequest).subscribe(
         results => {
-          const showViewMore = Boolean(
+          const showViewMore =  results.result.count > 0 ? Boolean(
             results.result.content.length > 5 && strip.stripConfig && strip.stripConfig.postCardForSearch,
-          )
+          ) : false
           const viewMoreUrl = showViewMore
             ? {
               path: '/app/curatedCollections/home',
@@ -576,7 +700,6 @@ export class ContentStripMultipleComponent extends WidgetBaseComponent
     // topics based recommendations start
     if (strip.request && strip.request.basedOnInterest && Object.keys(strip.request.basedOnInterest).length) {
       if (this.configSvc.userProfileV2) {
-
         const systemTopics = this.configSvc.userProfileV2.systemTopics &&
           this.configSvc.userProfileV2.systemTopics.map((st: any) => st.identifier)
 
@@ -656,7 +779,8 @@ export class ContentStripMultipleComponent extends WidgetBaseComponent
       )
 
       this.userSvc.fetchUserBatchList(userId, queryParams).subscribe(
-        (courses: any) => {
+        (result: any) => {
+          const courses = result && result.courses
           const goals = courses.reduce((acc: any[], cur: any) => {
             if (cur && cur.content && cur.content.primaryCategory === NsContent.EPrimaryCategory.MANDATORY_COURSE_GOAL) {
               acc.push(cur)
@@ -931,6 +1055,7 @@ export class ContentStripMultipleComponent extends WidgetBaseComponent
         content,
         ...(content.batch && { batch: content.batch }),
         cardSubType: strip.stripConfig && strip.stripConfig.cardSubType,
+        cardCustomeClass: strip.customeClass ? strip.customeClass : '',
         context: { pageSection: strip.key, position: idx },
         intranetMode: strip.stripConfig && strip.stripConfig.intranetMode,
         deletedMode: strip.stripConfig && strip.stripConfig.deletedMode,
@@ -1071,7 +1196,8 @@ export class ContentStripMultipleComponent extends WidgetBaseComponent
         (strip.request.microsoftCourses && Object.keys(strip.request.microsoftCourses).length) ||
         (strip.request.DAKSHTACourses && Object.keys(strip.request.DAKSHTACourses).length) ||
         (strip.request.prarambhCourse && Object.keys(strip.request.prarambhCourse).length) ||
-        (strip.request.curatedCollections && Object.keys(strip.request.curatedCollections).length)
+        (strip.request.curatedCollections && Object.keys(strip.request.curatedCollections).length) ||
+        (strip.request.moderatedCourses && Object.keys(strip.request.moderatedCourses).length)
       )
     ) {
       return true
@@ -1094,5 +1220,16 @@ export class ContentStripMultipleComponent extends WidgetBaseComponent
       })
       .catch(_err => { })
       .finally(() => Promise.resolve())
+  }
+
+  translateLabels(label: string) {
+    if (label === 'Programs') {
+      const labeln = label.toLowerCase()
+      return this.langtranslations.translateLabelWithoutspace(labeln, 'contentstripmultiple', '')
+    }
+    if (label === 'Based on your interests') {
+      return this.langtranslations.translateLabelWithoutspace('basedOnYourInterests', 'contentstripmultiple', '')
+    }
+    return this.langtranslations.translateLabelWithoutspace(label, 'contentstripmultiple', '')
   }
 }

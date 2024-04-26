@@ -1,7 +1,7 @@
 import { NgModule } from '@angular/core'
 import { RouterModule, Routes } from '@angular/router'
 import { ErrorResolverComponent, PageComponent, PageModule } from '@sunbird-cb/collection'
-import { ExploreDetailResolve, PageResolve, PageNameResolve } from '@sunbird-cb/utils'
+import { ExploreDetailResolve, PageResolve, PageNameResolve, ModuleNameResolve } from '@sunbird-cb/utils'
 import { LearningGuard } from '../../project/ws/app/src/lib/routes/my-learning/guards/my-learning.guard'
 import { InvalidUserComponent } from './component/invalid-user/invalid-user.component'
 import { LoginRootComponent } from './component/login-root/login-root.component'
@@ -30,7 +30,16 @@ import { WelcomeUserResolverService } from './services/welcome-user-resolver.ser
 import { PublicTocComponent } from './routes/public/public-toc/public-toc.component'
 import { AppPublicTocResolverService } from './routes/public/public-toc/app-public-toc-resolver.service'
 import { environment } from 'src/environments/environment'
-
+import { AppPublicPositionResolverService } from './routes/public/public-signup/position-resolver.service'
+import { PublicRequestComponent } from './routes/public/public-request/public-request.component'
+import { AppPublicGroupResolverService } from './routes/public/public-signup/group-resolver.service'
+import { AppTourComponent } from './component/app-tour/app-tour.component'
+import { AppHierarchyResolverService } from './services/app-hierarchy-resolver.service'
+import { AppEnrollmentResolverService } from './services/app-enrollment-resolver.service'
+import { AppContentResolverService } from './services/app-content-read-resolver.service'
+import { SurveyShikshaComponent } from './component/survey-shiksha/survey-shiksha.component'
+import { MicrosotesComponent } from './routes/microsites/microsotes.component'
+import { MicrositesModule } from './routes/microsites/microsites.module'
 // 💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥
 // Please declare routes in alphabetical order
 // 😵😵😵😵😵😵😵😵😵😵😵😵😵😵😵😵😵😵😵😵😵😵😵😵😵😵😵😵😵😵😵😵😵😵😵😵😵😵😵
@@ -93,41 +102,41 @@ const routes: Routes = [
   //   loadChildren: () => import('./routes/route-admin.module').then(u => u.RouteAdminModule),
   //   canActivate: [GeneralGuard],
   // },
-  {
-    path: 'app/careers',
-    loadChildren: () =>
-      import('./routes/route-careers.module').then(u => u.RouteCareerHubModule),
-    canActivate: [GeneralGuard],
-    data: {
-      pageType: 'feature',
-      pageKey: 'career',
-      pageId: 'app/careers',
-      module: 'careers',
-    },
-    resolve: {
-      pageData: PageResolve,
-    },
-  },
+  // {
+  //   path: 'app/careers',
+  //   loadChildren: () =>
+  //     import('./routes/route-careers.module').then(u => u.RouteCareerHubModule),
+  //   canActivate: [GeneralGuard],
+  //   data: {
+  //     pageType: 'feature',
+  //     pageKey: 'career',
+  //     pageId: 'app/careers',
+  //     module: 'Careers',
+  //   },
+  //   resolve: {
+  //     pageData: PageResolve,
+  //   },
+  // },
   // {
   //   path: 'app/channels',
   //   loadChildren: () => import('./routes/route-channels.module').then(u => u.RouteChannelsModule),
   //   canActivate: [GeneralGuard],
   // },
-  {
-    path: 'app/competencies',
-    loadChildren: () =>
-      import('./routes/route-competencie.module').then(u => u.RouteCompetenciesModule),
-    canActivate: [GeneralGuard],
-    data: {
-      pageType: 'feature',
-      pageKey: 'competencie',
-      pageId: 'app/competencies',
-      module: 'competency',
-    },
-    resolve: {
-      pageData: PageResolve,
-    },
-  },
+  // {
+  //   path: 'app/competencies',
+  //   loadChildren: () =>
+  //     import('./routes/route-competencie.module').then(u => u.RouteCompetenciesModule),
+  //   canActivate: [GeneralGuard],
+  //   data: {
+  //     pageType: 'feature',
+  //     pageKey: 'competencie',
+  //     pageId: 'app/competencies',
+  //     module: 'Competency',
+  //   },
+  //   resolve: {
+  //     pageData: PageResolve,
+  //   },
+  // },
   {
     path: 'app/content-assignment',
     loadChildren: () =>
@@ -162,7 +171,36 @@ const routes: Routes = [
       pageType: 'feature',
       pageKey: 'knowledge-resource',
       pageId: 'app/knowledge-resource',
-      module: 'knowledge-resource',
+      module: 'Knowledge Resources',
+    },
+    resolve: {
+      pageData: PageResolve,
+    },
+  },
+  {
+    path: 'app/jan-karmayogi',
+    loadChildren: () =>
+    import('./routes/route-jan-karmayogi.module').then(u => u.RouteJanKarmayogiModule),
+    canActivate: [GeneralGuard],
+    data: {
+      pageType: 'feature',
+      pageKey: 'jan-karmayogi',
+      pageId: 'app/jan-karmayogi',
+      module: 'Knowledge Resources',
+    },
+    resolve: {
+      pageData: PageResolve,
+    },
+  },
+  {
+    path: 'app/organisation',
+    loadChildren: () =>
+      import('./routes/route-organization.module').then(u => u.RouteOrganizationModule),
+    canActivate: [GeneralGuard],
+    data: {
+      pageType: 'feature',
+      pageKey: 'organization',
+      module: 'Organization',
     },
     resolve: {
       pageData: PageResolve,
@@ -193,7 +231,7 @@ const routes: Routes = [
     canActivate: [GeneralGuard],
     data: {
       pageId: 'app/curatedCollections',
-      module: 'explore',
+      module: 'Learn',
     },
     resolve: {
       // pageData: PageResolve,
@@ -208,7 +246,7 @@ const routes: Routes = [
       // pageType: 'feature',
       // pageKey: 'browse by competency',
       pageId: 'app/learn/browse-by/competency',
-      module: 'explore',
+      module: 'Competency',
     },
     resolve: {
       pageData: PageResolve,
@@ -249,7 +287,7 @@ const routes: Routes = [
     pathMatch: 'full',
     redirectTo: 'app/discussion',
     data: {
-      pageId: 'app/discussion-forum',
+      pageId: '',
       module: 'Discuss',
     },
 
@@ -290,7 +328,7 @@ const routes: Routes = [
       pageType: 'feature',
       pageKey: 'profile-v3',
       pageId: 'app/profile-v3',
-      module: 'profile-v3',
+      module: 'Profile',
     },
     resolve: {
       pageData: PageResolve,
@@ -309,6 +347,15 @@ const routes: Routes = [
   {
     path: 'app/features',
     component: FeaturesComponent,
+    canActivate: [GeneralGuard],
+    data: {
+      pageId: 'app/features',
+      module: 'Settings',
+    },
+  },
+  {
+    path: 'app/microsites',
+    component: MicrosotesComponent,
     canActivate: [GeneralGuard],
     data: {
       pageId: 'app/features',
@@ -364,8 +411,8 @@ const routes: Routes = [
       import('./routes/route-my-dashboard.module').then(u => u.RouteMyDashboardModule),
     canActivate: [GeneralGuard, LearningGuard],
     data: {
-      pageId: 'app/my-dashboard',
-      module: 'dashboard',
+      pageId: '',
+      module: 'Dashboard',
     },
   },
   {
@@ -387,7 +434,7 @@ const routes: Routes = [
       pageType: 'feature',
       pageKey: 'network-v2',
       pageId: 'app/network-v2',
-      module: 'newtwork',
+      module: 'Newtwork',
     },
     resolve: {
       pageData: PageResolve,
@@ -417,8 +464,10 @@ const routes: Routes = [
       import('./routes/route-profile-app.module').then(u => u.RouteProfileAppModule),
     canActivate: [GeneralGuard],
     data: {
-      pageId: 'app/profile',
-      module: 'profile',
+      pageType: 'feature',
+      pageKey: 'profile',
+      pageId: '',
+      module: 'Profile',
     },
   },
   {
@@ -430,7 +479,7 @@ const routes: Routes = [
       pageType: 'feature',
       pageKey: 'profile-v2',
       pageId: 'app/person-profile',
-      module: 'profile',
+      module: 'Profile',
     },
     resolve: {
       pageData: PageResolve,
@@ -459,7 +508,7 @@ const routes: Routes = [
       pageType: 'feature',
       pageKey: 'event',
       pageId: 'app/event-hub',
-      module: 'events',
+      module: 'Events',
     },
     resolve: {
       pageData: PageResolve,
@@ -488,7 +537,18 @@ const routes: Routes = [
       pageType: 'feature',
       pageKey: 'globalsearch',
       pageId: 'app/globalsearch',
-      module: 'search',
+      module: 'Home',
+    },
+  },
+  {
+    path: 'app/seeAll',
+    loadChildren: () =>
+      import('./routes/route-see-all-app.module').then(u => u.RouteSeeAllAppModule),
+    data: {
+      pageType: 'feature',
+      pageKey: 'seeAll',
+      pageId: 'app/seeAll',
+      module: 'Home',
     },
   },
   {
@@ -519,6 +579,7 @@ const routes: Routes = [
   },
   {
     path: 'app/toc',
+    // loadChildren: () => import('../../project/ws/app/src/lib/routes/app-toc/app-toc.module').then(u => u.AppTocModule),
     loadChildren: () => import('./routes/route-app-toc.module').then(u => u.RouteAppTocModule),
     canActivate: [GeneralGuard],
     data: {
@@ -677,6 +738,50 @@ const routes: Routes = [
     canActivate: [GeneralGuard],
   },
   {
+    path: 'page/home',
+    loadChildren: () => import('./home/home.module').then(m => m.HomeModule),
+    data: {
+      pageType: 'page',
+      pageKey: 'home',
+      pageId: 'page/home',
+      module: 'Home',
+    },
+    resolve: {
+      pageData: PageResolve,
+      // module: ModuleNameResolve,
+      // pageId: PageNameResolve,
+    },
+    canActivate: [GeneralGuard],
+  },
+  {
+    path: 'page/cbp',
+    loadChildren: () => import('./cbp/cbp.module').then(m => m.CbpModule),
+    data: {
+      pageType: 'page',
+      pageKey: 'cbp',
+    },
+    resolve: {
+      pageData: PageResolve,
+      module: ModuleNameResolve,
+      pageId: PageNameResolve,
+    },
+    canActivate: [GeneralGuard],
+  },
+  {
+    path: 'page/competency-passbook',
+    loadChildren: () => import('./competency-passbook/competency-passbook.module').then(m => m.CompetencyPassbookModule),
+    data: {
+      pageType: 'page',
+      pageKey: 'competency-passbook',
+    },
+    resolve: {
+      pageData: PageResolve,
+      module: ModuleNameResolve,
+      pageId: PageNameResolve,
+    },
+    canActivate: [GeneralGuard],
+  },
+  {
     path: 'page/:id',
     component: PageComponent,
     data: {
@@ -685,7 +790,7 @@ const routes: Routes = [
     },
     resolve: {
       pageData: PageResolve,
-      module: PageNameResolve,
+      module: ModuleNameResolve,
       pageId: PageNameResolve,
     },
     canActivate: [GeneralGuard],
@@ -810,6 +915,7 @@ const routes: Routes = [
     },
     resolve: {
       userData: WelcomeUserResolverService,
+      group: AppPublicGroupResolverService,
     },
   },
   {
@@ -826,6 +932,21 @@ const routes: Routes = [
     data: {
       module: 'Login',
       pageId: 'public/signup',
+      pageType: 'feature',
+      pageKey: 'signup',
+    },
+    resolve: {
+      // pageData: PageResolve,
+      positions: AppPublicPositionResolverService,
+      group: AppPublicGroupResolverService,
+    },
+  },
+  {
+    path: 'public/request',
+    component: PublicRequestComponent,
+    data: {
+      module: 'Login',
+      pageId: 'public/request',
     },
   },
   {
@@ -858,6 +979,11 @@ const routes: Routes = [
       module: 'Learn',
       pageId: 'viewer',
     },
+    resolve: {
+      hierarchyData: AppHierarchyResolverService,
+      enrollmentData: AppEnrollmentResolverService,
+      contentRead: AppContentResolverService,
+    },
     loadChildren: () => import('./routes/route-viewer.module').then(u => u.RouteViewerModule),
     canActivate: [GeneralGuard],
   },
@@ -875,6 +1001,17 @@ const routes: Routes = [
     canActivate: [GeneralGuard],
   },
   {
+    path: 'app/tour',
+    component: AppTourComponent,
+    data: {
+      pageId: 'app-tour',
+    },
+  },
+  {
+    path: 'surveyml/:id',
+    component: SurveyShikshaComponent,
+  },
+  {
     path: '**',
     component: ErrorResolverComponent,
     data: {
@@ -886,6 +1023,7 @@ const routes: Routes = [
   imports: [
     PageModule,
     FeaturesModule,
+    MicrositesModule,
     RouterModule.forRoot(routes, {
       anchorScrolling: 'enabled',
       scrollPositionRestoration: 'top',

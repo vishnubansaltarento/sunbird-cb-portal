@@ -6,8 +6,10 @@ import { MatDialog } from '@angular/material/dialog'
 // import { DiscussService } from '../../../discuss/services/discuss.service'
 /* tslint:disable */
 import _ from 'lodash'
-import * as moment from 'moment'
+import moment from 'moment'
 import { EventService } from '../../services/events.service'
+import { TranslateService } from '@ngx-translate/core'
+import { MultilingualTranslationsService } from '@sunbird-cb/utils/src/public-api'
 /* tslint:enable */
 
 @Component({
@@ -25,15 +27,31 @@ export class EventDetailComponent implements OnInit {
   fetchSingleCategoryLoader = false
   eventData: any
   currentEvent = false
+  pastEvent = false
   // fetchNewData = false
 
   constructor(
     public dialog: MatDialog,
     private route: ActivatedRoute,
     private eventSvc: EventService,
+    private translate: TranslateService,
+    private langtranslations: MultilingualTranslationsService,
     // private discussService: DiscussService,
     // private snackBar: MatSnackBar,
-  ) { }
+  ) {
+    if (localStorage.getItem('websiteLanguage')) {
+      this.translate.setDefaultLang('en')
+      const lang = localStorage.getItem('websiteLanguage')!
+      this.translate.use(lang)
+    }
+    this.langtranslations.languageSelectedObservable.subscribe(() => {
+      if (localStorage.getItem('websiteLanguage')) {
+        this.translate.setDefaultLang('en')
+        const lang = localStorage.getItem('websiteLanguage')!
+        this.translate.use(lang)
+      }
+    })
+  }
 
   ngOnInit() {
     this.route.params.subscribe(params => {
@@ -47,12 +65,28 @@ export class EventDetailComponent implements OnInit {
       this.eventData = data.result.event
       const creatordata = this.eventData.creatorDetails
       const str = creatordata.replace(/\\/g, '')
-      this.eventData.creatorDetails = JSON.parse(str)
+      if (str.length > 0) {
+        this.eventData.creatorDetails = JSON.parse(str)
+      }
       const eventDate = this.customDateFormat(this.eventData.startDate, this.eventData.startTime)
       const eventendDate = this.customDateFormat(this.eventData.endDate, this.eventData.endTime)
-      const isToday = this.compareDate(eventDate, eventendDate, this.eventData)
-      if (isToday) {
+      // const isToday = this.compareDate(eventDate, eventendDate, this.eventData)
+      // if (isToday) {
+      //   this.currentEvent = true
+      // }
+      const sDate = this.customDateFormat(this.eventData.startDate, this.eventData.startTime)
+      const eDate = this.customDateFormat(this.eventData.endDate, this.eventData.endTime)
+      const msDate = Math.floor(moment(sDate).valueOf() / 1000)
+      const meDate = Math.floor(moment(eDate).valueOf() / 1000)
+      const cDate = Math.floor(moment(new Date()).valueOf() / 1000)
+      if (cDate >= msDate && cDate <= meDate) {
         this.currentEvent = true
+      }
+      const now = new Date()
+      const today = moment(now).format('YYYY-MM-DD HH:mm')
+
+      if (eventDate < today && eventendDate < today) {
+        this.pastEvent = true
       }
     })
   }

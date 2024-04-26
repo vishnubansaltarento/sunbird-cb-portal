@@ -6,6 +6,7 @@ import {
   PipeOrderByModule,
   PipeRelativeTimeModule,
   PipeFilterSearchModule,
+  PipeEmailModule,
 } from '@sunbird-cb/utils'
 import { MatGridListModule } from '@angular/material/grid-list'
 import { MatExpansionModule } from '@angular/material/expansion'
@@ -52,6 +53,7 @@ import { ConnectionHoverCardComponent } from './components/connection-hover-card
 import { ConnectionHoverService } from './components/connection-name/connection-hover.servive'
 import { ConnectionNameComponent } from './components/connection-name/connection-name.component'
 import { TooltipDirective } from './directives/tooltip.directive'
+import { TranslateModule } from '@ngx-translate/core'
 
 @NgModule({
   declarations: [
@@ -98,12 +100,14 @@ import { TooltipDirective } from './directives/tooltip.directive'
     PipeHtmlTagRemovalModule,
     PipeRelativeTimeModule,
     PipeFilterSearchModule,
+    PipeEmailModule,
     AvatarPhotoModule,
     EditorSharedModule,
     // CkEditorModule,
     PipeOrderByModule,
     BtnPageBackModule,
     WidgetResolverModule,
+    TranslateModule,
   ],
   providers: [
     LoaderService,

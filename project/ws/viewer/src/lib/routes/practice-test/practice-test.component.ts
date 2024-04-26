@@ -5,6 +5,7 @@ import { Subscription } from 'rxjs'
 import { NsContent } from '@sunbird-cb/collection/src/lib/_services/widget-content.model'
 import { WidgetContentService } from '@sunbird-cb/collection/src/public-api'
 import { NSQuiz } from '../../plugins/quiz/quiz.model'
+import { ViewerUtilService } from '../../viewer-util.service'
 // import { ViewerDataService } from '../../viewer-data.service'
 /// **
 // * this will not be available for any Preview.
@@ -41,6 +42,7 @@ export class PracticeTestComponent implements OnInit, OnDestroy {
         private eventSvc: EventService,
         private contentSvc: WidgetContentService,
         private log: LoggerService,
+        private viewerSvc: ViewerUtilService,
         // private _viewerDataService: ViewerDataService,
     ) {
         // this._viewerDataService.resourceChangedSubject.subscribe(() => {
@@ -68,6 +70,7 @@ export class PracticeTestComponent implements OnInit, OnDestroy {
             this.quizJson.showTimer = this.testData.requiresSubmit
             this.quizJson.timeLimit = this.testData.expectedDuration
             this.quizJson.primaryCategory = this.testData.primaryCategory
+            this.quizJson.questions = []
             this.alreadyRaised = true
             this.raiseEvent(WsEvents.EnumTelemetrySubType.Loaded, this.testData)
         }
@@ -81,17 +84,21 @@ export class PracticeTestComponent implements OnInit, OnDestroy {
     //         }
     //     }
     // }
-    async fetchContinueLearning(collectionId: string, identifier: string): Promise<boolean> {
+    async fetchContinueLearning(identifier: string): Promise<boolean> {
         return new Promise(resolve => {
             let userId
             if (this.configSvc.userProfile) {
                 userId = this.configSvc.userProfile.userId || ''
             }
+            const requestCourse = this.viewerSvc.getBatchIdAndCourseId(
+                this.activatedRoute.snapshot.queryParams.collectionId,
+                this.activatedRoute.snapshot.queryParams.batchId,
+                identifier)
             const req: NsContent.IContinueLearningDataReq = {
                 request: {
                     userId,
-                    batchId: this.batchId,
-                    courseId: collectionId || '',
+                    batchId: requestCourse.batchId,
+                    courseId: requestCourse.courseId || '',
                     contentIds: [],
                     fields: ['progressdetails'],
                 },
@@ -136,6 +143,13 @@ export class PracticeTestComponent implements OnInit, OnDestroy {
                 identifier: data ? data.identifier : null,
                 mimeType: NsContent.EMimeTypes.PDF,
                 url: data ? data.artifactUrl : null,
+                object: {
+                    id: data ? data.identifier : null,
+                    type: data ? data.primaryCategory : '',
+                    rollup: {
+                        l1: this.activatedRoute.snapshot.queryParams.collectionId || '',
+                    },
+                },
             },
         }
         this.eventSvc.dispatchEvent(event)

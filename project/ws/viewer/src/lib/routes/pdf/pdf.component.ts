@@ -7,7 +7,7 @@ import { NsWidgetResolver } from '@sunbird-cb/resolver'
 import { ActivatedRoute } from '@angular/router'
 import { ViewerUtilService } from '../../viewer-util.service'
 import { environment } from 'src/environments/environment'
-
+import { PdfScormDataService } from '../../pdf-scorm-data-service'
 @Component({
   selector: 'viewer-pdf',
   templateUrl: './pdf.component.html',
@@ -46,6 +46,7 @@ export class PdfComponent implements OnInit, OnDestroy {
     private eventSvc: EventService,
     private accessControlSvc: AccessControlService,
     private configSvc: ConfigurationsService,
+    private pdfScormDataService: PdfScormDataService
   ) { }
 
   ngOnInit() {
@@ -108,11 +109,10 @@ export class PdfComponent implements OnInit, OnDestroy {
           if (this.pdfData && this.pdfData.identifier) {
             if (this.activatedRoute.snapshot.queryParams.collectionId) {
               await this.fetchContinueLearning(
-                this.activatedRoute.snapshot.queryParams.collectionId,
                 this.pdfData.identifier,
               )
             } else {
-              await this.fetchContinueLearning(this.pdfData.identifier, this.pdfData.identifier)
+              await this.fetchContinueLearning(this.pdfData.identifier)
             }
           }
           this.widgetResolverPdfData.widgetData.pdfUrl = this.pdfData
@@ -191,12 +191,19 @@ export class PdfComponent implements OnInit, OnDestroy {
         identifier: data ? data.identifier : null,
         mimeType: NsContent.EMimeTypes.PDF,
         url: data ? data.artifactUrl : null,
+        object: {
+          id: data ? data.identifier : null,
+          type: data ? data.primaryCategory : '',
+          rollup: {
+            l1: this.widgetResolverPdfData.widgetData.collectionId || '',
+          },
+        },
       },
     }
     this.eventSvc.dispatchEvent(event)
   }
 
-  async fetchContinueLearning(collectionId: string, pdfId: string): Promise<boolean> {
+  async fetchContinueLearning(pdfId: string): Promise<boolean> {
     return new Promise(resolve => {
       // this.contentSvc.fetchContentHistory(collectionId).subscribe(
       //   data => {
@@ -217,11 +224,15 @@ export class PdfComponent implements OnInit, OnDestroy {
       // this.activatedRoute.data.subscribe(data => {
       //   userId = data.profileData.data.userId
       // })
+      const requestCourse = this.viewerSvc.getBatchIdAndCourseId(
+        this.activatedRoute.snapshot.queryParams.collectionId,
+        this.activatedRoute.snapshot.queryParams.batchId,
+        pdfId)
       const req: NsContent.IContinueLearningDataReq = {
         request: {
           userId,
-          batchId: this.batchId,
-          courseId: collectionId || '',
+          batchId: requestCourse.batchId,
+          courseId: requestCourse.courseId || '',
           contentIds: [],
           fields: ['progressdetails'],
         },
@@ -231,7 +242,12 @@ export class PdfComponent implements OnInit, OnDestroy {
           if (data && data.result && data.result.contentList.length) {
             for (const content of data.result.contentList) {
               if (content.contentId === pdfId && content.progressdetails && content.progressdetails.current) {
-                this.widgetResolverPdfData.widgetData.resumePage = Number(content.progressdetails.current.pop())
+                if (content.progress === 100 || content.status === 2) {
+                  this.widgetResolverPdfData.widgetData.resumePage = 1
+                } else {
+                  this.widgetResolverPdfData.widgetData.resumePage = Number(content.progressdetails.current.pop())
+                }
+                this.pdfScormDataService.handlePdfMarkComplete.next(content)
               }
             }
           }
