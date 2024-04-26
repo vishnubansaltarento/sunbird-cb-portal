@@ -45,13 +45,18 @@
         </div>
 
       </div>
-    </div>
+    </div>    
     <div class="respo flex flex-column padding-top-m">
+
       <div class="flex flex-column respo_inner">
         <div class="flex flex-1">
           <h2 *ngIf="question.questionType !== 'ftb'" class="mat-h2" [innerHTML]="question?.question"
             class="quiz-question">
           </h2>
+          <div class="question-mode-with-marks">
+            <div> <div class="question-mode ">Easy</div></div>
+            <div> <span class="marks">2 Marks</span></div>
+          </div>
           <ng-container *ngIf="question.questionType === 'ftb'">
             <viewer-fitb-question [primaryCategory]="primaryCategory" class="flex-1" [question]="question"
               (update)="update($event)"></viewer-fitb-question>
@@ -172,6 +177,10 @@
           <ng-container *ngIf="question.questionType !== 'ftb'">
             <h2 [innerHTML]="question?.question" class="m-auto quiz-question mat-h2 flex-center text-center">
             </h2>
+            <div class="question-mode-with-marks">
+              <div> <div class="question-mode ">Easy</div></div>
+              <div> <span class="marks">2 Marks</span></div>
+            </div>
             <span *ngIf="question?.instructions" class="flex-center text-center mat-subheading-2" i18n>
               {{ question?.instructions}}
             </span>

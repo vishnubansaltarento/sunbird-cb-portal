@@ -13,7 +13,19 @@
 
 .quiz-question {
   overflow-x: auto;
-  font: 600 16px/20px 'Montserrat' !important
+  font: 600 16px/20px 'Montserrat' !important;
+  width:100%
+}
+
+.question-mode-with-marks {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  width: 20%;
+}
+
+.marks {
+  font-weight: 900;
 }
 
 .quiz-radio-group {
@@ -176,6 +188,15 @@ height: 24px;
 color: rgb(27, 76, 161)
 }
 
+.question-mode {
+  border: 1px solid rgb(27, 76, 161);
+  border-radius: 16px;
+  padding: 0px 10px;
+  height: 24px;
+  color: white;
+  background-color:rgb(27, 76, 161)
+  }
+
 .rounded-flag-disable {
   border: 1px solid rgb(86,86,86);
   border-radius: 16px;
@@ -217,5 +238,12 @@ color: rgb(27, 76, 161)
         width: 100%;
         height: calc(100vh - 500px);
         overflow-y: auto
+      }
+
+      .question-mode-with-marks {
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        width: 20%;
       }
   }
