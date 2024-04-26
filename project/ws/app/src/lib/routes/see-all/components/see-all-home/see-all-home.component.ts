@@ -299,6 +299,7 @@ export class SeeAllHomeComponent implements OnInit, OnDestroy {
         if (firstTab.requestRequired) {
           if (this.seeAllPageConfig.tabs) {
             const allTabs = this.seeAllPageConfig.tabs
+            // tslint:disable-next-line:max-line-length
             const currentTabFromMap = (allTabs && allTabs.length && allTabs[this.dynamicTabIndex]) as NsContentStripWithTabs.IContentStripTab
             this.getTabDataByNewReqSearchV6(strip, this.dynamicTabIndex, currentTabFromMap, calculateParentStatus)
           }
@@ -383,6 +384,7 @@ export class SeeAllHomeComponent implements OnInit, OnDestroy {
         if (firstTab.requestRequired) {
           if (this.seeAllPageConfig.tabs) {
             const allTabs = this.seeAllPageConfig.tabs
+            // tslint:disable-next-line:max-line-length
             const currentTabFromMap = (allTabs && allTabs.length && allTabs[this.dynamicTabIndex]) as NsContentStripWithTabs.IContentStripTab
             this.getTabDataByNewReqTrending(strip, this.dynamicTabIndex, currentTabFromMap, calculateParentStatus)
           }
