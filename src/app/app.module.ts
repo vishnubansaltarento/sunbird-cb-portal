@@ -265,6 +265,7 @@ export function HttpLoaderFactory(http: HttpClient) {
     { provide: OverlayContainer, useClass: FullscreenOverlayContainer },
     { provide: HAMMER_GESTURE_CONFIG, useClass: HammerConfig },
     { provide: ErrorHandler, useClass: GlobalErrorHandlingService },
+    { provide: 'environment', useValue: environment },
     GuidedTourService,
   ],
 })
