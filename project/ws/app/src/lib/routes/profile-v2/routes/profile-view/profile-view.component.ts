@@ -660,7 +660,7 @@ export class ProfileViewComponent implements OnInit, AfterViewInit, OnDestroy {
   handleEditOtherDetails(): void {
     if (this.portalProfile.personalDetails.primaryEmail) {
       if (this.otherDetailsForm.get('primaryEmail')) {
-        this.otherDetailsForm.get('primaryEmail')!.setValidators([Validators.required, 
+        this.otherDetailsForm.get('primaryEmail')!.setValidators([Validators.required,
           Validators.pattern(/^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/)])
         this.otherDetailsForm.get('primaryEmail')!.updateValueAndValidity()
 
