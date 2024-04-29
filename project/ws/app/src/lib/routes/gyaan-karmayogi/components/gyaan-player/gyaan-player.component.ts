@@ -26,7 +26,7 @@ export class GyaanPlayerComponent implements OnInit {
     if (this.route.parent && this.route.parent.snapshot.data.pageData
       && this.route.parent.snapshot.data.pageData.data
       && this.route.parent.snapshot.data.pageData.data.stripConfig) {
-        this.pageConfig = (this.route.parent && this.route.parent.snapshot.data.pageData.data)
+        this.pageConfig = JSON.parse(JSON.stringify(this.route.parent && this.route.parent.snapshot.data.pageData.data))
       }
     this.router.events.subscribe(val => {
         // see also
@@ -79,7 +79,7 @@ export class GyaanPlayerComponent implements OnInit {
           ],
         },
       }
-      const stripData = this.pageConfig.stripConfig
+      const stripData = JSON.parse(JSON.stringify(this.pageConfig.stripConfig))
       stripData.strips[0].title = 'Related resources'
       stripData.strips[0].request.searchV6.request.limit = 3
       stripData.strips[0].request.searchV6.request.filters = {

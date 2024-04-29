@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy } from '@angular/core'
+import { Component, OnInit, OnDestroy, Input } from '@angular/core'
 import { Subscription } from 'rxjs'
 import { AccessControlService } from '@ws/author'
 import {
@@ -20,6 +20,7 @@ import { environment } from 'src/environments/environment'
   styleUrls: ['./video.component.scss'],
 })
 export class VideoComponent implements OnInit, OnDestroy {
+  @Input() hideUpNext = false
   private routeDataSubscription: Subscription | null = null
   private screenSizeSubscription: Subscription | null = null
   private viewerDataSubscription: Subscription | null = null
@@ -88,6 +89,9 @@ export class VideoComponent implements OnInit, OnDestroy {
           this.widgetResolverVideoData.widgetData.channel = this.channelId
           this.widgetResolverVideoData.widgetData.size = this.videoData.duration
         }
+        if (this.widgetResolverVideoData && this.widgetResolverVideoData.widgetData) {
+          this.widgetResolverVideoData.widgetData['hideUpNext'] = this.hideUpNext
+        }
         this.isFetchingDataComplete = true
         // if (this.videoData.artifactUrl.indexOf('/content-store/') > -1) {
         //   url = `/apis/authContent/${new URL(this.videoData.artifactUrl).pathname}`
@@ -151,6 +155,9 @@ export class VideoComponent implements OnInit, OnDestroy {
           this.widgetResolverVideoData.widgetData.channel = this.channelId
           this.widgetResolverVideoData.widgetData.version = `${data.content.data.version}${''}`
           this.widgetResolverVideoData.widgetData.size = data.content.data.duration
+          if (this.widgetResolverVideoData && this.widgetResolverVideoData.widgetData) {
+            this.widgetResolverVideoData.widgetData['hideUpNext'] = this.hideUpNext
+          }
           if (data.content.data.length > 0 && data.content.data.subTitles[0]) {
 
             let subTitlesUrl = ''

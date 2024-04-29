@@ -63,17 +63,17 @@ export class WidgetUserService {
     if (this.checkStorageData('enrollmentService', 'enrollmentData')) {
       const result: any =  this.http.get(path, { headers }).pipe(catchError(this.handleError), map(
           (data: any) => {
-            let coursesData: any = []
-            if(data && data.result && data.result.courses) {
-              data.result.courses.forEach((content: any)=>{
-                if(content.contentStatus) {
+            const coursesData: any = []
+            if (data && data.result && data.result.courses) {
+              data.result.courses.forEach((content: any) => {
+                if (content.contentStatus) {
                   delete content.contentStatus
                 }
                 coursesData.push(content)
               })
               data.result.courses = coursesData
             }
-            if(data.result.courses.length < 200) {
+            if (data.result.courses.length < 200) {
               localStorage.removeItem('enrollmentData')
               this.setTime('enrollmentService')
               localStorage.setItem('enrollmentData', JSON.stringify(data.result))

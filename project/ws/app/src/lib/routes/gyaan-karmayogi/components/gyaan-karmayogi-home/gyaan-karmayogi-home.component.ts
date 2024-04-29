@@ -54,7 +54,7 @@ export class GyaanKarmayogiHomeComponent implements OnInit {
       category: new FormControl(''),
     })
     this.pageConfig = (this.route.parent && this.route.parent.snapshot.data)
-    this.stripData = (this.route.parent && this.route.parent.snapshot.data.pageData.data.stripConfig) || []
+    this.stripData = JSON.parse(JSON.stringify((this.route.parent && this.route.parent.snapshot.data.pageData.data.stripConfig))) || []
     this.facetsdata = this.pageConfig.gyaanData.facets.data
     if (this.facetsdata && this.facetsdata.length) {
       this.factesAssign(this.facetsdata)
@@ -63,7 +63,7 @@ export class GyaanKarmayogiHomeComponent implements OnInit {
     if (this.selectedSector === gyaanConstants.allSectors) {
       addFilters[gyaanConstants.sectorName] = this.sectorNames
     }
-    if(this.sectorNames.length) {
+    if (this.sectorNames.length) {
       this.callStrips(addFilters)
     }
   }
@@ -97,6 +97,8 @@ export class GyaanKarmayogiHomeComponent implements OnInit {
             data.strips[0].key = cat.name
             data.strips[0].viewMoreUrl.queryParams.key = cat.name
             data.strips[0].titleDescription = cat.name
+            data.strips[0].request.searchV6.request['limit'] = 4
+
             data.strips[0].request.searchV6.request.filters = {
                 ...data.strips[0].request.searchV6.request.filters,
                 resourceCategory: cat.name,
@@ -160,6 +162,7 @@ export class GyaanKarmayogiHomeComponent implements OnInit {
           data.strips[0].key = addFilters.resourceCategory
           data.strips[0].viewMoreUrl.queryParams.key = addFilters.resourceCategory
           data.strips[0].titleDescription = addFilters.resourceCategory
+          data.strips[0].request.searchV6.request['limit'] = 4
           data.strips[0].request.searchV6.request.filters = {
               ...data.strips[0].request.searchV6.request.filters,
               resourceCategory: addFilters.resourceCategory,
@@ -191,7 +194,10 @@ export class GyaanKarmayogiHomeComponent implements OnInit {
   sectorFilter(sectorData: any, type?: string) {
     this.searchControl.setValue('')
     const addFilters: any = {}
-    if (sectorData && !type) {
+
+    if (sectorData && type) {
+      addFilters[gyaanConstants.sectorName] = this.sectorNames
+    } else {
       addFilters[gyaanConstants.sectorName] = sectorData.name
     }
     this.selectedSector = sectorData.name
