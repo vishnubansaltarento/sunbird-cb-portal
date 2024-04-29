@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy } from '@angular/core'
+import { Component, OnInit, OnDestroy, Input } from '@angular/core'
 import { Subscription } from 'rxjs'
 import { ValueService } from '@sunbird-cb/utils'
 import { ActivatedRoute } from '@angular/router'
@@ -19,6 +19,7 @@ import { environment } from 'src/environments/environment'
   styleUrls: ['./audio.component.scss'],
 })
 export class AudioComponent implements OnInit, OnDestroy {
+  @Input() hideUpNext = false
   private routeDataSubscription: Subscription | null = null
   private screenSizeSubscription: Subscription | null = null
   private viewerDataSubscription: Subscription | null = null
@@ -86,7 +87,9 @@ export class AudioComponent implements OnInit, OnDestroy {
         }
         this.widgetResolverAudioData.widgetData.disableTelemetry = false
         this.isFetchingDataComplete = true
-
+        if (this.widgetResolverAudioData && this.widgetResolverAudioData.widgetData) {
+          this.widgetResolverAudioData.widgetData['hideUpNext'] = this.hideUpNext
+        }
         if (this.audioData && this.audioData.subTitles) {
 
           let subTitleUrl = ''
@@ -138,7 +141,9 @@ export class AudioComponent implements OnInit, OnDestroy {
             // TODO: for public couese access forPreview is set to true, but we need telemetry too
             this.widgetResolverAudioData.widgetData.disableTelemetry = false
           }
-
+          if (this.widgetResolverAudioData && this.widgetResolverAudioData.widgetData) {
+            this.widgetResolverAudioData.widgetData['hideUpNext'] = this.hideUpNext
+          }
           this.widgetResolverAudioData.widgetData.mimeType = data.content.data.mimeType
           this.widgetResolverAudioData.widgetData.contentType = data.content.data.contentType
           this.widgetResolverAudioData.widgetData.primaryCategory = data.content.data.primaryCategory

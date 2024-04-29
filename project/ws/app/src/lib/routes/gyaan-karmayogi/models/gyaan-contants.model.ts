@@ -9,6 +9,7 @@ export const gyaanConstants = {
     subSectorName: 'subSectorName',
     resourceCategory: 'resourceCategory',
     timeOutDuration: 700,
+    limitCount: 4,
     colorConstants: [
         'rgba(24, 68, 106, 0.16)',
         'rgba(50, 183, 118, 0.16)',

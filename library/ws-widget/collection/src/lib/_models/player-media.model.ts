@@ -1,4 +1,5 @@
 export interface IWidgetsPlayerMediaData {
+  hideUpNext?: boolean
   size?: any
   subtitles?: {
     srclang: string;
