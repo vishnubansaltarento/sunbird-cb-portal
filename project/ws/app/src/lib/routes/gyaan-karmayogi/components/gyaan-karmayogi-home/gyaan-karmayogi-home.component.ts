@@ -63,7 +63,9 @@ export class GyaanKarmayogiHomeComponent implements OnInit {
     if (this.selectedSector === gyaanConstants.allSectors) {
       addFilters[gyaanConstants.sectorName] = this.sectorNames
     }
-    this.callStrips(addFilters)
+    if(this.sectorNames.length) {
+      this.callStrips(addFilters)
+    }
   }
 
   // this method is used for multi-lingual
@@ -126,6 +128,8 @@ export class GyaanKarmayogiHomeComponent implements OnInit {
 
     if (form.value.sectors && form.value.sectors.name !== gyaanConstants.allSectors) {
       addFilters[gyaanConstants.sectorName] = form.value.sectors.name
+    } else {
+      addFilters[gyaanConstants.sectorName] = this.sectorNames
     }
     if (form.value.subSectors && form.value.subSectors !== gyaanConstants.allSubSector) {
       addFilters[gyaanConstants.subSectorName] = form.value.subSectors
