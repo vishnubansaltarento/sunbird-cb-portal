@@ -21,7 +21,7 @@
   <track kind="captions" *ngIf="widgetData.subtitles" [src]="widgetData?.subtitles[0]?.url" srclang="en" label="English"
     default>
 </video>
-{{widgetData?.hideUpNext}} hiii
+
 <ng-container *ngIf="!widgetData?.hideUpNext">
   <div class="auto-play-video" id="auto-play-video" *ngIf="videoEnd">
     <div class="up-next">
