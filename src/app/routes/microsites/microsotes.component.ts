@@ -174,48 +174,51 @@ export class MicrosotesComponent implements OnInit {
                 "navigationArrows": "hidden"
               }
             ],
-            metrics: [
-              {
-                icon: "https://portal.karmayogi.nic.in/content-store/content/do_114041344797859840128/artifact/do_114041344797859840128_1714031463360_star.svg",
-                iconColor: 'white',
-                header: '4.1',
-                headercolor: 'white',
-                description: 'Average Course Rating',
-                descriptionColor: 'black',
-                linebreak: true,
-                background: 'banner-metrics',
-              },
-              {
-                icon: "https://portal.karmayogi.nic.in/content-store/content/do_114041337110372352127/artifact/do_114041337110372352127_1714030607449_shape.svg",
-                iconColor: 'white',
-                header: '1234',
-                headercolor: 'white',
-                description: 'Content Available',
-                descriptionColor: 'black',
-                linebreak: true,
-                background: 'banner-metrics',
-              },
-              {
-                icon: "https://portal.karmayogi.nic.in/content-store/content/do_114041373226573824131/artifact/do_114041373226573824131_1714034836835_group_add.svg",
-                iconColor: 'white',
-                header: '7890',
-                headercolor: 'white',
-                description: 'Enrolments So Far',
-                descriptionColor: 'black',
-                linebreak: true,
-                background: 'banner-metrics',
-              },
-              {
-                icon: "https://portal.karmayogi.nic.in/content-store/content/do_114041378634399744134/artifact/do_114041378634399744134_1714035498087_combined-shape.svg",
-                iconColor: 'white',
-                header: '5678',
-                headercolor: 'white',
-                description: 'Certificates Issued So Far',
-                descriptionColor: 'black',
-                linebreak: false,
-                background: 'banner-metrics',
-              },
-            ],
+            metrics: {
+              "background": 'banner-metrics',
+              data:[
+                {
+                  icon: "https://portal.karmayogi.nic.in/content-store/content/do_114041344797859840128/artifact/do_114041344797859840128_1714031463360_star.svg",
+                  iconColor: 'white',
+                  header: '4.1',
+                  headercolor: 'white',
+                  description: 'Average Course Rating',
+                  descriptionColor: 'black',
+                  linebreak: true,
+                  background: 'banner-metrics',
+                },
+                {
+                  icon: "https://portal.karmayogi.nic.in/content-store/content/do_114041337110372352127/artifact/do_114041337110372352127_1714030607449_shape.svg",
+                  iconColor: 'white',
+                  header: '1234',
+                  headercolor: 'white',
+                  description: 'Content Available',
+                  descriptionColor: 'black',
+                  linebreak: true,
+                  background: 'banner-metrics',
+                },
+                {
+                  icon: "https://portal.karmayogi.nic.in/content-store/content/do_114041373226573824131/artifact/do_114041373226573824131_1714034836835_group_add.svg",
+                  iconColor: 'white',
+                  header: '7890',
+                  headercolor: 'white',
+                  description: 'Enrolments So Far',
+                  descriptionColor: 'black',
+                  linebreak: true,
+                  background: 'banner-metrics',
+                },
+                {
+                  icon: "https://portal.karmayogi.nic.in/content-store/content/do_114041378634399744134/artifact/do_114041378634399744134_1714035498087_combined-shape.svg",
+                  iconColor: 'white',
+                  header: '5678',
+                  headercolor: 'white',
+                  description: 'Certificates Issued So Far',
+                  descriptionColor: 'black',
+                  linebreak: false,
+                  background: 'banner-metrics',
+                },
+              ]
+            },
           }
         }
       ],
@@ -311,7 +314,7 @@ export class MicrosotesComponent implements OnInit {
                 'stripBackground': '',
                 'titleDescription': 'Recently Added',
                 'stripConfig': {
-                  'cardSubType': 'standard',
+                  'cardSubType': 'card-portrait-lib',
                 },
                 'viewMoreUrl': {
                   'path': '/app/seeAll',
@@ -320,15 +323,15 @@ export class MicrosotesComponent implements OnInit {
                     'key': 'recentlyAdded',
                   },
                   'loaderConfig': {
-                    'cardSubType': 'card-portrait-click-skeleton',
+                    'cardSubType': 'card-portrait-lib-skeleton',
                   },
                   'stripConfig': {
-                    'cardSubType': 'card-portrait-click',
+                    'cardSubType': 'card-portrait-lib',
                   },
                 },
                 'loader': true,
                 'loaderConfig': {
-                  'cardSubType': 'card-standard-skeleton',
+                  'cardSubType': 'card-portrait-lib-skeleton',
                 },
                 'tabs': [
                 ],
