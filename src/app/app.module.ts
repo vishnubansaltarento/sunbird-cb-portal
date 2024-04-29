@@ -95,7 +95,9 @@ import { AppLogoComponent } from './component/app-logo/app-logo.component'
 import { ProfileV3Module } from '@ws/app/src/lib/routes/profile-v3/profile-v3.module'
 import { NoDataComponent } from './component/no-data/no-data.component'
 import { SurveyShikshaComponent } from './component/survey-shiksha/survey-shiksha.component'
-
+import {
+WIDGET_REGISTERED_LIB_MODULES, WIDGET_REGISTRATION_LIB_CONFIG
+} from '@sunbird-cb/consumption'
 @Injectable()
 export class HammerConfig extends GestureConfig {
   buildHammer(element: HTMLElement) {
@@ -161,7 +163,8 @@ export function HttpLoaderFactory(http: HttpClient) {
     KeycloakAngularModule,
     AppRoutingModule,
     ...WIDGET_REGISTERED_MODULES,
-    WidgetResolverModule.forRoot(WIDGET_REGISTRATION_CONFIG),
+    ...WIDGET_REGISTERED_LIB_MODULES,
+    WidgetResolverModule.forRoot([...WIDGET_REGISTRATION_CONFIG,...WIDGET_REGISTRATION_LIB_CONFIG]),
     StickyHeaderModule,
     ErrorResolverModule,
     // Material Imports
