@@ -265,10 +265,13 @@
               <div class="info-div">
                 <div class="label">{{ 'profileInfo.email' | translate }}</div>
                 <div class="info-value" *ngIf="!editDetails">{{ portalProfile?.personalDetails?.primaryEmail || 'NA' }}</div>
-                <div class="flex" *ngIf="editDetails">
+                <div class="flex flex-col" *ngIf="editDetails">
                   <mat-form-field class="profile-form-field">
                     <input type="email" class="input-text" matInput (keyup)="handleEmpty('primaryEmail')" formControlName="primaryEmail" />
                   </mat-form-field>
+                  <mat-error class="text-xs" *ngIf="otherDetailsForm.get('primaryEmail').hasError('required') || otherDetailsForm.get('primaryEmail').hasError('pattern')">
+                    Please enter a valid email address
+                  </mat-error>
                 </div>
                 <div class="flex justify-end" *ngIf="verifyEmail">
                   <span class="get-otp" (click)="handleGenerateEmailOTP('email')">{{ 'profileInfo.getOTP' | translate }}</span>
@@ -288,11 +291,16 @@
                     +91
                   </div>
                   <div class="flex-1">
-                    <mat-form-field class="profile-form-field mobile-num">
-                      <input type="text" class="input-text mobile-text" maxlength="10" (keyup)="handleEmpty('mobile')" matInput formControlName="mobile" />
-                    </mat-form-field>
-                    <div class="flex justify-end" *ngIf="verifyMobile">
-                      <span class="get-otp sm:mr-4" (click)="handleGenerateOTP('phone')">{{ 'profileInfo.getOTP' | translate }}</span>
+                    <div class="flex flex-col">
+                      <mat-form-field class="profile-form-field mobile-num">
+                        <input type="text" class="input-text mobile-text" maxlength="10" (keyup)="handleEmpty('mobile')" matInput formControlName="mobile" />
+                      </mat-form-field>
+                      <mat-error class="text-xs" *ngIf="otherDetailsForm.get('mobile').hasError('required') || otherDetailsForm.get('mobile').hasError('pattern')">
+                        Please enter a valid mobile number
+                      </mat-error>
+                      <div class="flex justify-end" *ngIf="verifyMobile">
+                        <span class="get-otp sm:mr-4" (click)="handleGenerateOTP('phone')">{{ 'profileInfo.getOTP' | translate }}</span>
+                      </div>
                     </div>
                   </div>
                 </div>
@@ -319,8 +327,8 @@
                 </div>
                 <div class="info-value" *ngIf="editDetails">
                   <mat-form-field class="profile-form-field">
-                    <input matInput class="input-text" [matDatepicker]="picker" readonly formControlName="dob" />
-                    <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                    <input matInput class="input-text icon-include-input" [matDatepicker]="picker" readonly formControlName="dob" />
+                    <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>                    
                     <mat-datepicker #picker></mat-datepicker>
                   </mat-form-field>
                 </div>
@@ -332,8 +340,11 @@
                 </div>
                 <div class="info-value flex" *ngIf="editDetails">
                   <mat-form-field class="profile-form-field">
-                    <input type="text" class="input-text" aria-label="Domicile Medium (Mother Tongue)" matInput formControlName="domicileMedium"
-                      [matAutocomplete]="languageAuto">
+                    <div class="flex flex-row auto-complete-row">
+                      <input type="text" class="input-text" aria-label="Domicile Medium (Mother Tongue)" matInput formControlName="domicileMedium"
+                        [matAutocomplete]="languageAuto" />
+                      <mat-icon>expand_more</mat-icon>
+                    </div>
                     <mat-autocomplete #languageAuto="matAutocomplete">
                       <mat-option *ngFor="let language of masterLanguages" [value]="language.name">
                         {{ language.name }}
@@ -356,10 +367,13 @@
               <div class="info-div">
                 <div class="label">{{ 'profileInfo.officePinCode' | translate }}</div>
                 <div class="info-value" *ngIf="!editDetails">{{ portalProfile?.personalDetails?.pincode || 'NA' }}</div>
-                <div class="flex" *ngIf="editDetails">
+                <div class="flex flex-col" *ngIf="editDetails">
                   <mat-form-field class="profile-form-field">
                     <input type="email" class="input-text" matInput maxlength="6" formControlName="pincode" />
                   </mat-form-field>
+                  <mat-error class="text-xs" *ngIf="otherDetailsForm.get('pincode').hasError('pattern')">
+                    Please enter a valid Pincode
+                  </mat-error>
                 </div>
               </div>
             </div>

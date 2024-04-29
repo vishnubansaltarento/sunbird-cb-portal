@@ -61,6 +61,10 @@ $border-color: rgba($color: #000000, $alpha: 0.16);
   }
 }
 
+.name {
+  word-break: break-all;
+}
+
 .info-div {
   display: flex;
   flex-direction: column;
@@ -308,7 +312,10 @@ $border-color: rgba($color: #000000, $alpha: 0.16);
   padding: 8px 0px;
   text-align: center;
   width: 60px;
+  height: 28px;
   display: block !important;
+  position: relative;
+  top: -1px;
 }
 
 ::ng-deep .common-modal {
@@ -340,6 +347,26 @@ $border-color: rgba($color: #000000, $alpha: 0.16);
       @include custom-mat-icon(12px, 12px, 12px);
       color: #FFF;
     }
+  }
+}
+
+.icon-include-input {
+  width: calc(100% + -2px);
+}
+
+.auto-complete-row {
+  border: 1px solid $border-color;
+  border-radius: 4px;
+
+  input {
+    border: none;
+  }
+
+  .mat-icon {
+    position: relative;
+    top: 12px;
+    left: -12px;
+    @include custom-mat-icon(16px, 16px, 16px)
   }
 }
 

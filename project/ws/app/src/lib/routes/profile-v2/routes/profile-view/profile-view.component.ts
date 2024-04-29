@@ -53,7 +53,7 @@ export const MY_FORMATS = {
   templateUrl: './profile-view.component.html',
   styleUrls: ['./profile-view.component.scss'],
   /* tslint:disable */
-  host: { class: 'flex margin-top-l margin-bottom-l' },
+  host: { class: 'flex margin-bottom-l' },
   /* tslint:enable */
   providers: [
     { provide: DateAdapter, useClass: MomentDateAdapter, deps: [MAT_DATE_LOCALE] },
@@ -115,7 +115,7 @@ export class ProfileViewComponent implements OnInit, AfterViewInit, OnDestroy {
       this.otherDetailsForm.get('primaryEmail')!.valueChanges
       .subscribe(res => {
         if (res && res !== this.portalProfile.personalDetails.primaryEmail) {
-          const emailRegex = /^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/
+          const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/
           if (emailRegex.test(res)) {
             this.verifyEmail = true
             this.otherDetailsForm.setErrors({ invalid: false })
@@ -283,7 +283,7 @@ export class ProfileViewComponent implements OnInit, AfterViewInit, OnDestroy {
   otherDetailsForm = new FormGroup({
     employeeCode: new FormControl('', []),
     primaryEmail: new FormControl('', [Validators.pattern(/^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/)]),
-    mobile: new FormControl('', [Validators.minLength(10), Validators.maxLength(10)]),
+    mobile: new FormControl('', [Validators.minLength(10), Validators.maxLength(10), Validators.pattern(/^\d{10}$/)]),
     gender: new FormControl('', []),
     dob: new FormControl('', []),
     domicileMedium: new FormControl('', []),
@@ -324,7 +324,7 @@ export class ProfileViewComponent implements OnInit, AfterViewInit, OnDestroy {
     }
 
     this.getInitials()
-    this.profileName = this.currentUser.firstName + this.currentUser.lastName
+    this.profileName = this.currentUser.firstName
 
     this.prefillForm()
     this.getMasterNationality()
@@ -659,14 +659,17 @@ export class ProfileViewComponent implements OnInit, AfterViewInit, OnDestroy {
 
   handleEditOtherDetails(): void {
     if (this.portalProfile.personalDetails.primaryEmail) {
-      if (this.otherDetailsForm.get('officialEmail')) {
-        this.otherDetailsForm.get('officialEmail')!.setValidators(Validators.required)
-        this.otherDetailsForm.get('officialEmail')!.updateValueAndValidity()
+      if (this.otherDetailsForm.get('primaryEmail')) {
+        this.otherDetailsForm.get('primaryEmail')!.setValidators([Validators.required, 
+          Validators.pattern(/^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/)])
+        this.otherDetailsForm.get('primaryEmail')!.updateValueAndValidity()
+
       }
+
     }
     if (this.portalProfile.personalDetails.mobile) {
       if (this.otherDetailsForm.get('mobile')) {
-        this.otherDetailsForm.get('mobile')!.setValidators(Validators.required)
+        this.otherDetailsForm.get('mobile')!.setValidators([Validators.required, Validators.pattern(/^\d{10}$/)])
         this.otherDetailsForm.get('mobile')!.updateValueAndValidity()
       }
     }
@@ -1000,7 +1003,7 @@ export class ProfileViewComponent implements OnInit, AfterViewInit, OnDestroy {
     this.userProfileService.listRejectedFields()
     .pipe(takeUntil(this.destroySubject$))
     .subscribe((res: any) => {
-      if (res.result && res.result.data) {
+      if (res.result && res.result.data && Array.isArray(res.result.data)) {
         res.result.data.forEach((obj: any) => {
           if (obj.hasOwnProperty('name')) {
             this.rejectedFields.name = obj.name
