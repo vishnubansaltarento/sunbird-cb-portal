@@ -97,7 +97,7 @@ export class GyaanKarmayogiHomeComponent implements OnInit {
             data.strips[0].key = cat.name
             data.strips[0].viewMoreUrl.queryParams.key = cat.name
             data.strips[0].titleDescription = cat.name
-            data.strips[0].request.searchV6.request['limit'] = 4
+            data.strips[0].request.searchV6.request['limit'] = gyaanConstants.limitCount
 
             data.strips[0].request.searchV6.request.filters = {
                 ...data.strips[0].request.searchV6.request.filters,
@@ -162,7 +162,7 @@ export class GyaanKarmayogiHomeComponent implements OnInit {
           data.strips[0].key = addFilters.resourceCategory
           data.strips[0].viewMoreUrl.queryParams.key = addFilters.resourceCategory
           data.strips[0].titleDescription = addFilters.resourceCategory
-          data.strips[0].request.searchV6.request['limit'] = 4
+          data.strips[0].request.searchV6.request['limit'] = gyaanConstants.limitCount
           data.strips[0].request.searchV6.request.filters = {
               ...data.strips[0].request.searchV6.request.filters,
               resourceCategory: addFilters.resourceCategory,
