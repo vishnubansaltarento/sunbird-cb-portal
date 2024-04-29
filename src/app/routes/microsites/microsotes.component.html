@@ -90,7 +90,7 @@
             <p>{{data.description}}</p>
         </div>
         <div class="slider slider-box" *ngIf="data.sliders">
-            <ws-widget-sliders [widgetData]="data.sliders"></ws-widget-sliders>
+            <sb-uic-sliders [widgetData]="data.sliders"></sb-uic-sliders>
         </div>
     </div>
 </ng-template>
@@ -99,12 +99,12 @@
     <!-- <div class="w-full grid grid-cols-12 gap-4"> -->
         <div class="col-span-12 christy">
             <div class="grid grid-cols-12">
-                <div class="col-span-8">
-                    <div class="slider" *ngIf="data?.sliders">
-                        <sb-uic-sliders [widgetData]="data?.sliders"></sb-uic-sliders>
+                <div class="col-span-12 md:col-span-8">
+                    <div class="slider" *ngIf="data?.sliderData?.sliders">
+                        <sb-uic-sliders [widgetData]="data?.sliderData?.sliders" [styleData]="data?.sliderData?.styleData"></sb-uic-sliders>
                     </div>
                 </div>
-                <div class="col-span-4 {{data?.metrics?.background}}">
+                <div class="hidden md:block col-span-4 {{data?.metrics?.background}}" >
                     <sb-uic-data-points [objectData]="data?.metrics?.data" [layoutType]="'multipleRows'"></sb-uic-data-points>
                 </div>
             </div>
@@ -119,6 +119,9 @@
                 <div class="flex-1 flex flex-col">
                     <h1>{{data?.title}}</h1>
                     <p>{{data?.description}}</p>
+                    <div class="block md:hidden">
+                        <sb-uic-data-points [objectData]="data?.metrics?.data" [layoutType]="'singleRow'"></sb-uic-data-points>
+                    </div>
                 </div>
             </div>
         </div>
