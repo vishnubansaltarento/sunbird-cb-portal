@@ -101,6 +101,7 @@ export class MicrosotesComponent implements OnInit {
           "key": "topSection",
           "title": "",
           "colspan": 12,
+          "background": 'banner-metrics',
           "data":  {
             logo: "/assets/instances/eagle/app_logos/KarmayogiBharat_Logo_Horizontal.svg",
             title: "Department Of Education",
@@ -172,7 +173,49 @@ export class MicrosotesComponent implements OnInit {
                 "bannerMetaAlign": "right",
                 "navigationArrows": "hidden"
               }
-            ]
+            ],
+            metrics: [
+              {
+                icon: "https://portal.karmayogi.nic.in/content-store/content/do_114041344797859840128/artifact/do_114041344797859840128_1714031463360_star.svg",
+                iconColor: 'white',
+                header: '4.1',
+                headercolor: 'white',
+                description: 'Average Course Rating',
+                descriptionColor: 'black',
+                linebreak: true,
+                background: 'banner-metrics',
+              },
+              {
+                icon: "https://portal.karmayogi.nic.in/content-store/content/do_114041337110372352127/artifact/do_114041337110372352127_1714030607449_shape.svg",
+                iconColor: 'white',
+                header: '1234',
+                headercolor: 'white',
+                description: 'Content Available',
+                descriptionColor: 'black',
+                linebreak: true,
+                background: 'banner-metrics',
+              },
+              {
+                icon: "https://portal.karmayogi.nic.in/content-store/content/do_114041373226573824131/artifact/do_114041373226573824131_1714034836835_group_add.svg",
+                iconColor: 'white',
+                header: '7890',
+                headercolor: 'white',
+                description: 'Enrolments So Far',
+                descriptionColor: 'black',
+                linebreak: true,
+                background: 'banner-metrics',
+              },
+              {
+                icon: "https://portal.karmayogi.nic.in/content-store/content/do_114041378634399744134/artifact/do_114041378634399744134_1714035498087_combined-shape.svg",
+                iconColor: 'white',
+                header: '5678',
+                headercolor: 'white',
+                description: 'Certificates Issued So Far',
+                descriptionColor: 'black',
+                linebreak: false,
+                background: 'banner-metrics',
+              },
+            ],
           }
         }
       ],
@@ -378,6 +421,125 @@ export class MicrosotesComponent implements OnInit {
         },
       ],
     },
+    {
+      "active": true,
+      "enabled": true,
+      "title": "",
+      "key": "row7",
+      "order": 7,
+      "column": [
+        {
+          "active": true,
+          "enabled": true,
+          "key": "mbmetrics",
+          "background": 'transparent',
+          "title": "",
+          "colspan": 12,
+          "data":  [
+            {
+              icon: "https://portal.karmayogi.nic.in/content-store/content/do_114041344797859840128/artifact/do_114041344797859840128_1714031463360_star.svg",
+              iconColor: 'white',
+              header: '4.1',
+              headercolor: 'white',
+              description: 'Average Rating',
+              descriptionColor: 'black',
+              linebreak: false,
+              background: 'banner-metrics',
+            },
+            {
+              icon: "https://portal.karmayogi.nic.in/content-store/content/do_114041337110372352127/artifact/do_114041337110372352127_1714030607449_shape.svg",
+              iconColor: 'white',
+              header: '1234',
+              headercolor: 'white',
+              description: 'Content Available',
+              descriptionColor: 'black',
+              linebreak: false,
+              background: 'banner-metrics',
+            },
+            {
+              icon: "https://portal.karmayogi.nic.in/content-store/content/do_114041373226573824131/artifact/do_114041373226573824131_1714034836835_group_add.svg",
+              iconColor: 'white',
+              header: '7890',
+              headercolor: 'white',
+              description: 'Enrolments So Far',
+              descriptionColor: 'black',
+              linebreak: false,
+              background: 'banner-metrics',
+            },
+            {
+              icon: "https://portal.karmayogi.nic.in/content-store/content/do_114041378634399744134/artifact/do_114041378634399744134_1714035498087_combined-shape.svg",
+              iconColor: 'white',
+              header: '5678',
+              headercolor: 'white',
+              description: 'Certificates Issued So Far',
+              descriptionColor: 'black',
+              linebreak: false,
+              background: 'banner-metrics',
+            },
+          ],
+        }
+      ],
+    },
+    {
+      "active": true,
+      "enabled": true,
+      "title": "",
+      "key": "row8",
+      "order": 8,
+      "column": [
+        {
+          "active": true,
+          "enabled": true,
+          "key": "infra",
+          "background": 'infra-background',
+          "title": "",
+          "colspan": 12,
+          "dataColSpan": 2,
+          "data":  [
+            {
+              icon: "https://portal.karmayogi.nic.in/content-store/content/do_114041375850471424132/artifact/do_114041375850471424132_1714035157784_group.svg",
+              iconColor: 'white',
+              header: '41',
+              headercolor: 'white',
+              description: 'Available Classrooms',
+              descriptionColor: 'white custom-opacity',
+              linebreak: false,
+              background: 'tranparent',
+            },
+            {
+              icon: "https://portal.karmayogi.nic.in/content-store/content/do_114041377520844800133/artifact/do_114041377520844800133_1714035357308_computer.svg",
+              iconColor: 'white',
+              header: '1234',
+              headercolor: 'white',
+              description: 'Functioning Computer Labs',
+              descriptionColor: 'white custom-opacity',
+              linebreak: false,
+              background: 'tranparent',
+            },
+            {
+              icon: "https://portal.karmayogi.nic.in/content-store/content/do_114041379912810496135/artifact/do_114041379912810496135_1714035650285_auto_stories.svg",
+              iconColor: 'white',
+              header: '7890',
+              headercolor: 'white',
+              description: 'Functioning Libraries',
+              descriptionColor: 'white custom-opacity',
+              linebreak: false,
+              background: 'tranparent',
+            },
+            {
+              icon: "https://portal.karmayogi.nic.in/content-store/content/do_114041366180069376130/artifact/do_114041366180069376130_1714033990328_podium.svg",
+              iconColor: 'white',
+              header: '5678',
+              headercolor: 'white',
+              description: 'Auditoriums',
+              descriptionColor: 'white custom-opacity',
+              linebreak: false,
+              background: 'tranparent',
+            },
+          ],
+        }
+      ]
+    }
   ]
 
   constructor() { }
