@@ -117,6 +117,11 @@
     vertical-align: middle;
 }
 
+.resourceHeading {
+    overflow: hidden !important;
+    text-overflow: ellipsis !important;
+    white-space: nowrap !important;
+}
 @media screen and (min-width: 280px) and (max-width: 540px) {
     .heading {
         padding-top: 10px;
