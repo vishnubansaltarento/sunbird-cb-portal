@@ -48,7 +48,7 @@ export class UserProfileService {
       this.translateService.use(lang)
     }
   }
-  
+
   handleTranslateTo(menuName: string): string {
     // tslint:disable-next-line: prefer-template
     const translationKey = 'profileInfo.' + menuName.replace(/\s/g, '')
