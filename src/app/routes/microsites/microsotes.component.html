@@ -150,9 +150,13 @@
 </ng-template>
 
 <ng-template #contentStrip let-contentStrip="contentStrip">
-    <div class="w-full">
-        <ws-widget-content-strip-with-tabs [widgetData]="contentStrip"></ws-widget-content-strip-with-tabs>
-        <sb-uic-content-strip-with-tabs  [widgetData]="contentStrip"></sb-uic-content-strip-with-tabs>
+    <div class="flex justify-center">
+        <div class="container ">
+            <div class="w-full">
+                <!-- <ws-widget-content-strip-with-tabs [widgetData]="contentStrip"></ws-widget-content-strip-with-tabs> -->
+                <sb-uic-content-strip-with-tabs  [widgetData]="contentStrip"></sb-uic-content-strip-with-tabs>
+            </div>
+        </div>
     </div>
 </ng-template>
 
