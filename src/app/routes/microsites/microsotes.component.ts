@@ -146,7 +146,8 @@ export class MicrosotesComponent implements OnInit {
     {
       "active": true,
       "enabled": true,
-      "title": "",
+      "title": "Infrastructure Details",
+      "navigation": true,
       "key": "sectionInfrastructure",
       "order": 8,
       "column": [
@@ -271,7 +272,8 @@ export class MicrosotesComponent implements OnInit {
     {
       "active": true,
       "enabled": true,
-      "title": "",
+      "title": "Top Contents",
+      "navigation": true,
       "key": "sectionPopularCourses",
       "order": 4,
       "column": [
@@ -400,4 +402,11 @@ export class MicrosotesComponent implements OnInit {
   ngOnInit() {
   }
 
+  scrollToSection(name:  string) {  
+    let section: HTMLElement | any
+    section = document.getElementById(name)
+    if (section) {
+      section.scrollIntoView({ behavior: 'smooth', block: 'start' })
+    }
+  }
 }

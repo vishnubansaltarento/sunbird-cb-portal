@@ -157,6 +157,39 @@
     padding: 25px;
 }
 
+//Sticky navigator section
+
+.sticky-navigator {
+    padding: 15px 5px;
+    background-color: #FDEAD5;
+    align-items: center;
+    overflow: auto;
+    position: fixed;
+    left: 0;
+    bottom: 0;
+    width: 100%;
+    z-index: 1002;
+    justify-content: center;
+}
+
+.nav-button {
+    padding: 12px 16px 12px 16px;
+    border-radius: 40px;
+    border: 1px solid #000;
+    text-align: center;
+    font-family: Lato;
+    font-size: 14px;
+    font-weight: 700;
+    line-height: 16.8px;
+    cursor: pointer;
+    min-width: 140px;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    overflow: hidden;
+}
+.nav-up-arrow {
+    height: 28px;
+}
 @media screen and (max-width: 768px) { 
     .infra-sec {
         padding: 15px;
@@ -192,6 +225,10 @@
     .info-slider{
         position: absolute; 
         top: -155px; 
+    }
+    .sticky-navigator {
+        align-items: center;
+        justify-content: left;
     }
     
 }
