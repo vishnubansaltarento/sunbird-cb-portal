@@ -132,6 +132,7 @@ export class GyaanKarmayogiViewAllComponent implements OnInit {
           ...strip.request.searchV6.request,
           ...factes,
         }
+
         strip.request.searchV6.request.query = this.searchControl && this.searchControl.value
         if (!(this.selectedFilter[gyaanConstants.sectorName] &&
           this.selectedFilter[gyaanConstants.sectorName].length)) {
@@ -143,6 +144,13 @@ export class GyaanKarmayogiViewAllComponent implements OnInit {
         }
         if (!this.selectedFilter[gyaanConstants.resourceCategory]) {
           delete strip.request.searchV6.request.filters.resourceCategory
+        }
+        if (!(this.selectedFilter[gyaanConstants.sectorName] &&
+          this.selectedFilter[gyaanConstants.sectorName].length) && this.selectedFilter[gyaanConstants.resourceCategory]) {
+          strip.request.searchV6.request.filters = {
+            ...strip.request.searchV6.request.filters,
+            ...{ 'sectorName': this.sectorNames },
+          }
         }
         strip.request.searchV6['request']['limit'] = this.limit
         strip.request.searchV6['request']['offset'] = 0
@@ -328,7 +336,6 @@ export class GyaanKarmayogiViewAllComponent implements OnInit {
         }
       }
     }
-
     this.contentDataList = this.transformSkeletonToWidgets(this.seeAllPageConfig)
     if (this.seeAllPageConfig.request && this.seeAllPageConfig.request.searchV6) {
       this.fetchFromSearchV6(this.seeAllPageConfig)
