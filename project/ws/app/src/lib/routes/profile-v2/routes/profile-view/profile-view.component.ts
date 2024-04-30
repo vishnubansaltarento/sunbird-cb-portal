@@ -222,7 +222,7 @@ export class ProfileViewComponent implements OnInit, AfterViewInit, OnDestroy {
   // private defaultSideNavBarOpenedSubscription: any
   // public screenSizeIsLtMedium = false
   // isLtMedium$ = this.valueSvc.isLtMedium$
-  
+
   // mode$ = this.isLtMedium$.pipe(map(isMedium => (isMedium ? 'over' : 'side')))
   orgId: any
   selectedTabIndex: any
@@ -557,7 +557,7 @@ export class ProfileViewComponent implements OnInit, AfterViewInit, OnDestroy {
     .subscribe((res: any) => {
       if (res.result.response) {
         this.insightsData = res.result.response
-        
+
         this.constructNudgeData()
         if (this.insightsData && this.insightsData['weekly-claps']) {
           this.insightsData['weeklyClaps'] = this.insightsData['weekly-claps']
