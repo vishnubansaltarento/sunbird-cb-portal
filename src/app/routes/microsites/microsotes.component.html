@@ -6,24 +6,15 @@
                     <ng-container *ngFor="let column of section.column">
                         <div id="{{column.key}}" class="col-span-{{column.colspan || 12}} christy1">
                             <ng-container *ngIf="column.enabled" [ngSwitch]="column.key">
-                                <ng-container *ngSwitchCase="'banner'" [ngTemplateOutlet]="banner"
+                                <ng-container *ngSwitchCase="'topSection'" [ngTemplateOutlet]="topSection"
                                     [ngTemplateOutletContext]="{data: column.data}"></ng-container>
-                                    <ng-container *ngSwitchCase="'topSection'" [ngTemplateOutlet]="topSection"
-                                    [ngTemplateOutletContext]="{data: column.data}"></ng-container>
-                                <ng-container *ngSwitchCase="'stats'" [ngTemplateOutlet]="stats"
-                                    [ngTemplateOutletContext]="{stats: column.data}"></ng-container>
                                 <ng-container *ngSwitchCase="'contentStrip'" [ngTemplateOutlet]="contentStrip"
                                     [ngTemplateOutletContext]="{contentStrip: column.data}"></ng-container>
                                 <ng-container *ngSwitchCase="'calendar'" [ngTemplateOutlet]="calendar"
                                     [ngTemplateOutletContext]="{calendar: column.data}"></ng-container>
-                                <ng-container *ngSwitchCase="'users'" [ngTemplateOutlet]="users"
-                                    [ngTemplateOutletContext]="{users: column.data}"></ng-container>
-                                <!-- <ng-container *ngSwitchCase="'competency'" [ngTemplateOutlet]="competency"
-                                    [ngTemplateOutletContext]="{competency: column.data}"></ng-container> -->
                                 <ng-container *ngSwitchCase="'bmetrics'" [ngTemplateOutlet]="bmetrics"
                                     [ngTemplateOutletContext]="{bmetrics: column}"></ng-container>
-                                <ng-container *ngSwitchCase="'mbmetrics'" [ngTemplateOutlet]="mbmetrics"
-                                    [ngTemplateOutletContext]="{mbmetrics: column}"></ng-container>
+                               
                                 <ng-container *ngSwitchCase="'infra'" [ngTemplateOutlet]="infra"
                                     [ngTemplateOutletContext]="{infra: column.data}"></ng-container>
                             </ng-container>
@@ -32,68 +23,9 @@
                 </section>
             </ng-container>
         </ng-container>
-        <!-- <section>
-            <div class="slider" *ngIf="sliderData">
-                <ws-widget-sliders [widgetData]="sliderData"></ws-widget-sliders>
-            </div>
-        </section>
-        <section>
-            <div class="flex justify-between banner-container">
-                <div class="flex flex-1 logo-box">
-                    <img _ngcontent-xdw-c7="" alt="Application Logo" class="app-logo w-full" [src]="banner2.logo">
-                </div>
-                <div class="flex-1 flex flex-col">
-                    <h1>{{banner2.title}}</h1>
-                    <p>{{banner2.description}}</p>
-                </div>
-                <div class="slider slider-box" *ngIf="sliderData">
-                    <ws-widget-sliders [widgetData]="sliderData"></ws-widget-sliders>
-                </div>
-            </div>
-        </section>
-        <section >
-            Stats
-            <div class="stats-container">
-                <ng-container *ngFor="let stat of stats">
-                    <div class="stats-item flex-1 ws-mat-primary-background mr-2">
-                        <div  class="icon mr-5">
-                           <mat-icon class="text-white">{{stat.icon}}</mat-icon>
-                        </div>
-                        <div class="stat-data">
-                            <h1 class="text-white">{{stat.value}}</h1>
-                            <p class="text-white fw-normal mt-2">{{stat.label}}</p>
-                        </div>
-                    </div>
-                </ng-container>
-            </div>
-        </section>
-        <section>
-            Recently added content
-            <ws-widget-content-strip-with-tabs [widgetData]="contentStrip"></ws-widget-content-strip-with-tabs>
-        </section>
-        <section>
-            Top content
-        </section>
-        <section>
-            what our learners saying?
-        </section> -->
     </div>
 </div>
 
-<ng-template #banner let-data="data">
-    <div class="flex justify-between banner-container">
-        <div class="flex flex-1 logo-box">
-            <img alt="Application Logo" class="app-logo w-full" [src]="data.logo">
-        </div>
-        <div class="flex-1 flex flex-col">
-            <h1>{{data.title}}</h1>
-            <p>{{data.description}}</p>
-        </div>
-        <div class="slider slider-box" *ngIf="data.sliders">
-            <sb-uic-sliders [widgetData]="data.sliders"></sb-uic-sliders>
-        </div>
-    </div>
-</ng-template>
 
 <ng-template #topSection let-data="data">
     <!-- <div class="w-full grid grid-cols-12 gap-4"> -->
@@ -109,15 +41,15 @@
                 </div>
             </div>
         </div>
-        <div class="col-span-12 title-section px-5 md:py-5">
-            <div class="container flex flex-col md:flex-row">
+        <div class="col-span-12 title-section py-5">
+            <div class="container flex">
                 <div class="mr-4 logo-box-container">
                     <div class="flex logo-box-rounded top mr-4">
                         <img alt="Application Logo" class="logo-img" [src]="data?.logo">
                     </div>
                 </div>
                 <div class="flex-1 flex flex-col">
-                    <p class="mat-subheading-1">{{data?.title}}</p>
+                    <h1>{{data?.title}}</h1>
                     <p>{{data?.description}}</p>
                     <div class="block md:hidden">
                         <sb-uic-data-points [objectData]="data?.metrics?.data" [layoutType]="'singleRow'"></sb-uic-data-points>
@@ -128,54 +60,11 @@
     <!-- </div> -->
 </ng-template>
 
-
-<ng-template #stats let-stats="stats">
-    <!-- <div class="stats-container w-full grid grid-cols-12 gap-4"> -->
-    <div class="stats-container">
-        <ng-container *ngFor="let stat of stats">
-            <!-- <div class="col-span-{{stat.colspan || 12}}"> -->
-                <div class="stats-item flex-1 ws-mat-primary-background mr-2">
-                    <div class="icon mr-5">
-                        <mat-icon class="text-white">{{stat.icon}}</mat-icon>
-                    </div>
-                    <div class="stat-data flex-1">
-                        <h1 class="text-white">{{stat.value}}</h1>
-                        <p class="text-white fw-normal mt-2">{{stat.label}}</p>
-                    </div>
-                </div>
-            <!-- </div> -->
-        </ng-container>
-    </div>
-    <!-- </div> -->
-</ng-template>
-
 <ng-template #contentStrip let-contentStrip="contentStrip">
     <div class="w-full">
         <ws-widget-content-strip-with-tabs [widgetData]="contentStrip"></ws-widget-content-strip-with-tabs>
         <sb-uic-content-strip-with-tabs  [widgetData]="contentStrip"></sb-uic-content-strip-with-tabs>
     </div>
-</ng-template>
-
-<ng-template #calendar let-calendar="calendar">
-    <div class="w-full">
-        <h1 class="text-center">Calendar coming soon...</h1>
-    </div>
-</ng-template>
-
-<ng-template #users let-users="users">
-    <div class="w-full">
-        <h1 class="">users coming soon...</h1>
-    </div>
-</ng-template>
-
-<ng-template #competency let-competency="competency">
-    <div class="w-full">
-        <h1 class="">Competency coming soon...</h1>
-    </div>
-</ng-template>
-
-<ng-template #mbmetrics let-mbmetrics="mbmetrics">
-    <sb-uic-data-points [objectData]="mbmetrics" [layoutType]="'singleRow'"></sb-uic-data-points>
 </ng-template>
 
 <ng-template #infra let-infra="infra">
