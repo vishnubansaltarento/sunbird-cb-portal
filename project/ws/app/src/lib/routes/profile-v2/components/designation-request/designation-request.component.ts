@@ -8,6 +8,7 @@ import { takeUntil } from 'rxjs/operators'
 
 import { ConfigurationsService } from '@sunbird-cb/utils/src/public-api'
 import { RequestService } from 'src/app/routes/public/public-request/request.service'
+import { UserProfileService } from '../../../user-profile/services/user-profile.service'
 
 @Component({
   selector: 'ws-designation-request',
@@ -24,7 +25,8 @@ export class DesignationRequestComponent implements OnDestroy {
     @Inject(MAT_DIALOG_DATA) public data: any,
     private configService: ConfigurationsService,
     private requestService: RequestService,
-    private matSnackBar: MatSnackBar
+    private matSnackBar: MatSnackBar,
+    private userProfileService: UserProfileService
   ) { }
 
   handleCloseModal(): void {
@@ -58,14 +60,18 @@ export class DesignationRequestComponent implements OnDestroy {
     this.requestService.createPosition(postData)
     .pipe(takeUntil(this.destroySubject$))
     .subscribe((_res: any) => {
-      this.matSnackBar.open('Your designation request has been submitted successfully!')
+      this.matSnackBar.open(this.handleTranslateTo('designationRequestSent'))
       this.handleCloseModal()
     },         (error: HttpErrorResponse) => {
       if (!error.ok) {
-        this.matSnackBar.open('Unable to request given designation, please try again later')
+        this.matSnackBar.open(this.handleTranslateTo('designationRequestFailed'))
         this.handleCloseModal()
       }
     })
+  }
+
+  handleTranslateTo(menuName: string): string {
+    return this.userProfileService.handleTranslateTo(menuName)
   }
 
   ngOnDestroy(): void {

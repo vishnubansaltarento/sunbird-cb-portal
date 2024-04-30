@@ -51,7 +51,6 @@ export class TransferRequestComponent implements OnInit, OnDestroy {
         this.otherDetails = false
       }
     })
-
   }
 
   ngOnInit() {
@@ -83,12 +82,12 @@ export class TransferRequestComponent implements OnInit, OnDestroy {
     this.userProfileService.editProfileDetails(postData)
     .pipe(takeUntil(this.destroySubject$))
     .subscribe((_res: any) => {
-      this.matSnackBar.open('Request sent successfully!')
+      this.matSnackBar.open(this.handleTranslateTo('transferRequestSent'))
       this.enableWithdraw.emit(true)
       this.handleCloseModal()
     },         (error: HttpErrorResponse) => {
       if (!error.ok) {
-        this.matSnackBar.open('Unable to do transfer request, please try again later!')
+        this.matSnackBar.open(this.handleTranslateTo('transferRequestFailed'))
       }
     })
   }
@@ -102,9 +101,13 @@ export class TransferRequestComponent implements OnInit, OnDestroy {
       })
     },         (error: HttpErrorResponse) => {
       if (!error.ok) {
-        this.matSnackBar.open('Unable to fetch department data')
+        this.matSnackBar.open(this.handleTranslateTo('orgFetchDataFailed'))
       }
     })
+  }
+
+  handleTranslateTo(menuName: string): string {
+    return this.userProfileService.handleTranslateTo(menuName)
   }
 
   ngOnDestroy(): void {

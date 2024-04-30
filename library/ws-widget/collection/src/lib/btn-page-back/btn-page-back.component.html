@@ -2,7 +2,7 @@
   <div class="container-balanced">
     <div class="flex flex-1 flex-column">
       <div class="flex flex-1 flex-column">
-        <div class="flex flex-1 flex-wrap margin-bottom-xs margin-top-xs" role="menubar">
+        <div class="flex flex-wrap items-center margin-top-l margin-bottom-l" role="menubar">
           <!-- disabled for explore btn disabled on contact us page refresh-->
           <a class="flex cursor-pointer simple-hubs-link " href="/" role="menuitem" accesskey="H" i18n-aria-label i18n-aria-title>
             <span class="margin-auto ws-mat-default-text margin-0 mat-subheading-2">{{ 'btnpageback.home' | translate }}</span>
@@ -10,10 +10,10 @@
 
           <ng-container *ngIf="widgetData.titles && widgetData.titles.length>0">
             <div class="flex" *ngFor="let title of widgetData.titles">
-              <mat-icon class="main-back m-auto">keyboard_arrow_right</mat-icon>
+              <mat-icon class="m-auto mr-2">keyboard_arrow_right</mat-icon>
               <span *ngIf="title.title && title.url && title.url === 'none'" i18n-aria-label i18n-aria-title
-                i18n="page title: {{title.title}}" class="flex margin-left-xs m-auto">
-                <mat-icon class="ws-mat-default-text icon-margin m-t-b" *ngIf="title.icon">{{ title.icon }}</mat-icon>
+                i18n="page title: {{title.title}}" class="flex m-auto">
+                <mat-icon class="icon-margin m-t-b ws-mat-black60-text" *ngIf="title.icon">{{ title.icon }}</mat-icon>
                 <span class="m-t-b mat-body-2 font-bold-imp ws-mat-black60-text">{{ title.title }}</span>
               </span>
               <a class="flex m-auto ws-mat-default-text" i18n-aria-label *ngIf="title.url && title.url !== 'none'"

@@ -1,8 +1,8 @@
-import { AfterViewInit, Component, ElementRef, OnDestroy, OnInit, ViewChild } from '@angular/core'
+import { Component, OnDestroy, OnInit } from '@angular/core'
 import { HttpErrorResponse } from '@angular/common/http'
 import { ActivatedRoute, Router } from '@angular/router'
 import { MatDialog } from '@angular/material/dialog'
-import { MatSnackBar, MatTabChangeEvent } from '@angular/material'
+import { MatSnackBar } from '@angular/material'
 import { FormControl, FormGroup, Validators } from '@angular/forms'
 import { TranslateService } from '@ngx-translate/core'
 import { MomentDateAdapter } from '@angular/material-moment-adapter'
@@ -12,29 +12,25 @@ import { DateAdapter, MAT_DATE_FORMATS, MAT_DATE_LOCALE } from '@angular/materia
 import _ from 'lodash'
 import moment from 'moment'
 import { Subject } from 'rxjs'
-import { debounceTime, distinctUntilChanged, map, startWith, takeUntil } from 'rxjs/operators'
+import { debounceTime, distinctUntilChanged, startWith, takeUntil } from 'rxjs/operators'
 
-import { ImageCropComponent, ConfigurationsService, ValueService } from '@sunbird-cb/utils';
-import { NsContent, WidgetContentService } from '@sunbird-cb/collection'
+import { ImageCropComponent, ConfigurationsService } from '@sunbird-cb/utils'
 import { LoaderService } from '@ws/author/src/public-api'
 import { PipeCertificateImageURL } from '@sunbird-cb/utils/src/public-api'
 import { IMAGE_MAX_SIZE, PROFILE_IMAGE_SUPPORT_TYPES } from '@ws/author/src/lib/constants/upload'
 import { Notify } from '@ws/author/src/lib/constants/notificationMessage'
 import { NOTIFICATION_TIME } from '@ws/author/src/lib/constants/constant'
-import { HomePageService } from 'src/app/services/home-page.service'
-import { DiscussService } from '../../../discuss/services/discuss.service'
-import { NetworkV2Service } from '../../../network-v2/services/network-v2.service'
 import { UserProfileService } from '../../../user-profile/services/user-profile.service'
 import { OtpService } from '../../../user-profile/services/otp.services'
 
 import { NSProfileDataV2 } from '../../models/profile-v2.model'
-import { NSNetworkDataV2 } from '../../../network-v2/models/network-v2.model'
 import { NsUserProfileDetails } from '../../../user-profile/models/NsUserProfile'
 import { VerifyOtpComponent } from '../../components/verify-otp/verify-otp.component'
 import { TransferRequestComponent } from '../../components/transfer-request/transfer-request.component'
 import { WithdrawRequestComponent } from '../../components/withdraw-request/withdraw-request.component'
 import { NotificationComponent } from '@ws/author/src/lib/modules/shared/components/notification/notification.component'
 import { DesignationRequestComponent } from '../../components/designation-request/designation-request.component'
+import { HomePageService } from 'src/app/services/home-page.service'
 
 export const MY_FORMATS = {
   parse: {
@@ -47,13 +43,16 @@ export const MY_FORMATS = {
     monthYearA11yLabel: 'YYYY',
   },
 }
+const EMAIL_PATTERN = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/
+const MOBILE_PATTERN = /^\d{10}$/
+const PIN_CODE_PATTERN = /^[1-9][0-9]{5}$/
 
 @Component({
   selector: 'app-profile-view',
   templateUrl: './profile-view.component.html',
   styleUrls: ['./profile-view.component.scss'],
   /* tslint:disable */
-  host: { class: 'flex margin-top-l margin-bottom-l' },
+  host: { class: 'flex margin-bottom-l' },
   /* tslint:enable */
   providers: [
     { provide: DateAdapter, useClass: MomentDateAdapter, deps: [MAT_DATE_LOCALE] },
@@ -61,25 +60,107 @@ export const MY_FORMATS = {
   ],
 })
 
-export class ProfileViewComponent implements OnInit, AfterViewInit, OnDestroy {
+export class ProfileViewComponent implements OnInit, OnDestroy {
+
+  currentUsername: any
+  pageData: any
+  orgId: any
+  selectedTabIndex: any
+  insightsData: any
+  insightsDataLoading = false
+  discussion = {
+    loadSkeleton: false,
+    data: undefined,
+    error: false,
+  }
+  recentRequests = {
+    data: undefined,
+    error: false,
+    loadSkeleton: false,
+  }
+  updatesPosts = {
+    data: undefined,
+    error: false,
+    loadSkeleton: false,
+  }
+  showCreds = false
+  credMessage = 'View my credentials'
+  assessmentsData: any
+  isCurrentUser!: boolean
+
+  private destroySubject$ = new Subject()
+  portalProfile!: NSProfileDataV2.IProfile
+  currentUser: any
+  nameInitials = ''
+  verifyEmail = false
+  verifyMobile = false
+  countryCodes: any[] = []
+  countryCodesBackUp: any[] = []
+  nationalityData: any[] = []
+  editDetails = false
+  editProfile = false
+  editName = false
+  eUserGender = Object.keys(NsUserProfileDetails.EUserGender)
+  eCategory = Object.keys(NsUserProfileDetails.ECategory)
+  masterLanguages: any[] | undefined
+  masterLanguageBackup: any[] | undefined
+  dateOfBirth: any | undefined
+  groupData: any | undefined
+  profileMetaData: any | undefined
+  imageTypes = PROFILE_IMAGE_SUPPORT_TYPES
+  photoUrl!: string | ArrayBuffer | null
+  profileName = ''
+  enableWTR = false
+  enableWR = false
+  feedbackInfo = ''
+  skeletonLoader = false
+  otherDetailsForm = new FormGroup({
+    employeeCode: new FormControl('', []),
+    primaryEmail: new FormControl('', [Validators.pattern(EMAIL_PATTERN)]),
+    mobile: new FormControl('', [Validators.minLength(10), Validators.maxLength(10), Validators.pattern(MOBILE_PATTERN)]),
+    gender: new FormControl('', []),
+    dob: new FormControl('', []),
+    domicileMedium: new FormControl('', []),
+    countryCode: new FormControl('', []),
+    pincode: new FormControl('', [Validators.minLength(6), Validators.maxLength(6), Validators.pattern(PIN_CODE_PATTERN)]),
+    category: new FormControl('', []),
+  })
+  unVerifiedObj = {
+    designation: '',
+    group: '',
+    organization: '',
+  }
+  rejectedFields: any = {
+    name: '',
+    group: '',
+    designation: '',
+  }
+  primaryDetailsForm = new FormGroup({
+    group: new FormControl('', [Validators.required]),
+    designation: new FormControl('', [Validators.required]),
+  })
+  approvalPendingFields = []
+  contextToken: any
 
   constructor(
     public dialog: MatDialog,
-    private route: ActivatedRoute,
-    private discussService: DiscussService,
-    private networkV2Service: NetworkV2Service,
-    private configSvc: ConfigurationsService,
+    private configService: ConfigurationsService,
     public router: Router,
-    private valueSvc: ValueService,
-    private contentSvc: WidgetContentService,
-    private homeSvc: HomePageService,
+    private route: ActivatedRoute,
     private matSnackBar: MatSnackBar,
     private userProfileService: UserProfileService,
     private translateService: TranslateService,
     private otpService: OtpService,
     private loader: LoaderService,
-    private pipeImgUrl: PipeCertificateImageURL
+    private pipeImgUrl: PipeCertificateImageURL,
+    private homeService: HomePageService
   ) {
+
+    if (localStorage.getItem('websiteLanguage')) {
+      this.translateService.setDefaultLang('en')
+      const lang = localStorage.getItem('websiteLanguage')!
+      this.translateService.use(lang)
+    }
 
     if (this.otherDetailsForm.get('domicileMedium')) {
       this.otherDetailsForm.get('domicileMedium')!.valueChanges
@@ -114,9 +195,11 @@ export class ProfileViewComponent implements OnInit, AfterViewInit, OnDestroy {
       this.otherDetailsForm.get('primaryEmail')!.valueChanges
       .subscribe(res => {
         if (res && res !== this.portalProfile.personalDetails.primaryEmail) {
-          const emailRegex = /^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/
-          if (emailRegex.test(res)) {
+          if (EMAIL_PATTERN.test(res)) {
             this.verifyEmail = true
+            this.otherDetailsForm.setErrors({ invalid: false })
+          } else {
+            this.verifyEmail = false
             this.otherDetailsForm.setErrors({ invalid: false })
           }
         } else {
@@ -130,9 +213,10 @@ export class ProfileViewComponent implements OnInit, AfterViewInit, OnDestroy {
       this.otherDetailsForm.get('mobile')!.valueChanges
       .subscribe(res => {
         if (res && res !== this.portalProfile.personalDetails.mobile) {
-          const mobileRegex = /^\d{10}$/
-          if (mobileRegex.test(res)) {
+          if (MOBILE_PATTERN.test(res)) {
             this.verifyMobile = true
+          } else {
+            this.verifyMobile = false
           }
         } else {
           this.verifyMobile = false
@@ -140,18 +224,10 @@ export class ProfileViewComponent implements OnInit, AfterViewInit, OnDestroy {
       })
     }
 
-    this.Math = Math
     this.pageData = this.route.parent && this.route.parent.snapshot.data.pageData.data
-    this.currentUser = this.configSvc && this.configSvc.userProfile
-    this.tabsData = this.route.parent && this.route.parent.snapshot.data.pageData.data.tabs || []
-    this.selectedTabIndex = this.route.snapshot.queryParams && this.route.snapshot.queryParams.tab || 0
+    this.currentUser = this.configService && this.configService.userProfile
 
-    this.tabs = this.route.data.subscribe(data => {
-      if (data.certificates) {
-        this.certificatesData = data.certificates.data
-        this.fetchCertificates(this.certificatesData)
-      }
-
+    this.route.data.subscribe(data => {
       if (data.profile.data) {
         this.orgId = data.profile.data.rootOrgId
       }
@@ -166,169 +242,25 @@ export class ProfileViewComponent implements OnInit, AfterViewInit, OnDestroy {
         this.portalProfile.userId = user
       }
 
-      /** // for loged in user only */
       if (user === this.currentUser.userId) {
         this.isCurrentUser = true
-        this.tabsData.map(ele => {
-          if (ele.key === 'karmaPoints') {
-            ele.enabled = true
-          }
-        })
-        this.currentUsername = this.configSvc.userProfile && this.configSvc.userProfile.userName
+        this.currentUsername = this.configService.userProfile && this.configService.userProfile.userName
       } else {
         this.isCurrentUser = false
-        this.tabsData.map(ele => {
-          if (ele.key === 'karmaPoints') {
-            ele.enabled = false
-          }
-        })
         this.currentUsername = this.portalProfile.personalDetails && this.portalProfile.personalDetails !== null
           ? this.portalProfile.personalDetails.userName
           : this.portalProfile.userName
       }
-
-      if (!this.portalProfile.personalDetails && user === this.currentUser.userId) {
-        _.set(this.portalProfile, 'personalDetails.firstname', _.get(this.configSvc, 'userProfile.firstName'))
-      }
-      /** // for loged in user only */
-      this.decideAPICall()
-      this.getInsightsData()
-    })
-
-    this.fetchRecentRequests()
-    this.contentSvc.getKarmaPoitns(3, moment(new Date()).valueOf()).subscribe((res: any) => {
-      if (res && res.kpList) {
-        this.portalProfile.karmapoints = res.kpList
-      }
     })
   }
-  @ViewChild('stickyMenu', { static: true }) menuElement!: ElementRef
-  private destroySubject$ = new Subject()
-  /* tslint:disable */
-  Math: any
-  /* tslint:enable */
-  elementPosition: any
-  currentFilter = 'timestamp'
-  discussionList!: any
-  discussProfileData!: any
-  portalProfile!: NSProfileDataV2.IProfile
-  userDetails: any
-  location!: string | null
-  tabs: any
-  tabsData: NSProfileDataV2.IProfileTab[]
-  currentUser: any
-  connectionRequests!: NSNetworkDataV2.INetworkUser[]
-  currentUsername: any
-  enrolledCourse: any = []
-  allCertificate: any = []
-  pageData: any
-  sideNavBarOpened = true
-  private defaultSideNavBarOpenedSubscription: any
-  public screenSizeIsLtMedium = false
-  isLtMedium$ = this.valueSvc.isLtMedium$
-  insightsData: any
-  mode$ = this.isLtMedium$.pipe(map(isMedium => (isMedium ? 'over' : 'side')))
-  orgId: any
-  selectedTabIndex: any
-  nameInitials = ''
-
-  pendingRequestData: any = []
-  pendingRequestSkeleton = true
-  insightsDataLoading = true
-
-  countdata = 0
-  enrollInterval: any
-
-  discussion = {
-    loadSkeleton: false,
-    data: undefined,
-    error: false,
-  }
-  recentRequests = {
-    data: undefined,
-    error: false,
-    loadSkeleton: false,
-  }
-  updatesPosts = {
-    data: undefined,
-    error: false,
-    loadSkeleton: false,
-  }
-  certificatesData: any
-  showCreds = false
-  credMessage = 'View my credentials'
-  assessmentsData: any
-  isCurrentUser!: boolean
-
-  // Latest variables...
-  verifyEmail = false
-  verifyMobile = false
-  countryCodes: any[] = []
-  countryCodesBackUp: any[] = []
-  nationalityData: any[] = []
-  editDetails = false
-  editProfile = false
-  editName = false
-  eUserGender = Object.keys(NsUserProfileDetails.EUserGender)
-  eCategory = Object.keys(NsUserProfileDetails.ECategory)
-  masterLanguages: any[] | undefined
-  masterLanguageBackup: any[] | undefined
-  dateOfBirth: any | undefined
-  groupData: any | undefined
-  profileMetaData: any | undefined
-  imageTypes = PROFILE_IMAGE_SUPPORT_TYPES
-  photoUrl!: string | ArrayBuffer | null
-  profileName = ''
-  enableWTR = false
-  enableWR = false
-  feedbackInfo = ''
-  toolTipMessage = 'You need to withdraw Primary details request before making a Transfer Request'
-  skeletonLoader = false
-  otherDetailsForm = new FormGroup({
-    employeeCode: new FormControl('', []),
-    primaryEmail: new FormControl('', [Validators.pattern(/^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/)]),
-    mobile: new FormControl('', [Validators.minLength(10), Validators.maxLength(10)]),
-    gender: new FormControl('', []),
-    dob: new FormControl('', []),
-    domicileMedium: new FormControl('', []),
-    countryCode: new FormControl('', []),
-    pincode: new FormControl('', [Validators.minLength(6), Validators.maxLength(6), Validators.pattern(/^[1-9][0-9]{5}$/)]),
-    category: new FormControl('', []),
-  })
-  unVerifiedObj = {
-    designation: '',
-    group: '',
-    organization: '',
-  }
-  rejectedFields: any = {
-    name: '',
-    group: '',
-    designation: '',
-  }
-  primaryDetailsForm = new FormGroup({
-    group: new FormControl('', [Validators.required]),
-    designation: new FormControl('', [Validators.required]),
-  })
-  approvalPendingFields = []
-  contextToken: any
 
   ngOnInit() {
-    this.defaultSideNavBarOpenedSubscription = this.isLtMedium$.subscribe(isLtMedium => {
-      this.sideNavBarOpened = !isLtMedium
-    })
-
-    this.getPendingRequestData()
-    this.enrollInterval = setInterval(() => {
-      this.getKarmaCount()
-    },                                1000)
-
-    // Latest code...
     if (this.currentUser.lastName) {
       this.nameInitials = this.currentUser.firstName.charAt(0) + this.currentUser.lastName.charAt(0)
     }
 
     this.getInitials()
-    this.profileName = this.currentUser.firstName + this.currentUser.lastName
+    this.profileName = this.currentUser.firstName
 
     this.prefillForm()
     this.getMasterNationality()
@@ -337,52 +269,13 @@ export class ProfileViewComponent implements OnInit, AfterViewInit, OnDestroy {
     this.getProfilePageMetaData()
     this.getSendApprovalStatus()
     this.getRejectedStatus()
-  }
-
-  ngAfterViewInit() {
-    if (this.menuElement) {
-      this.elementPosition = this.menuElement.nativeElement.parentElement.offsetTop
-    }
-
-    this.route.fragment.subscribe(data => {
-      if (data) {
-        const el = document.getElementById(data)
-        if (el != null) {
-          el.scrollIntoView({ behavior: 'smooth', block: 'start', inline: 'start' })
-        }
-      }
-    })
-  }
-
-  getKarmaCount() {
-    let enrollList: any
-    if (localStorage.getItem('enrollmentData')) {
-      enrollList = JSON.parse(localStorage.getItem('enrollmentData') || '')
-      this.countdata = enrollList && enrollList.userCourseEnrolmentInfo &&
-       enrollList.userCourseEnrolmentInfo.karmaPoints || 0
-      clearInterval(this.enrollInterval)
-    }
-  }
-
-  decideAPICall() {
-    const user = this.portalProfile.userId || this.portalProfile.id || ''
-    if (this.portalProfile && user) {
-      this.fetchUserDetails(this.currentUsername)
-      this.fetchConnectionDetails(user)
-    } else {
-      if (this.configSvc.userProfile) {
-        const me = this.configSvc.userProfile.userName || ''
-        if (me) {
-          this.fetchUserDetails(me)
-          this.fetchConnectionDetails(this.configSvc.userProfile.userId)
-        }
-      }
-    }
+    this.getInsightsData()
+    this.getAssessmentData()
   }
 
   fetchDiscussionsData(): void {
     this.discussion.loadSkeleton = true
-    this.homeSvc.getDiscussionsData(this.currentUser.userName)
+    this.homeService.getDiscussionsData(this.currentUser.userName)
     .pipe(takeUntil(this.destroySubject$))
     .subscribe(
       (res: any) => {
@@ -399,182 +292,45 @@ export class ProfileViewComponent implements OnInit, AfterViewInit, OnDestroy {
           this.updatesPosts.loadSkeleton = false
           this.discussion.error = true
           this.updatesPosts.error = true
+          this.matSnackBar.open(this.handleTranslateTo('discussionsDataFail'))
         }
       }
     )
   }
-
-  fetchRecentRequests(): void {
-    this.recentRequests.loadSkeleton = true
-    this.homeSvc.getRecentRequests()
-    .pipe(takeUntil(this.destroySubject$))
-    .subscribe(
-      (res: any) => {
-        this.recentRequests.loadSkeleton = false
-        this.recentRequests.data = res.result.data && res.result.data.map((elem: any) => {
-          elem.fullName = elem.fullName.charAt(0).toUpperCase() + elem.fullName.slice(1)
-          elem.connecting = false
-          return elem
-        })
-      },
-      (error: HttpErrorResponse) => {
-        if (!error.ok) {
-          this.recentRequests.loadSkeleton = false
-        }
-      }
-    )
-  }
-
-  handleUpdateRequest(event: any): void {
-    this.homeSvc.updateConnection(event.payload)
-    .pipe(takeUntil(this.destroySubject$))
-    .subscribe(
-      (_res: any) => {
-        if (event.action === 'Approved') {
-          this.matSnackBar.open('Request accepted successfully')
-        } else {
-          this.matSnackBar.open('Rejected the request')
-        }
-        event.reqObject.connecting = false
-        this.fetchRecentRequests()
-      },
-      (error: HttpErrorResponse) => {
-        if (!error.ok) {
-          this.matSnackBar.open('Unable to update connection, due to some error!')
-        }
-        event.reqObject.connecting = false
-      }
-    )
-  }
-
-  fetchUserDetails(name: string) {
-    if (name) {
-      this.discussService.fetchProfileInfo(name)
-      .pipe(takeUntil(this.destroySubject$))
-      .subscribe((response: any) => {
-        if (response) {
-          this.discussProfileData = response
-          this.discussionList = _.uniqBy(_.filter(this.discussProfileData.posts, p => _.get(p, 'isMainPost') === true), 'tid') || []
-        }
-      },         (_error: HttpErrorResponse) => {
-        // tslint:disable-next-line
-        console.error('_error - ', _error)
-      })
-    }
-  }
-
-  fetchConnectionDetails(wid: string) {
-    this.networkV2Service.fetchAllConnectionEstablishedById(wid)
-    .pipe(takeUntil(this.destroySubject$))
-    .subscribe(
-      (data: any) => {
-        this.connectionRequests = data.result.data
-      },
-      (_err: HttpErrorResponse) => {
-        // tslint:disable-next-line
-        console.error('_error - ', _err)
-      })
-  }
-
-  filter(key: string | 'timestamp' | 'best' | 'saved') {
-    if (key) {
-      this.currentFilter = key
-      switch (key) {
-        case 'timestamp':
-          // this.discussionList = _.uniqBy(_.filter(this.discussProfileData.posts, p => _.get(p, 'isMainPost') === true), 'tid')
-          this.discussionList = this.discussProfileData.posts.filter((p: any) => (p.isMainPost === true))
-          break
-
-        case 'best':
-          // this.discussionList = _.uniqBy(this.discussProfileData.bestPosts, 'tid')
-          this.discussionList = this.discussProfileData.bestPosts
-          break
-
-        case 'saved':
-          this.discussService.fetchSaved(this.currentUsername).subscribe((response: any) => {
-            if (response) {
-              // this.discussionList = _.uniqBy(response.posts, 'tid')
-              this.discussionList = response['posts']
-            } else {
-              this.discussionList = []
-            }
-          },
-            // tslint:disable-next-line
-            () => {
-              this.discussionList = []
-            })
-          break
-
-        default:
-          // this.discussionList = _.uniqBy(this.discussProfileData.latestPosts, 'tid')
-          this.discussionList = this.discussProfileData.latestPosts
-          break
-      }
-    }
-  }
-
-  fetchCertificates(data: any) {
-    const courses: NsContent.ICourse[] = data && data.courses
-    if (!courses || !courses.length) { return }
-    courses.forEach((items: any) => {
-      if (items.issuedCertificates && items.issuedCertificates.length > 0) {
-        this.enrolledCourse.push(items)
-        return items
-      }
-      if (items.issuedCertificates && items.issuedCertificates.length === 0 && items.completionPercentage === 100) {
-        this.enrolledCourse.push(items)
-        return items
-      }
-    })
-    this.downloadAllCertificate(this.enrolledCourse)
-  }
-
-  downloadAllCertificate(data: any) {
-    data.forEach((item: any) => {
-      if (item.issuedCertificates.length !== 0) {
-        const certId = item.issuedCertificates[0].identifier
-        this.contentSvc.downloadCert(certId).subscribe(response => {
-
-          this.allCertificate.push({ identifier:
-            item.issuedCertificates[0].identifier, dataUrl: response.result.printUri })
-        })
-      }
-    })
-  }
-
-  public tabClicked(_tabEvent: MatTabChangeEvent) {}
 
   getInsightsData() {
     this.insightsDataLoading = true
     const request = {
       request: {
-          filters: {
-              primaryCategory: 'programs',
-              organisations: [
-                  'across',
-                  this.orgId,
-              ],
-          },
+        filters: {
+          primaryCategory: 'programs',
+          organisations: [
+            'across',
+            this.orgId,
+          ],
+        },
       },
     }
-    this.homeSvc.getInsightsData(request)
+    this.homeService.getInsightsData(request)
     .pipe(takeUntil(this.destroySubject$))
     .subscribe((res: any) => {
       if (res.result.response) {
         this.insightsData = res.result.response
+
         this.constructNudgeData()
         if (this.insightsData && this.insightsData['weekly-claps']) {
           this.insightsData['weeklyClaps'] = this.insightsData['weekly-claps']
         }
+      } else {
+        this.insightsDataLoading = false
       }
-      this.insightsDataLoading = false
     },         (_error: HttpErrorResponse) => {
       this.insightsDataLoading = false
+      this.matSnackBar.open(this.handleTranslateTo('insightsDataFail'))
     })
   }
 
   constructNudgeData() {
-    this.insightsDataLoading = true
     const nudgeData: any = {
       type: 'data',
       iconsDisplay: false,
@@ -603,31 +359,12 @@ export class ProfileViewComponent implements OnInit, AfterViewInit, OnDestroy {
     this.insightsDataLoading = false
   }
 
-  getPendingRequestData() {
-    this.homeSvc.getRecentRequests()
-    .pipe(takeUntil(this.destroySubject$))
-    .subscribe(
-      (res: any) => {
-        this.pendingRequestSkeleton = false
-        this.pendingRequestData = res.result.data && res.result.data.map((elem: any) => {
-          elem.fullName = elem.fullName.charAt(0).toUpperCase() + elem.fullName.slice(1)
-          return elem
-        })
-      },
-      (error: HttpErrorResponse) => {
-        if (!error.ok) {
-          this.pendingRequestSkeleton = false
-        }
-      }
-    )
-  }
-
   toggleCreds() {
     this.showCreds = !this.showCreds
     if (this.showCreds) {
-      this.credMessage = 'Hide my credentials'
+      this.credMessage = this.handleTranslateTo('hideCredentials')
     } else {
-      this.credMessage = 'View my credentials'
+      this.credMessage = this.handleTranslateTo('viewCredentials')
     }
   }
 
@@ -635,7 +372,6 @@ export class ProfileViewComponent implements OnInit, AfterViewInit, OnDestroy {
     const textArea = document.createElement('textarea')
     textArea.value = text
     document.body.appendChild(textArea)
-    // textArea.focus()
     textArea.select()
     document.execCommand('copy')
     document.body.removeChild(textArea)
@@ -643,7 +379,7 @@ export class ProfileViewComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   getAssessmentData() {
-    this.homeSvc.getAssessmentinfo()
+    this.homeService.getAssessmentinfo()
     .pipe(takeUntil(this.destroySubject$))
     .subscribe(
       (res: any) => {
@@ -653,8 +389,7 @@ export class ProfileViewComponent implements OnInit, AfterViewInit, OnDestroy {
       },
       (error: HttpErrorResponse) => {
         if (!error.ok) {
-          // tslint:disable-next-line
-          console.log(error)
+          this.matSnackBar.open(this.handleTranslateTo('assessmentDataFail'))
         }
       }
     )
@@ -668,14 +403,17 @@ export class ProfileViewComponent implements OnInit, AfterViewInit, OnDestroy {
 
   handleEditOtherDetails(): void {
     if (this.portalProfile.personalDetails.primaryEmail) {
-      if (this.otherDetailsForm.get('officialEmail')) {
-        this.otherDetailsForm.get('officialEmail')!.setValidators(Validators.required)
-        this.otherDetailsForm.get('officialEmail')!.updateValueAndValidity()
+      if (this.otherDetailsForm.get('primaryEmail')) {
+        this.otherDetailsForm.get('primaryEmail')!.setValidators([Validators.required,
+          Validators.pattern(EMAIL_PATTERN)])
+        this.otherDetailsForm.get('primaryEmail')!.updateValueAndValidity()
+
       }
+
     }
     if (this.portalProfile.personalDetails.mobile) {
       if (this.otherDetailsForm.get('mobile')) {
-        this.otherDetailsForm.get('mobile')!.setValidators(Validators.required)
+        this.otherDetailsForm.get('mobile')!.setValidators([Validators.required, Validators.pattern(MOBILE_PATTERN)])
         this.otherDetailsForm.get('mobile')!.updateValueAndValidity()
       }
     }
@@ -705,7 +443,7 @@ export class ProfileViewComponent implements OnInit, AfterViewInit, OnDestroy {
       }
     },         (error: HttpErrorResponse) => {
       if (!error.ok) {
-        this.matSnackBar.open('Unable to fetch master nation data')
+        this.matSnackBar.open(this.handleTranslateTo('unableFetchMasterNation'))
       }
     })
   }
@@ -718,16 +456,14 @@ export class ProfileViewComponent implements OnInit, AfterViewInit, OnDestroy {
       this.masterLanguageBackup = res.languages
     },         (error: HttpErrorResponse) => {
       if (!error.ok) {
-        this.matSnackBar.open('Unable to fetch master data of language')
+        this.matSnackBar.open(this.handleTranslateTo('unableFetchMasterLanguageData'))
       }
     })
 
   }
 
   handleTranslateTo(menuName: string): string {
-    // tslint:disable-next-line: prefer-template
-    const translationKey = 'userProfile.' + menuName.replace(/\s/g, '')
-    return this.translateService.instant(translationKey)
+    return this.userProfileService.handleTranslateTo(menuName)
   }
 
   prefillForm(data ?: any): void {
@@ -783,6 +519,7 @@ export class ProfileViewComponent implements OnInit, AfterViewInit, OnDestroy {
     const newDateStr = `${dateArr[1]}/${dateArr[0]}/${dateArr[2]}`
     return moment(new Date(newDateStr)).format('D MMM YYYY')
   }
+
   handleVerifyOTP(verifyType: string, _value?: string): void {
     const dialogRef = this.dialog.open(VerifyOtpComponent, {
       data: { type: verifyType, value: _value },
@@ -810,13 +547,13 @@ export class ProfileViewComponent implements OnInit, AfterViewInit, OnDestroy {
     this.otpService.sendEmailOtp(this.otherDetailsForm.value['primaryEmail'])
     .pipe(takeUntil(this.destroySubject$))
     .subscribe((_res: any) => {
-      this.matSnackBar.open('OTP sent to the email')
+      this.matSnackBar.open('otpSentEmail')
       if (verifyType) {
         this.handleVerifyOTP(verifyType, this.otherDetailsForm.value['primaryEmail'])
       }
     },         (error: HttpErrorResponse) => {
       if (!error.ok) {
-        this.matSnackBar.open('Unable to send OTP to given email id, please try again later')
+        this.matSnackBar.open(this.handleTranslateTo('emailOTPSentFail'))
       }
     })
   }
@@ -825,13 +562,13 @@ export class ProfileViewComponent implements OnInit, AfterViewInit, OnDestroy {
     this.otpService.sendOtp(this.otherDetailsForm.value['mobile'])
     .pipe(takeUntil(this.destroySubject$))
     .subscribe((_res: any) => {
-      this.matSnackBar.open('OTP sent to the mobile number')
+      this.matSnackBar.open(this.handleTranslateTo('otpSentMobile'))
       if (verifyType) {
         this.handleVerifyOTP(verifyType, this.otherDetailsForm.value['mobile'])
       }
     },         (error: HttpErrorResponse) => {
       if (!error.ok) {
-        this.matSnackBar.open('Unable to send OTP to given number, please try again later')
+        this.matSnackBar.open(this.handleTranslateTo('mobileOTPSentFail'))
       }
     })
   }
@@ -839,7 +576,7 @@ export class ProfileViewComponent implements OnInit, AfterViewInit, OnDestroy {
   updateEmail(email: string): void {
     const postData = {
       request: {
-        'userId': this.configSvc.unMappedUser.id,
+        'userId': this.configService.unMappedUser.id,
         'contextToken': this.contextToken,
         'profileDetails': {
           'personalDetails': {
@@ -853,10 +590,10 @@ export class ProfileViewComponent implements OnInit, AfterViewInit, OnDestroy {
     .pipe(takeUntil(this.destroySubject$))
     .subscribe((_res: any) => {
       this.portalProfile.personalDetails.primaryEmail = email
-      this.matSnackBar.open('Email updated successfully')
+      this.matSnackBar.open(this.handleTranslateTo('emailUpdated'))
     },         (error: HttpErrorResponse) => {
       if (!error.ok) {
-        this.matSnackBar.open('Unable to update email')
+        this.matSnackBar.open(this.handleTranslateTo('updateEmailFailed'))
       }
     })
   }
@@ -877,7 +614,7 @@ export class ProfileViewComponent implements OnInit, AfterViewInit, OnDestroy {
 
     const payload = {
       'request': {
-        'userId': this.configSvc.unMappedUser.id,
+        'userId': this.configService.unMappedUser.id,
         'profileDetails': {
           'personalDetails': {},
           'employmentDetails': {
@@ -891,12 +628,12 @@ export class ProfileViewComponent implements OnInit, AfterViewInit, OnDestroy {
     this.userProfileService.editProfileDetails(payload)
     .pipe(takeUntil(this.destroySubject$))
     .subscribe((_res: any) => {
-      this.matSnackBar.open('User details updated successfully!')
+      this.matSnackBar.open(this.handleTranslateTo('userDetailsUpdated'))
       this.editDetails = !this.editDetails
       this.prefillForm({ dataToSubmit, ...{ 'employeeCode': this.otherDetailsForm.value['employeeCode'] } })
     },         (error: HttpErrorResponse) => {
       if (!error.ok) {
-        this.matSnackBar.open('Unable to update user profile details, please try again!')
+        this.matSnackBar.open(this.handleTranslateTo('userDetailsUpdateFailed'))
         this.editDetails = !this.editDetails
         this.prefillForm()
       }
@@ -952,7 +689,7 @@ export class ProfileViewComponent implements OnInit, AfterViewInit, OnDestroy {
       this.groupData = res.result && res.result.response
     },         (error: HttpErrorResponse) => {
       if (!error.ok) {
-        this.matSnackBar.open('Unable to fetch group meta data')
+        this.matSnackBar.open(this.handleTranslateTo('groupDataFaile'))
       }
     })
   }
@@ -964,7 +701,7 @@ export class ProfileViewComponent implements OnInit, AfterViewInit, OnDestroy {
       this.profileMetaData = res
     },         (error: HttpErrorResponse) => {
       if (!error.ok) {
-        this.matSnackBar.open('Unable to fetch profile page meta data')
+        this.matSnackBar.open(this.handleTranslateTo('profilePageFetchFailed'))
       }
     })
   }
@@ -993,22 +730,23 @@ export class ProfileViewComponent implements OnInit, AfterViewInit, OnDestroy {
         this.enableWTR = true
       } else {
         this.enableWR = true
-        this.feedbackInfo = 'Your new designation request is under process.'
+        this.feedbackInfo = 'newRequestSent'
       }
       this.skeletonLoader = false
     },         (error: HttpErrorResponse) => {
       if (!error.ok) {
-        this.matSnackBar.open('Unable to get approval status of all fields')
+        this.matSnackBar.open(this.handleTranslateTo('approvalStatusFailed'))
       }
       this.skeletonLoader = false
     })
   }
 
   getRejectedStatus(): void {
+    this.skeletonLoader = true
     this.userProfileService.listRejectedFields()
     .pipe(takeUntil(this.destroySubject$))
     .subscribe((res: any) => {
-      if (res.result && res.result.data) {
+      if (res.result && res.result.data && Array.isArray(res.result.data)) {
         res.result.data.forEach((obj: any) => {
           if (obj.hasOwnProperty('name')) {
             this.rejectedFields.name = obj.name
@@ -1021,22 +759,23 @@ export class ProfileViewComponent implements OnInit, AfterViewInit, OnDestroy {
           }
         })
       }
+      this.skeletonLoader = false
     },         (error: HttpErrorResponse) => {
       if (!error.ok) {
-        this.matSnackBar.open('Unable to fetch rejected status fields')
+        this.matSnackBar.open(this.handleTranslateTo('rejectedStatusFailed'))
       }
+      this.skeletonLoader = false
     })
   }
 
   handleSendApproval(): void {
-    // console.log('primaryDetailsForm - ', this.primaryDetailsForm.value)
     const data: any = {
       'designation': this.primaryDetailsForm.value['designation'],
       'group': this.primaryDetailsForm.value['group'],
     }
     const postData: any = {
       'request': {
-        'userId': this.configSvc.unMappedUser.id,
+        'userId': this.configService.unMappedUser.id,
         'employmentDetails': {
           'departmentName': this.primaryDetailsForm.value['designation'],
         },
@@ -1050,13 +789,13 @@ export class ProfileViewComponent implements OnInit, AfterViewInit, OnDestroy {
     this.userProfileService.editProfileDetails(postData)
     .pipe(takeUntil(this.destroySubject$))
     .subscribe((_res: any) => {
-      this.matSnackBar.open('Request sent successfully!')
+      this.matSnackBar.open(this.handleTranslateTo('requestSent'))
       this.editProfile = !this.editProfile
       this.enableWR = true
       this.getSendApprovalStatus()
     },         (error: HttpErrorResponse) => {
       if (!error.ok) {
-        this.matSnackBar.open('Unable to do transfer request, please try again later!')
+        this.matSnackBar.open(this.handleTranslateTo('transferRequestFailed'))
       }
     })
 
@@ -1064,17 +803,17 @@ export class ProfileViewComponent implements OnInit, AfterViewInit, OnDestroy {
 
   handleWithdrawRequest(): void {
     this.approvalPendingFields.forEach((_obj: any) => {
-      this.userProfileService.withDrawRequest(this.configSvc.unMappedUser.id, _obj.wfId)
+      this.userProfileService.withDrawRequest(this.configService.unMappedUser.id, _obj.wfId)
       .pipe(takeUntil(this.destroySubject$))
       .subscribe((_res: any) => {
         this.unVerifiedObj.group = ''
         this.unVerifiedObj.designation = ''
         this.feedbackInfo = ''
-        this.matSnackBar.open('Withdraw request done successfully!')
+        this.matSnackBar.open(this.handleTranslateTo('withdrawRequestSuccess'))
         this.enableWR = false
       },         (error: HttpErrorResponse) => {
         if (!error.ok) {
-          this.matSnackBar.open('Unable to withdraw request, please try again later!')
+          this.matSnackBar.open(this.handleTranslateTo('unableWithdrawRequest'))
         }
       })
     })
@@ -1083,7 +822,7 @@ export class ProfileViewComponent implements OnInit, AfterViewInit, OnDestroy {
   handleUpdateName(): void {
     const postData = {
       'request': {
-        'userId': this.configSvc.unMappedUser.id,
+        'userId': this.configService.unMappedUser.id,
         'profileDetails' : {
           'personalDetails' : {
             'firstname': this.profileName,
@@ -1097,11 +836,11 @@ export class ProfileViewComponent implements OnInit, AfterViewInit, OnDestroy {
     .subscribe((_res: any) => {
       this.currentUser.firstName = this.profileName
       this.getInitials()
-      this.matSnackBar.open('User name updated successfully!')
+      this.matSnackBar.open(this.handleTranslateTo('userNameUpdated'))
       this.editName = !this.editName
     },         (error: HttpErrorResponse) => {
       if (!error.ok) {
-        this.matSnackBar.open('Unable to update name, please try later!')
+        this.matSnackBar.open(this.handleTranslateTo('userNameUpdateFailed'))
       }
       this.editName = !this.editName
     })
@@ -1110,7 +849,7 @@ export class ProfileViewComponent implements OnInit, AfterViewInit, OnDestroy {
   async onSubmit() {
     const reqUpdates = {
       request: {
-        userId: this.configSvc.unMappedUser.id,
+        userId: this.configService.unMappedUser.id,
         profileDetails:
         {
           profileImageUrl: this.photoUrl,
@@ -1119,13 +858,13 @@ export class ProfileViewComponent implements OnInit, AfterViewInit, OnDestroy {
     }
     this.userProfileService.editProfileDetails(reqUpdates).subscribe(
       (_res: any) => {
-        this.matSnackBar.open('Profile image updated successfully!')
+        this.matSnackBar.open(this.handleTranslateTo('profileImageUpdated'))
         this.portalProfile.profileImageUrl = (this.photoUrl as any)
 
       },
       (err: HttpErrorResponse) => {
         const errMsg = _.get(err, 'error.params.errmsg')
-        this.matSnackBar.open(errMsg || 'Unable to upload profile image, please try again later!')
+        this.matSnackBar.open(errMsg || this.handleTranslateTo('uploadImageFailed'))
       }
     )
   }
@@ -1205,14 +944,6 @@ export class ProfileViewComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   ngOnDestroy() {
-    if (this.tabs) {
-      this.tabs.unsubscribe()
-    }
-
-    if (this.defaultSideNavBarOpenedSubscription) {
-      this.defaultSideNavBarOpenedSubscription.unsubscribe()
-    }
-
     this.destroySubject$.unsubscribe()
   }
 }
