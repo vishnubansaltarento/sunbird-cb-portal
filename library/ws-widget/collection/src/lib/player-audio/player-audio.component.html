@@ -3,21 +3,24 @@
     default>
 </audio>
 
-<div class="auto-play-audio" id="auto-play-audio" *ngIf="audioEnd">
-  <div class="up-next">
-    <div>{{'playerbrief.up' | translate}} &nbsp; {{'playerbrief.next' | translate}}</div>
-  </div>
-  <div class="circular-progress-container">
-    <div class="circular-progress">
-      <div class="play_arrow">
-        <mat-icon>play_arrow</mat-icon>
+<ng-container  *ngIf="!widgetData?.hideUpNext">
+  <div class="auto-play-audio" id="auto-play-audio" *ngIf="audioEnd">
+    <div class="up-next">
+      <div>{{'playerbrief.up' | translate}} &nbsp; {{'playerbrief.next' | translate}}</div>
+    </div>
+    <div class="circular-progress-container">
+      <div class="circular-progress">
+        <div class="play_arrow">
+          <mat-icon>play_arrow</mat-icon>
+        </div>
       </div>
     </div>
+    <div class="cancel-auto-progress" (click)="closeAutoPlay()">
+      <span>{{'playerbrief.cancel' | translate}}</span>
+    </div>
   </div>
-  <div class="cancel-auto-progress" (click)="closeAutoPlay()">
-    <span>{{'playerbrief.cancel' | translate}}</span>
-  </div>
-</div>
+</ng-container>
+
 
 <div class="auto-play-audio" id="auto-play-audio" *ngIf="replayAudioFlag" (click)="replayAudio()">
   <div class="cursor-pointer">

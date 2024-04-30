@@ -63,13 +63,28 @@ export class WidgetUserService {
     if (this.checkStorageData('enrollmentService', 'enrollmentData')) {
       const result: any =  this.http.get(path, { headers }).pipe(catchError(this.handleError), map(
           (data: any) => {
-            localStorage.setItem('enrollmentData', JSON.stringify(data.result))
+            const coursesData: any = []
+            if (data && data.result && data.result.courses) {
+              data.result.courses.forEach((content: any) => {
+                if (content.contentStatus) {
+                  delete content.contentStatus
+                }
+                coursesData.push(content)
+              })
+              data.result.courses = coursesData
+            }
+            if (data.result.courses.length < 200) {
+              localStorage.removeItem('enrollmentData')
+              this.setTime('enrollmentService')
+              localStorage.setItem('enrollmentData', JSON.stringify(data.result))
+              this.mapEnrollmentData(data.result)
+              return data.result
+            }
             this.mapEnrollmentData(data.result)
             return data.result
           }
         )
       )
-      this.setTime('enrollmentService')
       return result
     }
     return this.getData('enrollmentData')
@@ -282,6 +297,7 @@ export class WidgetUserService {
           enrollData[data.collectionId] = data
       })
     }
+    localStorage.removeItem('enrollmentMapData')
     localStorage.setItem('enrollmentMapData', JSON.stringify(enrollData))
   }
 }
