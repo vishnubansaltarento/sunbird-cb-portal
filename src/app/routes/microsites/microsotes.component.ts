@@ -11,7 +11,7 @@ export class MicrosotesComponent implements OnInit {
       'active': true,
       'enabled': true,
       'title': '',
-      'key': 'row2',
+      'key': 'sectionTopBanner',
       'order': 2,
       'column': [
         {
@@ -147,191 +147,7 @@ export class MicrosotesComponent implements OnInit {
       "active": true,
       "enabled": true,
       "title": "",
-      "key": "row4",
-      "order": 4,
-      "column": [
-        {
-          'active': true,
-          'enabled': true,
-          'key': 'contentStrip',
-          'title': 'Popular courses',
-          'data':  {
-            'order': 4,
-            'strips': [
-              {
-                'active': true,
-                'key': 'recentlyAdded',
-                'logo': 'school',
-                'title': 'Recently Added',
-                'stripTitleLink': {
-                  'link': '',
-                  'icon': '',
-                },
-                'sliderConfig': {
-                  'showNavs': true,
-                  'showDots': true,
-                  'maxWidgets': 12,
-                },
-                'stripBackground': '',
-                'titleDescription': 'Recently Added',
-                'stripConfig': {
-                  'cardSubType': 'card-portrait-lib',
-                },
-                'viewMoreUrl': {
-                  'path': '/app/seeAll',
-                  'viewMoreText': 'Show all',
-                  'queryParams': {
-                    'key': 'recentlyAdded',
-                  },
-                  'loaderConfig': {
-                    'cardSubType': 'card-portrait-lib-skeleton',
-                  },
-                  'stripConfig': {
-                    'cardSubType': 'card-portrait-lib',
-                  },
-                },
-                'loader': true,
-                'loaderConfig': {
-                  'cardSubType': 'card-portrait-lib-skeleton',
-                },
-                'tabs': [
-                ],
-                'filters': [],
-                'request': {
-                  'searchV6': {
-                    'request': {
-                      'filters': [
-                        {
-                          'primaryCategory': [
-                            'Course',
-                          ],
-                          'contentType': [
-                            'Course',
-                          ],
-                        },
-                      ],
-                      'query': '',
-                      'sort_by': {
-                        'lastUpdatedOn': 'desc',
-                      },
-                      'fields': [
-                        'name',
-                        'appIcon',
-                        'instructions',
-                        'description',
-                        'purpose',
-                        'mimeType',
-                        'gradeLevel',
-                        'identifier',
-                        'medium',
-                        'pkgVersion',
-                        'board',
-                        'subject',
-                        'resourceType',
-                        'primaryCategory',
-                        'contentType',
-                        'channel',
-                        'organisation',
-                        'trackable',
-                        'license',
-                        'posterImage',
-                        'idealScreenSize',
-                        'learningMode',
-                        'creatorLogo',
-                        'duration',
-                        'avgRating',
-                      ],
-                    },
-                  },
-                },
-              },
-
-            ],
-          },
-        },
-      ],
-    },
-    {
-      "active": true,
-      "enabled": true,
-      "title": "",
-      "key": "row6",
-      "order": 6,
-      "column": [
-        {
-          'active': true,
-          'enabled': true,
-          'key': 'competency',
-          'title': '',
-          'colspan': 12,
-          'data':  '',
-        },
-      ],
-    },
-    {
-      "active": true,
-      "enabled": true,
-      "title": "",
-      "key": "row7",
-      "order": 7,
-      "column": [
-        {
-          "active": true,
-          "enabled": true,
-          "key": "mbmetrics",
-          "background": 'transparent',
-          "title": "",
-          "colspan": 12,
-          "data":  [
-            {
-              icon: "https://portal.karmayogi.nic.in/content-store/content/do_114041344797859840128/artifact/do_114041344797859840128_1714031463360_star.svg",
-              iconColor: 'white',
-              header: '4.1',
-              headercolor: 'white',
-              description: 'Average Rating',
-              descriptionColor: 'black',
-              linebreak: false,
-              background: 'banner-metrics',
-            },
-            {
-              icon: "https://portal.karmayogi.nic.in/content-store/content/do_114041337110372352127/artifact/do_114041337110372352127_1714030607449_shape.svg",
-              iconColor: 'white',
-              header: '1234',
-              headercolor: 'white',
-              description: 'Content Available',
-              descriptionColor: 'black',
-              linebreak: false,
-              background: 'banner-metrics',
-            },
-            {
-              icon: "https://portal.karmayogi.nic.in/content-store/content/do_114041373226573824131/artifact/do_114041373226573824131_1714034836835_group_add.svg",
-              iconColor: 'white',
-              header: '7890',
-              headercolor: 'white',
-              description: 'Enrolments So Far',
-              descriptionColor: 'black',
-              linebreak: false,
-              background: 'banner-metrics',
-            },
-            {
-              icon: "https://portal.karmayogi.nic.in/content-store/content/do_114041378634399744134/artifact/do_114041378634399744134_1714035498087_combined-shape.svg",
-              iconColor: 'white',
-              header: '5678',
-              headercolor: 'white',
-              description: 'Certificates Issued So Far',
-              descriptionColor: 'black',
-              linebreak: false,
-              background: 'banner-metrics',
-            },
-          ],
-        }
-      ],
-    },
-    {
-      "active": true,
-      "enabled": true,
-      "title": "",
-      "key": "row8",
+      "key": "sectionInfrastructure",
       "order": 8,
       "column": [
         {
@@ -451,7 +267,132 @@ export class MicrosotesComponent implements OnInit {
           }
         }
       ]
-    }
+    },
+    {
+      "active": true,
+      "enabled": true,
+      "title": "",
+      "key": "sectionPopularCourses",
+      "order": 4,
+      "column": [
+        {
+          'active': true,
+          'enabled': true,
+          'key': 'contentStrip',
+          'title': 'Popular courses',
+          'data':  {
+            'order': 4,
+            'strips': [
+              {
+                'active': true,
+                'key': 'recentlyAdded',
+                'logo': 'school',
+                'title': 'Recently Added',
+                'stripTitleLink': {
+                  'link': '',
+                  'icon': '',
+                },
+                'sliderConfig': {
+                  'showNavs': true,
+                  'showDots': true,
+                  'maxWidgets': 12,
+                },
+                'stripBackground': '',
+                'titleDescription': 'Recently Added',
+                'stripConfig': {
+                  'cardSubType': 'card-portrait-lib',
+                },
+                'viewMoreUrl': {
+                  'path': '/app/seeAll',
+                  'viewMoreText': 'Show all',
+                  'queryParams': {
+                    'key': 'recentlyAdded',
+                  },
+                  'loaderConfig': {
+                    'cardSubType': 'card-portrait-lib-skeleton',
+                  },
+                  'stripConfig': {
+                    'cardSubType': 'card-portrait-lib',
+                  },
+                },
+                'loader': true,
+                'loaderConfig': {
+                  'cardSubType': 'card-portrait-lib-skeleton',
+                },
+                'tabs': [
+                ],
+                'filters': [],
+                'request': {
+                  'searchV6': {
+                    'request': {
+                      'filters': [
+                        {
+                          'primaryCategory': [
+                            'Course',
+                          ],
+                          'contentType': [
+                            'Course',
+                          ],
+                        },
+                      ],
+                      'query': '',
+                      'sort_by': {
+                        'lastUpdatedOn': 'desc',
+                      },
+                      'fields': [
+                        'name',
+                        'appIcon',
+                        'instructions',
+                        'description',
+                        'purpose',
+                        'mimeType',
+                        'gradeLevel',
+                        'identifier',
+                        'medium',
+                        'pkgVersion',
+                        'board',
+                        'subject',
+                        'resourceType',
+                        'primaryCategory',
+                        'contentType',
+                        'channel',
+                        'organisation',
+                        'trackable',
+                        'license',
+                        'posterImage',
+                        'idealScreenSize',
+                        'learningMode',
+                        'creatorLogo',
+                        'duration',
+                        'avgRating',
+                      ],
+                    },
+                  },
+                },
+              },
+
+            ],
+          },
+        },
+      ],
+    },
+    {
+      "active": true,
+      "enabled": false,
+      "title": "",
+      "key": "sectionCompetency",
+      "order": 6,
+      "column": [
+        {
+          'active': true,
+          'enabled': true,
+          'key': 'competency',
+          'title': '',
+          'colspan': 12,
+          'data':  '',
+        },
+      ],
+    }    
   ]
 
   constructor() { }
