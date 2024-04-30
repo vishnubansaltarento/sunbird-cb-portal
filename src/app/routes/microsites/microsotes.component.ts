@@ -112,7 +112,8 @@ export class MicrosotesComponent implements OnInit {
                 "bannerMetaAlign": "right",
                 "navigationArrows": "hidden",
                 "borderRadius": "0",
-                "customHeight": "424px"
+                "customHeight": "424px",
+                "mobileScreenHeight": "232px"
               },
               sliders: [
                 {
@@ -314,7 +315,7 @@ export class MicrosotesComponent implements OnInit {
                 'stripBackground': '',
                 'titleDescription': 'Recently Added',
                 'stripConfig': {
-                  'cardSubType': 'standard',
+                  'cardSubType': 'card-portrait-lib',
                 },
                 'viewMoreUrl': {
                   'path': '/app/seeAll',
@@ -323,15 +324,15 @@ export class MicrosotesComponent implements OnInit {
                     'key': 'recentlyAdded',
                   },
                   'loaderConfig': {
-                    'cardSubType': 'card-portrait-click-skeleton',
+                    'cardSubType': 'card-portrait-lib-skeleton',
                   },
                   'stripConfig': {
-                    'cardSubType': 'card-portrait-click',
+                    'cardSubType': 'card-portrait-lib',
                   },
                 },
                 'loader': true,
                 'loaderConfig': {
-                  'cardSubType': 'card-standard-skeleton',
+                  'cardSubType': 'card-portrait-lib-skeleton',
                 },
                 'tabs': [
                 ],
@@ -494,116 +495,52 @@ export class MicrosotesComponent implements OnInit {
           "active": true,
           "enabled": true,
           "key": "infra",
+          "background": 'infra-background',
           "title": "",
           "colspan": 12,
-          "data": {
-            "detaulTitle": "Know The",
-            "myTitle": "Infrastructure Details.",
-            "description": "Infrastructure is integral to creating a conducive and enriching learning environment.",
-            "dataColSpan": 2,
-            "background": 'infra-background',
-            "metrics": [
-              {
-                icon: "https://portal.karmayogi.nic.in/content-store/content/do_114041375850471424132/artifact/do_114041375850471424132_1714035157784_group.svg",
-                iconColor: 'white',
-                header: '41',
-                headercolor: 'white',
-                description: 'Available Classrooms',
-                descriptionColor: 'white custom-opacity',
-                linebreak: false,
-                background: 'tranparent',
-              },
-              {
-                icon: "https://portal.karmayogi.nic.in/content-store/content/do_114041377520844800133/artifact/do_114041377520844800133_1714035357308_computer.svg",
-                iconColor: 'white',
-                header: '1234',
-                headercolor: 'white',
-                description: 'Functioning Computer Labs',
-                descriptionColor: 'white custom-opacity',
-                linebreak: false,
-                background: 'tranparent',
-              },
-              {
-                icon: "https://portal.karmayogi.nic.in/content-store/content/do_114041379912810496135/artifact/do_114041379912810496135_1714035650285_auto_stories.svg",
-                iconColor: 'white',
-                header: '7890',
-                headercolor: 'white',
-                description: 'Functioning Libraries',
-                descriptionColor: 'white custom-opacity',
-                linebreak: false,
-                background: 'tranparent',
-              },
-              {
-                icon: "https://portal.karmayogi.nic.in/content-store/content/do_114041366180069376130/artifact/do_114041366180069376130_1714033990328_podium.svg",
-                iconColor: 'white',
-                header: '5678',
-                headercolor: 'white',
-                description: 'Auditoriums',
-                descriptionColor: 'white custom-opacity',
-                linebreak: false,
-                background: 'tranparent',
-              },
-            ],
-            sliders: [
-              {
-                'active': true,
-                'banners': {
-                  'l': 'assets/instances/eagle/banners/orgs/new-banner/6/l.png',
-                  'm': 'assets/instances/eagle/banners/orgs/new-banner/6/m.png',
-                  's': 'assets/instances/eagle/banners/orgs/new-banner/6/s.png',
-                  'xl': 'assets/instances/eagle/banners/orgs/new-banner/6/l.png',
-                  'xs': 'assets/instances/eagle/banners/orgs/new-banner/6/s.png',
-                  'xxl': 'assets/instances/eagle/banners/orgs/new-banner/6/l.png',
-                },
-                'redirectUrl': '/app/curatedCollections/do_1137524714202480641252',
-                'queryParams': {
-                  'tab': 'Learn',
-                  'q': 'Salesforce',
-                  'lang': 'en',
-                  'f': '{}',
-                },
-                'title': '',
-              },
-              {
-                'active': true,
-                'banners': {
-                  'l': 'assets/instances/eagle/banners/orgs/new-banner/4/l.png',
-                  'm': 'assets/instances/eagle/banners/orgs/new-banner/4/m.png',
-                  's': 'assets/instances/eagle/banners/orgs/new-banner/4/s.png',
-                  'xl': 'assets/instances/eagle/banners/orgs/new-banner/4/l.png',
-                  'xs': 'assets/instances/eagle/banners/orgs/new-banner/4/s.png',
-                  'xxl': 'assets/instances/eagle/banners/orgs/new-banner/4/l.png',
-                },
-                'redirectUrl': '/app/organisation/dopt',
-                'queryParams': {
-                  'tab': 'Learn',
-                  'q': 'Salesforce',
-                  'lang': 'en',
-                  'f': '{}',
-                },
-                'title': '',
-              },
-              {
-                'active': true,
-                'banners': {
-                  'l': 'assets/instances/eagle/banners/orgs/new-banner/2/l.png',
-                  'm': 'assets/instances/eagle/banners/orgs/new-banner/2/m.png',
-                  's': 'assets/instances/eagle/banners/orgs/new-banner/2/s.png',
-                  'xl': 'assets/instances/eagle/banners/orgs/new-banner/2/l.png',
-                  'xs': 'assets/instances/eagle/banners/orgs/new-banner/2/s.png',
-                  'xxl': 'assets/instances/eagle/banners/orgs/new-banner/2/l.png',
-                },
-                'redirectUrl': '/app/globalsearch',
-                'queryParams': {
-                  'tab': 'Learn',
-                  'q': 'Salesforce',
-                  'lang': 'en',
-                  'f': '{}',
-                },
-                'title': '',
-              },
-            ]
-          }
+          "dataColSpan": 2,
+          "data":  [
+            {
+              icon: "https://portal.karmayogi.nic.in/content-store/content/do_114041375850471424132/artifact/do_114041375850471424132_1714035157784_group.svg",
+              iconColor: 'white',
+              header: '41',
+              headercolor: 'white',
+              description: 'Available Classrooms',
+              descriptionColor: 'white custom-opacity',
+              linebreak: false,
+              background: 'tranparent',
+            },
+            {
+              icon: "https://portal.karmayogi.nic.in/content-store/content/do_114041377520844800133/artifact/do_114041377520844800133_1714035357308_computer.svg",
+              iconColor: 'white',
+              header: '1234',
+              headercolor: 'white',
+              description: 'Functioning Computer Labs',
+              descriptionColor: 'white custom-opacity',
+              linebreak: false,
+              background: 'tranparent',
+            },
+            {
+              icon: "https://portal.karmayogi.nic.in/content-store/content/do_114041379912810496135/artifact/do_114041379912810496135_1714035650285_auto_stories.svg",
+              iconColor: 'white',
+              header: '7890',
+              headercolor: 'white',
+              description: 'Functioning Libraries',
+              descriptionColor: 'white custom-opacity',
+              linebreak: false,
+              background: 'tranparent',
+            },
+            {
+              icon: "https://portal.karmayogi.nic.in/content-store/content/do_114041366180069376130/artifact/do_114041366180069376130_1714033990328_podium.svg",
+              iconColor: 'white',
+              header: '5678',
+              headercolor: 'white',
+              description: 'Auditoriums',
+              descriptionColor: 'white custom-opacity',
+              linebreak: false,
+              background: 'tranparent',
+            },
+          ],
         }
       ]
     }

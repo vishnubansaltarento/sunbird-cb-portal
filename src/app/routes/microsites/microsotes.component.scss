@@ -5,6 +5,10 @@
   @extend %page-center;
 }
 
+.container {
+    max-width: 1200px;
+}
+
 .banner-container{
     align-items: center;
     background: #eee;
@@ -30,7 +34,15 @@
 
 .logo-box-container {
     width: 180px;
+    height:180px;
+    position: relative;
+    @include breakpoint-xs {
+        width: 112px;
+        height: 72px;
+    }
 }
+
+
 
 .logo-box-rounded {
     height: 180px;
@@ -40,14 +52,21 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    box-shadow: 0px 0px 8px 2px rgba(0, 0, 0, 0.06);
+    box-shadow: 0px 2px 8px 0px rgba(0, 0, 0, 0.06);
+    @include breakpoint-xs {
+        width: 112px;
+        height:112px;
+    }
     .logo-img{
         max-width: 122px;
+        @include breakpoint-xs {
+            max-width: 84px;
+        }
     }
     &.top{
         position: absolute;
-        top: -50%;
-        transform: translateY(1.25rem);
+        top: calc(-50% - 1.25rem);
+        // transform: translateY(1.25rem);
     }
 }
 
