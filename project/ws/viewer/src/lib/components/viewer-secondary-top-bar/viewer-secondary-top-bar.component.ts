@@ -369,12 +369,11 @@ export class ViewerSecondaryTopBarComponent implements OnInit, OnDestroy {
     this.changeResource()
   }
 
-
   changeResource() {
-    setTimeout(()=>{
+    setTimeout(() => {
       this.appTocSvc.getPageScroll.next(true)
-    },700)
-   
+    },         700)
+
   }
 
   checkForNextOfflineOnlineSession() {

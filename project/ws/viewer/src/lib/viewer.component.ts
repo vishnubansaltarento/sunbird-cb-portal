@@ -136,13 +136,13 @@ export class ViewerComponent implements OnInit, OnDestroy, AfterViewChecked {
     this.getTocConfig()
     this.pageScrollSubscription = this.tocSvc.updatePageScroll.subscribe((value: boolean) => {
       if (value) {
-        setTimeout(()=>{
-          document.getElementsByClassName("viewer-player-container")[0].scrollIntoView({
-            behavior: "smooth",
-            block: "start",
-            inline: "start"
-         });
-        },1000)
+        setTimeout(() => {
+          document.getElementsByClassName('viewer-player-container')[0].scrollIntoView({
+            behavior: 'smooth',
+            block: 'start',
+            inline: 'start',
+         })
+        },         1000)
       }
     })
 
@@ -194,7 +194,6 @@ export class ViewerComponent implements OnInit, OnDestroy, AfterViewChecked {
         }
       }
 
-      
     })
 
     this.getAuthDataIdentifer()
@@ -253,10 +252,8 @@ export class ViewerComponent implements OnInit, OnDestroy, AfterViewChecked {
         this.downloadCertificate(enrollCourseData)
       }
     }
-   
+
   }
-
-
 
   ngAfterViewChecked() {
     // console.log("ngAfterViewChecked calle!----------")
@@ -268,7 +265,7 @@ export class ViewerComponent implements OnInit, OnDestroy, AfterViewChecked {
       this.fullScreenContainer = null
       this.changeDetector.detectChanges()
     }
-   
+
   }
 
   ngOnDestroy() {
@@ -387,6 +384,5 @@ export class ViewerComponent implements OnInit, OnDestroy, AfterViewChecked {
   updateCount(event: any) {
     this.completedCount = event
   }
-
 
  }
