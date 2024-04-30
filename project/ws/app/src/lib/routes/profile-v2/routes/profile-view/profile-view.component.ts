@@ -35,6 +35,7 @@ import { TransferRequestComponent } from '../../components/transfer-request/tran
 import { WithdrawRequestComponent } from '../../components/withdraw-request/withdraw-request.component'
 import { NotificationComponent } from '@ws/author/src/lib/modules/shared/components/notification/notification.component'
 import { DesignationRequestComponent } from '../../components/designation-request/designation-request.component'
+import { HomePageService } from 'src/app/services/home-page.service'
 
 export const MY_FORMATS = {
   parse: {
@@ -73,7 +74,8 @@ export class ProfileViewComponent implements OnInit, AfterViewInit, OnDestroy {
     private translateService: TranslateService,
     private otpService: OtpService,
     private loader: LoaderService,
-    private pipeImgUrl: PipeCertificateImageURL
+    private pipeImgUrl: PipeCertificateImageURL,
+    private homeService: HomePageService
   ) {
 
     if (localStorage.getItem('websiteLanguage')) {
@@ -141,7 +143,7 @@ export class ProfileViewComponent implements OnInit, AfterViewInit, OnDestroy {
       })
     }
 
-    // this.pageData = this.route.parent && this.route.parent.snapshot.data.pageData.data
+    this.pageData = this.route.parent && this.route.parent.snapshot.data.pageData.data
     this.currentUser = this.configService && this.configService.userProfile
     // this.tabsData = this.route.parent && this.route.parent.snapshot.data.pageData.data.tabs || []
     // this.selectedTabIndex = this.route.snapshot.queryParams && this.route.snapshot.queryParams.tab || 0
@@ -152,9 +154,9 @@ export class ProfileViewComponent implements OnInit, AfterViewInit, OnDestroy {
       //   this.fetchCertificates(this.certificatesData)
       // }
 
-      // if (data.profile.data) {
-      //   this.orgId = data.profile.data.rootOrgId
-      // }
+      if (data.profile.data) {
+        this.orgId = data.profile.data.rootOrgId
+      }
 
       if (data.profile.data.profileDetails) {
         this.portalProfile = data.profile.data.profileDetails
@@ -215,42 +217,43 @@ export class ProfileViewComponent implements OnInit, AfterViewInit, OnDestroy {
   currentUsername: any
   // enrolledCourse: any = []
   // allCertificate: any = []
-  // pageData: any
+  pageData: any
   // sideNavBarOpened = true
   // private defaultSideNavBarOpenedSubscription: any
   // public screenSizeIsLtMedium = false
   // isLtMedium$ = this.valueSvc.isLtMedium$
-  // insightsData: any
+  
   // mode$ = this.isLtMedium$.pipe(map(isMedium => (isMedium ? 'over' : 'side')))
-  // orgId: any
-  // selectedTabIndex: any
+  orgId: any
+  selectedTabIndex: any
 
   // pendingRequestData: any = []
   // pendingRequestSkeleton = true
-  // insightsDataLoading = true
+  insightsData: any
+  insightsDataLoading = false
 
   // countdata = 0
   // enrollInterval: any
 
-  // discussion = {
-  //   loadSkeleton: false,
-  //   data: undefined,
-  //   error: false,
-  // }
-  // recentRequests = {
-  //   data: undefined,
-  //   error: false,
-  //   loadSkeleton: false,
-  // }
-  // updatesPosts = {
-  //   data: undefined,
-  //   error: false,
-  //   loadSkeleton: false,
-  // }
+  discussion = {
+    loadSkeleton: false,
+    data: undefined,
+    error: false,
+  }
+  recentRequests = {
+    data: undefined,
+    error: false,
+    loadSkeleton: false,
+  }
+  updatesPosts = {
+    data: undefined,
+    error: false,
+    loadSkeleton: false,
+  }
   // certificatesData: any
-  // showCreds = false
-  // credMessage = 'View my credentials'
-  // assessmentsData: any
+  showCreds = false
+  credMessage = 'View my credentials'
+  assessmentsData: any
   isCurrentUser!: boolean
 
   // Latest variables...
@@ -333,6 +336,8 @@ export class ProfileViewComponent implements OnInit, AfterViewInit, OnDestroy {
     this.getProfilePageMetaData()
     this.getSendApprovalStatus()
     this.getRejectedStatus()
+    this.getInsightsData()
+    this.getAssessmentData()
   }
 
   ngAfterViewInit() {
@@ -376,29 +381,29 @@ export class ProfileViewComponent implements OnInit, AfterViewInit, OnDestroy {
   //   }
   // }
 
-  // fetchDiscussionsData(): void {
-  //   this.discussion.loadSkeleton = true
-  //   this.homeSvc.getDiscussionsData(this.currentUser.userName)
-  //   .pipe(takeUntil(this.destroySubject$))
-  //   .subscribe(
-  //     (res: any) => {
-  //       this.discussion.loadSkeleton = false
-  //       this.updatesPosts.loadSkeleton = false
-  //       this.discussion.data = res && res.latestPosts
-  //       this.updatesPosts.data = res && res.latestPosts && res.latestPosts.sort((x: any, y: any) => {
-  //         return y.timestamp - x.timestamp
-  //       })
-  //     },
-  //     (error: HttpErrorResponse) => {
-  //       if (!error.ok) {
-  //         this.discussion.loadSkeleton = false
-  //         this.updatesPosts.loadSkeleton = false
-  //         this.discussion.error = true
-  //         this.updatesPosts.error = true
-  //       }
-  //     }
-  //   )
-  // }
+  fetchDiscussionsData(): void {
+    this.discussion.loadSkeleton = true
+    this.homeService.getDiscussionsData(this.currentUser.userName)
+    .pipe(takeUntil(this.destroySubject$))
+    .subscribe(
+      (res: any) => {
+        this.discussion.loadSkeleton = false
+        this.updatesPosts.loadSkeleton = false
+        this.discussion.data = res && res.latestPosts
+        this.updatesPosts.data = res && res.latestPosts && res.latestPosts.sort((x: any, y: any) => {
+          return y.timestamp - x.timestamp
+        })
+      },
+      (error: HttpErrorResponse) => {
+        if (!error.ok) {
+          this.discussion.loadSkeleton = false
+          this.updatesPosts.loadSkeleton = false
+          this.discussion.error = true
+          this.updatesPosts.error = true
+        }
+      }
+    )
+  }
 
   // fetchRecentRequests(): void {
   //   this.recentRequests.loadSkeleton = true
@@ -534,66 +539,66 @@ export class ProfileViewComponent implements OnInit, AfterViewInit, OnDestroy {
   //   })
   // }
 
-  // public tabClicked(_tabEvent: MatTabChangeEvent) {}
+  getInsightsData() {
+    this.insightsDataLoading = true
+    const request = {
+      request: {
+        filters: {
+          primaryCategory: 'programs',
+          organisations: [
+            'across',
+            this.orgId,
+          ],
+        },
+      },
+    }
+    this.homeService.getInsightsData(request)
+    .pipe(takeUntil(this.destroySubject$))
+    .subscribe((res: any) => {
+      if (res.result.response) {
+        this.insightsData = res.result.response
+        
+        this.constructNudgeData()
+        if (this.insightsData && this.insightsData['weekly-claps']) {
+          this.insightsData['weeklyClaps'] = this.insightsData['weekly-claps']
+        }
+      } else {
+        this.insightsDataLoading = false
+      }
+    },         (_error: HttpErrorResponse) => {
+      this.insightsDataLoading = false
+    })
+  }
 
-  // getInsightsData() {
-  //   this.insightsDataLoading = true
-  //   const request = {
-  //     request: {
-  //         filters: {
-  //             primaryCategory: 'programs',
-  //             organisations: [
-  //                 'across',
-  //                 this.orgId,
-  //             ],
-  //         },
-  //     },
-  //   }
-  //   this.homeSvc.getInsightsData(request)
-  //   .pipe(takeUntil(this.destroySubject$))
-  //   .subscribe((res: any) => {
-  //     if (res.result.response) {
-  //       this.insightsData = res.result.response
-  //       this.constructNudgeData()
-  //       if (this.insightsData && this.insightsData['weekly-claps']) {
-  //         this.insightsData['weeklyClaps'] = this.insightsData['weekly-claps']
-  //       }
-  //     }
-  //     this.insightsDataLoading = false
-  //   },         (_error: HttpErrorResponse) => {
-  //     this.insightsDataLoading = false
-  //   })
-  // }
-
-  // constructNudgeData() {
-  //   this.insightsDataLoading = true
-  //   const nudgeData: any = {
-  //     type: 'data',
-  //     iconsDisplay: false,
-  //     cardClass: 'slider-container',
-  //     height: 'auto',
-  //     width: '',
-  //     sliderData: [],
-  //     negativeDisplay: false,
-  //     'dot-default': 'dot-grey',
-  //     'dot-active': 'dot-active',
-  //   }
-  //   const sliderData: { title: any; icon: string; data: string; colorData: string; }[] = []
-  //   this.insightsData.nudges.forEach((ele: any) => {
-  //     if (ele) {
-  //       const data = {
-  //         title: ele.label,
-  //         icon: ele.growth === 'positive' ?  'arrow_upward' : 'arrow_downward',
-  //         data: ele.growth === 'positive' && ele.progress > 1 ? `+${Math.round(ele.progress)}%` : '',
-  //         colorData: ele.growth === 'positive' ? 'color-green' : 'color-red',
-  //       }
-  //       sliderData.push(data)
-  //     }
-  //   })
-  //   nudgeData.sliderData = sliderData
-  //   this.insightsData['sliderData'] = nudgeData
-  //   this.insightsDataLoading = false
-  // }
+  constructNudgeData() {
+    // this.insightsDataLoading = true
+    const nudgeData: any = {
+      type: 'data',
+      iconsDisplay: false,
+      cardClass: 'slider-container',
+      height: 'auto',
+      width: '',
+      sliderData: [],
+      negativeDisplay: false,
+      'dot-default': 'dot-grey',
+      'dot-active': 'dot-active',
+    }
+    const sliderData: { title: any; icon: string; data: string; colorData: string; }[] = []
+    this.insightsData.nudges.forEach((ele: any) => {
+      if (ele) {
+        const data = {
+          title: ele.label,
+          icon: ele.growth === 'positive' ?  'arrow_upward' : 'arrow_downward',
+          data: ele.growth === 'positive' && ele.progress > 1 ? `+${Math.round(ele.progress)}%` : '',
+          colorData: ele.growth === 'positive' ? 'color-green' : 'color-red',
+        }
+        sliderData.push(data)
+      }
+    })
+    nudgeData.sliderData = sliderData
+    this.insightsData['sliderData'] = nudgeData
+    this.insightsDataLoading = false
+  }
 
   // getPendingRequestData() {
   //   this.homeSvc.getRecentRequests()
@@ -614,48 +619,48 @@ export class ProfileViewComponent implements OnInit, AfterViewInit, OnDestroy {
   //   )
   // }
 
-  // toggleCreds() {
-  //   this.showCreds = !this.showCreds
-  //   if (this.showCreds) {
-  //     this.credMessage = 'Hide my credentials'
-  //   } else {
-  //     this.credMessage = 'View my credentials'
-  //   }
-  // }
+  toggleCreds() {
+    this.showCreds = !this.showCreds
+    if (this.showCreds) {
+      this.credMessage = 'Hide my credentials'
+    } else {
+      this.credMessage = 'View my credentials'
+    }
+  }
 
-  // copyToClipboard(text: string) {
-  //   const textArea = document.createElement('textarea')
-  //   textArea.value = text
-  //   document.body.appendChild(textArea)
-  //   textArea.select()
-  //   document.execCommand('copy')
-  //   document.body.removeChild(textArea)
-  //   this.openSnackbar('copied')
-  // }
+  copyToClipboard(text: string) {
+    const textArea = document.createElement('textarea')
+    textArea.value = text
+    document.body.appendChild(textArea)
+    textArea.select()
+    document.execCommand('copy')
+    document.body.removeChild(textArea)
+    this.openSnackbar('copied')
+  }
 
-  // getAssessmentData() {
-  //   this.homeSvc.getAssessmentinfo()
-  //   .pipe(takeUntil(this.destroySubject$))
-  //   .subscribe(
-  //     (res: any) => {
-  //       if (res && res.result && res.result.response) {
-  //         this.assessmentsData = res.result.response
-  //       }
-  //     },
-  //     (error: HttpErrorResponse) => {
-  //       if (!error.ok) {
-  //         // tslint:disable-next-line
-  //         console.log(error)
-  //       }
-  //     }
-  //   )
-  // }
+  getAssessmentData() {
+    this.homeService.getAssessmentinfo()
+    .pipe(takeUntil(this.destroySubject$))
+    .subscribe(
+      (res: any) => {
+        if (res && res.result && res.result.response) {
+          this.assessmentsData = res.result.response
+        }
+      },
+      (error: HttpErrorResponse) => {
+        if (!error.ok) {
+          // tslint:disable-next-line
+          console.log(error)
+        }
+      }
+    )
+  }
 
-  // private openSnackbar(primaryMsg: string, duration: number = 5000) {
-  //   this.matSnackBar.open(primaryMsg, 'X', {
-  //     duration,
-  //   })
-  // }
+  private openSnackbar(primaryMsg: string, duration: number = 5000) {
+    this.matSnackBar.open(primaryMsg, 'X', {
+      duration,
+    })
+  }
 
   handleEditOtherDetails(): void {
     if (this.portalProfile.personalDetails.primaryEmail) {
