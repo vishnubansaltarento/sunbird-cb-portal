@@ -70,6 +70,7 @@ export class ViewerComponent implements OnInit, OnDestroy, AfterViewChecked {
   pathSet: any
   tocConfig: any = null
   isAssessmentScreen = false
+  pageScrollSubscription: Subscription | null = null
   constructor(
     private activatedRoute: ActivatedRoute,
     private router: Router,
@@ -86,6 +87,7 @@ export class ViewerComponent implements OnInit, OnDestroy, AfterViewChecked {
     public pdfScormDataService: PdfScormDataService,
     private translate: TranslateService,
     public tocSvc: AppTocService,
+    // private renderer: Renderer2,
   ) {
     this.rootSvc.showNavbarDisplay$.next(false)
     this.abc.mobileTopHeaderVisibilityStatus.next(false)
@@ -132,6 +134,18 @@ export class ViewerComponent implements OnInit, OnDestroy, AfterViewChecked {
 
   ngOnInit() {
     this.getTocConfig()
+    this.pageScrollSubscription = this.tocSvc.updatePageScroll.subscribe((value: boolean) => {
+      if (value) {
+        setTimeout(()=>{
+          document.getElementsByClassName("viewer-player-container")[0].scrollIntoView({
+            behavior: "smooth",
+            block: "start",
+            inline: "start"
+         });
+        },1000)
+      }
+    })
+
     const contentData = this.activatedRoute.snapshot.data.hierarchyData
     && this.activatedRoute.snapshot.data.hierarchyData.data || ''
     this.enrollmentList = this.activatedRoute.snapshot.data.enrollmentData
@@ -179,6 +193,8 @@ export class ViewerComponent implements OnInit, OnDestroy, AfterViewChecked {
           sideNavBarDrawerState.style.display = 'none'
         }
       }
+
+      
     })
 
     this.getAuthDataIdentifer()
@@ -237,9 +253,13 @@ export class ViewerComponent implements OnInit, OnDestroy, AfterViewChecked {
         this.downloadCertificate(enrollCourseData)
       }
     }
+   
   }
 
+
+
   ngAfterViewChecked() {
+    // console.log("ngAfterViewChecked calle!----------")
     const container = document.getElementById('fullScreenContainer')
     if (container) {
       this.fullScreenContainer = container
@@ -248,6 +268,7 @@ export class ViewerComponent implements OnInit, OnDestroy, AfterViewChecked {
       this.fullScreenContainer = null
       this.changeDetector.detectChanges()
     }
+   
   }
 
   ngOnDestroy() {
@@ -257,6 +278,9 @@ export class ViewerComponent implements OnInit, OnDestroy, AfterViewChecked {
     }
     if (this.resourceChangeSubscription) {
       this.resourceChangeSubscription.unsubscribe()
+    }
+    if (this.pageScrollSubscription) {
+      this.pageScrollSubscription.unsubscribe()
     }
   }
 
@@ -363,4 +387,6 @@ export class ViewerComponent implements OnInit, OnDestroy, AfterViewChecked {
   updateCount(event: any) {
     this.completedCount = event
   }
-}
+
+
+ }

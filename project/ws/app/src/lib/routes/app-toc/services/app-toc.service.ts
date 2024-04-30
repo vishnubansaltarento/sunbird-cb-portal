@@ -58,6 +58,9 @@ export class AppTocService {
 
   public contentLoader = new BehaviorSubject(false)
   contentLoader$ = this.contentLoader.asObservable()
+
+  public getPageScroll = new BehaviorSubject(true)
+  updatePageScroll = this.getPageScroll.asObservable()
   public hashmap: any = {}
 
   constructor(private http: HttpClient, private configSvc: ConfigurationsService, private widgetSvc: WidgetContentService) {

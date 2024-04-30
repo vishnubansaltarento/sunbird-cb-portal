@@ -9,6 +9,8 @@ import { animate, style, transition, trigger } from '@angular/animations'
 import _ from 'lodash'
 import moment from 'moment'
 import { CertificateService } from '@ws/app/src/lib/routes/certificate/services/certificate.service'
+import { AppTocService } from '@ws/app/src/lib/routes/app-toc/services/app-toc.service'
+import { Subscription } from 'rxjs'
 
 @Component({
   selector: 'ws-widget-app-toc-content-card-v2',
@@ -65,11 +67,13 @@ export class AppTocContentCardV2Component implements OnInit {
   defaultThumbnail = ''
   viewChildren = false
   primaryCategory = NsContent.EPrimaryCategory
+  pageScrollSubscription: Subscription | null = null
   constructor(
     private events: EventService,
     private dialog: MatDialog,
     private renderer: Renderer2,
     private certificateService: CertificateService,
+    private appTocSvc: AppTocService
   ) { }
 
   ngOnInit() {
@@ -78,7 +82,24 @@ export class AppTocContentCardV2Component implements OnInit {
     //     this.defaultThumbnail = data.configData.data.logos.defaultContent
     //   }
     // )
+
+    this.resourceScroll()
   }
+
+  resourceScroll() {
+    this.pageScrollSubscription = this.appTocSvc.updatePageScroll.subscribe((value: boolean) => {
+      if (value) {
+        setTimeout(()=>{
+          this.scrollView()
+        },700) 
+      }
+    })
+  }
+
+  changeResource() {
+    this.appTocSvc.getPageScroll.next(true)
+  }
+
   ngOnChanges(changes: SimpleChanges) {
     for (const property in changes) {
       if (property === 'expandAll') {
@@ -92,15 +113,17 @@ export class AppTocContentCardV2Component implements OnInit {
           xs.size === ys.size &&
           [...xs].every((x) => ys.has(x));
           if(!eqSet(previousValue, currentValue)){
-            this.scrollView()
+           
           }
         }
         if(previousValue === undefined){
           setTimeout(()=>{
-            this.scrollView()
+           
           },700)
         }
       }
+      // this.appTocSvc.getPageScroll.next(true)
+    
       if (property === 'hierarchyMapData') {
         if(_.isEmpty(changes['hierarchyMapData'].currentValue)){
           // this.loadingOverallPRogress = true
@@ -110,9 +133,13 @@ export class AppTocContentCardV2Component implements OnInit {
           }
         }
       }
+
+     
     }
     
   }
+
+  
 
   check(content: any) {
     if(this.expandActive) {
@@ -120,6 +147,8 @@ export class AppTocContentCardV2Component implements OnInit {
     }
     return content.viewChildren
   }
+
+  
 
   get isCollection(): boolean {
     if (this.content) {
@@ -167,8 +196,10 @@ export class AppTocContentCardV2Component implements OnInit {
   }
 
   get isResource(): boolean {
-    if (this.content) {
-      return (
+   
+    // this.resourceScroll()
+    if (this.content) {  
+      return ( 
         this.content.primaryCategory === NsContent.EPrimaryCategory.RESOURCE
         // || this.content.primaryCategory === NsContent.EPrimaryCategory.KNOWLEDGE_ARTIFACT
         || this.content.primaryCategory === NsContent.EPrimaryCategory.PRACTICE_RESOURCE
@@ -408,6 +439,10 @@ export class AppTocContentCardV2Component implements OnInit {
             }
           }
       } 
+      setTimeout(()=>{
+        this.appTocSvc.getPageScroll.next(false)
+      },700)
+     
       // else {
       //   errorField.scrollIntoView({ behavior: "smooth", block: "start", inline: "nearest" });
       //   const rect = errorField.getBoundingClientRect();
@@ -444,4 +479,12 @@ export class AppTocContentCardV2Component implements OnInit {
       this.downloadCertificateLoading = false
     }
   }
+
+  ngOnDestroy() {
+  
+    if (this.pageScrollSubscription) {
+      this.pageScrollSubscription.unsubscribe()
+    }
+  }
+
 }

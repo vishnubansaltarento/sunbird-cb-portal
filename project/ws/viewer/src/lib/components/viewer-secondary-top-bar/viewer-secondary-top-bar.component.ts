@@ -10,6 +10,7 @@ import { ViewerDataService } from '../../viewer-data.service'
 import { ViewerUtilService } from '../../viewer-util.service'
 import { CourseCompletionDialogComponent } from '../course-completion-dialog/course-completion-dialog.component'
 import { PdfScormDataService } from '../../pdf-scorm-data-service'
+import { AppTocService } from '@ws/app/src/lib/routes/app-toc/services/app-toc.service'
 
 @Component({
   selector: 'viewer-viewer-secondary-top-bar',
@@ -75,6 +76,7 @@ export class ViewerSecondaryTopBarComponent implements OnInit, OnDestroy {
     private viewerSvc: ViewerUtilService,
     private pdfScormDataService: PdfScormDataService,
     private events: EventService,
+    private appTocSvc: AppTocService,
   ) {
     this.valueSvc.isXSmall$.subscribe(isXSmall => {
       this.logo = !isXSmall
@@ -364,6 +366,15 @@ export class ViewerSecondaryTopBarComponent implements OnInit, OnDestroy {
       this.pdfContentProgressData['status'] = 2
       this.finishDialog()
     }
+    this.changeResource()
+  }
+
+
+  changeResource() {
+    setTimeout(()=>{
+      this.appTocSvc.getPageScroll.next(true)
+    },700)
+   
   }
 
   checkForNextOfflineOnlineSession() {
@@ -376,6 +387,7 @@ export class ViewerSecondaryTopBarComponent implements OnInit, OnDestroy {
         this.router.navigate([this.nextResourceUrl], { queryParams: this.nextResourceUrlParams.queryParams })
       },         0)
     }
+    this.changeResource()
   }
 
   checkForPrevOfflineOnlineSession() {
@@ -389,6 +401,7 @@ export class ViewerSecondaryTopBarComponent implements OnInit, OnDestroy {
         this.router.navigate([this.prevResourceUrl], { queryParams: this.prevResourceUrlParams.queryParams })
       },         0)
     }
+    this.changeResource()
   }
 
   onClickOfShare() {
