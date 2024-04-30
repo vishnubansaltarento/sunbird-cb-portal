@@ -25,7 +25,7 @@
                                 <ng-container *ngSwitchCase="'mbmetrics'" [ngTemplateOutlet]="mbmetrics"
                                     [ngTemplateOutletContext]="{mbmetrics: column}"></ng-container>
                                 <ng-container *ngSwitchCase="'infra'" [ngTemplateOutlet]="infra"
-                                    [ngTemplateOutletContext]="{infra: column}"></ng-container>
+                                    [ngTemplateOutletContext]="{infra: column.data}"></ng-container>
                             </ng-container>
                         </div>
                     </ng-container>
@@ -180,6 +180,37 @@
 
 <ng-template #infra let-infra="infra">
     <div class="{{infra.background}}">
-        <sb-uic-data-points [objectData]="infra" [layoutType]="'gridLayout'"></sb-uic-data-points>
+        <div class="container-balanced">
+            <div class="grid grid-cols-12 gap-4 infra-sec ">
+                <div class="col-span-12 md:col-span-4 infra-sec-desc">
+                    <div class="infra-box flex flex-col">
+                        <div class="infra-title hidden md:block">
+                            {{infra.detaulTitle}}
+                        </div>
+                        <div class="infra-title2 hidden md:block">
+                            {{infra.myTitle}}
+                        </div>
+                        <div class="block md:hidden">
+                            <span class="infra-title">{{infra.detaulTitle}}</span> <span class="infra-title2"> {{infra.myTitle}}</span>
+                        </div>
+                        <div class="infra-description padding-top-s">
+                            {{infra.description}}
+                        </div>
+                    </div>
+                </div>
+                <div class="col-span-12 md:col-span-8">
+                    <sb-uic-data-points [objectData]="infra" [layoutType]="'gridLayout'"></sb-uic-data-points>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="{{infra.background}} slider-background">
+    </div>
+    <div class="slider-background1">
+        <div class="container-balanced w-full slider-background-2">
+            <div class="info-slider">
+                <ws-widget-sliders [widgetData]="infra.sliders"></ws-widget-sliders>
+            </div>
+        </div>
     </div>
 </ng-template>
