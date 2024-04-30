@@ -5,6 +5,10 @@
   @extend %page-center;
 }
 
+.container {
+    max-width: 1200px;
+}
+
 .banner-container{
     align-items: center;
     background: #eee;
@@ -30,7 +34,15 @@
 
 .logo-box-container {
     width: 180px;
+    height:180px;
+    position: relative;
+    @include breakpoint-xs {
+        width: 112px;
+        height: 72px;
+    }
 }
+
+
 
 .logo-box-rounded {
     height: 180px;
@@ -40,14 +52,21 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    box-shadow: 0px 0px 8px 2px rgba(0, 0, 0, 0.06);
+    box-shadow: 0px 2px 8px 0px rgba(0, 0, 0, 0.06);
+    @include breakpoint-xs {
+        width: 112px;
+        height:112px;
+    }
     .logo-img{
         max-width: 122px;
+        @include breakpoint-xs {
+            max-width: 84px;
+        }
     }
     &.top{
         position: absolute;
-        top: -50%;
-        transform: translateY(1.25rem);
+        top: calc(-50% - 1.25rem);
+        // transform: translateY(1.25rem);
     }
 }
 
@@ -77,6 +96,102 @@
     background: linear-gradient(180deg, #F9CB97 -107.59%, #EF951E 110.74%);
 }
 
+.infra-sec {
+    padding: 25px 0px;
+}
+.infra-sec-desc {
+    padding-top: 32px
+}
 .infra-background {
     background: #1B4CA1;
+}
+.infra-box {
+    width: 256px;
+    height: 146px;       
+}
+.infra-title {
+    font-family: Montserrat;
+    font-size: 24px;
+    font-weight: 600;
+    line-height: 29.26px;
+    text-align: left;
+    color: white;
+}
+.infra-title2 {
+    font-family: Montserrat;
+    font-size: 24px;
+    font-weight: 600;
+    line-height: 29.26px;
+    text-align: left;
+    color: #EF951E;
+}
+.infra-description {
+    font-family: Lato;
+    font-size: 14px;
+    font-weight: 400;
+    line-height: 16.8px;
+    text-align: left;
+    color: white;
+}
+
+.overlay {
+    position: absolute;
+    top: -20px
+}
+
+.slider-background {
+    height: 160px;
+}
+
+.slider-background1 {
+    height: 195px;
+}
+
+.slider-background-2 {
+    position: relative;
+}
+
+.info-slider{
+    position: absolute; 
+    top: -180px; 
+    padding: 25px;
+}
+
+@media screen and (max-width: 768px) { 
+    .infra-sec {
+        padding: 15px;
+    }
+    .infra-box {
+        width: 99%;
+        height: auto;
+    }
+    .infra-sec-desc {
+        padding-top: 0;
+    }
+
+    .infra-title {
+        font-family: Montserrat;
+        font-size: 16px;
+        font-weight: 600;
+        line-height: 19.5px;
+        text-align: left;
+    }
+    .infra-title2 {
+        font-family: Montserrat;
+        font-size: 16px;
+        font-weight: 600;
+        line-height: 19.5px;
+        text-align: left;
+    }
+    .slider-background {
+        height: 150px;
+    }
+    .slider-background1 {
+        height: 150px;
+    }
+    .info-slider{
+        position: absolute; 
+        top: -155px; 
+    }
+    
 }
