@@ -1,4 +1,4 @@
-import { AfterViewInit, Component, OnDestroy, OnInit } from '@angular/core'
+import { Component, OnDestroy, OnInit } from '@angular/core'
 import { HttpErrorResponse } from '@angular/common/http'
 import { ActivatedRoute, Router } from '@angular/router'
 import { MatDialog } from '@angular/material/dialog'
@@ -14,21 +14,16 @@ import moment from 'moment'
 import { Subject } from 'rxjs'
 import { debounceTime, distinctUntilChanged, startWith, takeUntil } from 'rxjs/operators'
 
-import { ImageCropComponent, ConfigurationsService } from '@sunbird-cb/utils';
-// import { NsContent, WidgetContentService } from '@sunbird-cb/collection'
+import { ImageCropComponent, ConfigurationsService } from '@sunbird-cb/utils'
 import { LoaderService } from '@ws/author/src/public-api'
 import { PipeCertificateImageURL } from '@sunbird-cb/utils/src/public-api'
 import { IMAGE_MAX_SIZE, PROFILE_IMAGE_SUPPORT_TYPES } from '@ws/author/src/lib/constants/upload'
 import { Notify } from '@ws/author/src/lib/constants/notificationMessage'
 import { NOTIFICATION_TIME } from '@ws/author/src/lib/constants/constant'
-// import { HomePageService } from 'src/app/services/home-page.service'
-// import { DiscussService } from '../../../discuss/services/discuss.service'
-// import { NetworkV2Service } from '../../../network-v2/services/network-v2.service'
 import { UserProfileService } from '../../../user-profile/services/user-profile.service'
 import { OtpService } from '../../../user-profile/services/otp.services'
 
 import { NSProfileDataV2 } from '../../models/profile-v2.model'
-// import { NSNetworkDataV2 } from '../../../network-v2/models/network-v2.model'
 import { NsUserProfileDetails } from '../../../user-profile/models/NsUserProfile'
 import { VerifyOtpComponent } from '../../components/verify-otp/verify-otp.component'
 import { TransferRequestComponent } from '../../components/transfer-request/transfer-request.component'
@@ -48,6 +43,9 @@ export const MY_FORMATS = {
     monthYearA11yLabel: 'YYYY',
   },
 }
+const EMAIL_PATTERN = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/
+const MOBILE_PATTERN = /^\d{10}$/
+const PIN_CODE_PATTERN = /^[1-9][0-9]{5}$/
 
 @Component({
   selector: 'app-profile-view',
@@ -62,7 +60,87 @@ export const MY_FORMATS = {
   ],
 })
 
-export class ProfileViewComponent implements OnInit, AfterViewInit, OnDestroy {
+export class ProfileViewComponent implements OnInit, OnDestroy {
+
+  currentUsername: any
+  pageData: any
+  orgId: any
+  selectedTabIndex: any
+  insightsData: any
+  insightsDataLoading = false
+  discussion = {
+    loadSkeleton: false,
+    data: undefined,
+    error: false,
+  }
+  recentRequests = {
+    data: undefined,
+    error: false,
+    loadSkeleton: false,
+  }
+  updatesPosts = {
+    data: undefined,
+    error: false,
+    loadSkeleton: false,
+  }
+  showCreds = false
+  credMessage = 'View my credentials'
+  assessmentsData: any
+  isCurrentUser!: boolean
+
+  private destroySubject$ = new Subject()
+  portalProfile!: NSProfileDataV2.IProfile
+  currentUser: any
+  nameInitials = ''
+  verifyEmail = false
+  verifyMobile = false
+  countryCodes: any[] = []
+  countryCodesBackUp: any[] = []
+  nationalityData: any[] = []
+  editDetails = false
+  editProfile = false
+  editName = false
+  eUserGender = Object.keys(NsUserProfileDetails.EUserGender)
+  eCategory = Object.keys(NsUserProfileDetails.ECategory)
+  masterLanguages: any[] | undefined
+  masterLanguageBackup: any[] | undefined
+  dateOfBirth: any | undefined
+  groupData: any | undefined
+  profileMetaData: any | undefined
+  imageTypes = PROFILE_IMAGE_SUPPORT_TYPES
+  photoUrl!: string | ArrayBuffer | null
+  profileName = ''
+  enableWTR = false
+  enableWR = false
+  feedbackInfo = ''
+  skeletonLoader = false
+  otherDetailsForm = new FormGroup({
+    employeeCode: new FormControl('', []),
+    primaryEmail: new FormControl('', [Validators.pattern(EMAIL_PATTERN)]),
+    mobile: new FormControl('', [Validators.minLength(10), Validators.maxLength(10), Validators.pattern(MOBILE_PATTERN)]),
+    gender: new FormControl('', []),
+    dob: new FormControl('', []),
+    domicileMedium: new FormControl('', []),
+    countryCode: new FormControl('', []),
+    pincode: new FormControl('', [Validators.minLength(6), Validators.maxLength(6), Validators.pattern(PIN_CODE_PATTERN)]),
+    category: new FormControl('', []),
+  })
+  unVerifiedObj = {
+    designation: '',
+    group: '',
+    organization: '',
+  }
+  rejectedFields: any = {
+    name: '',
+    group: '',
+    designation: '',
+  }
+  primaryDetailsForm = new FormGroup({
+    group: new FormControl('', [Validators.required]),
+    designation: new FormControl('', [Validators.required]),
+  })
+  approvalPendingFields = []
+  contextToken: any
 
   constructor(
     public dialog: MatDialog,
@@ -117,9 +195,11 @@ export class ProfileViewComponent implements OnInit, AfterViewInit, OnDestroy {
       this.otherDetailsForm.get('primaryEmail')!.valueChanges
       .subscribe(res => {
         if (res && res !== this.portalProfile.personalDetails.primaryEmail) {
-          const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/
-          if (emailRegex.test(res)) {
+          if (EMAIL_PATTERN.test(res)) {
             this.verifyEmail = true
+            this.otherDetailsForm.setErrors({ invalid: false })
+          } else {
+            this.verifyEmail = false
             this.otherDetailsForm.setErrors({ invalid: false })
           }
         } else {
@@ -133,9 +213,10 @@ export class ProfileViewComponent implements OnInit, AfterViewInit, OnDestroy {
       this.otherDetailsForm.get('mobile')!.valueChanges
       .subscribe(res => {
         if (res && res !== this.portalProfile.personalDetails.mobile) {
-          const mobileRegex = /^\d{10}$/
-          if (mobileRegex.test(res)) {
+          if (MOBILE_PATTERN.test(res)) {
             this.verifyMobile = true
+          } else {
+            this.verifyMobile = false
           }
         } else {
           this.verifyMobile = false
@@ -145,15 +226,8 @@ export class ProfileViewComponent implements OnInit, AfterViewInit, OnDestroy {
 
     this.pageData = this.route.parent && this.route.parent.snapshot.data.pageData.data
     this.currentUser = this.configService && this.configService.userProfile
-    // this.tabsData = this.route.parent && this.route.parent.snapshot.data.pageData.data.tabs || []
-    // this.selectedTabIndex = this.route.snapshot.queryParams && this.route.snapshot.queryParams.tab || 0
 
     this.route.data.subscribe(data => {
-      // if (data.certificates) {
-      //   this.certificatesData = data.certificates.data
-      //   this.fetchCertificates(this.certificatesData)
-      // }
-
       if (data.profile.data) {
         this.orgId = data.profile.data.rootOrgId
       }
@@ -170,158 +244,17 @@ export class ProfileViewComponent implements OnInit, AfterViewInit, OnDestroy {
 
       if (user === this.currentUser.userId) {
         this.isCurrentUser = true
-        // this.tabsData.map(ele => {
-        //   if (ele.key === 'karmaPoints') {
-        //     ele.enabled = true
-        //   }
-        // })
         this.currentUsername = this.configService.userProfile && this.configService.userProfile.userName
       } else {
         this.isCurrentUser = false
-        // this.tabsData.map(ele => {
-        //   if (ele.key === 'karmaPoints') {
-        //     ele.enabled = false
-        //   }
-        // })
         this.currentUsername = this.portalProfile.personalDetails && this.portalProfile.personalDetails !== null
           ? this.portalProfile.personalDetails.userName
           : this.portalProfile.userName
       }
-
-      // if (!this.portalProfile.personalDetails && user === this.currentUser.userId) {
-      //   _.set(this.portalProfile, 'personalDetails.firstname', _.get(this.configService, 'userProfile.firstName'))
-      // }
-      /** // for loged in user only */
-      // this.decideAPICall()
     })
-
-    // this.fetchRecentRequests()
-    // this.contentSvc.getKarmaPoitns(3, moment(new Date()).valueOf()).subscribe((res: any) => {
-    //   if (res && res.kpList) {
-    //     this.portalProfile.karmapoints = res.kpList
-    //   }
-    // })
   }
-  // @ViewChild('stickyMenu', { static: true }) menuElement!: ElementRef
-  /* tslint:disable */
-  /* tslint:enable */
-  // elementPosition: any
-  // currentFilter = 'timestamp'
-  // discussionList!: any
-  // discussProfileData!: any
-  // userDetails: any
-  // location!: string | null
-  // tabs: any
-  // tabsData: NSProfileDataV2.IProfileTab[]
-  // connectionRequests!: NSNetworkDataV2.INetworkUser[]
-  currentUsername: any
-  // enrolledCourse: any = []
-  // allCertificate: any = []
-  pageData: any
-  // sideNavBarOpened = true
-  // private defaultSideNavBarOpenedSubscription: any
-  // public screenSizeIsLtMedium = false
-  // isLtMedium$ = this.valueSvc.isLtMedium$
-
-  // mode$ = this.isLtMedium$.pipe(map(isMedium => (isMedium ? 'over' : 'side')))
-  orgId: any
-  selectedTabIndex: any
-
-  // pendingRequestData: any = []
-  // pendingRequestSkeleton = true
-  insightsData: any
-  insightsDataLoading = false
-
-  // countdata = 0
-  // enrollInterval: any
-
-  discussion = {
-    loadSkeleton: false,
-    data: undefined,
-    error: false,
-  }
-  recentRequests = {
-    data: undefined,
-    error: false,
-    loadSkeleton: false,
-  }
-  updatesPosts = {
-    data: undefined,
-    error: false,
-    loadSkeleton: false,
-  }
-  // certificatesData: any
-  showCreds = false
-  credMessage = 'View my credentials'
-  assessmentsData: any
-  isCurrentUser!: boolean
-
-  // Latest variables...
-  private destroySubject$ = new Subject()
-  portalProfile!: NSProfileDataV2.IProfile
-  currentUser: any
-  nameInitials = ''
-  verifyEmail = false
-  verifyMobile = false
-  countryCodes: any[] = []
-  countryCodesBackUp: any[] = []
-  nationalityData: any[] = []
-  editDetails = false
-  editProfile = false
-  editName = false
-  eUserGender = Object.keys(NsUserProfileDetails.EUserGender)
-  eCategory = Object.keys(NsUserProfileDetails.ECategory)
-  masterLanguages: any[] | undefined
-  masterLanguageBackup: any[] | undefined
-  dateOfBirth: any | undefined
-  groupData: any | undefined
-  profileMetaData: any | undefined
-  imageTypes = PROFILE_IMAGE_SUPPORT_TYPES
-  photoUrl!: string | ArrayBuffer | null
-  profileName = ''
-  enableWTR = false
-  enableWR = false
-  feedbackInfo = ''
-  skeletonLoader = false
-  otherDetailsForm = new FormGroup({
-    employeeCode: new FormControl('', []),
-    primaryEmail: new FormControl('', [Validators.pattern(/^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/)]),
-    mobile: new FormControl('', [Validators.minLength(10), Validators.maxLength(10), Validators.pattern(/^\d{10}$/)]),
-    gender: new FormControl('', []),
-    dob: new FormControl('', []),
-    domicileMedium: new FormControl('', []),
-    countryCode: new FormControl('', []),
-    pincode: new FormControl('', [Validators.minLength(6), Validators.maxLength(6), Validators.pattern(/^[1-9][0-9]{5}$/)]),
-    category: new FormControl('', []),
-  })
-  unVerifiedObj = {
-    designation: '',
-    group: '',
-    organization: '',
-  }
-  rejectedFields: any = {
-    name: '',
-    group: '',
-    designation: '',
-  }
-  primaryDetailsForm = new FormGroup({
-    group: new FormControl('', [Validators.required]),
-    designation: new FormControl('', [Validators.required]),
-  })
-  approvalPendingFields = []
-  contextToken: any
 
   ngOnInit() {
-    // this.defaultSideNavBarOpenedSubscription = this.isLtMedium$.subscribe(isLtMedium => {
-    //   this.sideNavBarOpened = !isLtMedium
-    // })
-
-    // this.getPendingRequestData()
-    // this.enrollInterval = setInterval(() => {
-    //   this.getKarmaCount()
-    // },                                1000)
-
-    // Latest code...
     if (this.currentUser.lastName) {
       this.nameInitials = this.currentUser.firstName.charAt(0) + this.currentUser.lastName.charAt(0)
     }
@@ -339,47 +272,6 @@ export class ProfileViewComponent implements OnInit, AfterViewInit, OnDestroy {
     this.getInsightsData()
     this.getAssessmentData()
   }
-
-  ngAfterViewInit() {
-    // if (this.menuElement) {
-    //   this.elementPosition = this.menuElement.nativeElement.parentElement.offsetTop
-    // }
-
-    // this.route.fragment.subscribe(data => {
-    //   if (data) {
-    //     const el = document.getElementById(data)
-    //     if (el != null) {
-    //       el.scrollIntoView({ behavior: 'smooth', block: 'start', inline: 'start' })
-    //     }
-    //   }
-    // })
-  }
-
-  // getKarmaCount() {
-  //   let enrollList: any
-  //   if (localStorage.getItem('enrollmentData')) {
-  //     enrollList = JSON.parse(localStorage.getItem('enrollmentData') || '')
-  //     this.countdata = enrollList && enrollList.userCourseEnrolmentInfo &&
-  //      enrollList.userCourseEnrolmentInfo.karmaPoints || 0
-  //     clearInterval(this.enrollInterval)
-  //   }
-  // }
-
-  // decideAPICall() {
-  //   const user = this.portalProfile.userId || this.portalProfile.id || ''
-  //   if (this.portalProfile && user) {
-  //     this.fetchUserDetails(this.currentUsername)
-  //     this.fetchConnectionDetails(user)
-  //   } else {
-  //     if (this.configService.userProfile) {
-  //       const me = this.configService.userProfile.userName || ''
-  //       if (me) {
-  //         this.fetchUserDetails(me)
-  //         this.fetchConnectionDetails(this.configService.userProfile.userId)
-  //       }
-  //     }
-  //   }
-  // }
 
   fetchDiscussionsData(): void {
     this.discussion.loadSkeleton = true
@@ -400,144 +292,11 @@ export class ProfileViewComponent implements OnInit, AfterViewInit, OnDestroy {
           this.updatesPosts.loadSkeleton = false
           this.discussion.error = true
           this.updatesPosts.error = true
+          this.matSnackBar.open(this.handleTranslateTo('discussionsDataFail'))
         }
       }
     )
   }
-
-  // fetchRecentRequests(): void {
-  //   this.recentRequests.loadSkeleton = true
-  //   this.homeSvc.getRecentRequests()
-  //   .pipe(takeUntil(this.destroySubject$))
-  //   .subscribe(
-  //     (res: any) => {
-  //       this.recentRequests.loadSkeleton = false
-  //       this.recentRequests.data = res.result.data && res.result.data.map((elem: any) => {
-  //         elem.fullName = elem.fullName.charAt(0).toUpperCase() + elem.fullName.slice(1)
-  //         elem.connecting = false
-  //         return elem
-  //       })
-  //     },
-  //     (error: HttpErrorResponse) => {
-  //       if (!error.ok) {
-  //         this.recentRequests.loadSkeleton = false
-  //       }
-  //     }
-  //   )
-  // }
-
-  // handleUpdateRequest(event: any): void {
-  //   this.homeSvc.updateConnection(event.payload)
-  //   .pipe(takeUntil(this.destroySubject$))
-  //   .subscribe(
-  //     (_res: any) => {
-  //       if (event.action === 'Approved') {
-  //         this.matSnackBar.open('Request accepted successfully')
-  //       } else {
-  //         this.matSnackBar.open('Rejected the request')
-  //       }
-  //       event.reqObject.connecting = false
-  //       this.fetchRecentRequests()
-  //     },
-  //     (error: HttpErrorResponse) => {
-  //       if (!error.ok) {
-  //         this.matSnackBar.open('Unable to update connection, due to some error!')
-  //       }
-  //       event.reqObject.connecting = false
-  //     }
-  //   )
-  // }
-
-  // fetchUserDetails(name: string) {
-  //   if (name) {
-  //     this.discussService.fetchProfileInfo(name)
-  //     .pipe(takeUntil(this.destroySubject$))
-  //     .subscribe((response: any) => {
-  //       if (response) {
-  //         this.discussProfileData = response
-  //         this.discussionList = _.uniqBy(_.filter(this.discussProfileData.posts, p => _.get(p, 'isMainPost') === true), 'tid') || []
-  //       }
-  //     },         (_error: HttpErrorResponse) => {
-  //       // tslint:disable-next-line
-  //       console.error('_error - ', _error)
-  //     })
-  //   }
-  // }
-
-  // fetchConnectionDetails(wid: string) {
-  //   this.networkV2Service.fetchAllConnectionEstablishedById(wid)
-  //   .pipe(takeUntil(this.destroySubject$))
-  //   .subscribe(
-  //     (data: any) => {
-  //       this.connectionRequests = data.result.data
-  //     },
-  //     (_err: HttpErrorResponse) => {
-  //       // tslint:disable-next-line
-  //       console.error('_error - ', _err)
-  //     })
-  // }
-
-  // filter(key: string | 'timestamp' | 'best' | 'saved') {
-  //   if (key) {
-  //     this.currentFilter = key
-  //     switch (key) {
-  //       case 'timestamp':
-  //         this.discussionList = this.discussProfileData.posts.filter((p: any) => (p.isMainPost === true))
-  //         break
-
-  //       case 'best':
-  //         this.discussionList = this.discussProfileData.bestPosts
-  //         break
-
-  //       case 'saved':
-  //         this.discussService.fetchSaved(this.currentUsername).subscribe((response: any) => {
-  //           if (response) {
-  //             this.discussionList = response['posts']
-  //           } else {
-  //             this.discussionList = []
-  //           }
-  //         },
-  //           // tslint:disable-next-line
-  //           () => {
-  //             this.discussionList = []
-  //           })
-  //         break
-
-  //       default:
-  //         this.discussionList = this.discussProfileData.latestPosts
-  //         break
-  //     }
-  //   }
-  // }
-
-  // fetchCertificates(data: any) {
-  //   const courses: NsContent.ICourse[] = data && data.courses
-  //   if (!courses || !courses.length) { return }
-  //   courses.forEach((items: any) => {
-  //     if (items.issuedCertificates && items.issuedCertificates.length > 0) {
-  //       this.enrolledCourse.push(items)
-  //       return items
-  //     }
-  //     if (items.issuedCertificates && items.issuedCertificates.length === 0 && items.completionPercentage === 100) {
-  //       this.enrolledCourse.push(items)
-  //       return items
-  //     }
-  //   })
-  //   this.downloadAllCertificate(this.enrolledCourse)
-  // }
-
-  // downloadAllCertificate(data: any) {
-  //   data.forEach((item: any) => {
-  //     if (item.issuedCertificates.length !== 0) {
-  //       const certId = item.issuedCertificates[0].identifier
-  //       this.contentSvc.downloadCert(certId).subscribe(response => {
-
-  //         this.allCertificate.push({ identifier:
-  //           item.issuedCertificates[0].identifier, dataUrl: response.result.printUri })
-  //       })
-  //     }
-  //   })
-  // }
 
   getInsightsData() {
     this.insightsDataLoading = true
@@ -567,11 +326,11 @@ export class ProfileViewComponent implements OnInit, AfterViewInit, OnDestroy {
       }
     },         (_error: HttpErrorResponse) => {
       this.insightsDataLoading = false
+      this.matSnackBar.open(this.handleTranslateTo('insightsDataFail'))
     })
   }
 
   constructNudgeData() {
-    // this.insightsDataLoading = true
     const nudgeData: any = {
       type: 'data',
       iconsDisplay: false,
@@ -600,31 +359,12 @@ export class ProfileViewComponent implements OnInit, AfterViewInit, OnDestroy {
     this.insightsDataLoading = false
   }
 
-  // getPendingRequestData() {
-  //   this.homeSvc.getRecentRequests()
-  //   .pipe(takeUntil(this.destroySubject$))
-  //   .subscribe(
-  //     (res: any) => {
-  //       this.pendingRequestSkeleton = false
-  //       this.pendingRequestData = res.result.data && res.result.data.map((elem: any) => {
-  //         elem.fullName = elem.fullName.charAt(0).toUpperCase() + elem.fullName.slice(1)
-  //         return elem
-  //       })
-  //     },
-  //     (error: HttpErrorResponse) => {
-  //       if (!error.ok) {
-  //         this.pendingRequestSkeleton = false
-  //       }
-  //     }
-  //   )
-  // }
-
   toggleCreds() {
     this.showCreds = !this.showCreds
     if (this.showCreds) {
-      this.credMessage = 'Hide my credentials'
+      this.credMessage = this.handleTranslateTo('hideCredentials')
     } else {
-      this.credMessage = 'View my credentials'
+      this.credMessage = this.handleTranslateTo('viewCredentials')
     }
   }
 
@@ -649,8 +389,7 @@ export class ProfileViewComponent implements OnInit, AfterViewInit, OnDestroy {
       },
       (error: HttpErrorResponse) => {
         if (!error.ok) {
-          // tslint:disable-next-line
-          console.log(error)
+          this.matSnackBar.open(this.handleTranslateTo('assessmentDataFail'))
         }
       }
     )
@@ -666,7 +405,7 @@ export class ProfileViewComponent implements OnInit, AfterViewInit, OnDestroy {
     if (this.portalProfile.personalDetails.primaryEmail) {
       if (this.otherDetailsForm.get('primaryEmail')) {
         this.otherDetailsForm.get('primaryEmail')!.setValidators([Validators.required,
-          Validators.pattern(/^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/)])
+          Validators.pattern(EMAIL_PATTERN)])
         this.otherDetailsForm.get('primaryEmail')!.updateValueAndValidity()
 
       }
@@ -674,7 +413,7 @@ export class ProfileViewComponent implements OnInit, AfterViewInit, OnDestroy {
     }
     if (this.portalProfile.personalDetails.mobile) {
       if (this.otherDetailsForm.get('mobile')) {
-        this.otherDetailsForm.get('mobile')!.setValidators([Validators.required, Validators.pattern(/^\d{10}$/)])
+        this.otherDetailsForm.get('mobile')!.setValidators([Validators.required, Validators.pattern(MOBILE_PATTERN)])
         this.otherDetailsForm.get('mobile')!.updateValueAndValidity()
       }
     }
@@ -724,9 +463,7 @@ export class ProfileViewComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   handleTranslateTo(menuName: string): string {
-    // tslint:disable-next-line: prefer-template
-    const translationKey = 'profileInfo.' + menuName.replace(/\s/g, '')
-    return this.translateService.instant(translationKey)
+    return this.userProfileService.handleTranslateTo(menuName)
   }
 
   prefillForm(data ?: any): void {
@@ -782,6 +519,7 @@ export class ProfileViewComponent implements OnInit, AfterViewInit, OnDestroy {
     const newDateStr = `${dateArr[1]}/${dateArr[0]}/${dateArr[2]}`
     return moment(new Date(newDateStr)).format('D MMM YYYY')
   }
+
   handleVerifyOTP(verifyType: string, _value?: string): void {
     const dialogRef = this.dialog.open(VerifyOtpComponent, {
       data: { type: verifyType, value: _value },
@@ -1206,14 +944,6 @@ export class ProfileViewComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   ngOnDestroy() {
-    // if (this.tabs) {
-    //   this.tabs.unsubscribe()
-    // }
-
-    // if (this.defaultSideNavBarOpenedSubscription) {
-    //   this.defaultSideNavBarOpenedSubscription.unsubscribe()
-    // }
-
     this.destroySubject$.unsubscribe()
   }
 }

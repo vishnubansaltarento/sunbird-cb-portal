@@ -197,9 +197,8 @@
                     <input type="email" class="input-text" matInput (keyup)="handleEmpty('primaryEmail')"
                       formControlName="primaryEmail" />
                   </mat-form-field>
-                  <mat-error class="text-xs"
-                    *ngIf="otherDetailsForm.get('primaryEmail').hasError('required') || otherDetailsForm.get('primaryEmail').hasError('pattern')">
-                    Please enter a valid email address
+                  <mat-error class="text-xs" *ngIf="otherDetailsForm.get('primaryEmail').hasError('required') || otherDetailsForm.get('primaryEmail').hasError('pattern')">
+                    {{ 'profileInfo.invalidEmail' | translate }}
                   </mat-error>
                 </div>
                 <div class="flex justify-end" *ngIf="verifyEmail">
@@ -228,7 +227,7 @@
                       </mat-form-field>
                       <mat-error class="text-xs"
                         *ngIf="otherDetailsForm.get('mobile').hasError('required') || otherDetailsForm.get('mobile').hasError('pattern')">
-                        Please enter a valid mobile number
+                        {{ 'profileInfo.pleaseEnterValidMobileNumber' | translate }}
                       </mat-error>
                       <div class="flex justify-end" *ngIf="verifyMobile">
                         <span class="get-otp sm:mr-4" (click)="handleGenerateOTP('phone')">{{ 'profileInfo.getOTP' |
@@ -279,7 +278,7 @@
                     <div class="flex flex-row auto-complete-row">
                       <input type="text" class="input-text" aria-label="Domicile Medium (Mother Tongue)" matInput
                         formControlName="domicileMedium" [matAutocomplete]="languageAuto" />
-                      <mat-icon>expand_more</mat-icon>
+                      <mat-icon>arrow_drop_down</mat-icon>
                     </div>
                     <mat-autocomplete #languageAuto="matAutocomplete">
                       <mat-option *ngFor="let language of masterLanguages" [value]="language.name">
@@ -309,7 +308,7 @@
                     <input type="email" class="input-text" matInput maxlength="6" formControlName="pincode" />
                   </mat-form-field>
                   <mat-error class="text-xs" *ngIf="otherDetailsForm.get('pincode').hasError('pattern')">
-                    Please enter a valid Pincode
+                    {{ 'profileInfo.invalidPinCode' | translate }}
                   </mat-error>
                 </div>
               </div>
@@ -359,12 +358,12 @@
 <ng-template #activitySection>
   <div class="flex flex-col gap-4">
     <div class="flex flex-row gap-4 horizontal-strip mt-4">
-      <div class="flex items-center justify-center nav-chips" [routerLink]="['/app/seeAll']"  [queryParams]="{key: 'continueLearning', tab: 'completed'}">My Learnings</div>
-      <div class="flex items-center justify-center nav-chips" [routerLink]="['/app/person-profile/karma-points']">My Karma Points</div>
-      <div class="flex items-center justify-center nav-chips" [routerLink]="['/app/discussion-forum']" [queryParams]="{page: 'home'}">My Discussions</div>
+      <div class="flex items-center justify-center nav-chips" [routerLink]="['/app/seeAll']"  [queryParams]="{key: 'continueLearning', tab: 'completed'}">{{ 'profileInfo.myLearnings' | translate }}</div>
+      <div class="flex items-center justify-center nav-chips" [routerLink]="['/app/person-profile/karma-points']">{{ 'profileInfo.myKarmaPoints' | translate }}</div>
+      <div class="flex items-center justify-center nav-chips" [routerLink]="['/app/discussion-forum']" [queryParams]="{page: 'home'}">{{ 'profileInfo.myDiscussions' | translate }}</div>
     </div>
 
-    <div class="tab-heading">{{ 'profileView.yourStats' | translate }}</div>
+    <div class="tab-heading">{{ 'profileInfo.yourStats' | translate }}</div>
 
     <div class="profile-section">
       <ws-widget-profile-card-stats [isMobile]="true" (expandCollapse)="expandCollapse($event)"
@@ -385,14 +384,14 @@
         <div class="flex justify-between">
           <div class="flex flex-col">
             <div class="flex flex-between flex-middle">
-              <p class="flex-align-start upcoming-assessment-title flex flex-middle margin-remove">Upcoming Assessment
+              <p class="flex-align-start upcoming-assessment-title flex flex-middle margin-remove">{{ 'profileInfo.upcomingAssessments' | translate }}
                 <img class="margin-left-s cursor-pointer" width="20px" height="20px"
                   src="assets/icons/home/help_icon.svg" />
               </p>
             </div>
             <button
               class="bg-blue-700 text-sm font-semibold text-white py-3 px-5 rounded-full border-none cursor-pointer mt-4 mb-2 tracking-wide"
-              [routerLink]="['/app/discussion-forum']">START</button>
+              [routerLink]="['/app/discussion-forum']">{{ 'profileInfo.start' | translate }}</button>
           </div>
           <div class="flex justify-center system-icon">
             <mat-icon class="custom-size">desktop_mac</mat-icon>
@@ -411,7 +410,7 @@
         </div>
         <div class="my-credentials p-3" *ngIf="showCreds">
           <div class="flex flex-middle" style="padding: 5px 0px;">
-            <span class="pr-5 font-semibold">Username</span>
+            <span class="pr-5 font-semibold">{{ 'profileInfo.userName' | translate }}</span>
             <div class="flex flex-middle copy-items">
               <span class="pr-2 custom-width">{{ assessmentsData?.userName }}</span>
               <span class=""><mat-icon class="cursor-pointer copy-icon"
@@ -419,7 +418,7 @@
             </div>
           </div>
           <div class="flex flex-middle" style="padding: 5px 0px;">
-            <span class="pr-6 font-semibold">Password</span>
+            <span class="pr-6 font-semibold">{{ 'profileInfo.password' | translate }}</span>
             <div class="flex flex-middle copy-items">
               <span class="pr-2  custom-width">{{ assessmentsData?.password }}</span>
               <span class=""><mat-icon class="cursor-pointer copy-icon"
@@ -432,9 +431,9 @@
 
     <div class="flex flex-col discussion-card">
       <div class="flex flex-row gap-3 pt-5 px-5 items-center mat-subheading-1">
-        <div class="flex flex-grow">{{ 'profileView.myDiscussions' | translate }}</div>
+        <div class="flex flex-grow">{{ 'profileInfo.myDiscussions' | translate }}</div>
         <div class="text-2xl ws-mat-default-text">
-          <div class="text-sm" [routerLink]="['/app/discussion-forum']" [queryParams]="{page: 'home'}">Show all
+          <div class="text-sm" [routerLink]="['/app/discussion-forum']" [queryParams]="{page: 'home'}">{{ 'profileInfo.showAll' | translate }}
           </div>
         </div>
       </div>
@@ -551,334 +550,3 @@
     <ng-container [ngTemplateOutlet]="profileSection"></ng-container>
   </div>
 </div>
-
-
-<!-- <div class="flex flex-4 flex-column" id="activityTab">
-  <mat-card class="flex-custom" [attr.id]="tabsData && tabsData[0] && tabsData[0].key">
-    <mat-card-header class="flex-custom-m" *ngIf="portalProfile && portalProfile.personalDetails">
-      <div class="flex flex-1 flex-row-reverse absolute right-0 profile-edit-icon">
-        <div *ngIf="
-            portalProfile.id === currentUser?.userId ||
-            portalProfile.userId === currentUser?.userId
-          " class="">
-          <a [routerLink]="'/app/user-profile/details'">
-            <mat-icon class="">edit</mat-icon>
-          </a>
-        </div>
-      </div>
-      <div mat-card-avatar class="example-header-image">
-        <ng-container *ngIf="portalProfile?.personalDetails?.firstname" ; else elseFirstName>
-          <ws-widget-avatar-photo [photoUrl]="portalProfile?.profileImageUrl || null"
-            [name]="portalProfile?.personalDetails?.firstname" size="xxl-s">
-          </ws-widget-avatar-photo>
-        </ng-container>
-        <ng-template #elseFirstName>
-          <ng-container *ngIf="portalProfile?.personalDetails?.firstName">
-            <ws-widget-avatar-photo [photoUrl]="portalProfile?.profileImageUrl || null" [name]="
-                portalProfile?.personalDetails?.firstName" size="xxl-s">
-            </ws-widget-avatar-photo>
-          </ng-container>
-        </ng-template>
-      </div>
-      <div class="block md:hidden">
-        <div class="mb-8">
-          <div class="flex flex-4 justify-center">
-            <ng-container *ngIf="portalProfile?.personalDetails?.firstname; else elseFirstNameIcon">
-              <mat-card-title role="link" tabindex="0" class="flex mobile-margin text-capitalize mat-h2" [innerHTML]="
-              portalProfile?.personalDetails?.firstname
-            ">
-                <span *ngIf="verifiedBadge" class="profile-badge">
-                  <img class="profile-badge" src="fusion-assets/images/profile-badge.png" height="18">
-                </span>
-              </mat-card-title>
-            </ng-container>
-            <ng-template #elseFirstNameIcon>
-              <ng-container *ngIf="portalProfile?.personalDetails?.firstName">
-                <mat-card-title role="link" tabindex="0" class="flex mobile-margin text-capitalize mat-h2" [innerHTML]="
-                  portalProfile?.personalDetails?.firstName
-                ">
-                  <span *ngIf="verifiedBadge" class="profile-badge">
-                    <img class="profile-badge" src="fusion-assets/images/profile-badge.png" height="18">
-                  </span>
-                </mat-card-title>
-              </ng-container>
-            </ng-template>
-
-            <span *ngIf="verifiedBadge" class="profile-badge"> <img class="profile-badge"
-                src="fusion-assets/images/profile-badge.png" height="18">
-            </span>
-          </div>
-        </div>
-        <mat-card-subtitle role="link" tabindex="0" i18n-aria-label>
-          {{ portalProfile?.employmentDetails?.departmentName }}
-        </mat-card-subtitle>
-        <mat-card-subtitle role="link" tabindex="0" i18n-aria-label
-        *ngIf="portalProfile?.additionalProperties?.externalSystem === 'DoPT eHRMS'">
-        eHRMS Id - {{ portalProfile?.additionalProperties?.externalSystemId }}
-      </mat-card-subtitle>
-        <ng-container>
-          <div class="flex flex-1 custom margin-0 margin-top-m bottom-fix mob" role="link" tabindex="0">
-            <div class="flex flex-1">
-              <span class="flex flex-col margin-right-l mobile center-item" *ngIf="isCurrentUser">
-                <span class="ws-mat-default-text items-center flex">
-                  <img class="karmapoints-icon-mob" alt="karma points" src="/assets/icons/karma-point-logo.jpg">
-                  <span class="ws-mat-default-text">
-                    {{ countdata }}</span>
-                </span>
-                <span class="pad-4 small-text"> {{ 'profileView.karmaPoints' | translate }}</span>
-              </span>
-              <span class="flex margin-right-l mobile flex-col items-center">
-                <span class="ws-mat-default-text">{{
-                  connectionRequests?.length
-                  }}</span>
-                <span class="pad-4 small-text">Connections</span>
-              </span>
-              <span class="flex margin-right-l mobile flex-col items-center">
-                <span class="ws-mat-default-text">{{
-                  Math.abs(discussProfileData?.topiccount || 0)
-                  }}</span>
-                <span class="pad-4 small-text">Discussions</span>
-              </span>
-            </div>
-          </div>
-        </ng-container>
-      </div>
-      <div class="flex-1 hidden md:block">
-        <div class="flex flex-1">
-          <div class="flex flex-4">
-            <ng-container *ngIf="portalProfile?.personalDetails?.firstname; else elseFirstNameIcon">
-              <mat-card-title role="link" tabindex="0" class="flex mobile-margin text-capitalize mat-h2" [innerHTML]="
-              portalProfile?.personalDetails?.firstname
-            ">
-                <span *ngIf="verifiedBadge" class="profile-badge">
-                  <img class="profile-badge" src="fusion-assets/images/profile-badge.png" height="18">
-                </span>
-              </mat-card-title>
-            </ng-container>
-            <ng-template #elseFirstNameIcon>
-              <ng-container *ngIf="portalProfile?.personalDetails?.firstName">
-                <mat-card-title role="link" tabindex="0" class="flex mobile-margin text-capitalize mat-h2" [innerHTML]="
-                  portalProfile?.personalDetails?.firstName
-                ">
-                  <span *ngIf="verifiedBadge" class="profile-badge">
-                    <img class="profile-badge" src="fusion-assets/images/profile-badge.png" height="18">
-                  </span>
-                </mat-card-title>
-              </ng-container>
-            </ng-template>
-            <span *ngIf="verifiedBadge" class="profile-badge"> <img class="profile-badge" src="fusion-assets/images/profile-badge.png" height="18">
-            </span>
-          </div>
-        </div>
-        <mat-card-subtitle role="link" tabindex="0" i18n-aria-label>
-          {{ portalProfile?.employmentDetails?.departmentName }}
-        </mat-card-subtitle>
-
-        <mat-card-subtitle role="link" tabindex="0" i18n-aria-label
-          *ngIf="portalProfile?.additionalProperties?.externalSystem === 'DoPT eHRMS'">
-          eHRMS Id - {{ portalProfile?.additionalProperties?.externalSystemId }}
-        </mat-card-subtitle>
-        <ng-container>
-          <div class="flex flex-1 custom margin-0 margin-top-m bottom-fix mob" role="link" tabindex="0">
-            <div class="flex flex-1">
-              <span class="flex margin-right-l mobile" *ngIf="isCurrentUser">
-                <span class="ws-mat-default-text">
-                  <img class="karmapoints-icon" alt="karma points" src="/assets/icons/karma-point-logo.jpg">
-                </span>
-                <span class="ws-mat-default-text">
-                  {{ countdata }}</span>
-                <span class="pad-4"> {{ 'profileView.karmaPoints' | translate }}</span>
-              </span>
-              <span class="flex margin-right-l mobile">
-                <span class="ws-mat-default-text">{{
-                  connectionRequests?.length
-                  }}</span>
-                <span class="pad-4">{{ 'profileView.connections' | translate }}</span>
-              </span>
-              <span class="flex margin-right-l mobile">
-                <span class="ws-mat-default-text">{{
-                  Math.abs(discussProfileData?.topiccount || 0)
-                  }}</span>
-                <span class="pad-4">{{ 'profileView.discussions' | translate }}</span>
-              </span>
-            </div>
-          </div>
-        </ng-container>
-      </div>
-    </mat-card-header>
-    <mat-card-header class="flex-custom-m" *ngIf="!portalProfile || !portalProfile.personalDetails">
-      <div class="flex-1" role="link" tabindex="0">
-        <div class="flex flex-1">
-          <mat-card-title class="flex-4 mobile-margin text-capitalize mat-h2">
-            {{ 'profileView.noInfoavailable' | translate }}
-          </mat-card-title>
-        </div>
-      </div>
-    </mat-card-header>
-  </mat-card>
-
-  <div class=" hidden md:block">
-    <ng-container [ngTemplateOutlet]="profileSection"></ng-container>
-  </div>
-  <div class=" block md:hidden">
-    <div class="flex flex-custom" id="profile_activity">
-      <mat-tab-group class="profile-tabs" (selectedTabChange)="tabClicked($event)" [selectedIndex]="selectedTabIndex">
-        <mat-tab label="Profile">
-          <ng-template matTabContent>
-            <ng-container [ngTemplateOutlet]="profileSection"></ng-container>
-          </ng-template>
-        </mat-tab>
-        <mat-tab label="My activities" *ngIf="
-        portalProfile.id === currentUser?.userId ||
-        portalProfile.userId === currentUser?.userId">
-          <ng-template matTabContent>
-            <p class="margin-top-s tab-heading">{{ 'profileView.yourStats' | translate }}</p>
-            <div class="margin-bottom-m margin-top-m">
-              <div class="profile-section">
-                <ws-widget-profile-card-stats [isMobile]="true" (expandCollapse)="expandCollapse($event)"
-                  [insightsData]="insightsData" [profileData]="pageData.profileCard"
-                  [isLoading]="insightsDataLoading"></ws-widget-profile-card-stats>
-              </div>
-            </div>
-            <div class="margin-bottom-m" id="my-leaderboard-section">
-              <ws-widget-user-leaderboard></ws-widget-user-leaderboard>
-            </div>
-            <div class="margin-bottom-m" id="my-weekly-claps">
-              <ws-widget-weekly-claps [weeklyData]="pageData.weeklyClaps" [insightsData]="insightsData"
-                [isLoading]="insightsDataLoading"></ws-widget-weekly-claps>
-            </div>
-
-            <div class="assessments-wrapper" *ngIf="assessmentsData">
-              <div class="assessments-info-wrapper">
-                  <div class="flex justify-between">
-                      <div class="flex flex-col">
-                          <div class="flex flex-between flex-middle">
-                              <p class="flex-align-start upcoming-assessment-title flex flex-middle margin-remove">Upcoming Assessment
-                                  <img class="margin-left-s cursor-pointer" width="20px" height="20px" src="assets/icons/home/help_icon.svg" >
-                              </p>
-                          </div>
-                          <button
-                              class="bg-blue-700 text-sm font-semibold text-white py-3 px-5 rounded-full border-none cursor-pointer mt-4 mb-2 tracking-wide"
-                              [routerLink]="['/app/discussion-forum']">START</button>
-                      </div>
-                      <div class="flex justify-center system-icon">
-                          <mat-icon class="custom-size">desktop_mac</mat-icon>
-                      </div>
-                  </div>
-              </div>
-              <div class="cred-container">
-                  <div class="flex flex-middle flex-between">
-                      <div class="flex flex-middle">
-                          <span class="cred-title">{{ credMessage }}</span>
-                      </div>
-                      <div class="flex">
-                          <mat-icon class="ws-mat-default-text cursor-pointer" (click)="toggleCreds()">{{showCreds ? 'keyboard_arrow_up' : 'keyboard_arrow_down'}}</mat-icon>
-                      </div>
-                  </div>
-                  <div class="my-credentials p-3" *ngIf="showCreds">
-                      <div class="flex flex-middle" style="padding: 5px 0px;">
-                          <span class="pr-5 font-semibold">Username</span>
-                          <div class="flex flex-middle copy-items">
-                              <span class="pr-2 custom-width">{{assessmentsData.userName}}</span>
-                              <span class=""><mat-icon class="cursor-pointer copy-icon" (click)="copyToClipboard('Venkat')">content_copy</mat-icon></span>
-                          </div>
-                      </div>
-                      <div class="flex flex-middle" style="padding: 5px 0px;">
-                          <span class="pr-6 font-semibold">Password</span>
-                          <div class="flex flex-middle copy-items">
-                              <span class="pr-2  custom-width">{{assessmentsData.password}}</span>
-                              <span class=""><mat-icon class="cursor-pointer copy-icon" (click)="copyToClipboard('Test@1234')">content_copy</mat-icon></span>
-                          </div>
-                      </div>
-                  </div>
-              </div>
-          </div>
-
-
-            <div class="flex flex-col margin-bottom-m mt-3 gap-3 discussion-card ">
-              <div class="flex flex-row gap-3 items-center mat-subheading-1 mb-0">
-                <div class="flex flex-grow">{{ 'profileView.myDiscussions' | translate }}</div>
-                <div class="text-2xl ws-mat-default-text">
-                  <div class="text-sm" [routerLink]="['/app/discussion-forum']" [queryParams]="{page: 'home'}">Show all
-                  </div>
-                </div>
-              </div>
-              <ws-widget-discussions [discussion]="discussion" [count]="2"></ws-widget-discussions>
-            </div>
-            <div class="mt-4 mb-4">
-              <ws-widget-pending-request [pendingRequestData]="pendingRequestData"
-                [isLoading]="pendingRequestSkeleton"></ws-widget-pending-request>
-            </div>
-
-          </ng-template>
-        </mat-tab>
-      </mat-tab-group>
-    </div>
-  </div>
-</div>
-
-
-<ng-template #profileSection>
-  <mat-sidenav-container name="discuss-menu" class="min-height margin-top-m">
-    <mat-sidenav [mode]="mode$ | async" [(opened)]="sideNavBarOpened" class="border-0 sidenav_inner">
-      <div class="contain">
-        <div class="flex-1" style="position: relative">
-          <div #stickyMenu [class.sticky]="sticky">
-            <app-profile-v2-left-menu [tabsData]="tabsData" class="flex flex-1"></app-profile-v2-left-menu>
-          </div>
-        </div>
-      </div>
-    </mat-sidenav>
-
-    <mat-sidenav-content class="sidenav_content">
-      <div *ngIf="screenSizeIsLtMedium">
-        <button type="button" mat-icon-button (click)="sideNavBarOpened = !sideNavBarOpened"
-          id="ws-auth-root-home-btn-menu" name="ws-auth-root-home-btn-menu">
-          <mat-icon>menu</mat-icon>
-        </button>
-      </div>
-
-      <div class="main_network_box">
-        <ng-container *ngFor="let tab of tabsData;let i=index">
-          <ng-container *ngIf="tab && tab.render && tab.enabled">
-            <ng-container *ngIf="
-            portalProfile.id === currentUser?.userId ||
-            portalProfile.userId === currentUser?.userId
-          ">
-              <ng-container *ngIf="tab.key === 'certifications'" [wsResolverWidget]="{
-                widgetType: tab.widget.widgetType,
-                widgetSubType: tab.widget.widgetSubType,
-                widgetHostClass: tab.widget.widgetHostClass,
-                widgetData: {
-                  name: tab.name,
-                  key: tab.key,
-                  data: enrolledCourse,
-                  certificates: allCertificate
-                }
-              }">
-              </ng-container>
-            </ng-container>
-            <ng-container *ngIf="tab.key !== 'certifications'" [wsResolverWidget]="{
-                widgetType: tab.widget.widgetType,
-                widgetSubType: tab.widget.widgetSubType,
-                widgetHostClass: tab.widget.widgetHostClass,
-                widgetData: {
-                  name: tab.name,
-                  key: tab.key,
-                  data: portalProfile[tab.dataKey]
-                }
-              }"></ng-container>
-          </ng-container>
-        </ng-container>
-      </div>
-    </mat-sidenav-content>
-
-    <div class="flex flex-1 custom">
-      <div class="flex-1" style="position: relative">
-        <div #stickyMenu [class.sticky]="sticky">
-          <app-profile-v2-right-menu class="flex flex-1"></app-profile-v2-right-menu>
-        </div>
-      </div>
-    </div>
-  </mat-sidenav-container>
-</ng-template> -->

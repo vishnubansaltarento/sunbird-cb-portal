@@ -3,7 +3,6 @@ import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog'
 import { FormControl, FormGroup, Validators } from '@angular/forms'
 import { HttpErrorResponse } from '@angular/common/http'
 import { MatSnackBar } from '@angular/material'
-import { TranslateService } from '@ngx-translate/core'
 
 import { Subject } from 'rxjs'
 import { takeUntil } from 'rxjs/operators'
@@ -34,8 +33,7 @@ export class TransferRequestComponent implements OnInit, OnDestroy {
     @Inject(MAT_DIALOG_DATA) public data: any,
     private userProfileService: UserProfileService,
     private matSnackBar: MatSnackBar,
-    private configService: ConfigurationsService,
-    private translateService: TranslateService
+    private configService: ConfigurationsService
   ) {
     if (this.data.portalProfile.professionalDetails && this.data.portalProfile.professionalDetails.length) {
       this.transferRequestForm.controls.group.setValue(this.data.portalProfile.professionalDetails[0].group)
@@ -109,9 +107,7 @@ export class TransferRequestComponent implements OnInit, OnDestroy {
   }
 
   handleTranslateTo(menuName: string): string {
-    // tslint:disable-next-line: prefer-template
-    const translationKey = 'profileInfo.' + menuName.replace(/\s/g, '')
-    return this.translateService.instant(translationKey)
+    return this.userProfileService.handleTranslateTo(menuName)
   }
 
   ngOnDestroy(): void {

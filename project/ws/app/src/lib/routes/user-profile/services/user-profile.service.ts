@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core'
 import { HttpClient } from '@angular/common/http'
+import { TranslateService } from '@ngx-translate/core'
 import { Observable } from 'rxjs'
 import {
   IUserProfileDetails,
@@ -39,7 +40,20 @@ const API_ENDPOINTS = {
 export class UserProfileService {
   constructor(
     private http: HttpClient,
-  ) {}
+    private translateService: TranslateService
+  ) {
+    if (localStorage.getItem('websiteLanguage')) {
+      this.translateService.setDefaultLang('en')
+      const lang = localStorage.getItem('websiteLanguage')!
+      this.translateService.use(lang)
+    }
+  }
+  
+  handleTranslateTo(menuName: string): string {
+    // tslint:disable-next-line: prefer-template
+    const translationKey = 'profileInfo.' + menuName.replace(/\s/g, '')
+    return this.translateService.instant(translationKey)
+  }
 
   editProfileDetails(data: any) {
     return this.http.post<any>(API_ENDPOINTS.editProfileDetails, data)

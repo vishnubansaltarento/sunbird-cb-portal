@@ -2,13 +2,13 @@ import { Component, Inject, OnDestroy } from '@angular/core'
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog'
 import { HttpErrorResponse } from '@angular/common/http'
 import { MatSnackBar } from '@angular/material'
-import { TranslateService } from '@ngx-translate/core'
 
 import { Subject } from 'rxjs'
 import { takeUntil } from 'rxjs/operators'
 
 import { ConfigurationsService } from '@sunbird-cb/utils/src/public-api'
 import { RequestService } from 'src/app/routes/public/public-request/request.service'
+import { UserProfileService } from '../../../user-profile/services/user-profile.service'
 
 @Component({
   selector: 'ws-designation-request',
@@ -26,7 +26,7 @@ export class DesignationRequestComponent implements OnDestroy {
     private configService: ConfigurationsService,
     private requestService: RequestService,
     private matSnackBar: MatSnackBar,
-    private translateService: TranslateService
+    private userProfileService: UserProfileService
   ) { }
 
   handleCloseModal(): void {
@@ -71,9 +71,7 @@ export class DesignationRequestComponent implements OnDestroy {
   }
 
   handleTranslateTo(menuName: string): string {
-    // tslint:disable-next-line: prefer-template
-    const translationKey = 'profileInfo.' + menuName.replace(/\s/g, '')
-    return this.translateService.instant(translationKey)
+    return this.userProfileService.handleTranslateTo(menuName)
   }
 
   ngOnDestroy(): void {

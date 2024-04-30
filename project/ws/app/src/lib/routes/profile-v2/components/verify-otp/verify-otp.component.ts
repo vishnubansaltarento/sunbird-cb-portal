@@ -2,7 +2,6 @@ import { Component, OnInit, Inject, OnDestroy, ViewChild, Output, EventEmitter }
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog'
 import { HttpErrorResponse } from '@angular/common/http'
 import { MatSnackBar } from '@angular/material'
-import { TranslateService } from '@ngx-translate/core'
 
 import { Subject } from 'rxjs'
 import { takeUntil } from 'rxjs/operators'
@@ -10,6 +9,7 @@ import { takeUntil } from 'rxjs/operators'
 import * as _ from 'lodash'
 
 import { OtpService } from '../../../user-profile/services/otp.services'
+import { UserProfileService } from '../../../user-profile/services/user-profile.service'
 
 @Component({
   selector: 'ws-verify-otp',
@@ -32,7 +32,7 @@ export class VerifyOtpComponent implements OnInit, OnDestroy {
     @Inject(MAT_DIALOG_DATA) public data: any,
     private otpService: OtpService,
     private matSnackbar: MatSnackBar,
-    private translateService: TranslateService
+    private userProfileService: UserProfileService
   ) { }
 
   ngOnInit() {
@@ -101,9 +101,7 @@ export class VerifyOtpComponent implements OnInit, OnDestroy {
   }
 
   handleTranslateTo(menuName: string): string {
-    // tslint:disable-next-line: prefer-template
-    const translationKey = 'profileInfo.' + menuName.replace(/\s/g, '')
-    return this.translateService.instant(translationKey)
+    return this.userProfileService.handleTranslateTo(menuName)
   }
 
   ngOnDestroy(): void {
