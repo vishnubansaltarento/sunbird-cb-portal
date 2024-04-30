@@ -40,8 +40,8 @@
                 </div>
             </div>
         </div>
-        <div class="col-span-12 title-section py-5">
-            <div class="container flex">
+        <div class="col-span-12 title-section px-5 md:py-5">
+            <div class="container flex flex-col md:flex-row">
                 <div class="mr-4 logo-box-container">
                     <div class="flex logo-box-rounded top mr-4">
                         <img alt="Application Logo" class="logo-img" [src]="data?.logo">
@@ -50,7 +50,7 @@
                 <div class="flex-1 flex flex-col">
                     <h1>{{data?.title}}</h1>
                     <p>{{data?.description}}</p>
-                    <div class="block md:hidden">
+                    <div class="block md:hidden overflow-y-auto">
                         <sb-uic-data-points [objectData]="data?.metrics?.data" [layoutType]="'singleRow'"></sb-uic-data-points>
                     </div>
                 </div>
