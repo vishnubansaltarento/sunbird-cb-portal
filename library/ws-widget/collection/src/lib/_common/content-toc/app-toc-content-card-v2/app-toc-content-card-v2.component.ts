@@ -111,15 +111,12 @@ export class AppTocContentCardV2Component implements OnInit {
           const eqSet = (xs: any, ys: any) =>
           xs.size === ys.size &&
           [...xs].every((x) => ys.has(x));
-          if(!eqSet(previousValue, currentValue)){
-           
-          }
+          if(!eqSet(previousValue, currentValue)){ }
         }
-        if(previousValue === undefined){
-          setTimeout(()=>{
-           
-          },700)
-        }
+        // if(previousValue === undefined){
+        //   setTimeout(()=>{  
+        //   },700)
+        // }
       }
       // this.appTocSvc.getPageScroll.next(true)
     
@@ -132,13 +129,8 @@ export class AppTocContentCardV2Component implements OnInit {
           }
         }
       }
-
-     
     }
-    
   }
-
-  
 
   check(content: any) {
     if(this.expandActive) {
@@ -146,8 +138,6 @@ export class AppTocContentCardV2Component implements OnInit {
     }
     return content.viewChildren
   }
-
-  
 
   get isCollection(): boolean {
     if (this.content) {
@@ -195,8 +185,6 @@ export class AppTocContentCardV2Component implements OnInit {
   }
 
   get isResource(): boolean {
-   
-    // this.resourceScroll()
     if (this.content) {  
       return ( 
         this.content.primaryCategory === NsContent.EPrimaryCategory.RESOURCE
@@ -238,11 +226,9 @@ export class AppTocContentCardV2Component implements OnInit {
    
     return '#1D8923'
   }
-
   public progressColor2(): string {
     return '#f27d00'
   }
-
 
   private evaluateImmediateChildrenStructure() {
     if (this.content && this.content.children && this.content.children.length) {
@@ -448,7 +434,6 @@ export class AppTocContentCardV2Component implements OnInit {
       //   errorField.scroll(0,rect.top-56)
       // }
     }catch (err) {
-
     }
   }
 

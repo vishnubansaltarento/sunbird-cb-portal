@@ -95,15 +95,12 @@ export class ViewerSecondaryTopBarComponent implements OnInit, OnDestroy {
     } else {
       this.isMobile = false
     }
-
     this.pdfScormDataService.handleBackFromPdfScormFullScreen.subscribe((data: any) => {
       this.handleBackFromPdfScormFullScreenFlag = data
     })
-
     this.pdfScormDataService.handlePdfMarkComplete.subscribe((contentData: any) => {
       this.pdfContentProgressData = contentData
     })
-
     this.viewerSvc.autoPlayNextVideo.subscribe((autoPlayVideoData: any) => {
       if (autoPlayVideoData) {
         if (this.isTypeOfCollection && this.nextResourceUrl && this.nextResourceUrlParams && this.nextResourceUrlParams.queryParams) {
@@ -373,7 +370,6 @@ export class ViewerSecondaryTopBarComponent implements OnInit, OnDestroy {
     setTimeout(() => {
       this.appTocSvc.getPageScroll.next(true)
     },         700)
-
   }
 
   checkForNextOfflineOnlineSession() {
