@@ -23,11 +23,9 @@ import { SharedModule } from '../shared/shared.module'
 import { HomeComponent } from './home/home.component'
 import { InsightSideBarComponent } from '../component/in-sight-side-bar/in-sight-side-bar.component'
 import { DiscussionInfoComponent } from '../component/discussion-info/discussion-info.component'
-import { PageContainerComponent } from '../component/page-container/page-container.component'
 import { FeedListComponent } from './home/feed-list/feed-list.component'
 import { ClientSliderComponent } from '../component/client-slider/client-slider.component'
 import { HomeOtherPortalComponent } from '../component/home-other-portal/home-other-portal.component'
-import { HomeContainerComponent } from '../component/home-container/home-container.component'
 import { DiscussHubComponent } from './home/discuss-hub/discuss-hub.component'
 import { NetworkHubComponent } from './home/network-hub/network-hub.component'
 import { HomePageService } from '../services/home-page.service'
@@ -41,8 +39,8 @@ import { MatTooltipModule } from '@angular/material'
 @NgModule({
   declarations: [
     HomeComponent, FeedListComponent, InsightSideBarComponent,
-    PageContainerComponent, DiscussionInfoComponent, ClientSliderComponent,
-    HomeOtherPortalComponent, HomeContainerComponent, DiscussHubComponent,
+    DiscussionInfoComponent, ClientSliderComponent,
+    HomeOtherPortalComponent, DiscussHubComponent,
     NetworkHubComponent],
   imports: [
     CommonModule,

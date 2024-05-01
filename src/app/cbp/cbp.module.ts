@@ -27,9 +27,8 @@ import { CbpSideBarComponent } from '../component/cbp-side-bar/cbp-side-bar.comp
 import { CardContentV2Module } from '@sunbird-cb/collection/src/lib/card-content-v2/card-content-v2.module'
 
 import { CbpPlanStatsComponent } from '../component/cbp-plan-stats/cbp-plan-stats.component'
-import { MyCompetencyPassbookComponent } from '../component/my-competency-passbook/my-competency-passbook.component'
+// import { MyCompetencyPassbookComponent } from '../component/my-competency-passbook/my-competency-passbook.component'
 import { UpcomingTimelineComponent } from '../component/upcoming-timeline/upcoming-timeline.component'
-import { OverduePlanComponent } from '../component/overdue-plan/overdue-plan.component'
 import { CbpPlanFeedComponent } from '../component/cbp-plan-feed/cbp-plan-feed.component'
 import { FormsModule, ReactiveFormsModule } from '@angular/forms'
 import { FilterComponent } from '../component/filter/filter.component'
@@ -37,9 +36,7 @@ import { FilterSearchPipeModule } from '../pipes/filter-search/filter-search.mod
 import { TranslateModule } from '@ngx-translate/core'
 import { UserLeaderboardModule } from '@sunbird-cb/collection/src/lib/_common/user-leaderboard/user-leaderboard.module'
 @NgModule({
-  declarations: [CbpPlanComponent, CbpPlanStatsComponent, MyCompetencyPassbookComponent,
-    UpcomingTimelineComponent,
-    OverduePlanComponent,
+  declarations: [CbpPlanComponent, CbpPlanStatsComponent, UpcomingTimelineComponent,
     CbpPlanFeedComponent,
     FilterComponent,
      CbpSideBarComponent],

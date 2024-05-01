@@ -11,15 +11,12 @@ import { CompetencyPassbookRoutingModule } from './competency-passbook-routing.m
 import { CompetencyPassbookComponent } from './competency-passbook/competency-passbook.component'
 import { CompetencyListComponent } from './competency-list/competency-list.component'
 import { CompetencyCardDetailsComponent } from './competency-card-details/competency-card-details.component'
-// tslint:disable-next-line: max-line-length
-import { CompetencyPassbookSideBarComponent } from './../component/competency-passbook-side-bar/competency-passbook-side-bar.component'
 import { CompetencySearchComponent } from './competency-search/competency-search.component'
 import { TranslateModule } from '@ngx-translate/core'
 
 @NgModule({
   declarations: [
     CompetencyPassbookComponent,
-    CompetencyPassbookSideBarComponent,
     CompetencySearchComponent,
     CompetencyListComponent,
     CompetencyCardDetailsComponent,
