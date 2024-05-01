@@ -52,13 +52,10 @@ export class AppTocService {
 
   private updateReviews = new BehaviorSubject(false)
   updateReviewsObservable = this.updateReviews.asObservable()
-
   public serverDate = new BehaviorSubject('')
   currentServerDate = this.serverDate.asObservable()
-
   public contentLoader = new BehaviorSubject(false)
   contentLoader$ = this.contentLoader.asObservable()
-
   public getPageScroll = new BehaviorSubject(true)
   updatePageScroll = this.getPageScroll.asObservable()
   public hashmap: any = {}

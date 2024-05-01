@@ -256,7 +256,6 @@ export class ViewerComponent implements OnInit, OnDestroy, AfterViewChecked {
   }
 
   ngAfterViewChecked() {
-    // console.log("ngAfterViewChecked calle!----------")
     const container = document.getElementById('fullScreenContainer')
     if (container) {
       this.fullScreenContainer = container
@@ -265,7 +264,6 @@ export class ViewerComponent implements OnInit, OnDestroy, AfterViewChecked {
       this.fullScreenContainer = null
       this.changeDetector.detectChanges()
     }
-
   }
 
   ngOnDestroy() {

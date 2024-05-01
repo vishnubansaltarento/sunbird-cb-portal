@@ -150,11 +150,6 @@
                             content.primaryCategory === primaryCategory.COMP_ASSESSMENT ||
                             content.primaryCategory === primaryCategory.STANDALONE_ASSESSMENT ||
                             content.primaryCategory === primaryCategory.PRACTICE_RESOURCE">
-                            <div style="width:300px;">
-                                <span style="display: inline;">    {{  content | json  }} ========== </span>
-                          <p>  {{  content?.maxQuestions }} /// </p>
-                            </div>
-                        
                                 <span class="resourceDuration ws-mat-black60-text">{{ content?.maxQuestions }} questions</span>
                             </ng-container>
                             <ng-container *ngIf="!(content.primaryCategory === primaryCategory.FINAL_ASSESSMENT || 

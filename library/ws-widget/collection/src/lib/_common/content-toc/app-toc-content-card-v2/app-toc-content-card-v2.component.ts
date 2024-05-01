@@ -481,7 +481,6 @@ export class AppTocContentCardV2Component implements OnInit {
   }
 
   ngOnDestroy() {
-  
     if (this.pageScrollSubscription) {
       this.pageScrollSubscription.unsubscribe()
     }
