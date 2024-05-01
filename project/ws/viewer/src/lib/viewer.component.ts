@@ -134,15 +134,18 @@ export class ViewerComponent implements OnInit, OnDestroy, AfterViewChecked {
 
   ngOnInit() {
     this.getTocConfig()
+    // for left side player scroll on right side resource click
     this.pageScrollSubscription = this.tocSvc.updatePageScroll.subscribe((value: boolean) => {
       if (value) {
         setTimeout(() => {
-          document.getElementsByClassName('viewer-player-container')[0].scrollIntoView({
-            behavior: 'smooth',
-            block: 'start',
-            inline: 'start',
-         })
-        },         1000)
+          if(document.getElementsByClassName('viewer-player-container') && document.getElementsByClassName('viewer-player-container')[0])  {
+            document.getElementsByClassName('viewer-player-container')[0].scrollIntoView({
+              behavior: 'smooth',
+              block: 'start',
+              inline: 'start',
+           })
+          }  
+        }, 1000)
       }
     })
 
@@ -252,7 +255,6 @@ export class ViewerComponent implements OnInit, OnDestroy, AfterViewChecked {
         this.downloadCertificate(enrollCourseData)
       }
     }
-
   }
 
   ngAfterViewChecked() {
@@ -265,7 +267,6 @@ export class ViewerComponent implements OnInit, OnDestroy, AfterViewChecked {
       this.changeDetector.detectChanges()
     }
   }
-
   ngOnDestroy() {
     this.rootSvc.showNavbarDisplay$.next(true)
     if (this.screenSizeSubscription) {

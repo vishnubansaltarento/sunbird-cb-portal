@@ -49,7 +49,6 @@ export class AppTocService {
   private canShowDescription = false
   resumeDataSubscription: Subscription | null = null
   primaryCategory = NsContent.EPrimaryCategory
-
   private updateReviews = new BehaviorSubject(false)
   updateReviewsObservable = this.updateReviews.asObservable()
   public serverDate = new BehaviorSubject('')
@@ -59,12 +58,10 @@ export class AppTocService {
   public getPageScroll = new BehaviorSubject(true)
   updatePageScroll = this.getPageScroll.asObservable()
   public hashmap: any = {}
-
   constructor(private http: HttpClient, private configSvc: ConfigurationsService, private widgetSvc: WidgetContentService) {
     // this resume data subscription is for on load
     this.resumeDataSubscription = this.resumeData.subscribe(
       (_dataResult: any) => {
-
       })
    }
 

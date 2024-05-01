@@ -82,10 +82,9 @@ export class AppTocContentCardV2Component implements OnInit {
     //     this.defaultThumbnail = data.configData.data.logos.defaultContent
     //   }
     // )
-
     this.resourceScroll()
   }
-
+  // FOR RIGHT SIDE RESOURCE SCROLL ON TOC PAGE
   resourceScroll() {
     this.pageScrollSubscription = this.appTocSvc.updatePageScroll.subscribe((value: boolean) => {
       if (value) {
@@ -95,7 +94,7 @@ export class AppTocContentCardV2Component implements OnInit {
       }
     })
   }
-
+  // TO UPDATE RESOURCE BEHAVOUR SUBJECT FOR RESOURCE SCROLL
   changeResource() {
     this.appTocSvc.getPageScroll.next(true)
   }
@@ -479,7 +478,6 @@ export class AppTocContentCardV2Component implements OnInit {
       this.downloadCertificateLoading = false
     }
   }
-
   ngOnDestroy() {
     if (this.pageScrollSubscription) {
       this.pageScrollSubscription.unsubscribe()
