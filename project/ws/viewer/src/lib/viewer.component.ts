@@ -138,14 +138,15 @@ export class ViewerComponent implements OnInit, OnDestroy, AfterViewChecked {
     this.pageScrollSubscription = this.tocSvc.updatePageScroll.subscribe((value: boolean) => {
       if (value) {
         setTimeout(() => {
-          if(document.getElementsByClassName('viewer-player-container') && document.getElementsByClassName('viewer-player-container')[0])  {
+          if (document.getElementsByClassName('viewer-player-container') && 
+            document.getElementsByClassName('viewer-player-container')[0])  {
             document.getElementsByClassName('viewer-player-container')[0].scrollIntoView({
               behavior: 'smooth',
               block: 'start',
               inline: 'start',
            })
-          }  
-        }, 1000)
+          }
+        },         1000)
       }
     })
 
