@@ -63,7 +63,7 @@ export class WidgetUserService {
     if (this.checkStorageData('enrollmentService', 'enrollmentData')) {
       const result: any =  this.http.get(path, { headers }).pipe(catchError(this.handleError), map(
           (data: any) => {
-            let coursesData: any = []
+            const coursesData: any = []
             if(data && data.result && data.result.courses) {
               data.result.courses.forEach((content: any)=>{
                 if(content.contentStatus) {

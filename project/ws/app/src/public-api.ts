@@ -3,7 +3,6 @@
  */
 
 // module exports
-export * from './lib/routes/app-setup/app-setup.module'
 export * from './lib/routes/app-toc/app-toc.module'
 export * from './lib/routes/certificate/certificate.module'
 export * from './lib/routes/channels/channels.module'
@@ -24,10 +23,8 @@ export * from './lib/routes/playlist/playlist.module'
 export * from './lib/routes/profile/profile.module'
 export * from './lib/routes/search/search.module'
 export * from './lib/routes/social/social.module'
-export * from './lib/routes/app-event/app-event.module'
 export * from './lib/routes/user-profile/user-profile.module'
 export * from './lib/routes/user-profile/services/format-datepicker'
-export * from './lib/routes/career-hub/career-hub.module'
 export * from './lib/routes/profile-v2/profile-v2.module'
 export * from './lib/routes/network-v2/network-v2.module'
 export * from './lib/routes/taxonomy/taxonomy.module'

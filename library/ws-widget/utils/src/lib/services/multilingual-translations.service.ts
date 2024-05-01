@@ -63,7 +63,7 @@ export class MultilingualTranslationsService {
 
     translateLabel(label: string, type: any, subtype: any) {
         let nlabel = label
-        nlabel = nlabel.toLowerCase()
+        nlabel = nlabel && nlabel.toLowerCase()
         const sl = nlabel.split(' ')
         sl.forEach((w: any, index: any) => {
             if (index !== 0) {
