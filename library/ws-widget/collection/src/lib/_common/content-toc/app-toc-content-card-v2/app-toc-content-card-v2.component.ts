@@ -9,6 +9,8 @@ import { animate, style, transition, trigger } from '@angular/animations'
 import _ from 'lodash'
 import moment from 'moment'
 import { CertificateService } from '@ws/app/src/lib/routes/certificate/services/certificate.service'
+import { AppTocService } from '@ws/app/src/lib/routes/app-toc/services/app-toc.service'
+import { Subscription } from 'rxjs'
 
 @Component({
   selector: 'ws-widget-app-toc-content-card-v2',
@@ -65,11 +67,13 @@ export class AppTocContentCardV2Component implements OnInit {
   defaultThumbnail = ''
   viewChildren = false
   primaryCategory = NsContent.EPrimaryCategory
+  pageScrollSubscription: Subscription | null = null
   constructor(
     private events: EventService,
     private dialog: MatDialog,
     private renderer: Renderer2,
     private certificateService: CertificateService,
+    private appTocSvc: AppTocService
   ) { }
 
   ngOnInit() {
@@ -78,7 +82,23 @@ export class AppTocContentCardV2Component implements OnInit {
     //     this.defaultThumbnail = data.configData.data.logos.defaultContent
     //   }
     // )
+    this.resourceScroll()
   }
+  // FOR RIGHT SIDE RESOURCE SCROLL ON TOC PAGE
+  resourceScroll() {
+    this.pageScrollSubscription = this.appTocSvc.updatePageScroll.subscribe((value: boolean) => {
+      if (value) {
+        setTimeout(()=>{
+          this.scrollView()
+        },700) 
+      }
+    })
+  }
+  // TO UPDATE RESOURCE BEHAVOUR SUBJECT FOR RESOURCE SCROLL
+  changeResource() {
+    this.appTocSvc.getPageScroll.next(true)
+  }
+
   ngOnChanges(changes: SimpleChanges) {
     for (const property in changes) {
       if (property === 'expandAll') {
@@ -91,16 +111,15 @@ export class AppTocContentCardV2Component implements OnInit {
           const eqSet = (xs: any, ys: any) =>
           xs.size === ys.size &&
           [...xs].every((x) => ys.has(x));
-          if(!eqSet(previousValue, currentValue)){
-            this.scrollView()
-          }
+          if(!eqSet(previousValue, currentValue)){ }
         }
-        if(previousValue === undefined){
-          setTimeout(()=>{
-            this.scrollView()
-          },700)
-        }
+        // if(previousValue === undefined){
+        //   setTimeout(()=>{  
+        //   },700)
+        // }
       }
+      // this.appTocSvc.getPageScroll.next(true)
+    
       if (property === 'hierarchyMapData') {
         if(_.isEmpty(changes['hierarchyMapData'].currentValue)){
           // this.loadingOverallPRogress = true
@@ -111,7 +130,6 @@ export class AppTocContentCardV2Component implements OnInit {
         }
       }
     }
-    
   }
 
   check(content: any) {
@@ -167,8 +185,8 @@ export class AppTocContentCardV2Component implements OnInit {
   }
 
   get isResource(): boolean {
-    if (this.content) {
-      return (
+    if (this.content) {  
+      return ( 
         this.content.primaryCategory === NsContent.EPrimaryCategory.RESOURCE
         // || this.content.primaryCategory === NsContent.EPrimaryCategory.KNOWLEDGE_ARTIFACT
         || this.content.primaryCategory === NsContent.EPrimaryCategory.PRACTICE_RESOURCE
@@ -208,11 +226,9 @@ export class AppTocContentCardV2Component implements OnInit {
    
     return '#1D8923'
   }
-
   public progressColor2(): string {
     return '#f27d00'
   }
-
 
   private evaluateImmediateChildrenStructure() {
     if (this.content && this.content.children && this.content.children.length) {
@@ -408,13 +424,16 @@ export class AppTocContentCardV2Component implements OnInit {
             }
           }
       } 
+      setTimeout(()=>{
+        this.appTocSvc.getPageScroll.next(false)
+      },700)
+     
       // else {
       //   errorField.scrollIntoView({ behavior: "smooth", block: "start", inline: "nearest" });
       //   const rect = errorField.getBoundingClientRect();
       //   errorField.scroll(0,rect.top-56)
       // }
     }catch (err) {
-
     }
   }
 
@@ -444,4 +463,10 @@ export class AppTocContentCardV2Component implements OnInit {
       this.downloadCertificateLoading = false
     }
   }
+  ngOnDestroy() {
+    if (this.pageScrollSubscription) {
+      this.pageScrollSubscription.unsubscribe()
+    }
+  }
+
 }
