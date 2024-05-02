@@ -10,7 +10,8 @@ import {
   ViewChild,
   ElementRef,
 } from '@angular/core'
-import { MatSnackBar, MatDialog } from '@angular/material'
+import { MatSnackBar } from '@angular/material/snack-bar'
+import { MatDialog } from '@angular/material/dialog'
 import { NotificationComponent } from '@ws/author/src/lib/modules/shared/components/notification/notification.component'
 import { Notify } from '@ws/author/src/lib/constants/notificationMessage'
 import { NOTIFICATION_TIME } from '@ws/author/src/lib/constants/constant'

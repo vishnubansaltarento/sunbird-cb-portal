@@ -1,5 +1,5 @@
-import { Component, Inject } from '@angular/core'
-import { ConfigService, EventsService, NavigationServiceService, DiscussionService, BaseWrapperComponent } from '@sunbird-cb/discussions-ui-v8'
+import { Component } from '@angular/core'
+// import { ConfigService, EventsService, NavigationServiceService, DiscussionService, BaseWrapperComponent } from '@sunbird-cb/discussions-ui-v8'
 
 @Component({
   selector: 'app-tag-widget',
@@ -7,7 +7,7 @@ import { ConfigService, EventsService, NavigationServiceService, DiscussionServi
   styleUrls: ['./tag-widget.component.scss'],
 })
 
-export class TagWidgetComponent extends BaseWrapperComponent {
+export class TagWidgetComponent  {
 
   detailsToggle = true
   category = 'category'
@@ -22,54 +22,61 @@ export class TagWidgetComponent extends BaseWrapperComponent {
   categoryId: any
   alldiscussPage = 'alldiscuss'
   previousState: any
-
-  constructor(
-    @Inject(ConfigService)
+  
+  
+  /* 
+   @Inject(ConfigService)
     configSvc: ConfigService,
     @Inject(DiscussionService)
     discussionService: DiscussionService,
     @Inject(NavigationServiceService)
     navigationServiceService: NavigationServiceService,
     @Inject(EventsService)
-    eventService: EventsService) {
-    super(navigationServiceService, eventService, configSvc, discussionService)
+    eventService: EventsService
+
+    navigationServiceService, eventService, configSvc, discussionService
+  */
+  
+  constructor(
+   ) {
+    // super()
   }
   // @Input() config
 
   wrapperInit() {
-    this.state = this.alldiscussPage
+    //this.state = this.alldiscussPage
   }
 
   widgetBackClick() {
-    this.stateCount = this.stateCount - 1
-    if (this.stateCount === 0 || this.stateCount === 1) {
-      this.state = this.alldiscussPage
-      this.previousSlug = ''
-    } else {
-      this.state = this.previousState
-    }
+    // this.stateCount = this.stateCount - 1
+    // if (this.stateCount === 0 || this.stateCount === 1) {
+    //   this.state = this.alldiscussPage
+    //   this.previousSlug = ''
+    // } else {
+    //   this.state = this.previousState
+    // }
 
-    if (this.previousSlug) {
-      this.slug = this.previousSlug
-      this.state = this.tagAllDiscussPage
-    }
+    // if (this.previousSlug) {
+    //   this.slug = this.previousSlug
+    //   this.state = this.tagAllDiscussPage
+    // }
   }
 
   stateChange(event: any) {
-    // console.log(event)
-    this.previousState = this.state
+    console.log(event)
+    // this.previousState = this.state
     // tslint:disable-next-line: no-increment-decrement
-    this.stateCount++
-    this.state = event.action
-    if (event.action === this.detailsPage) {
-      this.tid = event.tid
-      this.slug = event.title
-    }
+    // this.stateCount++
+    // this.state = event.action
+    // if (event.action === this.detailsPage) {
+    //   this.tid = event.tid
+    //   this.slug = event.title
+    // }
 
-    if (event.action === this.tagAllDiscussPage) {
-      this.tid = event.tid
-      this.slug = event.title
-      this.previousSlug = event.title
-    }
+    // if (event.action === this.tagAllDiscussPage) {
+    //   this.tid = event.tid
+    //   this.slug = event.title
+    //   this.previousSlug = event.title
+    // }
   }
 }

@@ -1,7 +1,9 @@
 import { NgModule } from '@angular/core'
 import { CommonModule } from '@angular/common'
 import { RouterModule } from '@angular/router'
-import { MatIconModule, MatMenuModule, MatTabsModule } from '@angular/material'
+import { MatIconModule} from '@angular/material/icon'
+import {  MatMenuModule } from '@angular/material/menu'
+import {  MatTabsModule } from '@angular/material/tabs'
 import { CbpFiltersModule } from '@sunbird-cb/collection/src/lib/_common/cbp-filters/cbp-filters.module'
 
 import { SkeletonLoaderModule } from '@sunbird-cb/collection/src/lib/_common/skeleton-loader/skeleton-loader.module'

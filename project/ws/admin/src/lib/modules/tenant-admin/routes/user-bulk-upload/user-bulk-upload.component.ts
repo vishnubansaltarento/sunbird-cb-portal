@@ -2,10 +2,12 @@ import { Component, OnInit, ViewChild, ElementRef, AfterViewInit } from '@angula
 import { FormBuilder, Validators, FormControl } from '@angular/forms'
 import { FileService } from '../../upload.service'
 import { Observable } from 'rxjs'
-import { MatSnackBar, MatSort } from '@angular/material'
+
 import { TenantAdminService } from '../../tenant-admin.service'
 import { MatPaginator } from '@angular/material/paginator'
 import { MatTableDataSource } from '@angular/material/table'
+import { MatSnackBar } from '@angular/material/snack-bar'
+import { MatSort } from '@angular/material/sort'
 @Component({
   selector: 'ws-admin-user-bulk-upload',
   templateUrl: './user-bulk-upload.component.html',

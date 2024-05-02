@@ -21,7 +21,7 @@ import {
   ConfigurationsService, EventService, MultilingualTranslationsService, WsEvents,
 } from '@sunbird-cb/utils'
 import { WidgetUserService } from '@sunbird-cb/collection/src/lib/_services/widget-user.service'
-import { MatTabChangeEvent } from '@angular/material'
+import { MatTabChangeEvent } from '@angular/material/tabs'
 
 @Component({
   selector: 'ws-app-see-all-home',

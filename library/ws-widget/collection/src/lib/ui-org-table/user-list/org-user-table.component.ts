@@ -1,7 +1,7 @@
 import { Component, OnInit, Input, Output, EventEmitter, ViewChild, AfterViewInit, OnChanges, SimpleChanges } from '@angular/core'
 import { SelectionModel } from '@angular/cdk/collections'
 import { MatTableDataSource } from '@angular/material/table'
-import { MatPaginator } from '@angular/material'
+import { MatPaginator } from '@angular/material/paginator'
 import { MatSort } from '@angular/material/sort'
 import * as _ from 'lodash'
 

@@ -6,7 +6,7 @@ import { ActivatedRoute } from '@angular/router'
 import { Subscription } from 'rxjs'
 import { NSCompetencie } from '../../models/competencies.model'
 import { MatDialog } from '@angular/material/dialog'
-import { MatSnackBar } from '@angular/material';
+import { MatSnackBar } from '@angular/material/snack-bar';
 import { CompetenceViewComponent } from '../../components/competencies-view/competencies-view.component';
 import { ConfigurationsService, MultilingualTranslationsService } from '@sunbird-cb/utils/src/public-api'
 import { TranslateService } from '@ngx-translate/core'

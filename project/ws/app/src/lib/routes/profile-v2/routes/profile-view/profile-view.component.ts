@@ -2,14 +2,14 @@ import { AfterViewInit, Component, ElementRef, HostListener, OnDestroy, OnInit, 
 import { HttpErrorResponse } from '@angular/common/http'
 import { NSProfileDataV2 } from '../../models/profile-v2.model'
 import { MatDialog } from '@angular/material/dialog'
-import { MatSnackBar } from '@angular/material'
+import { MatSnackBar } from '@angular/material/snack-bar'
 import { ActivatedRoute, Router } from '@angular/router'
 import { DiscussService } from '../../../discuss/services/discuss.service'
 // import { DOCUMENT } from '@angular/common'
 // import { ProfileV2Service } from '../../services/profile-v2.servive'
 /* tslint:disable */
 import _ from 'lodash'
-import { MatTabChangeEvent } from '@angular/material'
+import { MatTabChangeEvent } from '@angular/material/tabs'
 import { NetworkV2Service } from '../../../network-v2/services/network-v2.service'
 import { NSNetworkDataV2 } from '../../../network-v2/models/network-v2.model'
 import { ConfigurationsService, ValueService } from '@sunbird-cb/utils';

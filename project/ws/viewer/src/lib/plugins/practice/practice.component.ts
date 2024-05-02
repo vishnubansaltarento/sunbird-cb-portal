@@ -9,7 +9,7 @@ import {
   ViewChild, ViewChildren,
   Renderer2,
 } from '@angular/core'
-import { MatDialog, MatSidenav, MatSnackBar } from '@angular/material'
+
 import { Subscription, interval } from 'rxjs'
 import { filter, map } from 'rxjs/operators'
 import { NSPractice } from './practice.model'
@@ -27,6 +27,9 @@ import { environment } from 'src/environments/environment'
 import { DomSanitizer, SafeHtml } from '@angular/platform-browser'
 import { ViewerDataService } from '../../viewer-data.service'
 import { ViewerHeaderSideBarToggleService } from './../../viewer-header-side-bar-toggle.service'
+import { MatDialog } from '@angular/material/dialog'
+import { MatSidenav } from '@angular/material/sidenav'
+import { MatSnackBar } from '@angular/material/snack-bar'
 // import { ViewerDataService } from '../../viewer-data.service'
 export type FetchStatus = 'hasMore' | 'fetching' | 'done' | 'error' | 'none'
 @Component({

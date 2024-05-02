@@ -1,7 +1,9 @@
 import { NgModule } from '@angular/core'
 import { CommonModule } from '@angular/common'
 import { UserContentRatingComponent } from './user-content-rating.component'
-import { MatCardModule, MatIconModule, MatButtonModule } from '@angular/material'
+import { MatCardModule } from '@angular/material/card'
+import { MatIconModule,  } from '@angular/material/icon'
+import {MatButtonModule } from '@angular/material/button'
 import { InViewPortModule } from '@sunbird-cb/utils'
 
 @NgModule({

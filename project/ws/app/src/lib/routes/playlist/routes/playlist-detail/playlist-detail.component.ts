@@ -1,7 +1,8 @@
 import { CdkDragDrop, moveItemInArray } from '@angular/cdk/drag-drop'
 import { Component, ElementRef, OnDestroy, OnInit, ViewChild } from '@angular/core'
 import { FormBuilder, FormGroup, Validators } from '@angular/forms'
-import { MatDialog, MatSnackBar } from '@angular/material'
+import { MatDialog } from '@angular/material/dialog'
+import { MatSnackBar } from '@angular/material/snack-bar'
 import { ActivatedRoute, Router } from '@angular/router'
 import {
   BtnPlaylistService,

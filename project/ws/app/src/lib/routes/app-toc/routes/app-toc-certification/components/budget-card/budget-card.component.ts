@@ -7,7 +7,8 @@ import { TSendStatus } from '@sunbird-cb/utils'
 
 import { ICertificationMeta, TCertificationRequestType } from '../../models/certification.model'
 import { RequestCancelDialogComponent } from '../request-cancel-dialog/request-cancel-dialog.component'
-import { MatDialog, MatSnackBar } from '@angular/material'
+import { MatDialog } from '@angular/material/dialog'
+import { MatSnackBar } from '@angular/material/snack-bar'
 import { CertificationApiService } from '../../apis/certification-api.service'
 import { SnackbarComponent } from '../snackbar/snackbar.component'
 

@@ -41,7 +41,7 @@ import { UrlService } from 'src/app/shared/url.service'
 import { CsModule } from '@project-sunbird/client-services'
 import { SwUpdate } from '@angular/service-worker'
 import { environment } from '../../../environments/environment'
-import { MatDialog } from '@angular/material'
+import { MatDialog } from '@angular/material/dialog'
 import { DialogConfirmComponent } from '../dialog-confirm/dialog-confirm.component'
 import { concat, interval, timer, of } from 'rxjs'
 
@@ -454,7 +454,7 @@ export class RootComponent implements OnInit, AfterViewInit, AfterViewChecked {
             },
           })
           dialogRef.afterClosed().subscribe(
-            result => {
+            (result:any) => {
               if (result) {
                 this.swUpdate.activateUpdate().then(() => {
                   if ('caches' in window) {

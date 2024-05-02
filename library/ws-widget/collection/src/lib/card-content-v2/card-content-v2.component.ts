@@ -1,5 +1,6 @@
 import { AfterViewInit, Component, HostBinding, Input, OnDestroy, OnInit } from '@angular/core'
-import { MatDialog, MatSnackBar } from '@angular/material'
+import { MatDialog } from '@angular/material/dialog'
+import { MatSnackBar } from '@angular/material/snack-bar'
 import { NsWidgetResolver, WidgetBaseComponent } from '@sunbird-cb/resolver'
 import { ConfigurationsService, EventService, UtilityService, NsInstanceConfig, MultilingualTranslationsService, WsEvents } from '@sunbird-cb/utils'
 import { Subscription } from 'rxjs'

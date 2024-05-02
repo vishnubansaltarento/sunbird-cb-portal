@@ -34,7 +34,7 @@ import { TranslateLoader, TranslateModule } from '@ngx-translate/core'
 import { HttpLoaderFactory } from '../app.module'
 import { HttpClient } from '@angular/common/http'
 import { UserLeaderboardModule } from '@sunbird-cb/collection/src/lib/_common/user-leaderboard/user-leaderboard.module'
-import { MatTooltipModule } from '@angular/material'
+import { MatTooltipModule } from '@angular/material/tooltip'
 
 @NgModule({
   declarations: [

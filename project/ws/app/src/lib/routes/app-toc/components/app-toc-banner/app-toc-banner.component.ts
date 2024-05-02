@@ -1,5 +1,5 @@
 import { Component, ElementRef, EventEmitter, Input, OnChanges, OnDestroy, OnInit, Output, SimpleChanges, ViewChild } from '@angular/core'
-import { MatAutocomplete, MatAutocompleteSelectedEvent, MatChipInputEvent, MatDialog, MatSnackBar } from '@angular/material'
+
 import { DomSanitizer, SafeStyle } from '@angular/platform-browser'
 import { ActivatedRoute, Event, NavigationEnd, Router } from '@angular/router'
 import {
@@ -36,6 +36,10 @@ import { TranslateService } from '@ngx-translate/core'
 import { ENTER } from '@angular/cdk/keycodes'
 import { debounceTime, distinctUntilChanged } from 'rxjs/operators'
 import { TimerService } from '../../services/timer.service'
+import { MatAutocomplete, MatAutocompleteSelectedEvent } from '@angular/material/autocomplete'
+import { MatChipInputEvent } from '@angular/material/chips'
+import { MatDialog } from '@angular/material/dialog'
+import { MatSnackBar } from '@angular/material/snack-bar'
 
 dayjs.extend(isSameOrBefore)
 dayjs.extend(isSameOrAfter)

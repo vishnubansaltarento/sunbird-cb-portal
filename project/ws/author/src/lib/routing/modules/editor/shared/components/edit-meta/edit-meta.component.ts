@@ -13,7 +13,7 @@ import {
   Inject,
 } from '@angular/core'
 import { FormBuilder, FormControl, FormGroup } from '@angular/forms'
-import { MatAutocompleteSelectedEvent } from '@angular/material'
+import { MatAutocompleteSelectedEvent } from '@angular/material/autocomplete'
 import { MatChipInputEvent } from '@angular/material/chips'
 import { MatDialog, MAT_DIALOG_DATA } from '@angular/material/dialog'
 import { MatSnackBar } from '@angular/material/snack-bar'

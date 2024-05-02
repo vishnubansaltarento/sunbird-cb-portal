@@ -1,5 +1,6 @@
 import { Component, Input, OnInit } from '@angular/core'
-import { MatDialog, MatSnackBar } from '@angular/material'
+import { MatDialog } from '@angular/material/dialog'
+import { MatSnackBar } from '@angular/material/snack-bar'
 import { SocialForum } from '../../../models/SocialForumposts.model'
 import { DialogBoxModeratorComponent } from '../../Dialog-Box/dialog-box-moderator/dialog-box-moderator.component'
 import { BtnFlagService } from './btn-flag.service'

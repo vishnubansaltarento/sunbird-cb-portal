@@ -1,5 +1,6 @@
 import { Component, OnInit, ViewChild, OnDestroy, EventEmitter, Output } from '@angular/core'
-import { MatDialog, MatSnackBar } from '@angular/material'
+import { MatDialog } from '@angular/material/dialog'
+import { MatSnackBar } from '@angular/material/snack-bar'
 import { Router, ActivatedRoute } from '@angular/router'
 import { UploadAudioComponent } from '../../upload-audio/upload-audio.component'
 import { DeleteDialogComponent } from '@ws/author/src/lib/modules/shared/components/delete-dialog/delete-dialog.component'

@@ -1,6 +1,7 @@
 import { FlatTreeControl } from '@angular/cdk/tree'
 import { Component, EventEmitter, OnDestroy, OnInit, Output } from '@angular/core'
-import { MatDialog, MatSnackBar } from '@angular/material'
+import { MatDialog } from '@angular/material/dialog'
+import { MatSnackBar } from '@angular/material/snack-bar'
 import { MatTreeFlatDataSource, MatTreeFlattener } from '@angular/material/tree'
 import { NOTIFICATION_TIME } from '@ws/author/src/lib/constants/constant'
 import { Notify } from '@ws/author/src/lib/constants/notificationMessage'

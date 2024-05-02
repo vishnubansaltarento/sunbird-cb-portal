@@ -3,7 +3,7 @@ import { Router } from '@angular/router'
 import { ConfigurationsService, MultilingualTranslationsService } from '@sunbird-cb/utils'
 import { PipeDurationTransformPipe } from '@sunbird-cb/utils/src/public-api'
 import { InfoDialogComponent } from '../info-dialog/info-dialog.component'
-import { MatDialog } from '@angular/material'
+import { MatDialog } from '@angular/material/dialog'
 import { HomePageService } from 'src/app/services/home-page.service'
 
 @Component({

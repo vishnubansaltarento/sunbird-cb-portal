@@ -8,7 +8,7 @@ import {
   LogoutComponent, SubapplicationRespondService, ValueService,
 } from '@sunbird-cb/utils'
 
-import { MatDialog } from '@angular/material'
+import { MatDialog } from '@angular/material/dialog'
 import { AccessControlService } from '../../../../project/ws/author/src/public-api'
 import { NsWidgetResolver } from '@sunbird-cb/utils/src/lib/services/widget-resolver.model'
 import { CustomTourService, ROOT_WIDGET_CONFIG } from '@sunbird-cb/collection/src/public-api'

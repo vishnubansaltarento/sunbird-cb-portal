@@ -4,13 +4,16 @@ import { ConfigurationsService } from '@sunbird-cb/utils/src/public-api'
 import { NSProfileDataV3 } from '../../models/profile-v3.models'
 // tslint:disable-next-line
 import _ from 'lodash'
-import { MatChipInputEvent, MatDialog, MatDialogRef, MatSnackBar } from '@angular/material'
+
 import { COMMA, ENTER } from '@angular/cdk/keycodes'
 import { RolesAndActivityService } from '../../services/rolesandActivities.service'
 import { DialogConfirmComponent } from 'src/app/component/dialog-confirm/dialog-confirm.component'
 import { DialogBoxComponent } from '../../components/dialog-box/dialog-box.component'
 import { Router } from '@angular/router'
 import { TranslateService } from '@ngx-translate/core'
+import { MatChipInputEvent } from '@angular/material/chips'
+import { MatDialogRef, MatDialog } from '@angular/material/dialog'
+import { MatSnackBar } from '@angular/material/snack-bar'
 @Component({
     selector: 'ws-app-roles-and-activities',
     templateUrl: './roles-and-activities.component.html',

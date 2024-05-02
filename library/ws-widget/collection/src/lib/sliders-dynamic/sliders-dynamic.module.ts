@@ -2,12 +2,14 @@ import { NgModule } from '@angular/core'
 import { CommonModule } from '@angular/common'
 import { HAMMER_GESTURE_CONFIG, HammerGestureConfig } from '@angular/platform-browser'
 import { RouterModule } from '@angular/router'
-import { MatIconModule, MatTooltipModule } from '@angular/material'
+
 
 import { NavigationModule, ImageResponsiveModule } from '@sunbird-cb/utils'
 import { SlidersDynamicComponent } from './sliders-dynamic.component'
 // tslint:disable-next-line
 import  Hammer from 'hammerjs'
+import { MatIconModule } from '@angular/material/icon'
+import { MatTooltipModule } from '@angular/material/tooltip'
 export class MyHammerConfig extends HammerGestureConfig {
   buildHammer(element: HTMLElement) {
     const mc = new Hammer(element, {

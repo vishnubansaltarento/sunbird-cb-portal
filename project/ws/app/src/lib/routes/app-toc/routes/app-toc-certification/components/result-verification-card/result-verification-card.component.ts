@@ -10,7 +10,8 @@ import { CertificationService } from '../../services/certification.service'
 
 import { ICertificationMeta, TCertificationRequestType } from '../../models/certification.model'
 import { FileDownloadService } from '../../services/file-download.service'
-import { MatDialog, MatSnackBar } from '@angular/material'
+import { MatDialog } from '@angular/material/dialog'
+import { MatSnackBar } from '@angular/material/snack-bar'
 import { RequestCancelDialogComponent } from '../request-cancel-dialog/request-cancel-dialog.component'
 import { SnackbarComponent } from '../snackbar/snackbar.component'
 

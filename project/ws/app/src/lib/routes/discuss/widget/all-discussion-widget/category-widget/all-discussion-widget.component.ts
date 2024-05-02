@@ -1,5 +1,5 @@
-import { Component, Inject } from '@angular/core'
-import { ConfigService, EventsService, NavigationServiceService, DiscussionService, BaseWrapperComponent } from '@sunbird-cb/discussions-ui-v8'
+import { Component } from '@angular/core'
+//import { ConfigService, EventsService, NavigationServiceService, DiscussionService, BaseWrapperComponent } from '@sunbird-cb/discussions-ui-v8'
 // import { EventsService } from '@project-sunbird/discussions-ui-v8/lib/events.service'
 // import { NavigationServiceService } from '@project-sunbird/discussions-ui-v8/lib/navigation-service.service'
 // import { DiscussionService } from '@project-sunbird/discussions-ui-v8/lib/services/discussion.service'
@@ -12,7 +12,7 @@ import { ConfigService, EventsService, NavigationServiceService, DiscussionServi
   templateUrl: './all-discussion-widget.component.html',
   styleUrls: ['./all-discussion-widget.component.css'],
 })
-export class AllDiscussionWidgetComponent extends BaseWrapperComponent {
+export class AllDiscussionWidgetComponent {
 
   detailsToggle = true
   category = 'category'
@@ -29,45 +29,45 @@ export class AllDiscussionWidgetComponent extends BaseWrapperComponent {
   cIds: any = {}
   cid: any
 
-  constructor(
-    @Inject(ConfigService)
-    configSvc: ConfigService,
-    @Inject(DiscussionService)
-    discussionService: DiscussionService,
-    @Inject(NavigationServiceService)
-    navigationServiceService: NavigationServiceService,
-    @Inject(EventsService)
-    eventService: EventsService) {
-    super(navigationServiceService, eventService, configSvc, discussionService)
-  }
+  // constructor(
+  //   @Inject(ConfigService)
+  //   configSvc: ConfigService,
+  //   @Inject(DiscussionService)
+  //   discussionService: DiscussionService,
+  //   @Inject(NavigationServiceService)
+  //   navigationServiceService: NavigationServiceService,
+  //   @Inject(EventsService)
+  //   eventService: EventsService) {
+  //   super(navigationServiceService, eventService, configSvc, discussionService)
+  // }
   // @Input() config
 
-  wrapperInit() {
-    this.state = this.alldiscussPage
-  }
+  // wrapperInit() {
+  //   this.state = this.alldiscussPage
+  // }
 
-  widgetBackClick() {
-    this.state = this.alldiscussPage
-    this.showTrendTagPost = 0
-  }
+  // widgetBackClick() {
+  //   this.state = this.alldiscussPage
+  //   this.showTrendTagPost = 0
+  // }
 
-  stateChange(event: any) {
-    this.previousState = this.state
-    this.state = event.action
-    if (event.action === this.detailsPage) {
-      this.tid = event.tid
-      this.slug = event.title
-      this.showTrendTagPost = 0
-      this.cid = event.cId[0]
-    }
+  // stateChange(event: any) {
+  //   this.previousState = this.state
+  //   this.state = event.action
+  //   if (event.action === this.detailsPage) {
+  //     this.tid = event.tid
+  //     this.slug = event.title
+  //     this.showTrendTagPost = 0
+  //     this.cid = event.cId[0]
+  //   }
 
-    if (event.action === this.tagAllDiscussPage) {
-      this.tid = event.tid
-      this.slug = event.title
-      this.showTrendTagPost = 1
-      this.cIds.result = event.cIds
-    }
-  }
+  //   if (event.action === this.tagAllDiscussPage) {
+  //     this.tid = event.tid
+  //     this.slug = event.title
+  //     this.showTrendTagPost = 1
+  //     this.cIds.result = event.cIds
+  //   }
+  // }
 
   // protected wrapperEventListener(data: any) {
   // }

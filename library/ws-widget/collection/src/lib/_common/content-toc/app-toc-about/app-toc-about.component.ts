@@ -1,7 +1,7 @@
 import { Component, OnInit, Input, OnChanges, SimpleChanges, AfterViewInit, OnDestroy, ViewChild, ElementRef } from '@angular/core'
 import { Router } from '@angular/router'
 import { MatDialog } from '@angular/material/dialog'
-import { MatSnackBar } from '@angular/material'
+import { MatSnackBar } from '@angular/material/snack-bar'
 import { Subject } from 'rxjs'
 import { takeUntil } from 'rxjs/operators'
 

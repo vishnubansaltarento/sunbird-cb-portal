@@ -1,5 +1,6 @@
 import { Component, OnInit, Output, EventEmitter, Input, OnChanges, OnDestroy } from '@angular/core'
-import { MatDialog, MatSnackBar } from '@angular/material'
+import { MatDialog } from '@angular/material/dialog'
+import { MatSnackBar } from '@angular/material/snack-bar'
 import {
   FormGroup,
   FormBuilder,
@@ -14,7 +15,7 @@ import { Observable, Subscription } from 'rxjs'
 import { BreakpointObserver, BreakpointState } from '@angular/cdk/layout'
 
 import { ConfirmDialogComponent } from '@ws/author/src/lib/modules/shared/components/confirm-dialog/confirm-dialog.component'
-import { NotificationComponent } from '@ws/author/src/lib/modules/shared/components/notification/notification.component.ts'
+import { NotificationComponent } from '@ws/author/src/lib/modules/shared/components/notification/notification.component'
 import { FillUps, Option } from '../quiz-class'
 import { NOTIFICATION_TIME } from '../../constants/quiz-constants'
 

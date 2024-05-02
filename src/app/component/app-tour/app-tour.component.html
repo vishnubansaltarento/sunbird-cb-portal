@@ -81,11 +81,11 @@
 </div>
 
 <!-- <ngx-guided-tour backText="Previous" doneText="Finish" progressIndicatorLocation="inside-next-button"></ngx-guided-tour> -->
-<ngx-guided-tour
+<!-- <ngx-guided-tour
   nextText="{{'tour.next' | translate}}"
   backText="{{'tour.previous' | translate}}"
   doneText="{{'tour.finish' | translate}}"
-  progressIndicatorLocation="dots"></ngx-guided-tour>
+  progressIndicatorLocation="dots"></ngx-guided-tour> -->
 
 <div *ngIf="showCompletePopup && !isMobile" class="backdrop bg-zinc-400" [ngClass]="{'requires-no-scroll': noScroll}">
   <div *ngIf="showCompletePopup && !isMobile" (click)="onCongrats()" class="complete-tour">

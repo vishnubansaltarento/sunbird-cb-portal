@@ -6,7 +6,7 @@ import { EditorSharedModule } from '../../../shared/shared.module'
 import { FileUploadComponent } from './components/file-upload/file-upload.component'
 import { UploadComponent } from './components/upload/upload.component'
 import { UploadRoutingModule } from './upload-routing.module'
-import { MatProgressBarModule } from '@angular/material'
+import { MatProgressBarModule } from '@angular/material/progress-bar'
 import { ProfanityPopUpComponent } from './components/profanity-popup/profanity-popup'
 import { ProfanityService } from './services/profanity.service'
 

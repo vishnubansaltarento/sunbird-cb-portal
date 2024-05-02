@@ -1,7 +1,8 @@
 import { Component, OnInit } from '@angular/core'
 import { FormGroup, FormControl, Validators, AbstractControl, ValidatorFn } from '@angular/forms'
 import { ActivatedRoute, Router } from '@angular/router'
-import { MatDialog, MatSnackBar } from '@angular/material'
+import { MatDialog } from '@angular/material/dialog'
+import { MatSnackBar } from '@angular/material/snack-bar'
 import { environment } from 'src/environments/environment'
 // tslint:disable-next-line: import-name
 import _ from 'lodash'

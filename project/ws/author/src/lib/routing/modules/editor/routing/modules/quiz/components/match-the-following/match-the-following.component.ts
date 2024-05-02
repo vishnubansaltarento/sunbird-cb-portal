@@ -10,7 +10,8 @@ import {
   OnChanges,
   OnDestroy,
 } from '@angular/core'
-import { MatDialog, MatSnackBar } from '@angular/material'
+import { MatDialog } from '@angular/material/dialog'
+import { MatSnackBar } from '@angular/material/snack-bar'
 import {
   FormGroup,
   FormBuilder,
@@ -25,7 +26,7 @@ import { Observable, Subscription } from 'rxjs'
 import { NOTIFICATION_TIME } from '../../constants/quiz-constants'
 import { QuizStoreService } from '../../services/store.service'
 import { ConfirmDialogComponent } from '@ws/author/src/lib/modules/shared/components/confirm-dialog/confirm-dialog.component'
-import { NotificationComponent } from '@ws/author/src/lib/modules/shared/components/notification/notification.component.ts'
+import { NotificationComponent } from '@ws/author/src/lib/modules/shared/components/notification/notification.component'
 import { MatchQuiz, MatchOption } from '../quiz-class'
 
 import { Notify } from '@ws/author/src/lib/constants/notificationMessage'

@@ -6,35 +6,11 @@ import { AppTocRoutingModule } from './app-toc-routing.module'
 import { NgCircleProgressModule } from 'ng-circle-progress'
 import { TranslateModule } from '@ngx-translate/core'
 import { InfiniteScrollModule } from 'ngx-infinite-scroll'
-import {
-  MatToolbarModule,
-  MatIconModule,
-  MatButtonModule,
-  MatMenuModule,
-  MatCardModule,
-  MatTooltipModule,
-  MatTabsModule,
-  MatChipsModule,
-  MatDividerModule,
-  MatProgressBarModule,
-  MatListModule,
-  MatDialogModule,
-  MatRadioModule,
-  MatExpansionModule,
-  MatProgressSpinnerModule,
-  MatCheckboxModule,
-  MatInputModule,
-  MatFormFieldModule,
-  MatSelectModule,
-  MatSnackBarModule,
-  MatDatepickerModule,
-  MatNativeDateModule,
-  MatAutocompleteModule,
-} from '@angular/material'
+
 
 // custom modules
 import { WidgetResolverModule } from '@sunbird-cb/resolver'
-import { DiscussionUiModule } from '@sunbird-cb/discussions-ui-v8'
+// import { DiscussionUiModule } from '@sunbird-cb/discussions-ui-v8'
 import {
   PipeDurationTransformModule,
   PipeSafeSanitizerModule,
@@ -84,7 +60,7 @@ import { SkeletonLoaderModule } from '@sunbird-cb/collection/src/lib/_common/ske
 import { ContentTocModule } from '@sunbird-cb/collection/src/lib/_common/content-toc/content-toc.module'
 import { ShareTocModule } from './share-toc/share-toc.module'
 import { TocKpiValuesModule } from '@sunbird-cb/collection/src/lib/_common/content-toc/toc-kpi-values/toc-kpi-values.module'
-import { MicroSurveyModule } from '@sunbird-cb/micro-surveys'
+// import { MicroSurveyModule } from '@sunbird-cb/micro-surveys'
 import { CardContentV2Module } from '@sunbird-cb/collection/src/lib/card-content-v2/card-content-v2.module'
 import { ConnectionNameModule } from '@sunbird-cb/collection/src/lib/_common/connection-name/connection-name.module'
 import { CertificateDialogModule } from '@sunbird-cb/collection/src/lib/_common/certificate-dialog/certificate-dialog.module'
@@ -134,6 +110,29 @@ import { AppTocOverviewDirective } from './routes/app-toc-overview/app-toc-overv
 import { AppTocHomeDirective } from './routes/app-toc-home/app-toc-home.directive'
 import { AppTocCohortsDirective } from './routes/app-toc-cohorts/app-toc-cohorts.directive'
 import { AppTocSinglePageDirective } from './routes/app-toc-single-page/app-toc-single-page.directive'
+import { MatAutocompleteModule } from '@angular/material/autocomplete'
+import { MatButtonModule } from '@angular/material/button'
+import { MatCardModule } from '@angular/material/card'
+import { MatCheckboxModule } from '@angular/material/checkbox'
+import { MatChipsModule } from '@angular/material/chips'
+import { MatNativeDateModule } from '@angular/material/core'
+import { MatDatepickerModule } from '@angular/material/datepicker'
+import { MatDialogModule } from '@angular/material/dialog'
+import { MatDividerModule } from '@angular/material/divider'
+import { MatExpansionModule } from '@angular/material/expansion'
+import { MatFormFieldModule } from '@angular/material/form-field'
+import { MatIconModule } from '@angular/material/icon'
+import { MatInputModule } from '@angular/material/input'
+import { MatListModule } from '@angular/material/list'
+import { MatMenuModule } from '@angular/material/menu'
+import { MatProgressBarModule } from '@angular/material/progress-bar'
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner'
+import { MatRadioModule } from '@angular/material/radio'
+import { MatSelectModule } from '@angular/material/select'
+import { MatSnackBarModule } from '@angular/material/snack-bar'
+import { MatTabsModule } from '@angular/material/tabs'
+import { MatToolbarModule } from '@angular/material/toolbar'
+import { MatTooltipModule } from '@angular/material/tooltip'
 
 @NgModule({
   declarations: [
@@ -236,13 +235,13 @@ import { AppTocSinglePageDirective } from './routes/app-toc-single-page/app-toc-
     BtnContentShareModule,
     UserAutocompleteModule,
     AvatarPhotoModule,
-    DiscussionUiModule,
+    // DiscussionUiModule,
     ConnectionNameModule,
     CardRatingCommentModule,
     InfiniteScrollModule,
     AttendanceHelperModule,
     AttendanceCardModule,
-    MicroSurveyModule,
+    // MicroSurveyModule,
     MatChipsModule,
     MatAutocompleteModule,
     ContentTocModule,

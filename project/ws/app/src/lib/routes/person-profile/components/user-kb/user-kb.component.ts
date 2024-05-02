@@ -3,7 +3,8 @@ import { ConfigurationsService, TFetchStatus } from '@sunbird-cb/utils'
 import { NsContent } from '@sunbird-cb/collection'
 import { NSProfileData } from '../../../profile/models/profile.model'
 import { UserdetailallComponent } from '../userdetailall/userdetailall.component'
-import { MatDialog, MatSnackBar } from '@angular/material'
+import { MatDialog } from '@angular/material/dialog'
+import { MatSnackBar } from '@angular/material/snack-bar'
 import { PersonProfileService } from '../../services/person-profile.service'
 
 @Component({

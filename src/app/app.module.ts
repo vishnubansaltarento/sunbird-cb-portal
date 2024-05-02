@@ -2,31 +2,6 @@ import { FullscreenOverlayContainer, OverlayContainer } from '@angular/cdk/overl
 import { APP_BASE_HREF, PlatformLocation } from '@angular/common'
 import { HttpClient, HttpClientJsonpModule, HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http'
 import { APP_INITIALIZER, Injectable, NgModule, ErrorHandler } from '@angular/core'
-import {
-  GestureConfig,
-  MatButtonModule,
-  MatCardModule,
-  MatDialogModule,
-  MatDividerModule,
-  MatExpansionModule,
-  MatIconModule,
-  MatMenuModule,
-  MatProgressBarModule,
-  MatRippleModule,
-  MatSliderModule,
-  MatToolbarModule,
-  MatTooltipModule,
-  MAT_PROGRESS_SPINNER_DEFAULT_OPTIONS,
-  MAT_SNACK_BAR_DEFAULT_OPTIONS,
-  MatInputModule,
-  MatFormFieldModule,
-  MatCheckboxModule,
-  MatTabsModule,
-  MatSelectModule,
-  MatTableModule,
-  MatProgressSpinnerModule,
-  MatSidenavModule,
-} from '@angular/material'
 import { BrowserModule, HAMMER_GESTURE_CONFIG } from '@angular/platform-browser'
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations'
 import {
@@ -64,8 +39,8 @@ import { AppRetryInterceptorService } from './services/app-retry-interceptor.ser
 import { TncAppResolverService } from './services/tnc-app-resolver.service'
 import { TncPublicResolverService } from './services/tnc-public-resolver.service'
 import { FormsModule, ReactiveFormsModule } from '@angular/forms'
-import { ConfigService } from '@ws/app/src/lib/routes/discuss/services/config.service'
-import { DiscussionUiModule } from '@sunbird-cb/discussions-ui-v8'
+// import { ConfigService } from '@ws/app/src/lib/routes/discuss/services/config.service'
+// import { DiscussionUiModule } from '@sunbird-cb/discussions-ui-v8'
 import { ServiceWorkerModule } from '@angular/service-worker'
 import { environment } from 'src/environments/environment'
 import { QuickTourModule } from '@ws/app/src/lib/routes/info/quick-tour/quick-tour.module'
@@ -82,7 +57,7 @@ import { WelcomeUserResolverService } from './services/welcome-user-resolver.ser
 import { PublicTocModule } from './routes/public/public-toc/public-toc.module'
 import { PublicRequestModule } from './routes/public/public-request/public-request.module'
 import { AppTourComponent } from './component/app-tour/app-tour.component'
-import { GuidedTourModule, GuidedTourService } from 'cb-tour-guide'
+// import { GuidedTourModule, GuidedTourService } from 'cb-tour-guide'
 import { AppTourVideoComponent } from './component/app-tour-video/app-tour-video.component'
 import { AppChatbotModule } from './component/app-chatbot/app-chatbot.module'
 import { AppHierarchyResolverService } from './services/app-hierarchy-resolver.service'
@@ -101,6 +76,27 @@ import { ProfileV3Module } from '@ws/app/src/lib/routes/profile-v3/profile-v3.mo
 import { NoDataComponent } from './component/no-data/no-data.component'
 import { SurveyShikshaComponent } from './component/survey-shiksha/survey-shiksha.component'
 import { PrivacyPolicyComponent } from './component/privacy-policy/privacy-policy.component'
+import { MatButtonModule } from '@angular/material/button'
+import { MatCardModule } from '@angular/material/card'
+import { MatCheckboxModule } from '@angular/material/checkbox'
+import { GestureConfig, MatRippleModule } from '@angular/material/core'
+import { MatDialogModule } from '@angular/material/dialog'
+import { MatDividerModule } from '@angular/material/divider'
+import { MatExpansionModule } from '@angular/material/expansion'
+import { MatFormFieldModule } from '@angular/material/form-field'
+import { MatIconModule } from '@angular/material/icon'
+import { MatInputModule } from '@angular/material/input'
+import { MatMenuModule } from '@angular/material/menu'
+import { MatProgressBarModule } from '@angular/material/progress-bar'
+import { MatProgressSpinnerModule, MAT_PROGRESS_SPINNER_DEFAULT_OPTIONS } from '@angular/material/progress-spinner'
+import { MatSelectModule } from '@angular/material/select'
+import { MatSidenavModule } from '@angular/material/sidenav'
+import { MatSliderModule } from '@angular/material/slider'
+import { MAT_SNACK_BAR_DEFAULT_OPTIONS } from '@angular/material/snack-bar'
+import { MatTableModule } from '@angular/material/table'
+import { MatTabsModule } from '@angular/material/tabs'
+import { MatToolbarModule } from '@angular/material/toolbar'
+import { MatTooltipModule } from '@angular/material/tooltip'
 
 @Injectable()
 export class HammerConfig extends GestureConfig {
@@ -203,9 +199,9 @@ export function HttpLoaderFactory(http: HttpClient) {
     PipeSafeSanitizerModule,
     TourModule,
     MatTabsModule,
-    GuidedTourModule,
+    // GuidedTourModule,
     AppChatbotModule,
-    DiscussionUiModule.forRoot(ConfigService),
+    // DiscussionUiModule.forRoot(ConfigService),
     ServiceWorkerModule.register('ngsw-worker.js', { enabled: environment.production }),
     HeaderModule,
     TranslateModule.forRoot({
@@ -273,7 +269,7 @@ export function HttpLoaderFactory(http: HttpClient) {
     { provide: OverlayContainer, useClass: FullscreenOverlayContainer },
     { provide: HAMMER_GESTURE_CONFIG, useClass: HammerConfig },
     { provide: ErrorHandler, useClass: GlobalErrorHandlingService },
-    GuidedTourService,
+    // GuidedTourService,
   ],
 })
 export class AppModule { }

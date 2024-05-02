@@ -1,5 +1,6 @@
 import { Component, OnInit, Inject } from '@angular/core'
-import { MatSnackBar, MAT_DIALOG_DATA, MatDialogRef } from '@angular/material'
+import { MatSnackBar } from '@angular/material/snack-bar'
+import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog'
 
 @Component({
   selector: 'ws-app-enroll-questionnaire',

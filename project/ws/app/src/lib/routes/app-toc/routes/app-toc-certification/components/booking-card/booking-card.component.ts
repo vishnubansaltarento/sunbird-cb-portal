@@ -1,5 +1,6 @@
 import { Component, OnDestroy, Input, EventEmitter, Output } from '@angular/core'
-import { MatDialog, MatSnackBar } from '@angular/material'
+import { MatDialog } from '@angular/material/dialog'
+import { MatSnackBar } from '@angular/material/snack-bar'
 import { throwError, Subject } from 'rxjs'
 import { takeWhile, switchMap, tap, takeUntil } from 'rxjs/operators'
 

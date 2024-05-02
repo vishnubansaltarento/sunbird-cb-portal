@@ -2,7 +2,8 @@ import { Component, OnInit, Input, ElementRef, ViewChild } from '@angular/core'
 import { NsPlaylist, BtnPlaylistService, NsContent } from '@sunbird-cb/collection'
 import { ActivatedRoute, Router } from '@angular/router'
 import { TFetchStatus, ConfigurationsService } from '@sunbird-cb/utils'
-import { MatDialog, MatSnackBar } from '@angular/material'
+import { MatDialog } from '@angular/material/dialog'
+import { MatSnackBar } from '@angular/material/snack-bar'
 // tslint:disable-next-line:max-line-length
 import { PlaylistContentDeleteDialogComponent } from '../../components/playlist-content-delete-dialog/playlist-content-delete-dialog.component'
 // tslint:disable-next-line:max-line-length

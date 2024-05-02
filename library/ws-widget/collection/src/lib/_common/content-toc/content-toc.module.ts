@@ -3,17 +3,7 @@ import { CommonModule } from '@angular/common'
 import { RouterModule } from '@angular/router'
 import { FormsModule } from '@angular/forms'
 import { HttpClient } from '@angular/common/http'
-import {
-  MatIconModule,
-  MatTabsModule,
-  MatProgressBarModule,
-  MatExpansionModule,
-  MatMenuModule,
-  MatProgressSpinnerModule,
-  MatSnackBarModule,
-  MatRadioModule ,
-  MatTooltipModule,
-} from '@angular/material'
+
 import { InfiniteScrollModule } from 'ngx-infinite-scroll'
 import { NgCircleProgressModule } from 'ng-circle-progress'
 import { TranslateModule, TranslateLoader } from '@ngx-translate/core'
@@ -41,6 +31,15 @@ import { EnrollModalComponent } from './enroll-modal/enroll-modal.component'
 import { AppTocSessionCardNewComponent } from './app-toc-session-card-new/app-toc-session-card-new.component'
 import { AppTocSessionsNewComponent } from './app-toc-sessions-new/app-toc-sessions-new.component'
 import { AppTocContentCardV2SkeletonComponent } from './app-toc-content-card-v2-skeleton/app-toc-content-card-v2-skeleton.component'
+import { MatExpansionModule } from '@angular/material/expansion'
+import { MatIconModule } from '@angular/material/icon'
+import { MatMenuModule } from '@angular/material/menu'
+import { MatProgressBarModule } from '@angular/material/progress-bar'
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner'
+import { MatRadioModule } from '@angular/material/radio'
+import { MatSnackBarModule } from '@angular/material/snack-bar'
+import { MatTabsModule } from '@angular/material/tabs'
+import { MatTooltipModule } from '@angular/material/tooltip'
 
 @NgModule({
   declarations: [

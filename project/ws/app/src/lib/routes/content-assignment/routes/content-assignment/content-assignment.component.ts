@@ -1,6 +1,6 @@
 import { STEPPER_GLOBAL_OPTIONS } from '@angular/cdk/stepper'
 import { Component, ElementRef, OnInit, ViewChild } from '@angular/core'
-import { MatDialog, MatDialogConfig, MatSnackBar } from '@angular/material'
+
 import { MatPaginator, PageEvent } from '@angular/material/paginator'
 import { ActivatedRoute, Router } from '@angular/router'
 import { ContentAssignService, NsContent } from '@sunbird-cb/collection'
@@ -12,6 +12,8 @@ import {
   UserFilterDisplayComponent,
 } from '../../components/user-filter-display/user-filter-display.component'
 import { IContentAssignModel } from '@sunbird-cb/collection/src/lib/content-assign/content-assign.model'
+import { MatDialog, MatDialogConfig } from '@angular/material/dialog'
+import { MatSnackBar } from '@angular/material/snack-bar'
 @Component({
   selector: 'ws-app-content-assignment',
   templateUrl: './content-assignment.component.html',

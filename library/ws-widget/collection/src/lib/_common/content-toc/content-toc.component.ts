@@ -1,5 +1,5 @@
 import { AfterViewInit, Component, HostListener, Input, OnChanges, OnInit, SimpleChanges, ViewChild } from '@angular/core'
-import { MatTabChangeEvent, MatTabGroup } from '@angular/material'
+import { MatTabChangeEvent, MatTabGroup } from '@angular/material/tabs'
 import { ActivatedRoute } from '@angular/router'
 import { NsContent, UtilityService } from '@sunbird-cb/utils/src/public-api'
 import { Subscription } from 'rxjs'

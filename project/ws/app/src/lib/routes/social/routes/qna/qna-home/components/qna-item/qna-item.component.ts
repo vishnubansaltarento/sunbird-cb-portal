@@ -1,7 +1,8 @@
 import { Component, OnInit, Input } from '@angular/core'
 import { NsDiscussionForum, DialogSocialDeletePostComponent } from '@sunbird-cb/collection'
 import { ConfigurationsService } from '@sunbird-cb/utils'
-import { MatSnackBar, MatDialog } from '@angular/material'
+import { MatSnackBar } from '@angular/material/snack-bar'
+import { MatDialog } from '@angular/material/dialog'
 
 @Component({
   selector: 'ws-app-qna-item',

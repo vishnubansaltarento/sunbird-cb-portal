@@ -1,7 +1,9 @@
 import { Component, Inject, ViewChild, ElementRef } from '@angular/core'
+import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog'
+import { MatSnackBar } from '@angular/material/snack-bar'
 import { NsGoal, BtnGoalsService } from '@sunbird-cb/collection'
 import { TFetchStatus } from '@sunbird-cb/utils'
-import { MatDialogRef, MAT_DIALOG_DATA, MatSnackBar } from '@angular/material'
+
 
 @Component({
   selector: 'ws-app-goal-delete-dialog',

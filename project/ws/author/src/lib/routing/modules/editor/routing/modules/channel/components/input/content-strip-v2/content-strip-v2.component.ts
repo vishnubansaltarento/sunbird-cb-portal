@@ -1,7 +1,7 @@
 import { COMMA, ENTER } from '@angular/cdk/keycodes'
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core'
 import { AbstractControl, FormBuilder, FormControl, FormGroup } from '@angular/forms'
-import { MatChipInputEvent, MatDialog } from '@angular/material'
+
 import {
   IPickerContentData,
   IWidgetElementHtml,
@@ -14,6 +14,8 @@ import { Observable, of } from 'rxjs'
 import { debounceTime, distinctUntilChanged, startWith, switchMap } from 'rxjs/operators'
 import { InterestService } from './../../../../../../../../../../../../app/src/lib/routes/profile/routes/interest/services/interest.service'
 import { SEARCHV6 } from './content-strip-v2.constant'
+import { MatChipInputEvent } from '@angular/material/chips'
+import { MatDialog } from '@angular/material/dialog'
 
 @Component({
   selector: 'ws-auth-content-strip-v2',

@@ -37,12 +37,12 @@ export class FileDownloadService {
       }
 
       // For other browsers
-      const file: File = new File([blob], documentName)
+      // const file: File = new File([blob], documentName)
 
       const downloadLink = this.document.createElement('a')
       downloadLink.style.display = 'none'
       this.document.body.appendChild(downloadLink)
-      downloadLink.setAttribute('href', this.window.URL.createObjectURL(file))
+      // downloadLink.setAttribute('href', this.window.URL.createObjectURL(file))
       downloadLink.setAttribute('download', documentName)
       downloadLink.click()
       this.document.body.removeChild(downloadLink)

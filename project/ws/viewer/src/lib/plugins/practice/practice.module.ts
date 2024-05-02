@@ -8,23 +8,7 @@ import { SubmitQuizDialogComponent } from './components/submit-quiz-dialog/submi
 
 import { PipeDurationTransformModule, PipeLimitToModule } from '@sunbird-cb/utils'
 import { SkeletonLoaderModule } from '@sunbird-cb/collection/src/lib/_common/skeleton-loader/skeleton-loader.module'
-import {
-  MatCardModule,
-  MatDialogModule,
-  MatFormFieldModule,
-  MatIconModule,
-  MatListModule,
-  MatRadioModule,
-  MatSidenavModule,
-  MatTableModule,
-  MatButtonModule,
-  MatProgressSpinnerModule,
-  MatProgressBarModule,
-  MatExpansionModule,
-  MatTooltipModule,
-  MatChipsModule,
-  MatCheckboxModule,
-} from '@angular/material'
+
 
 import {
   BtnFullscreenModule,
@@ -35,6 +19,21 @@ import { MultipleChoiseQuesComponent } from './components/question/mcq-mca/mcq-m
 import { SingleChoiseQuesComponent } from './components/question/mcq-sca/mcq-sca.component'
 import { MatchTheFollowingQuesComponent } from './components/question/mtf/mtf.component'
 import { TranslateModule } from '@ngx-translate/core'
+import { MatButtonModule } from '@angular/material/button'
+import { MatCardModule } from '@angular/material/card'
+import { MatCheckboxModule } from '@angular/material/checkbox'
+import { MatChipsModule } from '@angular/material/chips'
+import { MatDialogModule } from '@angular/material/dialog'
+import { MatExpansionModule } from '@angular/material/expansion'
+import { MatFormFieldModule } from '@angular/material/form-field'
+import { MatIconModule } from '@angular/material/icon'
+import { MatListModule } from '@angular/material/list'
+import { MatProgressBarModule } from '@angular/material/progress-bar'
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner'
+import { MatRadioModule } from '@angular/material/radio'
+import { MatSidenavModule } from '@angular/material/sidenav'
+import { MatTableModule } from '@angular/material/table'
+import { MatTooltipModule } from '@angular/material/tooltip'
 
 @NgModule({
   declarations: [

@@ -1,7 +1,8 @@
 import { Component, EventEmitter, Inject, Input, OnInit, Output } from '@angular/core'
-import { MAT_BOTTOM_SHEET_DATA, MatBottomSheetRef } from '@angular/material'
+
 import { TranslateService } from '@ngx-translate/core'
 import { gyaanConstants } from '../../models/gyaan-contants.model'
+import { MAT_BOTTOM_SHEET_DATA, MatBottomSheetRef } from '@angular/material/bottom-sheet'
 
 @Component({
   selector: 'ws-app-gyaan-filter',

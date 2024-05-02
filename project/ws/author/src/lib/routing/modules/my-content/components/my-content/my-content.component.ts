@@ -2,7 +2,7 @@ import { AuthExpiryDateConfirmComponent } from '@ws/author/src/lib/modules/share
 import { FlatTreeControl } from '@angular/cdk/tree'
 import { Component, ElementRef, OnDestroy, OnInit, ViewChild } from '@angular/core'
 import { FormGroup } from '@angular/forms'
-import { MatDialog, MatSnackBar, MatTreeFlatDataSource, MatTreeFlattener } from '@angular/material'
+
 import { ActivatedRoute, Router } from '@angular/router'
 import { NOTIFICATION_TIME } from '@ws/author/src/lib/constants/constant'
 import { Notify } from '@ws/author/src/lib/constants/notificationMessage'
@@ -23,6 +23,9 @@ import { LoaderService } from '@ws/author/src/lib/services/loader.service'
 import { Subscription } from 'rxjs'
 import { MyContentService } from '../../services/my-content.service'
 import { map } from 'rxjs/operators'
+import { MatDialog } from '@angular/material/dialog'
+import { MatSnackBar } from '@angular/material/snack-bar'
+import { MatTreeFlattener, MatTreeFlatDataSource } from '@angular/material/tree'
 
 @Component({
   selector: 'ws-auth-my-content',

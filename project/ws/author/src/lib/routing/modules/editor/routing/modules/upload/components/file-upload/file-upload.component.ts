@@ -10,7 +10,7 @@ import {
   TemplateRef,
 } from '@angular/core'
 import { FormBuilder, FormGroup } from '@angular/forms'
-import { MatSnackBar } from '@angular/material'
+import { MatSnackBar } from '@angular/material/snack-bar'
 import { MatDialog } from '@angular/material/dialog'
 import {
   CONTENT_BASE_STATIC,

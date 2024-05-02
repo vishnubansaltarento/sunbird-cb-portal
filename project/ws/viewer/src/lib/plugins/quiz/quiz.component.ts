@@ -7,7 +7,6 @@ import {
   SimpleChanges,
   ViewChild, ViewChildren,
 } from '@angular/core'
-import { MatDialog, MatSidenav } from '@angular/material'
 import { interval, Subscription } from 'rxjs'
 import { map } from 'rxjs/operators'
 import { NSQuiz } from './quiz.model'
@@ -18,6 +17,8 @@ import { QuizService } from './quiz.service'
 import { EventService, WsEvents } from '@sunbird-cb/utils'
 import { ActivatedRoute } from '@angular/router'
 import { ViewerUtilService } from '../../viewer-util.service'
+import { MatDialog } from '@angular/material/dialog'
+import { MatSidenav } from '@angular/material/sidenav'
 export type FetchStatus = 'hasMore' | 'fetching' | 'done' | 'error' | 'none'
 
 @Component({

@@ -1,9 +1,11 @@
 import { Component, EventEmitter, OnInit, Output, ElementRef, ViewChild } from '@angular/core'
 import { FormControl } from '@angular/forms'
-import { MatDatepickerInputEvent, MatSnackBar } from '@angular/material'
+
 import { NsAnalytics } from '../../models/learning-analytics.model'
 
 import { QuarterServiceService } from '../../services/quarter-filter.service'
+import { MatDatepickerInputEvent } from '@angular/material/datepicker'
+import { MatSnackBar } from '@angular/material/snack-bar'
 @Component({
   selector: 'ws-analytics-quarter-filters',
   templateUrl: './quarter-filters.component.html',

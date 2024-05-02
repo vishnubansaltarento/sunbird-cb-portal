@@ -7,7 +7,8 @@ import {
   Output,
   ViewChild,
 } from '@angular/core'
-import { MatDialog, MatSnackBar } from '@angular/material'
+import { MatDialog } from '@angular/material/dialog'
+import { MatSnackBar } from '@angular/material/snack-bar'
 import { Router } from '@angular/router'
 import { BtnGoalsService, NsGoal } from '@sunbird-cb/collection'
 import { TFetchStatus, ConfigurationsService } from '@sunbird-cb/utils'

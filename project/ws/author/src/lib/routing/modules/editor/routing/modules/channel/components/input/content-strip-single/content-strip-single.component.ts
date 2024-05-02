@@ -1,7 +1,7 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core'
 import { ConfirmDialogComponent } from '@ws/author/src/lib/modules/shared/components/confirm-dialog/confirm-dialog.component'
 import { AbstractControl, FormArray, FormBuilder, FormGroup, FormControl } from '@angular/forms'
-import { MatSnackBar, MatDialog, MatChipInputEvent } from '@angular/material'
+
 import { IPickerContentData, NsContent, NsContentStripSingle } from '@sunbird-cb/collection'
 import { UploadService } from '@ws/author/src/lib/routing/modules/editor/shared/services/upload.service'
 import { LoaderService } from '@ws/author/src/lib/services/loader.service'
@@ -15,6 +15,9 @@ import { SEARCHV6 } from './content-strip-single.constant'
 import { COMMA, ENTER } from '@angular/cdk/keycodes'
 import { Observable, of } from 'rxjs'
 import { InterestService } from './../../../../../../../../../../../../app/src/lib/routes/profile/routes/interest/services/interest.service'
+import { MatChipInputEvent } from '@angular/material/chips'
+import { MatDialog } from '@angular/material/dialog'
+import { MatSnackBar } from '@angular/material/snack-bar'
 
 @Component({
   selector: 'ws-auth-content-strip-single',
