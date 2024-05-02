@@ -62,6 +62,7 @@ export class ViewerSecondaryTopBarComponent implements OnInit, OnDestroy {
   canShare = false
   rootOrgId: any
   currentDataFromEnrollList: any
+  pageScrollSubscription: Subscription | null = null
   // primaryCategory = NsContent.EPrimaryCategory
   constructor(
     private activatedRoute: ActivatedRoute,
@@ -90,6 +91,22 @@ export class ViewerSecondaryTopBarComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     // this.getAuthDataIdentifer()
+
+    this.pageScrollSubscription = this.appTocSvc.updatePageScroll.subscribe((value: boolean) => {
+      if (value) {
+        setTimeout(() => {
+          if (document.getElementsByClassName('viewer-top-secondary')  &&
+          document.getElementsByClassName('viewer-top-secondary')[0]) {
+            document.getElementsByClassName('viewer-top-secondary')[0].scrollIntoView({
+              behavior: 'smooth',
+              block: 'start',
+              inline: 'start',
+           })
+          }
+        },         1000)
+      }
+    })
+
     if (window.innerWidth <= 1200) {
       this.isMobile = true
     } else {
@@ -238,6 +255,9 @@ export class ViewerSecondaryTopBarComponent implements OnInit, OnDestroy {
     }
     if (this.viewerDataServiceResourceSubscription) {
       this.viewerDataServiceResourceSubscription.unsubscribe()
+    }
+    if (this.pageScrollSubscription) {
+      this.pageScrollSubscription.unsubscribe()
     }
   }
 
