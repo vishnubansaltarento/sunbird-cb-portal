@@ -125,6 +125,7 @@ export class EventsComponent implements OnInit {
         filters: {
           status: ['Live'],
           contentType: 'Event',
+          category: "Event"
         },
         sort_by: {
           startDate: 'desc',
