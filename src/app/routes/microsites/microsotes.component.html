@@ -32,11 +32,6 @@
               <div class="nav-button" (click)="scrollToSection(section.key)">{{section.title}}</div>
             </ng-container>
         </ng-container>
-        <ng-container *ngFor="let section of sectionList">
-            <ng-container *ngIf="section.enabled && section.navigation">
-              <div class="nav-button" (click)="scrollToSection(section.key)">{{section.title}}</div>
-            </ng-container>
-        </ng-container>
     </div>
 
 </div>
@@ -66,7 +61,7 @@
                 <div class="flex-1 flex flex-col">
                     <h1>{{data?.title}}</h1>
                     <p>{{data?.description}}</p>
-                    <div class="block md:hidden overflow-y-auto">
+                    <div class="block md:hidden overflow-y-auto mb-3">
                         <sb-uic-data-points [objectData]="data?.metrics?.data" [layoutType]="'singleRow'"></sb-uic-data-points>
                     </div>
                 </div>
