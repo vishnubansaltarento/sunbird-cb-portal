@@ -104,6 +104,9 @@
 }
 .infra-background {
     background: #1B4CA1;
+    align-items: center;
+    justify-content: center;
+    display: flex;
 }
 .infra-box {
     width: 256px;
@@ -192,7 +195,7 @@
 }
 @media screen and (max-width: 768px) { 
     .infra-sec {
-        padding: 1.5rem;
+        padding: 0;
     }
     .infra-box {
         width: 99%;
@@ -229,6 +232,7 @@
     .sticky-navigator {
         align-items: center;
         justify-content: left;
+        bottom: 63px;
     }
     
 }
