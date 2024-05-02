@@ -28,11 +28,20 @@ export class MicrosotesComponent implements OnInit {
             sliderData: {
               styleData : {
                 "bannerMetaClass": "inline-meta",
+                "bannerMeta": "visible",
                 "bannerMetaAlign": "right",
                 "navigationArrows": "hidden",
                 "borderRadius": "0",
                 "customHeight": "424px",
-                "mobileScreenHeight": "232px"
+                
+                "responsive": {
+                  "bannerMetaClass": "inline-meta",
+                  "customHeight": "232px",
+                  "bannerMetaAlign": "right",
+                  "navigationArrows": "visible",
+                  "dots": "hidden",
+                  "arrowsPlacement": "middle-inline"
+                }
               },
               sliders: [
                 {
@@ -206,65 +215,78 @@ export class MicrosotesComponent implements OnInit {
                 background: 'tranparent',
               },
             ],
-            sliders: [
-              {
-                'active': true,
-                'banners': {
-                  'l': 'assets/instances/eagle/banners/orgs/new-banner/6/l.png',
-                  'm': 'assets/instances/eagle/banners/orgs/new-banner/6/m.png',
-                  's': 'assets/instances/eagle/banners/orgs/new-banner/6/s.png',
-                  'xl': 'assets/instances/eagle/banners/orgs/new-banner/6/l.png',
-                  'xs': 'assets/instances/eagle/banners/orgs/new-banner/6/s.png',
-                  'xxl': 'assets/instances/eagle/banners/orgs/new-banner/6/l.png',
-                },
-                'redirectUrl': '/app/curatedCollections/do_1137524714202480641252',
-                'queryParams': {
-                  'tab': 'Learn',
-                  'q': 'Salesforce',
-                  'lang': 'en',
-                  'f': '{}',
-                },
-                'title': '',
+            sliderData: {
+              styleData : {
+                "borderRadius": "12px",
+                "customHeight": "344px",
+                "bannerMeta": "visible",
+                "responsive": {
+                  "customHeight": "232px",
+                  "bannerMetaAlign": "left",
+                  "navigationArrows": "visible",
+                  "arrowsPlacement": "bottom-right",
+                }
               },
-              {
-                'active': true,
-                'banners': {
-                  'l': 'assets/instances/eagle/banners/orgs/new-banner/4/l.png',
-                  'm': 'assets/instances/eagle/banners/orgs/new-banner/4/m.png',
-                  's': 'assets/instances/eagle/banners/orgs/new-banner/4/s.png',
-                  'xl': 'assets/instances/eagle/banners/orgs/new-banner/4/l.png',
-                  'xs': 'assets/instances/eagle/banners/orgs/new-banner/4/s.png',
-                  'xxl': 'assets/instances/eagle/banners/orgs/new-banner/4/l.png',
+              sliders: [
+                {
+                  'active': true,
+                  'banners': {
+                    'l': 'assets/instances/eagle/banners/orgs/new-banner/6/l.png',
+                    'm': 'assets/instances/eagle/banners/orgs/new-banner/6/m.png',
+                    's': 'assets/instances/eagle/banners/orgs/new-banner/6/s.png',
+                    'xl': 'assets/instances/eagle/banners/orgs/new-banner/6/l.png',
+                    'xs': 'assets/instances/eagle/banners/orgs/new-banner/6/s.png',
+                    'xxl': 'assets/instances/eagle/banners/orgs/new-banner/6/l.png',
+                  },
+                  'redirectUrl': '/app/curatedCollections/do_1137524714202480641252',
+                  'queryParams': {
+                    'tab': 'Learn',
+                    'q': 'Salesforce',
+                    'lang': 'en',
+                    'f': '{}',
+                  },
+                  'title': '',
                 },
-                'redirectUrl': '/app/organisation/dopt',
-                'queryParams': {
-                  'tab': 'Learn',
-                  'q': 'Salesforce',
-                  'lang': 'en',
-                  'f': '{}',
+                {
+                  'active': true,
+                  'banners': {
+                    'l': 'assets/instances/eagle/banners/orgs/new-banner/4/l.png',
+                    'm': 'assets/instances/eagle/banners/orgs/new-banner/4/m.png',
+                    's': 'assets/instances/eagle/banners/orgs/new-banner/4/s.png',
+                    'xl': 'assets/instances/eagle/banners/orgs/new-banner/4/l.png',
+                    'xs': 'assets/instances/eagle/banners/orgs/new-banner/4/s.png',
+                    'xxl': 'assets/instances/eagle/banners/orgs/new-banner/4/l.png',
+                  },
+                  'redirectUrl': '/app/organisation/dopt',
+                  'queryParams': {
+                    'tab': 'Learn',
+                    'q': 'Salesforce',
+                    'lang': 'en',
+                    'f': '{}',
+                  },
+                  'title': '',
                 },
-                'title': '',
-              },
-              {
-                'active': true,
-                'banners': {
-                  'l': 'assets/instances/eagle/banners/orgs/new-banner/2/l.png',
-                  'm': 'assets/instances/eagle/banners/orgs/new-banner/2/m.png',
-                  's': 'assets/instances/eagle/banners/orgs/new-banner/2/s.png',
-                  'xl': 'assets/instances/eagle/banners/orgs/new-banner/2/l.png',
-                  'xs': 'assets/instances/eagle/banners/orgs/new-banner/2/s.png',
-                  'xxl': 'assets/instances/eagle/banners/orgs/new-banner/2/l.png',
+                {
+                  'active': true,
+                  'banners': {
+                    'l': 'assets/instances/eagle/banners/orgs/new-banner/2/l.png',
+                    'm': 'assets/instances/eagle/banners/orgs/new-banner/2/m.png',
+                    's': 'assets/instances/eagle/banners/orgs/new-banner/2/s.png',
+                    'xl': 'assets/instances/eagle/banners/orgs/new-banner/2/l.png',
+                    'xs': 'assets/instances/eagle/banners/orgs/new-banner/2/s.png',
+                    'xxl': 'assets/instances/eagle/banners/orgs/new-banner/2/l.png',
+                  },
+                  'redirectUrl': '/app/globalsearch',
+                  'queryParams': {
+                    'tab': 'Learn',
+                    'q': 'Salesforce',
+                    'lang': 'en',
+                    'f': '{}',
+                  },
+                  'title': '',
                 },
-                'redirectUrl': '/app/globalsearch',
-                'queryParams': {
-                  'tab': 'Learn',
-                  'q': 'Salesforce',
-                  'lang': 'en',
-                  'f': '{}',
-                },
-                'title': '',
-              },
-            ]
+              ]
+            }
           }
         }
       ]
