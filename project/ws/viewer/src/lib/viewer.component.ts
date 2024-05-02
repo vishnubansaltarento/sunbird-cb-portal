@@ -135,20 +135,20 @@ export class ViewerComponent implements OnInit, OnDestroy, AfterViewChecked {
   ngOnInit() {
     this.getTocConfig()
     // for left side player scroll on right side resource click
-    this.pageScrollSubscription = this.tocSvc.updatePageScroll.subscribe((value: boolean) => {
-      if (value) {
-        setTimeout(() => {
-          if (document.getElementsByClassName('viewer-player-container') && 
-            document.getElementsByClassName('viewer-player-container')[0])  {
-            document.getElementsByClassName('viewer-player-container')[0].scrollIntoView({
-              behavior: 'smooth',
-              block: 'start',
-              inline: 'start',
-           })
-          }
-        },         1000)
-      }
-    })
+    // this.pageScrollSubscription = this.tocSvc.updatePageScroll.subscribe((value: boolean) => {
+    //   if (value) {
+    //     setTimeout(() => {
+    //       if (document.getElementsByClassName('viewer-player-container') && 
+    //         document.getElementsByClassName('viewer-player-container')[0])  {
+    //         document.getElementsByClassName('viewer-player-container')[0].scrollIntoView({
+    //           behavior: 'smooth',
+    //           block: 'start',
+    //           inline: 'start',
+    //        })
+    //       }
+    //     },         1000)
+    //   }
+    // })
 
     const contentData = this.activatedRoute.snapshot.data.hierarchyData
     && this.activatedRoute.snapshot.data.hierarchyData.data || ''
