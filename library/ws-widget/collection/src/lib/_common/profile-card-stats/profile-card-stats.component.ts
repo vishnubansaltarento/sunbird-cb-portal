@@ -148,8 +148,8 @@ export class ProfileCardStatsComponent implements OnInit {
 
   getCounts() {
     let enrollList: any
-    if (localStorage.getItem('enrollmentData')) {
-      enrollList = JSON.parse(localStorage.getItem('enrollmentData') || '')
+    if (localStorage.getItem('userEnrollmentCount')) {
+      enrollList = JSON.parse(localStorage.getItem('userEnrollmentCount') || '')
       clearInterval(this.enrollInterval)
     }
 
