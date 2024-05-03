@@ -115,6 +115,7 @@ export class ProfileCardStatsComponent implements OnInit {
           this.republicDayData['backgroupImage'] = data.backgroupImage
           this.republicDayData['info'] = data['webInfo'][rand]
           this.republicDayData['centerImage'] = data['centerImage'][rand]
+          this.republicDayData['textColor'] = data['textColor']
           // let userName = this.userInfo.firstName
           // if (userName.length > 18) {
           //   userName = `${this.userInfo.firstName.slice(0, 18)}...`
