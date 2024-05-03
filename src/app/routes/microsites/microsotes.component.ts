@@ -6,6 +6,8 @@ import { Component, OnInit } from '@angular/core'
   styleUrls: ['./microsotes.component.scss'],
 })
 export class MicrosotesComponent implements OnInit {
+
+  navList: any
   sectionList = [
     {
       'active': true,
@@ -28,11 +30,20 @@ export class MicrosotesComponent implements OnInit {
             sliderData: {
               styleData : {
                 "bannerMetaClass": "inline-meta",
+                "bannerMeta": "visible",
                 "bannerMetaAlign": "right",
                 "navigationArrows": "hidden",
                 "borderRadius": "0",
                 "customHeight": "424px",
-                "mobileScreenHeight": "232px"
+                
+                "responsive": {
+                  "bannerMetaClass": "inline-meta",
+                  "customHeight": "232px",
+                  "bannerMetaAlign": "right",
+                  "navigationArrows": "visible",
+                  "dots": "hidden",
+                  "arrowsPlacement": "middle-inline"
+                }
               },
               sliders: [
                 {
@@ -98,7 +109,7 @@ export class MicrosotesComponent implements OnInit {
               "background": 'banner-metrics',
               data:[
                 {
-                  icon: "https://portal.karmayogi.nic.in/content-store/content/do_114041344797859840128/artifact/do_114041344797859840128_1714031463360_star.svg",
+                  icon: "https://portal.karmayogi.nic.in/content-store/content/do_114046451196010496124/artifact/do_114046451196010496124_1714654805343_star_new.svg",
                   iconColor: 'white',
                   header: '4.1',
                   headercolor: 'white',
@@ -108,7 +119,7 @@ export class MicrosotesComponent implements OnInit {
                   background: 'banner-metrics',
                 },
                 {
-                  icon: "https://portal.karmayogi.nic.in/content-store/content/do_114041337110372352127/artifact/do_114041337110372352127_1714030607449_shape.svg",
+                  icon: "https://portal.karmayogi.nic.in/content-store/content/do_114046436426571776121/artifact/do_114046436426571776121_1714652906747_player_new.svg",
                   iconColor: 'white',
                   header: '1234',
                   headercolor: 'white',
@@ -118,7 +129,7 @@ export class MicrosotesComponent implements OnInit {
                   background: 'banner-metrics',
                 },
                 {
-                  icon: "https://portal.karmayogi.nic.in/content-store/content/do_114041373226573824131/artifact/do_114041373226573824131_1714034836835_group_add.svg",
+                  icon: "https://portal.karmayogi.nic.in/content-store/content/do_114046440404254720122/artifact/do_114046440404254720122_1714653412175_user_new.svg",
                   iconColor: 'white',
                   header: '7890',
                   headercolor: 'white',
@@ -128,7 +139,7 @@ export class MicrosotesComponent implements OnInit {
                   background: 'banner-metrics',
                 },
                 {
-                  icon: "https://portal.karmayogi.nic.in/content-store/content/do_114041378634399744134/artifact/do_114041378634399744134_1714035498087_combined-shape.svg",
+                  icon: "https://portal.karmayogi.nic.in/content-store/content/do_114046442280345600123/artifact/do_114046442280345600123_1714653617350_badge_new.svg",
                   iconColor: 'white',
                   header: '5678',
                   headercolor: 'white',
@@ -150,6 +161,7 @@ export class MicrosotesComponent implements OnInit {
       "navigation": true,
       "key": "sectionInfrastructure",
       "order": 8,
+      "navOrder": 1,
       "column": [
         {
           "active": true,
@@ -168,7 +180,7 @@ export class MicrosotesComponent implements OnInit {
               {
                 icon: "https://portal.karmayogi.nic.in/content-store/content/do_114041375850471424132/artifact/do_114041375850471424132_1714035157784_group.svg",
                 iconColor: 'white',
-                header: '41',
+                header: '86',
                 headercolor: 'white',
                 description: 'Available Classrooms',
                 descriptionColor: 'white custom-opacity',
@@ -176,9 +188,9 @@ export class MicrosotesComponent implements OnInit {
                 background: 'tranparent',
               },
               {
-                icon: "https://portal.karmayogi.nic.in/content-store/content/do_114041377520844800133/artifact/do_114041377520844800133_1714035357308_computer.svg",
+                icon: "https://portal.karmayogi.nic.in/content-store/content/do_114041379912810496135/artifact/do_114041379912810496135_1714035650285_auto_stories.svg",
                 iconColor: 'white',
-                header: '1234',
+                header: '4',
                 headercolor: 'white',
                 description: 'Functioning Computer Labs',
                 descriptionColor: 'white custom-opacity',
@@ -186,19 +198,19 @@ export class MicrosotesComponent implements OnInit {
                 background: 'tranparent',
               },
               {
-                icon: "https://portal.karmayogi.nic.in/content-store/content/do_114041379912810496135/artifact/do_114041379912810496135_1714035650285_auto_stories.svg",
+                icon: "https://portal.karmayogi.nic.in/content-store/content/do_114041377520844800133/artifact/do_114041377520844800133_1714035357308_computer.svg",
                 iconColor: 'white',
-                header: '7890',
+                header: '2',
                 headercolor: 'white',
                 description: 'Functioning Libraries',
                 descriptionColor: 'white custom-opacity',
                 linebreak: false,
                 background: 'tranparent',
-              },
+              },              
               {
                 icon: "https://portal.karmayogi.nic.in/content-store/content/do_114041366180069376130/artifact/do_114041366180069376130_1714033990328_podium.svg",
                 iconColor: 'white',
-                header: '5678',
+                header: '6',
                 headercolor: 'white',
                 description: 'Auditoriums',
                 descriptionColor: 'white custom-opacity',
@@ -206,65 +218,78 @@ export class MicrosotesComponent implements OnInit {
                 background: 'tranparent',
               },
             ],
-            sliders: [
-              {
-                'active': true,
-                'banners': {
-                  'l': 'assets/instances/eagle/banners/orgs/new-banner/6/l.png',
-                  'm': 'assets/instances/eagle/banners/orgs/new-banner/6/m.png',
-                  's': 'assets/instances/eagle/banners/orgs/new-banner/6/s.png',
-                  'xl': 'assets/instances/eagle/banners/orgs/new-banner/6/l.png',
-                  'xs': 'assets/instances/eagle/banners/orgs/new-banner/6/s.png',
-                  'xxl': 'assets/instances/eagle/banners/orgs/new-banner/6/l.png',
-                },
-                'redirectUrl': '/app/curatedCollections/do_1137524714202480641252',
-                'queryParams': {
-                  'tab': 'Learn',
-                  'q': 'Salesforce',
-                  'lang': 'en',
-                  'f': '{}',
-                },
-                'title': '',
+            sliderData: {
+              styleData : {
+                "borderRadius": "12px",
+                "customHeight": "344px",
+                "bannerMeta": "visible",
+                "responsive": {
+                  "customHeight": "232px",
+                  "bannerMetaAlign": "left",
+                  "navigationArrows": "visible",
+                  "arrowsPlacement": "bottom-right",
+                }
               },
-              {
-                'active': true,
-                'banners': {
-                  'l': 'assets/instances/eagle/banners/orgs/new-banner/4/l.png',
-                  'm': 'assets/instances/eagle/banners/orgs/new-banner/4/m.png',
-                  's': 'assets/instances/eagle/banners/orgs/new-banner/4/s.png',
-                  'xl': 'assets/instances/eagle/banners/orgs/new-banner/4/l.png',
-                  'xs': 'assets/instances/eagle/banners/orgs/new-banner/4/s.png',
-                  'xxl': 'assets/instances/eagle/banners/orgs/new-banner/4/l.png',
+              sliders: [
+                {
+                  'active': true,
+                  'banners': {
+                    'l': 'assets/instances/eagle/banners/orgs/new-banner/6/l.png',
+                    'm': 'assets/instances/eagle/banners/orgs/new-banner/6/m.png',
+                    's': 'assets/instances/eagle/banners/orgs/new-banner/6/s.png',
+                    'xl': 'assets/instances/eagle/banners/orgs/new-banner/6/l.png',
+                    'xs': 'assets/instances/eagle/banners/orgs/new-banner/6/s.png',
+                    'xxl': 'assets/instances/eagle/banners/orgs/new-banner/6/l.png',
+                  },
+                  'redirectUrl': '/app/curatedCollections/do_1137524714202480641252',
+                  'queryParams': {
+                    'tab': 'Learn',
+                    'q': 'Salesforce',
+                    'lang': 'en',
+                    'f': '{}',
+                  },
+                  'title': '',
                 },
-                'redirectUrl': '/app/organisation/dopt',
-                'queryParams': {
-                  'tab': 'Learn',
-                  'q': 'Salesforce',
-                  'lang': 'en',
-                  'f': '{}',
+                {
+                  'active': true,
+                  'banners': {
+                    'l': 'assets/instances/eagle/banners/orgs/new-banner/4/l.png',
+                    'm': 'assets/instances/eagle/banners/orgs/new-banner/4/m.png',
+                    's': 'assets/instances/eagle/banners/orgs/new-banner/4/s.png',
+                    'xl': 'assets/instances/eagle/banners/orgs/new-banner/4/l.png',
+                    'xs': 'assets/instances/eagle/banners/orgs/new-banner/4/s.png',
+                    'xxl': 'assets/instances/eagle/banners/orgs/new-banner/4/l.png',
+                  },
+                  'redirectUrl': '/app/organisation/dopt',
+                  'queryParams': {
+                    'tab': 'Learn',
+                    'q': 'Salesforce',
+                    'lang': 'en',
+                    'f': '{}',
+                  },
+                  'title': '',
                 },
-                'title': '',
-              },
-              {
-                'active': true,
-                'banners': {
-                  'l': 'assets/instances/eagle/banners/orgs/new-banner/2/l.png',
-                  'm': 'assets/instances/eagle/banners/orgs/new-banner/2/m.png',
-                  's': 'assets/instances/eagle/banners/orgs/new-banner/2/s.png',
-                  'xl': 'assets/instances/eagle/banners/orgs/new-banner/2/l.png',
-                  'xs': 'assets/instances/eagle/banners/orgs/new-banner/2/s.png',
-                  'xxl': 'assets/instances/eagle/banners/orgs/new-banner/2/l.png',
+                {
+                  'active': true,
+                  'banners': {
+                    'l': 'assets/instances/eagle/banners/orgs/new-banner/2/l.png',
+                    'm': 'assets/instances/eagle/banners/orgs/new-banner/2/m.png',
+                    's': 'assets/instances/eagle/banners/orgs/new-banner/2/s.png',
+                    'xl': 'assets/instances/eagle/banners/orgs/new-banner/2/l.png',
+                    'xs': 'assets/instances/eagle/banners/orgs/new-banner/2/s.png',
+                    'xxl': 'assets/instances/eagle/banners/orgs/new-banner/2/l.png',
+                  },
+                  'redirectUrl': '/app/globalsearch',
+                  'queryParams': {
+                    'tab': 'Learn',
+                    'q': 'Salesforce',
+                    'lang': 'en',
+                    'f': '{}',
+                  },
+                  'title': '',
                 },
-                'redirectUrl': '/app/globalsearch',
-                'queryParams': {
-                  'tab': 'Learn',
-                  'q': 'Salesforce',
-                  'lang': 'en',
-                  'f': '{}',
-                },
-                'title': '',
-              },
-            ]
+              ]
+            }
           }
         }
       ]
@@ -276,6 +301,7 @@ export class MicrosotesComponent implements OnInit {
       "navigation": true,
       "key": "sectionPopularCourses",
       "order": 4,
+      "navOrder": 2,
       "column": [
         {
           'active': true,
@@ -397,16 +423,28 @@ export class MicrosotesComponent implements OnInit {
     }    
   ]
 
+
   constructor() { }
 
   ngOnInit() {
+    this.getNavitems()
+  }
+
+  getNavitems() {
+    this.navList = this.sectionList.filter(
+      (obj: any) => obj.enabled && obj.navigation && obj.navOrder).sort(
+        (a: any, b: any) => a.navOrder - b.navOrder)
   }
 
   scrollToSection(name:  string) {  
     let section: HTMLElement | any
     section = document.getElementById(name)
     if (section) {
-      section.scrollIntoView({ behavior: 'smooth', block: 'start' })
+      //section.scrollIntoView({ behavior: 'smooth', block: 'start',inline: 'nearest', offsetTop: yOffset  })
+      window.scrollTo({
+        top: section.offsetTop - 121,
+        behavior: 'smooth'
+      });
     }
   }
 }
