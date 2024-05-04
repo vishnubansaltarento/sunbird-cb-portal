@@ -263,6 +263,9 @@ export class AppTocAboutComponent implements OnInit, OnChanges, AfterViewInit, O
   getSubThemes(): any[] {
     const subThemeArr: any[] = []
     if (this.content && this.content.competencies_v5 && this.content.competencies_v5.length) {
+      if (typeof this.content.competencies_v5 === 'string' && this.checkValidJSON(this.content.competencies_v5)) {
+        this.content.competencies_v5 = JSON.parse(this.content.competencies_v5)
+      }
       this.content.competencies_v5.forEach((_competencyObj: any) => {
         if (subThemeArr.indexOf(_competencyObj.competencySubTheme) === -1) {
           subThemeArr.push(_competencyObj.competencySubTheme)
@@ -275,6 +278,9 @@ export class AppTocAboutComponent implements OnInit, OnChanges, AfterViewInit, O
   loadCompetencies(): void {
     if (this.content && this.content.competencies_v5 && this.content.competencies_v5.length) {
       const competenciesObject: any = {}
+      if (typeof this.content.competencies_v5 === 'string' && this.checkValidJSON(this.content.competencies_v5)) {
+        this.content.competencies_v5 = JSON.parse(this.content.competencies_v5)
+      }
       this.content.competencies_v5.forEach((_obj: any) => {
         if (competenciesObject[_obj.competencyArea]) {
           if (competenciesObject[_obj.competencyArea][_obj.competencyTheme]) {
@@ -666,6 +672,15 @@ export class AppTocAboutComponent implements OnInit, OnChanges, AfterViewInit, O
       width: '1200px',
       data: { cet, certId: this.content && this.content.certificateObj.certId },
     })
+  }
+
+  checkValidJSON(str: any) {
+      try {
+        JSON.parse(str)
+        return true
+      } catch (e) {
+        return false
+      }
   }
 
   ngOnDestroy(): void {
