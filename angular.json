@@ -526,7 +526,7 @@
   "defaultProject": "fusion",
   "schematics": {
     "@schematics/angular:component": {
-      "styleext": "scss"
+      "style": "scss"
     }
   },
   "cli": {

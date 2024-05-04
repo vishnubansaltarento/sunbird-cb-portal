@@ -32,7 +32,7 @@
       "@sunbird-cb/utils": ["library/ws-widget/utils"],
       "@sunbird-cb/utils/*": ["library/ws-widget/utils/*"],
       "@sunbird-cb/resolver": ["library/ws-widget/resolver"],
-      "@sunbird-cb/resolver/*": ["library/ws-widget/resolver/*"],
+      "@sunbird-cb/resolver/*": ["library/ws-widget/resolver/*"]
     },
     "removeComments": true,
     "sourceMap": false,

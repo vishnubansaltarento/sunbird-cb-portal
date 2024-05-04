@@ -175,10 +175,10 @@ export class EditorContentService {
       isTranslationOf: this.parentContent,
       ...meta,
     }
-    delete requestBody.identifier
-    delete requestBody.status
-    delete requestBody.categoryType
-    delete requestBody.accessPaths
+    delete requestBody?.identifier
+    delete requestBody?.status
+    delete requestBody?.categoryType
+    delete requestBody?.accessPaths
     return this.editorService
       .createAndReadContent(requestBody)
       .pipe(tap(v => this.setOriginalMeta(v)))
