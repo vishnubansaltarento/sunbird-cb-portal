@@ -63,10 +63,7 @@ export class WidgetUserService {
     if (this.checkStorageData('enrollmentService', 'enrollmentData')) {
       const result: any =  this.http.get(path, { headers }).pipe(catchError(this.handleError), map(
           (data: any) => {
-<<<<<<< HEAD
-=======
 
->>>>>>> 07b28b1546481b6c946d0eec91e3091cfce84908
             const coursesData: any = []
             if (data && data.result && data.result.courses) {
               data.result.courses.forEach((content: any) => {
@@ -78,15 +75,6 @@ export class WidgetUserService {
               this.storeUserEnrollmentInfo(data.result.userCourseEnrolmentInfo,
                                            data.result.courses.length)
               data.result.courses = coursesData
-<<<<<<< HEAD
-            }
-            if (data.result.courses.length < 200) {
-              localStorage.removeItem('enrollmentData')
-              this.setTime('enrollmentService')
-              localStorage.setItem('enrollmentData', JSON.stringify(data.result))
-              this.mapEnrollmentData(data.result)
-              return data.result
-=======
               if (data.result.courses.length < 200) {
                 localStorage.removeItem('enrollmentData')
                 this.setTime('enrollmentService')
@@ -94,7 +82,6 @@ export class WidgetUserService {
                 this.mapEnrollmentData(data.result)
                 return data.result
               }
->>>>>>> 07b28b1546481b6c946d0eec91e3091cfce84908
             }
             this.mapEnrollmentData(data.result)
             return data.result
