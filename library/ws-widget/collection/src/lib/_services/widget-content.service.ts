@@ -482,25 +482,25 @@ export class WidgetContentService {
     if (enrollData.completionPercentage  === 100) {
       return this.gotoTocPage(enrollData)
     }
-    if (enrollData.lrcProgressDetails && enrollData.lrcProgressDetails.mimeType) {
-      const modifyEnrollData  = {
-        ...enrollData,
-        identifier: enrollData.collectionId,
-        primaryCategory: enrollData.content.primaryCategory,
-        name: enrollData.content.name,
-      }
-      if (modifyEnrollData.lastReadContentId) {
-        return this.getResourseDataWithData(modifyEnrollData,
-                                            enrollData.lastReadContentId, enrollData.lrcProgressDetails.mimeType)
-      }
-      if (modifyEnrollData.firstChildId) {
-        return this.getResourseDataWithData(modifyEnrollData,
-                                            enrollData.firstChildId,
-                                            enrollData.lrcProgressDetails.mimeType)
-      }
-    }
-      if (enrollData.firstChildId || enrollData.lastReadContentId) {
-        const doId = enrollData.firstChildId || enrollData.lastReadContentId
+    // if (enrollData.lrcProgressDetails && enrollData.lrcProgressDetails.mimeType) {
+    //   const modifyEnrollData  = {
+    //     ...enrollData,
+    //     identifier: enrollData.collectionId,
+    //     primaryCategory: enrollData.content.primaryCategory,
+    //     name: enrollData.content.name,
+    //   }
+    //   if (modifyEnrollData.lastReadContentId) {
+    //     return this.getResourseDataWithData(modifyEnrollData,
+    //                                         enrollData.lastReadContentId, enrollData.lrcProgressDetails.mimeType)
+    //   }
+    //   if (modifyEnrollData.firstChildId) {
+    //     return this.getResourseDataWithData(modifyEnrollData,
+    //                                         enrollData.firstChildId,
+    //                                         enrollData.lrcProgressDetails.mimeType)
+    //   }
+    // }
+      if (enrollData.lastReadContentId || enrollData.firstChildId) {
+        const doId =  enrollData.lastReadContentId || enrollData.firstChildId
         const responseData = await this.fetchProgramContent(doId).toPromise().then(async (res: any) => {
           if (res && res.result && res.result.content) {
             const contentData: any = res.result.content
