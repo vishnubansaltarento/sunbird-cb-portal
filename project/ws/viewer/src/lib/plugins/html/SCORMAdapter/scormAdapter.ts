@@ -131,9 +131,7 @@ export class SCORMAdapterService {
       // tslint:disable-next-line: no-console
       console.log("this.getStatus(data) in LMSCommit()",this.getStatus(data))
       //only for complete and pass status, progress call should be done
-      if(data["cmi.core.lesson_status"] === 'completed' || data["cmi.core.lesson_status"] === 'passed' ||
-      data["cmi.core.lesson_status"] === 'suspend'
-      ){
+      if(this.getStatus(data) === 2){
         // tslint:disable-next-line: no-console
         console.log("enter loop with cond this.getStatus(data) in LMSCommit() excecuted",data)
         this.addDataV2(data).subscribe((response) => {
@@ -291,9 +289,6 @@ export class SCORMAdapterService {
       }
       if (postData["cmi.core.lesson_status"] === 'passed') {
         return 2
-      }
-      if (postData["cmi.core.lesson_status"] === 'suspend') {
-        return 1
       }
       return 1
     } catch (e) {
