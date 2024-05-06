@@ -115,6 +115,7 @@ export class ProfileCardStatsComponent implements OnInit {
           this.republicDayData['backgroupImage'] = data.backgroupImage
           this.republicDayData['info'] = data['webInfo'][rand]
           this.republicDayData['centerImage'] = data['centerImage'][rand]
+          this.republicDayData['textColor'] = data['textColor']
           // let userName = this.userInfo.firstName
           // if (userName.length > 18) {
           //   userName = `${this.userInfo.firstName.slice(0, 18)}...`
@@ -148,8 +149,8 @@ export class ProfileCardStatsComponent implements OnInit {
 
   getCounts() {
     let enrollList: any
-    if (localStorage.getItem('enrollmentData')) {
-      enrollList = JSON.parse(localStorage.getItem('enrollmentData') || '')
+    if (localStorage.getItem('userEnrollmentCount')) {
+      enrollList = JSON.parse(localStorage.getItem('userEnrollmentCount') || '')
       clearInterval(this.enrollInterval)
     }
 

@@ -356,8 +356,8 @@ export class ProfileViewComponent implements OnInit, AfterViewInit, OnDestroy {
 
   getKarmaCount() {
     let enrollList: any
-    if (localStorage.getItem('enrollmentData')) {
-      enrollList = JSON.parse(localStorage.getItem('enrollmentData') || '')
+    if (localStorage.getItem('userEnrollmentCount')) {
+      enrollList = JSON.parse(localStorage.getItem('userEnrollmentCount') || '')
       this.countdata = enrollList && enrollList.userCourseEnrolmentInfo &&
        enrollList.userCourseEnrolmentInfo.karmaPoints || 0
       clearInterval(this.enrollInterval)
