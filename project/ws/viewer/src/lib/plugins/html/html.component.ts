@@ -133,6 +133,14 @@ export class HtmlComponent implements OnInit, OnChanges, OnDestroy {
      this.fireRealTimeProgress(this.htmlContent)
 
     // this.fireRealTimeProgress()
+
+    // tslint:disable-next-line: no-console
+    console.log('this.store.getItem(\'Initialized\') in raiseRealTimeProgress()', this.store.getItem('Initialized'))
+    // tslint:disable-next-line: no-console
+    console.log('!this.store.getItem(\'Initialized\') in raiseRealTimeProgress()', !this.store.getItem('Initialized'))
+    // call for both LMS and duration calculation content
+    this.fireRealTimeProgress(this.htmlContent)
+
     // if (!this.store.getItem('Initialized')) {
     //   this.fireRealTimeProgress(this.htmlContent)
     //   // this.store.clearAll()
