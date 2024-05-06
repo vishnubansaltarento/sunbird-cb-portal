@@ -261,7 +261,7 @@ export class HtmlComponent implements OnInit, OnChanges, OnDestroy {
         // if (!this.store.getItem('Initialized')) {
         //   this.fireRealTimeProgress(this.oldData)
         // }
-        //call fireRealTimeProgress func for LMS data and non-LMS data also
+        // call fireRealTimeProgress func for LMS data and non-LMS data also
         this.fireRealTimeProgress(this.oldData)
         this.sub.unsubscribe()
         this.ticks = 0
