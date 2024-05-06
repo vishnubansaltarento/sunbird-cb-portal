@@ -156,7 +156,7 @@ export class HtmlComponent implements OnInit, OnChanges, OnDestroy {
       console.log('!this.store.getItem(\'Initialized\') in fireRealTimeProgress(htmlContent)', !this.store.getItem('Initialized'))
       let progressData
       if (this.store.getItem('Initialized')) {
-        progressData = { spentTime: (completionData && completionData.spentTime), ...this.store.getAll() || 0 }
+        progressData = { ...this.store.getAll() || 0 , spentTime: (completionData && completionData.spentTime) }
       } else {
         progressData = { spentTime: (completionData && completionData.spentTime) || 0 }
       }
@@ -174,6 +174,8 @@ export class HtmlComponent implements OnInit, OnChanges, OnDestroy {
       console.log('progressDetails in req', req)
 
       this.scormAdapterService.addDataV3(req, htmlContent.identifier).subscribe((_res: any) => {
+        // tslint:disable-next-line: no-console
+        console.log('progressDetails in addDataV3', _res)
         this.loggerSvc.log('Progress updated successfully')
         // for updating the progress hashmap, for instant progress to be shown
         if (this.tocSvc.hashmap && this.tocSvc.hashmap[htmlContent.identifier]) {
