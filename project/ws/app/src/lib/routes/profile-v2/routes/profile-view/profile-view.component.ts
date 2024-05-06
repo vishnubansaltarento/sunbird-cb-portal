@@ -257,6 +257,7 @@ export class ProfileViewComponent implements OnInit, OnDestroy {
   ngOnInit() {
     if (this.currentUser.lastName) {
       this.nameInitials = this.currentUser.firstName.charAt(0) + this.currentUser.lastName.charAt(0)
+
     }
 
     this.getInitials()
