@@ -81,6 +81,9 @@ export class PlayerAudioComponent extends WidgetBaseComponent
     if (audioTag) {
       audioTag.onended = () => {
         this.audioEnd = true
+        if (this.widgetData && this.widgetData.hideUpNext) {
+          this.replayAudioFlag = this.widgetData.hideUpNext ? true : false
+        }
         const audioTagElement: any = document.getElementById('audioTag')
         const autoPlayAudio: any = document.getElementById('auto-play-audio')
         if (audioTagElement) {

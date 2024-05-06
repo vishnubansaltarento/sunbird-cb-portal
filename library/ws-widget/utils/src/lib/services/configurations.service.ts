@@ -115,6 +115,7 @@ export class ConfigurationsService {
   updateGlobalProfile(state: boolean) {
     this.updateProfile.next(state)
   }
+
   updateTourGuideMethod(state: boolean) {
     this.updateTourGuide.next(state)
   }

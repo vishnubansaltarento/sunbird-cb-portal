@@ -35,9 +35,7 @@ import { LoadCheckService } from '../../services/load-check.service'
 import { ResetRatingsService } from './../../services/reset-ratings.service'
 
 import { AppTocDialogIntroVideoComponent } from '../app-toc-dialog-intro-video/app-toc-dialog-intro-video.component'
-import { ConfirmationModalComponent } from '@sunbird-cb/collection/src/lib/_common/content-toc/confirmation-modal/confirmation-modal.component'
 import { ContentRatingV2DialogComponent } from '@sunbird-cb/collection/src/lib/_common/content-rating-v2-dialog/content-rating-v2-dialog.component'
-import { EnrollModalComponent } from '@sunbird-cb/collection/src/lib/_common/content-toc/enroll-modal/enroll-modal.component'
 import { NsCardContent } from '@sunbird-cb/collection/src/lib/card-content-v2/card-content-v2.model'
 import { environment } from 'src/environments/environment'
 
@@ -1005,6 +1003,7 @@ export class AppTocHomeComponent implements OnInit, OnDestroy, AfterViewChecked,
 
   downloadCert(certIdArr: any) {
     if (certIdArr.length) {
+      certIdArr.sort((a: any, b: any) => new Date(b.lastIssuedOn).getTime() - new Date(a.lastIssuedOn).getTime())
       const certId = certIdArr[0].identifier
       this.certId = certId
 
@@ -1264,7 +1263,6 @@ export class AppTocHomeComponent implements OnInit, OnDestroy, AfterViewChecked,
       )
       this.actionSVC.setUpdateCompGroupO = this.resumeDataLink
       /* tslint:disable-next-line */
-      console.log(this.resumeDataLink,'=====> home resum data link <========')
     }
   }
 
@@ -1686,30 +1684,6 @@ export class AppTocHomeComponent implements OnInit, OnDestroy, AfterViewChecked,
         behavior: 'smooth',
       })
     }
-  }
-
-  handleEnrollBatch(): void {
-    const dialogRef = this.dialog.open(EnrollModalComponent, {
-      width: '420px',
-      data: { enroll: true },
-      panelClass: 'enroll-modal',
-      disableClose: true,
-    })
-
-    dialogRef.afterClosed().subscribe((_result: any) => {
-    })
-  }
-
-  handleConfirmation(): void {
-    const dialogRef = this.dialog.open(ConfirmationModalComponent, {
-      width: '420px',
-      data: { enroll: true },
-      panelClass: 'confirmation-modal',
-      disableClose: true,
-    })
-
-    dialogRef.afterClosed().subscribe((_result: any) => {
-    })
   }
 
   raiseCertIntreactTelemetry() {

@@ -53,6 +53,9 @@ export class SCORMAdapterService {
 
   LMSInitialize() {
     this.store.contentKey = this.contentId
+    // tslint:disable-next-line: no-console
+    console.log('LMSInitialize function, this.store.contentKey', this.store.contentKey)
+
     // this.loadDataAsync().subscribe((response) => {
     //   const data = response.result.data
     //   const loadDatas: IScromData = {
@@ -85,11 +88,15 @@ export class SCORMAdapterService {
   }
 
   LMSGetValue(element: any) {
+     // tslint:disable-next-line: no-console
+     console.log('LMSGetValue function, element', element)
     if (!this._isInitialized()) {
       this._setError(301)
       return false
     }
     let value = this.store.getItem(element)
+    // tslint:disable-next-line: no-console
+    console.log('LMSGetValue function, value', value)
     if (!value) {
       this._setError(201)
       return ""
@@ -98,6 +105,10 @@ export class SCORMAdapterService {
   }
 
   LMSSetValue(element: any, value: any) {
+    // tslint:disable-next-line: no-console
+    console.log('LMSSetValue function, element', element)
+    // tslint:disable-next-line: no-console
+    console.log('LMSSetValue function, value', value)
     if (!this._isInitialized()) {
       this._setError(301)
       return false
@@ -108,23 +119,35 @@ export class SCORMAdapterService {
 
   LMSCommit() {
     let data = this.store.getAll()
+    // tslint:disable-next-line: no-console
+    console.log('LMSCommit function, data', data)
     if (data) {
       delete data['errors']
       // delete data['Initialized']
       // let newData = JSON.stringify(data)
       // data = Base64.encode(newData)
       let _return = false
-      this.addDataV2(data).subscribe((response) => {
-        // console.log(response)
-        if (response) {
-          _return = true
-        }
-      }, (error) => {
-        if (error) {
-          this._setError(101)
-          // console.log(error)
-        }
-      })
+      
+      // tslint:disable-next-line: no-console
+      console.log("this.getStatus(data) in LMSCommit()",this.getStatus(data))
+      //only for complete and pass status, progress call should be done
+      if(this.getStatus(data) === 2){
+        // tslint:disable-next-line: no-console
+        console.log("enter loop with cond this.getStatus(data) in LMSCommit() excecuted",data)
+        this.addDataV2(data).subscribe((response) => {
+          // tslint:disable-next-line: no-console
+          console.log(response)
+          if (response) {
+            _return = true
+          }
+        }, (error) => {
+          if (error) {
+            this._setError(101)
+            // console.log(error)
+          }
+        })
+      }
+      
       return _return
     }
     return false
@@ -285,7 +308,7 @@ export class SCORMAdapterService {
               contentId: this.contentId,
               batchId: this.activatedRoute.snapshot.queryParamMap.get('batchId') || '',
               courseId: this.activatedRoute.snapshot.queryParams.collectionId || '',
-              status: this.getStatus(postData) || 2,
+              status: this.getStatus(postData),
               lastAccessTime: dayjs(new Date()).format('YYYY-MM-DD HH:mm:ss:SSSZZ'),
               progressdetails: postData
             },

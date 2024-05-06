@@ -1,0 +1,31 @@
+.info-div {
+    background-color: #EBEBEB;
+    border: 1px solid #00000014;
+    border-radius: 4px;
+    padding: 4px;
+    font-size: 12px;
+    line-height: 14px;
+
+    .mat-icon {
+        width: 14px;
+        height: 14px;
+        font-size: 14px;
+        color: #212121;
+    }
+}
+
+.profile-form-field {
+    .mat-select {
+        background-color: #FFF;
+    }
+
+    .outline-button {
+        background-color: transparent !important;
+    }
+}
+
+required::after {
+    content: "*";
+    color: red;
+    font-size: 10px;
+}

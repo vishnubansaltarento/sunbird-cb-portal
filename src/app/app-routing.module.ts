@@ -38,6 +38,10 @@ import { AppHierarchyResolverService } from './services/app-hierarchy-resolver.s
 import { AppEnrollmentResolverService } from './services/app-enrollment-resolver.service'
 import { AppContentResolverService } from './services/app-content-read-resolver.service'
 import { SurveyShikshaComponent } from './component/survey-shiksha/survey-shiksha.component'
+import { MicrosotesComponent } from './routes/microsites/microsotes.component'
+import { MicrositesModule } from './routes/microsites/microsites.module'
+import { AppGyaanKarmayogiService } from './services/app-gyaan-karmayogi.service'
+import { PrivacyPolicyComponent } from './component/privacy-policy/privacy-policy.component'
 // 💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥
 // Please declare routes in alphabetical order
 // 😵😵😵😵😵😵😵😵😵😵😵😵😵😵😵😵😵😵😵😵😵😵😵😵😵😵😵😵😵😵😵😵😵😵😵😵😵😵😵
@@ -173,6 +177,21 @@ const routes: Routes = [
     },
     resolve: {
       pageData: PageResolve,
+    },
+  },
+  {
+    path: 'app/gyaan-karmayogi',
+    loadChildren: () =>
+      import('./routes/route-gyaan-karmayogi.module').then(u => u.RouteGyaanKarmayogiModule),
+    canActivate: [GeneralGuard],
+    data: {
+      pageType: 'feature',
+      pageKey: 'knowledge-resource',
+      pageId: 'app/knowledge-resource',
+    },
+    resolve: {
+      pageData: PageResolve,
+      gyaanData: AppGyaanKarmayogiService,
     },
   },
   {
@@ -345,6 +364,15 @@ const routes: Routes = [
   {
     path: 'app/features',
     component: FeaturesComponent,
+    canActivate: [GeneralGuard],
+    data: {
+      pageId: 'app/features',
+      module: 'Settings',
+    },
+  },
+  {
+    path: 'app/microsites',
+    component: MicrosotesComponent,
     canActivate: [GeneralGuard],
     data: {
       pageId: 'app/features',
@@ -887,6 +915,15 @@ const routes: Routes = [
       pageId: 'public/sso',
     },
   },
+
+  {
+    path: 'public/privacy-policy',
+    component: PrivacyPolicyComponent,
+    data: {
+      module: 'privacy-policy',
+      pageId: 'public/privacy-policy',
+    },
+  },
   {
     path: 'public/google/sso',
     component: PublicLoginWGComponent,
@@ -1012,6 +1049,7 @@ const routes: Routes = [
   imports: [
     PageModule,
     FeaturesModule,
+    MicrositesModule,
     RouterModule.forRoot(routes, {
       anchorScrolling: 'enabled',
       scrollPositionRestoration: 'top',

@@ -25,6 +25,7 @@ import {
   MatSelectModule,
   MatTableModule,
   MatProgressSpinnerModule,
+  MatSidenavModule,
 } from '@angular/material'
 import { BrowserModule, HAMMER_GESTURE_CONFIG } from '@angular/platform-browser'
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations'
@@ -45,10 +46,7 @@ import { AppTocResolverService } from '@ws/app/src/lib/routes/app-toc/resolvers/
 import { RootComponent } from './component/root/root.component'
 import { LoginComponent } from './component/login/login.component'
 import { AppFooterComponent } from './component/app-footer/app-footer.component'
-// import { AppNavBarComponent } from './component/app-nav-bar/app-nav-bar.component'
 import { AppPublicNavBarComponent } from './component/app-public-nav-bar/app-public-nav-bar.component'
-// import { ServiceWorkerModule } from '@angular/service-worker'
-// import { environment } from '../environments/environment'
 import { DialogConfirmComponent } from './component/dialog-confirm/dialog-confirm.component'
 import { InvalidUserComponent } from './component/invalid-user/invalid-user.component'
 import { LoginRootComponent } from './component/login-root/login-root.component'
@@ -89,8 +87,7 @@ import { AppEnrollmentResolverService } from './services/app-enrollment-resolver
 import { TranslateHttpLoader } from '@ngx-translate/http-loader'
 import { TranslateLoader, TranslateModule } from '@ngx-translate/core'
 import { AppContentResolverService } from './services/app-content-read-resolver.service'
-// import { ServiceWorkerModule } from '@angular/service-worker'
-// import { environment } from '../environments/environment'
+
 import { HeaderModule } from './header/header.module'
 import { DialogBoxComponent } from './component/dialog-box/dialog-box.component'
 import { SocialLinkComponent } from './component/social-link/social-link.component'
@@ -99,6 +96,7 @@ import { AppLogoComponent } from './component/app-logo/app-logo.component'
 import { ProfileV3Module } from '@ws/app/src/lib/routes/profile-v3/profile-v3.module'
 import { NoDataComponent } from './component/no-data/no-data.component'
 import { SurveyShikshaComponent } from './component/survey-shiksha/survey-shiksha.component'
+import { PrivacyPolicyComponent } from './component/privacy-policy/privacy-policy.component'
 
 @Injectable()
 export class HammerConfig extends GestureConfig {
@@ -151,6 +149,7 @@ export function HttpLoaderFactory(http: HttpClient) {
     FooterSectionComponent,
     AppLogoComponent,
     SurveyShikshaComponent,
+    PrivacyPolicyComponent,
   ],
   imports: [
     FormsModule,
@@ -213,6 +212,7 @@ export function HttpLoaderFactory(http: HttpClient) {
       },
     }),
     ProfileV3Module,
+    MatSidenavModule,
   ],
   exports: [
     TncComponent,

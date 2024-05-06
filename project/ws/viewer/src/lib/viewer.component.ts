@@ -70,6 +70,7 @@ export class ViewerComponent implements OnInit, OnDestroy, AfterViewChecked {
   pathSet: any
   tocConfig: any = null
   isAssessmentScreen = false
+  pageScrollSubscription: Subscription | null = null
   constructor(
     private activatedRoute: ActivatedRoute,
     private router: Router,
@@ -86,6 +87,7 @@ export class ViewerComponent implements OnInit, OnDestroy, AfterViewChecked {
     public pdfScormDataService: PdfScormDataService,
     private translate: TranslateService,
     public tocSvc: AppTocService,
+    // private renderer: Renderer2,
   ) {
     this.rootSvc.showNavbarDisplay$.next(false)
     this.abc.mobileTopHeaderVisibilityStatus.next(false)
@@ -132,6 +134,22 @@ export class ViewerComponent implements OnInit, OnDestroy, AfterViewChecked {
 
   ngOnInit() {
     this.getTocConfig()
+    // for left side player scroll on right side resource click
+    // this.pageScrollSubscription = this.tocSvc.updatePageScroll.subscribe((value: boolean) => {
+    //   if (value) {
+    //     setTimeout(() => {
+    //       if (document.getElementsByClassName('viewer-player-container') &&
+    //         document.getElementsByClassName('viewer-player-container')[0])  {
+    //         document.getElementsByClassName('viewer-player-container')[0].scrollIntoView({
+    //           behavior: 'smooth',
+    //           block: 'start',
+    //           inline: 'start',
+    //        })
+    //       }
+    //     },         1000)
+    //   }
+    // })
+
     const contentData = this.activatedRoute.snapshot.data.hierarchyData
     && this.activatedRoute.snapshot.data.hierarchyData.data || ''
     this.enrollmentList = this.activatedRoute.snapshot.data.enrollmentData
@@ -148,11 +166,14 @@ export class ViewerComponent implements OnInit, OnDestroy, AfterViewChecked {
     if (this.collectionId && this.enrollmentList) {
       const enrolledCourseData = this.widgetServ.getEnrolledData(this.collectionId)
       this.enrolledCourseData = enrolledCourseData
-      this.batchData = {
-        content: [enrolledCourseData.batch],
-        enrolled: true,
+      if (enrolledCourseData && enrolledCourseData.batch) {
+        this.batchData = {
+          content: [enrolledCourseData.batch],
+          enrolled: true,
+        }
+        this.tocSvc.mapSessionCompletionPercentage(this.batchData)
       }
-      this.tocSvc.mapSessionCompletionPercentage(this.batchData)
+
     }
 
     this.pdfScormDataService.handleBackFromPdfScormFullScreen.subscribe((data: any) => {
@@ -179,6 +200,7 @@ export class ViewerComponent implements OnInit, OnDestroy, AfterViewChecked {
           sideNavBarDrawerState.style.display = 'none'
         }
       }
+
     })
 
     this.getAuthDataIdentifer()
@@ -249,7 +271,6 @@ export class ViewerComponent implements OnInit, OnDestroy, AfterViewChecked {
       this.changeDetector.detectChanges()
     }
   }
-
   ngOnDestroy() {
     this.rootSvc.showNavbarDisplay$.next(true)
     if (this.screenSizeSubscription) {
@@ -257,6 +278,9 @@ export class ViewerComponent implements OnInit, OnDestroy, AfterViewChecked {
     }
     if (this.resourceChangeSubscription) {
       this.resourceChangeSubscription.unsubscribe()
+    }
+    if (this.pageScrollSubscription) {
+      this.pageScrollSubscription.unsubscribe()
     }
   }
 
@@ -363,4 +387,5 @@ export class ViewerComponent implements OnInit, OnDestroy, AfterViewChecked {
   updateCount(event: any) {
     this.completedCount = event
   }
-}
+
+ }
