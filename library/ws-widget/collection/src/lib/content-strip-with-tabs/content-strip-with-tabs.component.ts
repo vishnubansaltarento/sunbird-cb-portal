@@ -55,7 +55,9 @@ interface IStripUnitContentData {
   stripBackground?: string
   secondaryHeading?: any
   viewMoreUrl: any
+
 }
+
 
 @Component({
   selector: 'ws-widget-content-strip-with-tabs',
@@ -87,6 +89,8 @@ export class ContentStripWithTabsComponent extends WidgetBaseComponent
   defaultMaxWidgets = 12
   enrollInterval: any
   todaysEvents: any = []
+  activeTabData: any
+  
 
   constructor(
     // private contentStripSvc: ContentStripNewMultipleService,
@@ -869,28 +873,32 @@ export class ContentStripWithTabsComponent extends WidgetBaseComponent
     }
     return false
   }
-
   public tabClicked(tabEvent: MatTabChangeEvent, stripMap: IStripUnitContentData, stripKey: string) {
+    const tabLabel = tabEvent.tab.textLabel.trim().toLowerCase()
+
+    if (tabLabel && stripMap && stripMap.stripTitle) {
+      const data: WsEvents.ITelemetryTabData = {
+        label: `${tabEvent.tab.textLabel}`,
+        index: tabEvent.index,
+      };
+      this.eventSvc.raiseInteractTelemetry(
+        {
+          type: WsEvents.EnumInteractTypes.CLICK,
+          subType: stripMap.stripTitle, 
+          id: `${_.camelCase(data.label)}-tab`,
+        },
+        {},
+        {
+          module: WsEvents.EnumTelemetrymodules.HOME,
+        }
+      )
+   }
     if (stripMap && stripMap.tabs && stripMap.tabs[tabEvent.index]) {
       stripMap.tabs[tabEvent.index].fetchTabStatus = 'inprogress'
       stripMap.tabs[tabEvent.index]['tabLoading'] = true
       stripMap.showOnLoader = true
     }
-    const data: WsEvents.ITelemetryTabData = {
-      label: `${tabEvent.tab.textLabel}`,
-      index: tabEvent.index,
-    }
-    this.eventSvc.raiseInteractTelemetry(
-      {
-        type: WsEvents.EnumInteractTypes.CLICK,
-        subType: WsEvents.EnumInteractSubTypes.HOME_PAGE_STRIP_TABS,
-        id: `${_.camelCase(data.label)}-tab`,
-      },
-      {},
-      {
-        module: WsEvents.EnumTelemetrymodules.HOME,
-      }
-    )
+   
     const currentTabFromMap: any = stripMap.tabs && stripMap.tabs[tabEvent.index]
     const currentStrip = this.widgetData.strips.find(s => s.key === stripKey)
     if (this.stripsResultDataMap[stripKey] && currentTabFromMap) {
@@ -1178,6 +1186,11 @@ export class ContentStripWithTabsComponent extends WidgetBaseComponent
 
   translateLabels(label: string, type: any) {
     return this.langtranslations.translateLabel(label, type, '')
+  }
+
+  setActiveTabData(tabData: any) {
+    console.log('Active Tab:', this.activeTabData)
+    this.activeTabData = tabData
   }
 
 }

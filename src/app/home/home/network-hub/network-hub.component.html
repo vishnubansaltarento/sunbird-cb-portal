@@ -64,7 +64,7 @@
                         *ngIf="network.networkRecommended && network.networkRecommended.length">
                         <div class="flex justify-center items-center">
                             <div class="flex ws-mat-default-text items-center justify-center mat-body-1 cursor-pointer"
-                                [routerLink]="['/app/network-v2/home']" [queryParams]="{page: 'people_you_may_know'}">
+                                [routerLink]="['/app/network-v2/home']" [queryParams]="{page: 'people_you_may_know'}" (click)="handleShowAll()">
                                 <div *ngIf="!suggestionsLoader">{{ 'home.showAll' | translate }}</div>
                                 <div *ngIf="suggestionsLoader">
                                     <ws-widget-skeleton-loader [width]="'164px'" [height]="'16px'"
