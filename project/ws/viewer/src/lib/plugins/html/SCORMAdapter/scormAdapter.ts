@@ -299,6 +299,8 @@ export class SCORMAdapterService {
   }
   addDataV2(postData: IScromData) {
     let req: any
+    const requestCourse = this.viewerSvc.getBatchIdAndCourseId(this.activatedRoute.snapshot.queryParams.collectionId, 
+      this.activatedRoute.snapshot.queryParams.batchId, this.contentId)
     if (this.configSvc.userProfile) {
       req = {
         request: {
@@ -306,8 +308,8 @@ export class SCORMAdapterService {
           contents: [
             {
               contentId: this.contentId,
-              batchId: this.activatedRoute.snapshot.queryParamMap.get('batchId') || '',
-              courseId: this.activatedRoute.snapshot.queryParams.collectionId || '',
+              batchId: (requestCourse && requestCourse.batchId) ?  requestCourse.batchId : '',
+              courseId: (requestCourse && requestCourse.courseId) ?  requestCourse.courseId : '',
               status: this.getStatus(postData),
               lastAccessTime: dayjs(new Date()).format('YYYY-MM-DD HH:mm:ss:SSSZZ'),
               progressdetails: postData
