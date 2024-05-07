@@ -420,7 +420,51 @@ export class MicrosotesComponent implements OnInit {
           'data':  '',
         },
       ],
-    }    
+    },
+    {
+      'active': true,
+      'enabled': true,
+      'title': '',
+      'key': 'sectionTopBanner',
+      'order': 2,
+      'column': [
+        {
+          "active": true,
+          "enabled": true,
+          "key": "topProviders",
+          "title": "",
+          "colspan": 12,
+          "data":  {
+            "detaulTitle": "Know The",
+            "myTitle": "Infrastructure Details.",
+            "description": "Infrastructure is integral to creating a conducive and enriching learning environment.",
+            "dataColSpan": 2,
+            "background": 'infra-background',
+            "users" : [
+              {
+                "userId": 1,
+                "firstName": "Christopher Fernandes",
+                "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt.",
+                "profileImage": "https://images.pexels.com/photos/573299/pexels-photo-573299.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1"
+              },
+              {
+                "userId": 1,
+                "firstName": "Bharath Kumar",
+                "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt.",
+                "profileImage": "https://images.pexels.com/photos/573299/pexels-photo-573299.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1"
+              },
+              {
+                "userId": 1,
+                "firstName": "Venkata Subbaiah ",
+                "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt.",
+                "profileImage": "https://images.pexels.com/photos/573299/pexels-photo-573299.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1"
+              }
+
+            ]
+          }
+        }
+      ],
+    },   
   ]
 
 
