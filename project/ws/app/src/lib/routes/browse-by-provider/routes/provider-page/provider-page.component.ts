@@ -433,7 +433,6 @@ export class ProviderPageComponent implements OnInit {
 
   ngOnInit() {
     this.route.params.subscribe(params => {
-      debugger
       this.providerName = params['provider']
       this.providerId = params['orgId']
     })
