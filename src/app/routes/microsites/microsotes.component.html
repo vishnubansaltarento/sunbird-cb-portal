@@ -10,7 +10,9 @@
                                     [ngTemplateOutletContext]="{data: column.data}"></ng-container>
                                 <ng-container *ngSwitchCase="'infra'" [ngTemplateOutlet]="infra"
                                     [ngTemplateOutletContext]="{infra: column.data}"></ng-container>
-                                <ng-container *ngSwitchCase="'contentStrip'" [ngTemplateOutlet]="contentStrip"
+                                    <ng-container *ngSwitchCase="'contentFeaturedStrip'" [ngTemplateOutlet]="contentStrip"
+                                        [ngTemplateOutletContext]="{contentStrip: column.data}"></ng-container>
+                                <ng-container *ngSwitchCase="'contentTopStrip'" [ngTemplateOutlet]="contentStrip"
                                     [ngTemplateOutletContext]="{contentStrip: column.data}"></ng-container>
                                 <ng-container *ngSwitchCase="'calendar'" [ngTemplateOutlet]="calendar"
                                     [ngTemplateOutletContext]="{calendar: column.data}"></ng-container>

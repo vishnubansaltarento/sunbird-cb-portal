@@ -297,25 +297,26 @@ export class MicrosotesComponent implements OnInit {
     {
       "active": true,
       "enabled": true,
-      "title": "Top Contents",
+      "title": "Featured Contents",
       "navigation": true,
-      "key": "sectionPopularCourses",
+      "key": "sectionFeatureCourses",
       "order": 4,
       "navOrder": 2,
       "column": [
         {
           'active': true,
           'enabled': true,
-          'key': 'contentStrip',
+          'key': 'contentFeaturedStrip',
           'title': 'Popular courses',
           'data':  {
             'order': 4,
             'strips': [
               {
                 'active': true,
-                'key': 'recentlyAdded',
+                'key': 'featuredContents',
                 'logo': 'school',
-                'title': 'Recently Added',
+                'disableTranslate': true,
+                'title': 'Featured Contents',
                 'stripTitleLink': {
                   'link': '',
                   'icon': '',
@@ -406,21 +407,133 @@ export class MicrosotesComponent implements OnInit {
     },
     {
       "active": true,
-      "enabled": false,
-      "title": "",
-      "key": "sectionCompetency",
-      "order": 6,
+      "enabled": true,
+      "title": "Top Contents",
+      "navigation": true,
+      "key": "sectionPopularCourses",
+      "order": 4,
+      "navOrder": 2,
       "column": [
         {
           'active': true,
           'enabled': true,
-          'key': 'competency',
-          'title': '',
-          'colspan': 12,
-          'data':  '',
+          'key': 'contentTopStrip',
+          'title': 'Popular courses',
+          'data':  {
+            'order': 4,
+            'strips': [
+              {
+                'active': true,
+                'key': 'topContents',
+                'logo': 'school',
+                'disableTranslate': true,
+                'title': 'Top Contents',
+                'stripTitleLink': {
+                  'link': '',
+                  'icon': '',
+                },
+                'sliderConfig': {
+                  'showNavs': true,
+                  'showDots': true,
+                  'maxWidgets': 12,
+                },
+                'stripBackground': '',
+                'titleDescription': 'Recently Added',
+                'stripConfig': {
+                  'cardSubType': 'card-portrait-lib',
+                },
+                'viewMoreUrl': {
+                  'path': '/app/seeAll',
+                  'viewMoreText': 'Show all',
+                  'queryParams': {
+                    'key': 'recentlyAdded',
+                  },
+                  'loaderConfig': {
+                    'cardSubType': 'card-portrait-lib-skeleton',
+                  },
+                  'stripConfig': {
+                    'cardSubType': 'card-portrait-lib',
+                  },
+                },
+                'loader': true,
+                'loaderConfig': {
+                  'cardSubType': 'card-portrait-lib-skeleton',
+                },
+                'tabs': [
+                ],
+                'filters': [],
+                'request': {
+                  'searchV6': {
+                    'request': {
+                      'filters': [
+                        {
+                          'primaryCategory': [
+                            'Course',
+                          ],
+                          'contentType': [
+                            'Course',
+                          ],
+                        },
+                      ],
+                      'query': '',
+                      'sort_by': {
+                        'lastUpdatedOn': 'desc',
+                      },
+                      'fields': [
+                        'name',
+                        'appIcon',
+                        'instructions',
+                        'description',
+                        'purpose',
+                        'mimeType',
+                        'gradeLevel',
+                        'identifier',
+                        'medium',
+                        'pkgVersion',
+                        'board',
+                        'subject',
+                        'resourceType',
+                        'primaryCategory',
+                        'contentType',
+                        'channel',
+                        'organisation',
+                        'trackable',
+                        'license',
+                        'posterImage',
+                        'idealScreenSize',
+                        'learningMode',
+                        'creatorLogo',
+                        'duration',
+                        'avgRating',
+                      ],
+                    },
+                  },
+                },
+              },
+
+            ],
+          },
         },
       ],
-    }    
+    },
+    {
+      "active": true,
+      "enabled": true,
+      "title": "",
+      "key": "sectionCompetency",
+      "order": 5,
+      "column": [
+        {
+          "active": true,
+          "enabled": true,
+          "key": "competency",
+          "title": "Competency Strength",
+          "colspan": 12,
+          "background": 'competencies-backgroud',
+          "data": [],
+        }
+      ],
+    } 
   ]
 
 
