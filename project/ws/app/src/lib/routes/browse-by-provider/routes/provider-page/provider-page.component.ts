@@ -1,12 +1,15 @@
-import { Component, OnInit } from '@angular/core'
+import { Component, OnInit } from '@angular/core';
+import { ActivatedRoute } from '@angular/router';
 
 @Component({
-  selector: 'ws-microsotes',
-  templateUrl: './microsotes.component.html',
-  styleUrls: ['./microsotes.component.scss'],
+  selector: 'ws-app-provider-page',
+  templateUrl: './provider-page.component.html',
+  styleUrls: ['./provider-page.component.scss']
 })
-export class MicrosotesComponent implements OnInit {
+export class ProviderPageComponent implements OnInit {
 
+  providerName: string = ''
+  providerId: string = ''
   navList: any
   sectionList = [
     {
@@ -297,117 +300,6 @@ export class MicrosotesComponent implements OnInit {
     {
       "active": true,
       "enabled": true,
-      "title": "Featured Contents",
-      "navigation": true,
-      "key": "sectionFeatureCourses",
-      "order": 4,
-      "navOrder": 2,
-      "column": [
-        {
-          'active': true,
-          'enabled': true,
-          'key': 'contentFeaturedStrip',
-          'title': 'Popular courses',
-          'data':  {
-            'order': 4,
-            'strips': [
-              {
-                'active': true,
-                'key': 'featuredContents',
-                'logo': 'school',
-                'disableTranslate': true,
-                'title': 'Featured Contents',
-                'stripTitleLink': {
-                  'link': '',
-                  'icon': '',
-                },
-                'sliderConfig': {
-                  'showNavs': true,
-                  'showDots': true,
-                  'maxWidgets': 12,
-                },
-                'stripBackground': '',
-                'titleDescription': 'Recently Added',
-                'stripConfig': {
-                  'cardSubType': 'card-portrait-lib',
-                },
-                'viewMoreUrl': {
-                  'path': '/app/seeAll',
-                  'viewMoreText': 'Show all',
-                  'queryParams': {
-                    'key': 'recentlyAdded',
-                  },
-                  'loaderConfig': {
-                    'cardSubType': 'card-portrait-lib-skeleton',
-                  },
-                  'stripConfig': {
-                    'cardSubType': 'card-portrait-lib',
-                  },
-                },
-                'loader': true,
-                'loaderConfig': {
-                  'cardSubType': 'card-portrait-lib-skeleton',
-                },
-                'tabs': [
-                ],
-                'filters': [],
-                'request': {
-                  'searchV6': {
-                    'request': {
-                      'filters': [
-                        {
-                          'primaryCategory': [
-                            'Course',
-                          ],
-                          'contentType': [
-                            'Course',
-                          ],
-                        },
-                      ],
-                      'query': '',
-                      'sort_by': {
-                        'lastUpdatedOn': 'desc',
-                      },
-                      'fields': [
-                        'name',
-                        'appIcon',
-                        'instructions',
-                        'description',
-                        'purpose',
-                        'mimeType',
-                        'gradeLevel',
-                        'identifier',
-                        'medium',
-                        'pkgVersion',
-                        'board',
-                        'subject',
-                        'resourceType',
-                        'primaryCategory',
-                        'contentType',
-                        'channel',
-                        'organisation',
-                        'trackable',
-                        'license',
-                        'posterImage',
-                        'idealScreenSize',
-                        'learningMode',
-                        'creatorLogo',
-                        'duration',
-                        'avgRating',
-                      ],
-                    },
-                  },
-                },
-              },
-
-            ],
-          },
-        },
-      ],
-    },
-    {
-      "active": true,
-      "enabled": true,
       "title": "Top Contents",
       "navigation": true,
       "key": "sectionPopularCourses",
@@ -417,17 +309,16 @@ export class MicrosotesComponent implements OnInit {
         {
           'active': true,
           'enabled': true,
-          'key': 'contentTopStrip',
+          'key': 'contentStrip',
           'title': 'Popular courses',
           'data':  {
             'order': 4,
             'strips': [
               {
                 'active': true,
-                'key': 'topContents',
+                'key': 'recentlyAdded',
                 'logo': 'school',
-                'disableTranslate': true,
-                'title': 'Top Contents',
+                'title': 'Recently Added',
                 'stripTitleLink': {
                   'link': '',
                   'icon': '',
@@ -518,72 +409,35 @@ export class MicrosotesComponent implements OnInit {
     },
     {
       "active": true,
-      "enabled": true,
+      "enabled": false,
       "title": "",
       "key": "sectionCompetency",
-      "order": 5,
+      "order": 6,
       "column": [
         {
-          "active": true,
-          "enabled": true,
-          "key": "competency",
-          "title": "Competency Strength",
-          "colspan": 12,
-          "background": 'competencies-backgroud',
-          "data": [],
-        }
+          'active': true,
+          'enabled': true,
+          'key': 'competency',
+          'title': '',
+          'colspan': 12,
+          'data':  '',
+        },
       ],
-    },
-    {
-      'active': true,
-      'enabled': true,
-      'title': '',
-      'key': 'sectionTopBanner',
-      'order': 2,
-      'column': [
-        {
-          "active": true,
-          "enabled": true,
-          "key": "topProviders",
-          "title": "",
-          "colspan": 12,
-          "data":  {
-            "detaulTitle": "Know The",
-            "myTitle": "Infrastructure Details.",
-            "description": "Infrastructure is integral to creating a conducive and enriching learning environment.",
-            "dataColSpan": 2,
-            "background": 'infra-background',
-            "users" : [
-              {
-                "userId": 1,
-                "firstName": "Christopher Fernandes",
-                "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt.",
-                "profileImage": "https://images.pexels.com/photos/573299/pexels-photo-573299.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1"
-              },
-              {
-                "userId": 1,
-                "firstName": "Bharath Kumar",
-                "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt.",
-                "profileImage": "https://images.pexels.com/photos/573299/pexels-photo-573299.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1"
-              },
-              {
-                "userId": 1,
-                "firstName": "Venkata Subbaiah ",
-                "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt.",
-                "profileImage": "https://images.pexels.com/photos/573299/pexels-photo-573299.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1"
-              }
-
-            ]
-          }
-        }
-      ],
-    }
+    }    
   ]
 
+  constructor(private route: ActivatedRoute) { 
 
-  constructor() { }
+
+  }
 
   ngOnInit() {
+    this.route.params.subscribe(params => {
+      this.providerName = params['provider']
+      this.providerId = params['orgId']
+    })
+    console.log("providerName ", this.providerName)
+    console.log("providerId ", this.providerId)
     this.getNavitems()
   }
 
