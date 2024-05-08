@@ -105,12 +105,23 @@
     <div class="container-balanced w-full">
         <div class="flex gap-2 pl-4 pr-4 md:pl-0 md:pr-0 flex-wrap items-end justify-between">  
            <ng-container *ngIf="!hideAllStrip">
-                <ng-container *ngFor="let strip of stripData">
-                    <div class="w-full">
-                        <ws-widget-content-strip-with-tabs [widgetData]="strip"></ws-widget-content-strip-with-tabs>
-                    </div>
+                <ng-container *ngIf="stripData?.length; else noData">
+                    <ng-container *ngFor="let strip of stripData">
+                        <div class="w-full">
+                            <ws-widget-content-strip-with-tabs [widgetData]="strip"></ws-widget-content-strip-with-tabs>
+                        </div>
+                    </ng-container>
                 </ng-container>
            </ng-container>
+           <ng-template #noData>
+            <div class="flex justify-center w-full">
+                <div class="margin-xl text-center" >
+                    <img src="/assets/common/error-pages/empty_search.svg" wsUtilsImageResponsive alt="No results"
+                        class="margin-top-l margin-bottom-s">
+                    <h2 class="mat-h2" i18n="search route no result">{{'learnsearch.noResults' | translate}}</h2>
+                </div>
+            </div>
+        </ng-template>
         </div>
     </div>
 </div>
