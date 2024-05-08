@@ -8,6 +8,8 @@
                             <ng-container *ngIf="column.enabled" [ngSwitch]="column.key">
                                 <ng-container *ngSwitchCase="'topSection'" [ngTemplateOutlet]="topSection"
                                     [ngTemplateOutletContext]="{data: column.data}"></ng-container>
+                                <ng-container *ngSwitchCase="'banner'" [ngTemplateOutlet]="banner"
+                                    [ngTemplateOutletContext]="{data: column.data}"></ng-container>
                                 <ng-container *ngSwitchCase="'topProviders'" [ngTemplateOutlet]="topProviders"
                                     [ngTemplateOutletContext]="{data: column.data}"></ng-container>
                                 <ng-container *ngSwitchCase="'infra'" [ngTemplateOutlet]="infra"
@@ -21,7 +23,9 @@
                                 <ng-container *ngSwitchCase="'bmetrics'" [ngTemplateOutlet]="bmetrics"
                                     [ngTemplateOutletContext]="{bmetrics: column}"></ng-container>   
                                 <ng-container *ngSwitchCase="'competency'" [ngTemplateOutlet]="competency"
-                                    [ngTemplateOutletContext]="{competency: column}"></ng-container>                        
+                                    [ngTemplateOutletContext]="{competency: column}"></ng-container>
+                                    <ng-container *ngSwitchCase="'contentSearch'" [ngTemplateOutlet]="contentWithSearch"
+                                        [ngTemplateOutletContext]="{competency: column}"></ng-container>                            
                             </ng-container>
                         </div>
                     </ng-container>
@@ -178,3 +182,35 @@
     </div>
 </ng-template>
 <!-- End Competencies -->
+<!-- banner start -->
+<ng-template #banner let-data="data">
+    <div class="flex justify-between container-balanced  pt-8 pb-8">
+        <div class="flex-1 flex flex-col mr-4 text-white">
+            <h1 >{{data.title}}</h1>
+            <p>{{data.description}}</p>
+        </div>
+        <div class="slider slider-box" *ngIf="data.sliders">
+            <sb-uic-sliders [widgetData]="data.sliders"></sb-uic-sliders>
+        </div>
+    </div>
+</ng-template>
+<!-- banner end -->
+<!-- karma program data with search -->
+<ng-template #contentWithSearch let-data="data">
+    <div class="container-balanced  pt-8 pb-8">
+        <div class="flex-1 flex flex-col mr-4 text-white">
+            <div class="w-full">
+                  <mat-form-field appearance="outline"  class="w-full pl-1 mat-form-search">
+                    <input name="search"  (keyup.enter)="handleSearchQuery($event)"   matInput placeholder="Search">
+                  </mat-form-field>
+              </div>
+        </div>
+       <ng-container *ngIf="contentDataList?.length">
+            <div class="flex flex-row flex-wrap content-container mt-10 mb-10 ng-star-inserted">
+                <div class="mr-2 mb-5 flex" *ngFor="let c of contentDataList">
+                    <sb-uic-cards [widgetData]="c.widgetData"> </sb-uic-cards>
+                </div>
+            </div>
+       </ng-container>
+    </div>
+</ng-template>

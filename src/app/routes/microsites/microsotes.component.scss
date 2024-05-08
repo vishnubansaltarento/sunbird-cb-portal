@@ -251,3 +251,26 @@
 .competencies-backgroud {
     background-color: #1B2133;
 }
+
+::ng-deep .mat-form-search {
+  
+    .mat-form-field-infix {
+      border-top: 0.2em solid transparent !important;
+    }
+  
+    .mat-form-field-wrapper {
+      padding-bottom: 0
+    }
+  
+    .mat-select-panel .mat-optgroup-label,
+    .mat-select-panel .mat-option {
+      font-size: inherit;
+      line-height: 3em;
+      height: 4em;
+      padding-top: 8px;
+    }
+  
+    // .mat-select-arrow {
+    //   margin-top: 12px;
+    // }
+  }
