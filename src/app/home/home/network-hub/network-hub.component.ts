@@ -4,6 +4,7 @@ import { ConfigurationsService } from '@sunbird-cb/utils'
 import { MatSnackBar } from '@angular/material'
 import { HomePageService } from 'src/app/services/home-page.service'
 import { TranslateService } from '@ngx-translate/core'
+import { EventService, WsEvents } from '@sunbird-cb/utils'
 
 @Component({
   selector: 'ws-network-hub',
@@ -32,6 +33,7 @@ export class NetworkHubComponent implements OnInit {
     private homePageService: HomePageService,
     private matSnackBar: MatSnackBar,
     private translate: TranslateService,
+    private eventService: EventService
   ) {
     if (localStorage.getItem('websiteLanguage')) {
       this.translate.setDefaultLang('en')
@@ -128,6 +130,20 @@ export class NetworkHubComponent implements OnInit {
     )
   }
 
+  private raiseTelemetryEvent(id: string): void {
+    this.eventService.raiseInteractTelemetry(
+      {
+        type: WsEvents.EnumInteractTypes.CLICK,
+        subType: WsEvents.EnumInteractSubTypes.SUGGESTED_CONNECTIONS,
+        id: id,
+      },
+      {},
+      {
+        module: WsEvents.EnumTelemetrymodules.HOME,
+      }
+    )
+  }
+
   handleConnect(obj: any): void {
     const payload = {
       connectionId: obj.userId,
@@ -146,6 +162,7 @@ export class NetworkHubComponent implements OnInit {
         this.fetchNetworkRecommendations()
         obj.connecting = false
         this.matSnackBar.open('Connection request sent successfully!')
+        this.raiseTelemetryEvent('card-content')
       },
       (error: HttpErrorResponse) => {
         if (!error.ok) {
@@ -154,6 +171,9 @@ export class NetworkHubComponent implements OnInit {
         }
       }
     )
+  }
+  handleShowAll(): void {
+    this.raiseTelemetryEvent('show-all')
   }
 
   createInitials(fname: string): string {

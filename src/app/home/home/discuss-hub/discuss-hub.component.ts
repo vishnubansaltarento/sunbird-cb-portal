@@ -6,6 +6,7 @@ import { HomePageService } from 'src/app/services/home-page.service'
 import { DiscussUtilsService } from '@ws/app/src/lib/routes/discuss/services/discuss-utils.service'
 import { Router } from '@angular/router'
 import { TranslateService } from '@ngx-translate/core'
+import { EventService,WsEvents} from '@sunbird-cb/utils'
 @Component({
   selector: 'ws-discuss-hub',
   templateUrl: './discuss-hub.component.html',
@@ -34,6 +35,7 @@ export class DiscussHubComponent implements OnInit {
     private discussUtilitySvc: DiscussUtilsService,
     private router: Router,
     private translate: TranslateService,
+    private eventService:EventService,
   ) {
     if (localStorage.getItem('websiteLanguage')) {
       this.translate.setDefaultLang('en')
@@ -97,6 +99,17 @@ export class DiscussHubComponent implements OnInit {
   }
 
   navigate() {
+    this.eventService.raiseInteractTelemetry(
+      {
+        type: WsEvents.EnumInteractTypes.CLICK,
+        subType: WsEvents.EnumInteractSubTypes.TRENDING_DISCUSSIONS,
+        id: 'show-all',
+      },
+      {},
+      {
+        module: WsEvents.EnumTelemetrymodules.HOME,
+      }
+    );
     const config = {
       menuOptions: [
         {
