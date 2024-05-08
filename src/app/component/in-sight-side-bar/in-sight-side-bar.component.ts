@@ -282,12 +282,12 @@ export class InsightSideBarComponent implements OnInit {
     this.router.navigate(['/app/discussion-forum'], { queryParams: { page: 'home' }, queryParamsHandling: 'merge' })
   }
 
-  raiseTelemetry(nudgename: any) {
+  raiseTelemetry(id: string) {
     this.events.raiseInteractTelemetry(
       {
         type: WsEvents.EnumInteractTypes.CLICK,
-        subType: WsEvents.EnumInteractSubTypes.PORTAL_NUDGE,
-        id: `${nudgename}-nudge`,
+        subType: WsEvents.EnumInteractSubTypes.MY_DISCUSSIONS,
+        id: `${id}`,
       },
       {},
       {

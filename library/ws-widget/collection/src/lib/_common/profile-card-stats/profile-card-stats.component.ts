@@ -5,6 +5,7 @@ import { PipeDurationTransformPipe } from '@sunbird-cb/utils/src/public-api'
 import { InfoDialogComponent } from '../info-dialog/info-dialog.component'
 import { MatDialog } from '@angular/material'
 import { HomePageService } from 'src/app/services/home-page.service'
+import { EventService, WsEvents } from '@sunbird-cb/utils'
 
 @Component({
   selector: 'ws-widget-profile-card-stats',
@@ -40,7 +41,9 @@ export class ProfileCardStatsComponent implements OnInit {
               private pipDuration: PipeDurationTransformPipe,
               private langtranslations: MultilingualTranslationsService,
               private homePageSvc: HomePageService,
+              private eventService: EventService,
               private dialog: MatDialog) { }
+              
 
   ngOnInit() {
     this.userInfo =  this.configSvc && this.configSvc.userProfile
@@ -169,6 +172,17 @@ export class ProfileCardStatsComponent implements OnInit {
 
   }
   gotoUserProfile() {
+    this.eventService.raiseInteractTelemetry(
+      {
+        type: WsEvents.EnumInteractTypes.CLICK,
+        subType: WsEvents.EnumInteractSubTypes.PROFILE,
+        id: 'profile-icon'
+      },
+      {},
+      {
+        module: WsEvents.EnumTelemetrymodules.HOME,
+      }
+    )
     this.router.navigate(['app/user-profile/details'])
   }
   toggle() {

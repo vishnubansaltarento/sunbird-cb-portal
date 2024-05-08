@@ -1,6 +1,7 @@
 import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core'
 import { TranslateService } from '@ngx-translate/core'
 import { ConfigurationsService } from '@sunbird-cb/utils/src/public-api'
+import { EventService, WsEvents } from '@sunbird-cb/utils'
 
 @Component({
   selector: 'ws-widget-recent-requests',
@@ -15,7 +16,8 @@ export class RecentRequestsComponent implements OnInit {
 
   constructor(
     private translate: TranslateService,
-    private configService: ConfigurationsService
+    private configService: ConfigurationsService,
+    private eventService: EventService
   ) {
     if (localStorage.getItem('websiteLanguage')) {
       this.translate.setDefaultLang('en')
@@ -42,5 +44,17 @@ export class RecentRequestsComponent implements OnInit {
     reqObject.connecting = true
     this.updateRequest.emit({ payload, action, reqObject })
   }
-
+  handleFindConnectionsTelemetry(): void {
+   this.eventService.raiseInteractTelemetry(
+      {
+        type: WsEvents.EnumInteractTypes.CLICK,
+        subType: WsEvents.EnumInteractSubTypes.RECENT_CONNECTION_REQUEST,
+        id: 'findConnections',
+      },
+      {},
+      {
+        module: WsEvents.EnumTelemetrymodules.HOME,
+      }
+    )
+  }
 }
