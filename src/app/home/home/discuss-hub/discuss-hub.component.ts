@@ -1,12 +1,11 @@
 
 import { Component, OnInit, Input } from '@angular/core'
 import { HttpErrorResponse } from '@angular/common/http'
-import { ConfigurationsService } from '@sunbird-cb/utils'
+import { ConfigurationsService, EventService, WsEvents  } from '@sunbird-cb/utils'
 import { HomePageService } from 'src/app/services/home-page.service'
 import { DiscussUtilsService } from '@ws/app/src/lib/routes/discuss/services/discuss-utils.service'
 import { Router } from '@angular/router'
 import { TranslateService } from '@ngx-translate/core'
-import { EventService,WsEvents} from '@sunbird-cb/utils'
 @Component({
   selector: 'ws-discuss-hub',
   templateUrl: './discuss-hub.component.html',
@@ -35,7 +34,7 @@ export class DiscussHubComponent implements OnInit {
     private discussUtilitySvc: DiscussUtilsService,
     private router: Router,
     private translate: TranslateService,
-    private eventService:EventService,
+    private eventService: EventService,
   ) {
     if (localStorage.getItem('websiteLanguage')) {
       this.translate.setDefaultLang('en')
@@ -109,7 +108,7 @@ export class DiscussHubComponent implements OnInit {
       {
         module: WsEvents.EnumTelemetrymodules.HOME,
       }
-    );
+    )
     const config = {
       menuOptions: [
         {

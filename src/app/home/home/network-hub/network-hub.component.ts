@@ -1,10 +1,9 @@
 import { Component, OnInit, Input } from '@angular/core'
 import { HttpErrorResponse } from '@angular/common/http'
-import { ConfigurationsService } from '@sunbird-cb/utils'
+import { ConfigurationsService, EventService, WsEvents } from '@sunbird-cb/utils'
 import { MatSnackBar } from '@angular/material'
 import { HomePageService } from 'src/app/services/home-page.service'
 import { TranslateService } from '@ngx-translate/core'
-import { EventService, WsEvents } from '@sunbird-cb/utils'
 
 @Component({
   selector: 'ws-network-hub',
@@ -133,9 +132,9 @@ export class NetworkHubComponent implements OnInit {
   private raiseTelemetryEvent(id: string): void {
     this.eventService.raiseInteractTelemetry(
       {
+        id,
         type: WsEvents.EnumInteractTypes.CLICK,
         subType: WsEvents.EnumInteractSubTypes.SUGGESTED_CONNECTIONS,
-        id: id,
       },
       {},
       {
