@@ -1,6 +1,7 @@
 import { NgModule } from '@angular/core'
 import { RouterModule, Routes } from '@angular/router'
 import { HomeComponent } from './home/home.component'
+import { BrowseProviderService } from '@ws/app/src/lib/routes/browse-by-provider/services/browse-provider.service'
 
 const routes: Routes = [
   {
@@ -17,6 +18,6 @@ const routes: Routes = [
     RouterModule.forChild(routes),
   ],
   exports: [RouterModule],
-  providers: [],
+  providers: [BrowseProviderService],
 })
 export class HomeRoutingModule { }
