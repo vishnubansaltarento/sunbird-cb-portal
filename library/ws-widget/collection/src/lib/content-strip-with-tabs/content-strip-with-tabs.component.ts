@@ -1189,7 +1189,6 @@ export class ContentStripWithTabsComponent extends WidgetBaseComponent
   }
 
   setActiveTabData(tabData: any) {
-    console.log('Active Tab:', this.activeTabData)
     this.activeTabData = tabData
   }
 

@@ -30,11 +30,8 @@ export class DiscussionsComponent implements OnInit {
   }
 
   handleSelectedDiscuss(discussData: any, context: string | boolean): void {
-    console.log(context)
     const subType = context && context === 'my-discussions' ? 'my-discussions' : 'trending-discussions';
-  
     this.router.navigateByUrl(`/app/discussion-forum/topic/${discussData.slug}?page=home`);
-  
     this.eventService.raiseInteractTelemetry(
       {
         type: WsEvents.EnumInteractTypes.CLICK,
