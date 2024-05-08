@@ -8,6 +8,8 @@
                             <ng-container *ngIf="column.enabled" [ngSwitch]="column.key">
                                 <ng-container *ngSwitchCase="'topSection'" [ngTemplateOutlet]="topSection"
                                     [ngTemplateOutletContext]="{data: column.data}"></ng-container>
+                                <ng-container *ngSwitchCase="'topProviders'" [ngTemplateOutlet]="topProviders"
+                                    [ngTemplateOutletContext]="{data: column.data}"></ng-container>
                                 <ng-container *ngSwitchCase="'infra'" [ngTemplateOutlet]="infra"
                                     [ngTemplateOutletContext]="{infra: column.data}"></ng-container>
                                     <ng-container *ngSwitchCase="'contentFeaturedStrip'" [ngTemplateOutlet]="contentStrip"
@@ -83,6 +85,49 @@
             <div class="w-full">
                 <!-- <ws-widget-content-strip-with-tabs [widgetData]="contentStrip"></ws-widget-content-strip-with-tabs> -->
                 <sb-uic-content-strip-with-tabs  [widgetData]="contentStrip"></sb-uic-content-strip-with-tabs>
+            </div>
+        </div>
+    </div>
+</ng-template>
+
+<ng-template #topProviders   let-data="data">
+    <div class="{{data.background}} px-5">
+        <div class="container">
+            <div class="grid grid-cols-12 gap-4 infra-sec padding-top-l">
+                <div class="col-span-12 md:col-span-4 infra-sec-desc">
+                    <div class="infra-box flex flex-col">
+                        <div class="infra-title hidden md:block">
+                            {{data.detaulTitle}}
+                        </div>
+                        <div class="infra-title2 hidden md:block">
+                            {{data.myTitle}}
+                        </div>
+                        <div class="block md:hidden">
+                            <span class="infra-title">{{data.detaulTitle}}</span> <span class="infra-title2"> {{data.myTitle}}</span>
+                        </div>
+                        <div class="infra-description padding-top-s">
+                            {{data.description}}
+                        </div>
+                    </div>
+                </div>
+                <div class="col-span-12 md:col-span-8">
+                    <div *ngFor="let user of data?.users" class="mb-8">
+                        <sb-uic-cards [widgetData]="{
+                            user: user,
+                            cardSubType: 'user-card'
+                        }">
+                        </sb-uic-cards>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="{{infra.background}} slider-background">
+    </div>
+    <div class="slider-background1">
+        <div class="container-balanced w-full slider-background-2">
+            <div class="info-slider">
+                <sb-uic-sliders [widgetData]="infra?.sliderData?.sliders" [styleData]="infra?.sliderData?.styleData"></sb-uic-sliders>
             </div>
         </div>
     </div>
