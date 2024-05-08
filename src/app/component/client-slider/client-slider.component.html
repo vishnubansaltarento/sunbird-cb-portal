@@ -1,18 +1,42 @@
 <div class="client-box" *ngIf="clients && clients.length; else noClientBox">
-    <div class="">
-        <h2 class="text-center margin-bottom-l">{{ 'home.topProviderSliders' | translate }} 
-            <span>
-                <a [routerLink]="'/app/learn/browse-by/provider/all-providers'"><span i18n class="ws-mat-default-text">{{ 'home.showAll' | translate }}</span>
+
+    <div class="margin-bottom-l">
+        <div class="block md:hidden">
+            <div class="flex items-center pl-5 pr-5 justify-center">
+                <p class="mat-subheading-1 margin-remove inline-block">
+                    {{ 'home.topProviderSliders' | translate }}
+                </p>
+            </div>
+            <div class="flex items-center pl-5 pr-5 justify-center">
+                <div class="ml-4 view-more ws-mat-default-text">
+                    <a class="flex ws-mat-default-text items-center justify-center mat-body-1" [routerLink]="'/app/learn/browse-by/provider/all-providers'">
+                    <span i18n class="ws-mat-default-text">{{ 'home.showAll' | translate }}</span>
                     <mat-icon class="ws-mat-default-text mat-icon notranslate material-icons mat-icon-no-color" color="accent">navigate_next</mat-icon>
-                  </a>
-            </span>
-        </h2>
+                    </a>
+                </div>
+            </div>
+        </div>
+        <div class="hidden md:block">
+            <div class="flex flex-1 items-center pl-5 pr-5">
+                <p class="mat-subheading-1 margin-remove inline-block">
+                    {{ 'home.topProviderSliders' | translate }}
+                </p>
+                <span class="spacer"></span>
+                <div class="ml-4 view-more ws-mat-default-text">
+                    <a class="flex ws-mat-default-text items-center justify-center mat-body-1" [routerLink]="'/app/learn/browse-by/provider/all-providers'">
+                    <span i18n class="ws-mat-default-text">{{ 'home.showAll' | translate }}</span>
+                    <mat-icon class="ws-mat-default-text mat-icon notranslate material-icons mat-icon-no-color" color="accent">navigate_next</mat-icon>
+                    </a>
+                </div>
+            </div>
+        </div>        
     </div>
      <div class="customer-logos flex flex-1 flex-row slider" >
         <div class="flex slider-item" *ngFor="let item of clients">
-            <a href="/app/learn/browse-by/provider/{{ item.clientName}}/{{item.orgId}}/micro-sites" target="_blank" class="client-link flex flex-col items-center justify-center">
-                <img src="{{ item.clientImageUrl }}" class="client-img flex">
-                <p class="mat-body-2 flex">{{ item.clientName }}</p>
+            <a href="/app/learn/browse-by/provider/{{ item.name}}/{{item.orgId}}/micro-sites" target="_blank" class="client-link flex flex-col items-center justify-center">
+                <img src="{{ item.logoUrl }}" class="client-img flex" *ngIf="item.logoUrl">
+                <img src="/assets/images/micro-sites/image4.svg" class="client-img flex" *ngIf="!item.logoUrl">
+                <p class="mat-body-2 flex">{{ item.name }}</p>
             </a>
         </div>
         
