@@ -1,7 +1,7 @@
 import { Component, OnInit, Input } from '@angular/core'
 import { Router } from '@angular/router'
 import { TranslateService } from '@ngx-translate/core'
-import { EventService,WsEvents} from '@sunbird-cb/utils'
+import { EventService, WsEvents } from '@sunbird-cb/utils'
 @Component({
   selector: 'ws-widget-discussions',
   templateUrl: './discussions.component.html',
@@ -16,7 +16,7 @@ export class DiscussionsComponent implements OnInit {
   countArr: any[] = []
   dataToBind: any
 
-  constructor(private router: Router, private translate: TranslateService, private eventService:EventService) {
+  constructor(private router: Router, private translate: TranslateService, private eventService: EventService) {
     if (localStorage.getItem('websiteLanguage')) {
       this.translate.setDefaultLang('en')
       let lang = JSON.stringify(localStorage.getItem('websiteLanguage'))
@@ -30,18 +30,18 @@ export class DiscussionsComponent implements OnInit {
   }
 
   handleSelectedDiscuss(discussData: any, context: string | boolean): void {
-    const subType = context && context === 'my-discussions' ? 'my-discussions' : 'trending-discussions';
-    this.router.navigateByUrl(`/app/discussion-forum/topic/${discussData.slug}?page=home`);
+    const subType = context && context === 'my-discussions' ? 'my-discussions' : 'trending-discussions'
+    this.router.navigateByUrl(`/app/discussion-forum/topic/${discussData.slug}?page=home`)
     this.eventService.raiseInteractTelemetry(
       {
+        subType,
         type: WsEvents.EnumInteractTypes.CLICK,
-        subType: subType,
-        id: 'card-content' 
+        id: 'card-content',
       },
       {},
       {
         module: WsEvents.EnumTelemetrymodules.HOME,
       }
-    );
-  } 
-}  
+    )
+  }
+}

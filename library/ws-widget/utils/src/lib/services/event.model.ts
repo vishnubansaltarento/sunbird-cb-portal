@@ -207,7 +207,7 @@ export namespace WsEvents {
   }
   export enum EnumInteractTypes {
     CLICK = 'click',
-    subType = "subType",
+    subType = 'subType',
   }
   export enum EnumInteractSubTypes {
     COURSE_TAB = 'course-tab',
@@ -231,11 +231,11 @@ export namespace WsEvents {
     HUB_MENU = 'hub-menu',
     PORTAL_NUDGE = 'portal_nudge',
     CERTIFICATE = 'certificate',
-    DEFAULT_SUBTYPE = "default-subtype",
+    DEFAULT_SUBTYPE = 'default-subtype',
     SUGGESTED_CONNECTIONS = 'suggested-connections',
     PROFILE = 'profile',
     ADD_POST = 'add-post',
     TRENDING_DISCUSSIONS = 'trending-discussions',
-    MY_DISCUSSIONS = 'my-discussions'
+    MY_DISCUSSIONS = 'my-discussions',
   }
 }

@@ -58,7 +58,6 @@ interface IStripUnitContentData {
 
 }
 
-
 @Component({
   selector: 'ws-widget-content-strip-with-tabs',
   templateUrl: './content-strip-with-tabs.component.html',
@@ -90,7 +89,6 @@ export class ContentStripWithTabsComponent extends WidgetBaseComponent
   enrollInterval: any
   todaysEvents: any = []
   activeTabData: any
-  
 
   constructor(
     // private contentStripSvc: ContentStripNewMultipleService,
@@ -881,11 +879,11 @@ export class ContentStripWithTabsComponent extends WidgetBaseComponent
       const data: WsEvents.ITelemetryTabData = {
         label: `${tabEvent.tab.textLabel}`,
         index: tabEvent.index,
-      };
+      }
       this.eventSvc.raiseInteractTelemetry(
         {
           type: WsEvents.EnumInteractTypes.CLICK,
-          subType: stripMap.stripTitle, 
+          subType: stripMap.stripTitle,
           id: `${_.camelCase(data.label)}-tab`,
         },
         {},
@@ -899,7 +897,7 @@ export class ContentStripWithTabsComponent extends WidgetBaseComponent
       stripMap.tabs[tabEvent.index]['tabLoading'] = true
       stripMap.showOnLoader = true
     }
-   
+
     const currentTabFromMap: any = stripMap.tabs && stripMap.tabs[tabEvent.index]
     const currentStrip = this.widgetData.strips.find(s => s.key === stripKey)
     if (this.stripsResultDataMap[stripKey] && currentTabFromMap) {

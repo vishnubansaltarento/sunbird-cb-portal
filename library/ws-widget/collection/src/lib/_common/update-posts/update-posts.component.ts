@@ -1,6 +1,6 @@
 import { Component, OnInit, Input } from '@angular/core'
 import { TranslateService } from '@ngx-translate/core'
-import { EventService,WsEvents} from '@sunbird-cb/utils'
+import { EventService, WsEvents } from '@sunbird-cb/utils'
 
 @Component({
   selector: 'ws-widget-update-posts',
@@ -14,7 +14,7 @@ export class UpdatePostsComponent implements OnInit {
     @Input() updatesPosts: any
     @Input() isMobile = false
 
-    constructor(private translate: TranslateService,private eventService:EventService) {
+    constructor(private translate: TranslateService, private eventService: EventService) {
       if (localStorage.getItem('websiteLanguage')) {
         this.translate.setDefaultLang('en')
         const lang = localStorage.getItem('websiteLanguage')!
@@ -37,5 +37,5 @@ export class UpdatePostsComponent implements OnInit {
         }
       )
     }
-    
+
 }
