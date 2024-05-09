@@ -52,12 +52,12 @@ export class ProviderPageComponent implements OnInit {
                 {
                   "active": true,
                   "banners": {
-                    "l": "assets/instances/eagle/banners/orgs/new-banner/6/l.png",
-                    "m": "assets/instances/eagle/banners/orgs/new-banner/6/m.png",
-                    "s": "assets/instances/eagle/banners/orgs/new-banner/6/s.png",
-                    "xl": "assets/instances/eagle/banners/orgs/new-banner/6/l.png",
-                    "xs": "assets/instances/eagle/banners/orgs/new-banner/6/s.png",
-                    "xxl": "assets/instances/eagle/banners/orgs/new-banner/6/l.png"
+                    "l": "https://portal.karmayogi.nic.in/content-store/content/do_114051307572264960124/artifact/do_114051307572264960124_1715247613335_l.png",
+                    "m": "https://portal.karmayogi.nic.in/content-store/content/do_114051307572264960124/artifact/do_114051307572264960124_1715247613335_l.png",
+                    "s": "https://portal.karmayogi.nic.in/content-store/content/do_114051307572264960124/artifact/do_114051307572264960124_1715247613335_l.png",
+                    "xl": "https://portal.karmayogi.nic.in/content-store/content/do_114051307572264960124/artifact/do_114051307572264960124_1715247613335_l.png",
+                    "xs": "https://portal.karmayogi.nic.in/content-store/content/do_114051307572264960124/artifact/do_114051307572264960124_1715247613335_l.png",
+                    "xxl": "https://portal.karmayogi.nic.in/content-store/content/do_114051307572264960124/artifact/do_114051307572264960124_1715247613335_l.png"
                   },
                   "redirectUrl": "/app/curatedCollections/do_1137524714202480641252",
                   "queryParams": {
@@ -71,12 +71,12 @@ export class ProviderPageComponent implements OnInit {
                 {
                   "active": true,
                   "banners": {
-                    "l": "assets/instances/eagle/banners/orgs/new-banner/4/l.png",
-                    "m": "assets/instances/eagle/banners/orgs/new-banner/4/m.png",
-                    "s": "assets/instances/eagle/banners/orgs/new-banner/4/s.png",
-                    "xl": "assets/instances/eagle/banners/orgs/new-banner/4/l.png",
-                    "xs": "assets/instances/eagle/banners/orgs/new-banner/4/s.png",
-                    "xxl": "assets/instances/eagle/banners/orgs/new-banner/4/l.png"
+                    "l": "https://portal.karmayogi.nic.in/content-store/content/do_114051312372424704125/artifact/do_114051312372424704125_1715248147439_l.png",
+                    "m": "https://portal.karmayogi.nic.in/content-store/content/do_114051312372424704125/artifact/do_114051312372424704125_1715248147439_l.png",
+                    "s": "https://portal.karmayogi.nic.in/content-store/content/do_114051312372424704125/artifact/do_114051312372424704125_1715248147439_l.png",
+                    "xl": "https://portal.karmayogi.nic.in/content-store/content/do_114051312372424704125/artifact/do_114051312372424704125_1715248147439_l.png",
+                    "xs": "https://portal.karmayogi.nic.in/content-store/content/do_114051312372424704125/artifact/do_114051312372424704125_1715248147439_l.png",
+                    "xxl": "https://portal.karmayogi.nic.in/content-store/content/do_114051312372424704125/artifact/do_114051312372424704125_1715248147439_l.png",
                   },
                   "redirectUrl": "/app/organisation/dopt",
                   "queryParams": {
@@ -90,12 +90,12 @@ export class ProviderPageComponent implements OnInit {
                 {
                   "active": true,
                   "banners": {
-                    "l": "assets/instances/eagle/banners/orgs/new-banner/2/l.png",
-                    "m": "assets/instances/eagle/banners/orgs/new-banner/2/m.png",
-                    "s": "assets/instances/eagle/banners/orgs/new-banner/2/s.png",
-                    "xl": "assets/instances/eagle/banners/orgs/new-banner/2/l.png",
-                    "xs": "assets/instances/eagle/banners/orgs/new-banner/2/s.png",
-                    "xxl": "assets/instances/eagle/banners/orgs/new-banner/2/l.png"
+                    "l": "https://portal.karmayogi.nic.in/content-store/content/do_114051314864234496126/artifact/do_114051314864234496126_1715248438443_l.png",
+                    "m": "https://portal.karmayogi.nic.in/content-store/content/do_114051314864234496126/artifact/do_114051314864234496126_1715248438443_l.png",
+                    "s": "https://portal.karmayogi.nic.in/content-store/content/do_114051314864234496126/artifact/do_114051314864234496126_1715248438443_l.png",
+                    "xl": "https://portal.karmayogi.nic.in/content-store/content/do_114051314864234496126/artifact/do_114051314864234496126_1715248438443_l.png",
+                    "xs": "https://portal.karmayogi.nic.in/content-store/content/do_114051314864234496126/artifact/do_114051314864234496126_1715248438443_l.png",
+                    "xxl": "https://portal.karmayogi.nic.in/content-store/content/do_114051314864234496126/artifact/do_114051314864234496126_1715248438443_l.png",
                   },
                   "redirectUrl": "/app/globalsearch",
                   "queryParams": {
@@ -238,12 +238,12 @@ export class ProviderPageComponent implements OnInit {
                 {
                   'active': true,
                   'banners': {
-                    'l': 'assets/instances/eagle/banners/orgs/new-banner/6/l.png',
-                    'm': 'assets/instances/eagle/banners/orgs/new-banner/6/m.png',
-                    's': 'assets/instances/eagle/banners/orgs/new-banner/6/s.png',
-                    'xl': 'assets/instances/eagle/banners/orgs/new-banner/6/l.png',
-                    'xs': 'assets/instances/eagle/banners/orgs/new-banner/6/s.png',
-                    'xxl': 'assets/instances/eagle/banners/orgs/new-banner/6/l.png',
+                    "l": "https://portal.karmayogi.nic.in/content-store/content/do_114051314864234496126/artifact/do_114051314864234496126_1715248438443_l.png",
+                    "m": "https://portal.karmayogi.nic.in/content-store/content/do_114051314864234496126/artifact/do_114051314864234496126_1715248438443_l.png",
+                    "s": "https://portal.karmayogi.nic.in/content-store/content/do_114051314864234496126/artifact/do_114051314864234496126_1715248438443_l.png",
+                    "xl": "https://portal.karmayogi.nic.in/content-store/content/do_114051314864234496126/artifact/do_114051314864234496126_1715248438443_l.png",
+                    "xs": "https://portal.karmayogi.nic.in/content-store/content/do_114051314864234496126/artifact/do_114051314864234496126_1715248438443_l.png",
+                    "xxl": "https://portal.karmayogi.nic.in/content-store/content/do_114051314864234496126/artifact/do_114051314864234496126_1715248438443_l.png",
                   },
                   'redirectUrl': '/app/curatedCollections/do_1137524714202480641252',
                   'queryParams': {
@@ -257,12 +257,12 @@ export class ProviderPageComponent implements OnInit {
                 {
                   'active': true,
                   'banners': {
-                    'l': 'assets/instances/eagle/banners/orgs/new-banner/4/l.png',
-                    'm': 'assets/instances/eagle/banners/orgs/new-banner/4/m.png',
-                    's': 'assets/instances/eagle/banners/orgs/new-banner/4/s.png',
-                    'xl': 'assets/instances/eagle/banners/orgs/new-banner/4/l.png',
-                    'xs': 'assets/instances/eagle/banners/orgs/new-banner/4/s.png',
-                    'xxl': 'assets/instances/eagle/banners/orgs/new-banner/4/l.png',
+                    "l": "https://portal.karmayogi.nic.in/content-store/content/do_114051307572264960124/artifact/do_114051307572264960124_1715247613335_l.png",
+                    "m": "https://portal.karmayogi.nic.in/content-store/content/do_114051307572264960124/artifact/do_114051307572264960124_1715247613335_l.png",
+                    "s": "https://portal.karmayogi.nic.in/content-store/content/do_114051307572264960124/artifact/do_114051307572264960124_1715247613335_l.png",
+                    "xl": "https://portal.karmayogi.nic.in/content-store/content/do_114051307572264960124/artifact/do_114051307572264960124_1715247613335_l.png",
+                    "xs": "https://portal.karmayogi.nic.in/content-store/content/do_114051307572264960124/artifact/do_114051307572264960124_1715247613335_l.png",
+                    "xxl": "https://portal.karmayogi.nic.in/content-store/content/do_114051307572264960124/artifact/do_114051307572264960124_1715247613335_l.png"
                   },
                   'redirectUrl': '/app/organisation/dopt',
                   'queryParams': {
@@ -276,12 +276,12 @@ export class ProviderPageComponent implements OnInit {
                 {
                   'active': true,
                   'banners': {
-                    'l': 'assets/instances/eagle/banners/orgs/new-banner/2/l.png',
-                    'm': 'assets/instances/eagle/banners/orgs/new-banner/2/m.png',
-                    's': 'assets/instances/eagle/banners/orgs/new-banner/2/s.png',
-                    'xl': 'assets/instances/eagle/banners/orgs/new-banner/2/l.png',
-                    'xs': 'assets/instances/eagle/banners/orgs/new-banner/2/s.png',
-                    'xxl': 'assets/instances/eagle/banners/orgs/new-banner/2/l.png',
+                    "l": "https://portal.karmayogi.nic.in/content-store/content/do_114051312372424704125/artifact/do_114051312372424704125_1715248147439_l.png",
+                    "m": "https://portal.karmayogi.nic.in/content-store/content/do_114051312372424704125/artifact/do_114051312372424704125_1715248147439_l.png",
+                    "s": "https://portal.karmayogi.nic.in/content-store/content/do_114051312372424704125/artifact/do_114051312372424704125_1715248147439_l.png",
+                    "xl": "https://portal.karmayogi.nic.in/content-store/content/do_114051312372424704125/artifact/do_114051312372424704125_1715248147439_l.png",
+                    "xs": "https://portal.karmayogi.nic.in/content-store/content/do_114051312372424704125/artifact/do_114051312372424704125_1715248147439_l.png",
+                    "xxl": "https://portal.karmayogi.nic.in/content-store/content/do_114051312372424704125/artifact/do_114051312372424704125_1715248147439_l.png",
                   },
                   'redirectUrl': '/app/globalsearch',
                   'queryParams': {
@@ -533,7 +533,7 @@ export class ProviderPageComponent implements OnInit {
           "active": true,
           "enabled": true,
           "key": "competency",
-          "title": "Competency Strength",
+          "title": "Competency Expertise",
           "colspan": 12,
           "background": 'competencies-backgroud',
           "data": [],
