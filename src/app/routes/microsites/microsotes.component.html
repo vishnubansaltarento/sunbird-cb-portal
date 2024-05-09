@@ -50,9 +50,19 @@
         <div class="col-span-12 christy">
             <div class="grid grid-cols-12">
                 <div class="col-span-12 md:col-span-8">
-                    <div class="slider" *ngIf="data?.sliderData?.sliders">
+                    <div class="slider" *ngIf="data?.sliderData?.sliders?.length;else defaultData">
                         <sb-uic-sliders [widgetData]="data?.sliderData?.sliders" [styleData]="data?.sliderData?.styleData"></sb-uic-sliders>
                     </div>
+                    <ng-template #defaultData>
+                        <div class="slider default-slider h-full">
+                            <div class="relative h-full">
+                                <img class="h-full" src="assets/icons/home/default-slider-image.svg" alt="">
+                                <div class="default-title">
+                                    <p>test</p>
+                                </div>
+                            </div>
+                        </div>
+                    </ng-template>
                 </div>
                 <div class="hidden md:block col-span-4 {{data?.metrics?.background}}" >
                     <sb-uic-data-points [objectData]="data?.metrics?.data" [layoutType]="'multipleRows'"></sb-uic-data-points>

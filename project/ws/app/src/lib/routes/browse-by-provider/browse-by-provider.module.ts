@@ -45,7 +45,7 @@ import { TranslateModule, TranslateLoader } from '@ngx-translate/core'
 import { HttpLoaderFactory } from 'src/app/app.module';
 import { ProviderPageComponent } from './routes/provider-page/provider-page.component'
 import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core'
-import {ContentStripWithTabsLibModule, DataPointsModule, SlidersLibModule} from '@sunbird-cb/consumption'
+import {CompetencyPassbookModule, ContentStripWithTabsLibModule, DataPointsModule, SlidersLibModule} from '@sunbird-cb/consumption'
 
 @NgModule({
   declarations: [
@@ -95,6 +95,7 @@ import {ContentStripWithTabsLibModule, DataPointsModule, SlidersLibModule} from 
     ContentStripWithTabsModule,
     ContentStripWithTabsModule,
     ContentStripWithTabsLibModule,
+    CompetencyPassbookModule,
     DataPointsModule,
     SlidersLibModule,
     TranslateModule.forRoot({
