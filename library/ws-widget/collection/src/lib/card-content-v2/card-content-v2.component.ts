@@ -419,12 +419,21 @@ export class CardContentV2Component extends WidgetBaseComponent
   }
   async getRedirectUrlData(content: any,contentType?:any){
     if(contentType) {
-      this.router.navigate([`/app/gyaan-karmayogi/player/${VIEWER_ROUTE_FROM_MIME(content.mimeType)}/${content.identifier}`],{
-        queryParams : {
-          primaryCategory: this.primaryCategory.RESOURCE
-          // preview: true
-        }
-      })
+      if(content.resourceType === 'Link' && content.mimeType === this.nsContentConstants.EMimeTypes.TEXT_WEB){
+        let urls: any = content.artifactUrl.split('https://www.youtube.com/')
+        this.router.navigate([]).then(_result => {
+          if(urls[1]) {
+            window.open(urls[1], '_blank');
+          }
+        });
+      } else {
+        this.router.navigate([`/app/gyaan-karmayogi/player/${VIEWER_ROUTE_FROM_MIME(content.mimeType)}/${content.identifier}`],{
+          queryParams : {
+            primaryCategory: this.primaryCategory.RESOURCE
+            // preview: true
+          }
+        })
+      }
     } else {
       let urlData = await this.contSvc.getResourseLink(content)
       this.router.navigate(
