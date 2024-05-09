@@ -33,10 +33,9 @@
     </div>
      <div class="customer-logos flex flex-1 flex-row slider" >
         <div class="flex slider-item" *ngFor="let item of clients">
-            <a href="/app/learn/browse-by/provider/{{ item.name}}/{{item.orgId}}/micro-sites" target="_blank" class="client-link flex flex-col items-center justify-center">
-                <img src="{{ item.logoUrl }}" class="client-img flex" *ngIf="item.logoUrl">
-                <img src="/assets/images/micro-sites/image4.svg" class="client-img flex" *ngIf="!item.logoUrl">
-                <p class="mat-body-2 flex">{{ item.name }}</p>
+            <a href="/app/learn/browse-by/provider/{{ item.clientName}}/{{item.orgId}}/micro-sites" target="_blank" class="client-link flex flex-col items-center justify-center">
+                <img src="{{ item.clientImageUrl }}" class="client-img flex">
+                <p class="mat-body-2 flex">{{ item.clientName }}</p>
             </a>
         </div>
         

@@ -85,7 +85,7 @@ export class HomeComponent implements OnInit, AfterViewInit {
       }
     }
 
-    // this.clientList = this.activatedRoute.snapshot.data.pageData.data.clientList
+    this.clientList = this.activatedRoute.snapshot.data.pageData.data.clientList
     this.widgetData = this.activatedRoute.snapshot.data.pageData.data.hubsData
     this.enableLazyLoadingFlag = this.activatedRoute.snapshot.data.pageData.data.enableLazyLoading
 
