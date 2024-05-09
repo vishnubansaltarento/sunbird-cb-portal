@@ -1,4 +1,6 @@
 import { Component, OnInit } from '@angular/core'
+import { MicrositeService } from './microsites.service'
+import { CommonMethodsService } from '@sunbird-cb/consumption'
 
 @Component({
   selector: 'ws-microsotes',
@@ -8,7 +10,203 @@ import { Component, OnInit } from '@angular/core'
 export class MicrosotesComponent implements OnInit {
 
   navList: any
-  sectionList = [
+  contentDataList: any = []
+  loadContentSearch: boolean = false
+  sectionList: any = [
+
+    {
+      'active': true,
+      'enabled': true,
+      'title': '',
+      'key': 'row1',
+      'order': 1,
+      'column': [
+        {
+          'active': true,
+          'enabled': true,
+          'key': 'banner',
+          "background": 'infra-background',
+          'title': '',
+          'colspan': 12,
+          'data':  {
+            logo: '/assets/instances/eagle/app_logos/KarmayogiBharat_Logo_Horizontal.svg',
+            title: 'Department Of Education',
+            // tslint:disable-next-line:max-line-length
+            description: 'Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry\'s standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.',
+            sliders: [
+              {
+                'active': true,
+                'banners': {
+                  'l': 'assets/instances/eagle/banners/orgs/new-banner/6/l.png',
+                  'm': 'assets/instances/eagle/banners/orgs/new-banner/6/m.png',
+                  's': 'assets/instances/eagle/banners/orgs/new-banner/6/s.png',
+                  'xl': 'assets/instances/eagle/banners/orgs/new-banner/6/l.png',
+                  'xs': 'assets/instances/eagle/banners/orgs/new-banner/6/s.png',
+                  'xxl': 'assets/instances/eagle/banners/orgs/new-banner/6/l.png',
+                },
+                'redirectUrl': '/app/curatedCollections/do_1137524714202480641252',
+                'queryParams': {
+                  'tab': 'Learn',
+                  'q': 'Salesforce',
+                  'lang': 'en',
+                  'f': '{}',
+                },
+                'title': '',
+              },
+              {
+                'active': true,
+                'banners': {
+                  'l': 'assets/instances/eagle/banners/orgs/new-banner/4/l.png',
+                  'm': 'assets/instances/eagle/banners/orgs/new-banner/4/m.png',
+                  's': 'assets/instances/eagle/banners/orgs/new-banner/4/s.png',
+                  'xl': 'assets/instances/eagle/banners/orgs/new-banner/4/l.png',
+                  'xs': 'assets/instances/eagle/banners/orgs/new-banner/4/s.png',
+                  'xxl': 'assets/instances/eagle/banners/orgs/new-banner/4/l.png',
+                },
+                'redirectUrl': '/app/organisation/dopt',
+                'queryParams': {
+                  'tab': 'Learn',
+                  'q': 'Salesforce',
+                  'lang': 'en',
+                  'f': '{}',
+                },
+                'title': '',
+              },
+              {
+                'active': true,
+                'banners': {
+                  'l': 'assets/instances/eagle/banners/orgs/new-banner/2/l.png',
+                  'm': 'assets/instances/eagle/banners/orgs/new-banner/2/m.png',
+                  's': 'assets/instances/eagle/banners/orgs/new-banner/2/s.png',
+                  'xl': 'assets/instances/eagle/banners/orgs/new-banner/2/l.png',
+                  'xs': 'assets/instances/eagle/banners/orgs/new-banner/2/s.png',
+                  'xxl': 'assets/instances/eagle/banners/orgs/new-banner/2/l.png',
+                },
+                'redirectUrl': '/app/globalsearch',
+                'queryParams': {
+                  'tab': 'Learn',
+                  'q': 'Salesforce',
+                  'lang': 'en',
+                  'f': '{}',
+                },
+                'title': '',
+              },
+            ],
+          },
+        },
+      ],
+    },
+    {
+      "active": true,
+      "enabled": true,
+      "title": "Top Contents",
+      "navigation": true,
+      "key": "contentSearch",
+      "order": 4,
+      "navOrder": 2,
+      "column": [
+        {
+          'active': true,
+          'enabled': true,
+          'key': 'contentSearch',
+          'title': 'Popular courses',
+          'data':  {
+            'order': 4,
+            'strips': [
+              {
+                'active': true,
+                'key': 'topContents',
+                'logo': 'school',
+                'disableTranslate': true,
+                'title': 'Top Contents',
+                'stripTitleLink': {
+                  'link': '',
+                  'icon': '',
+                },
+                'sliderConfig': {
+                  'showNavs': true,
+                  'showDots': true,
+                  'maxWidgets': 12,
+                },
+                'stripBackground': '',
+                'titleDescription': 'Recently Added',
+                'stripConfig': {
+                  'cardSubType': 'card-landscape-lib',
+                },
+                'viewMoreUrl': {
+                  'path': '/app/seeAll',
+                  'viewMoreText': 'Show all',
+                  'queryParams': {
+                    'key': 'recentlyAdded',
+                  },
+                  'loaderConfig': {
+                    'cardSubType': 'card-landscape-lib-skeleton',
+                  },
+                  'stripConfig': {
+                    'cardSubType': 'card-landscape-lib',
+                  },
+                },
+                'loader': true,
+                'loaderConfig': {
+                  'cardSubType': 'card-landscape-lib-skeleton',
+                },
+                'tabs': [
+                ],
+                'filters': [],
+                'request': {
+                  'searchV6': {
+                    'request': {
+                      'filters': [
+                        {
+                          'primaryCategory': [
+                            'Course',
+                          ],
+                          'contentType': [
+                            'Course',
+                          ],
+                        },
+                      ],
+                      'query': '',
+                      'sort_by': {
+                        'lastUpdatedOn': 'desc',
+                      },
+                      'fields': [
+                        'name',
+                        'appIcon',
+                        'instructions',
+                        'description',
+                        'purpose',
+                        'mimeType',
+                        'gradeLevel',
+                        'identifier',
+                        'medium',
+                        'pkgVersion',
+                        'board',
+                        'subject',
+                        'resourceType',
+                        'primaryCategory',
+                        'contentType',
+                        'channel',
+                        'organisation',
+                        'trackable',
+                        'license',
+                        'posterImage',
+                        'idealScreenSize',
+                        'learningMode',
+                        'creatorLogo',
+                        'duration',
+                        'avgRating',
+                      ],
+                    },
+                  },
+                },
+              },
+
+            ],
+          },
+        },
+      ],
+    },
     {
       'active': true,
       'enabled': true,
@@ -581,10 +779,14 @@ export class MicrosotesComponent implements OnInit {
   ]
 
 
-  constructor() { }
+  constructor(
+    public contentSvc:MicrositeService,
+  public commonSvc: CommonMethodsService
+) { }
 
   ngOnInit() {
     this.getNavitems()
+    this.getDataFromSearch()
   }
 
   getNavitems() {
@@ -602,6 +804,81 @@ export class MicrosotesComponent implements OnInit {
         top: section.offsetTop - 121,
         behavior: 'smooth'
       });
+    }
+  }
+  async getDataFromSearch(requestData?: any){
+    let request  = requestData || this.formRequest()
+    let sectionData = this.sectionList.filter((ele: any) => ele.key === 'contentSearch')
+    console.log(sectionData,'=============')
+    if(sectionData && sectionData.length) {
+    let strip: any = sectionData[0].column[0].data && sectionData[0].column[0].data.strips[0]
+    try {
+      this.loadContentSearch = true
+      const response = await this.fetchFromSearchV6(request);
+      if (response && response.results) {
+        debugger
+        if(response.results.result.content){
+         console.log('------------')
+         this.contentDataList = this.commonSvc.transformContentsToWidgets(response.results.result.content, strip)
+         console.log(this.contentDataList)
+        }
+        this.loadContentSearch = false
+      }
+    } catch (error) {
+      // Handle errors
+      // console.error('Error:', error);
+    }
+    }
+  }
+
+
+  async fetchFromSearchV6(request: any){
+      return new Promise<any>((resolve, reject) => {
+        if (request && request) {
+          this.contentSvc.searchV6(request).subscribe(results => {
+              resolve({ results });
+            },(error: any) => {
+              reject(error);
+            },
+          );
+        }
+      });
+  }
+  handleSearchQuery(e: any){
+    if(e.target.value) {
+      let request = this.formRequest(e.target.value)
+      this.getDataFromSearch(request)
+    }
+  }
+  formRequest( queryText?:any, addFilter?: any){
+    this.loadCardSkeletonLoader()
+    let request: any = {
+      "request": {
+          "query": queryText || "",
+          "filters": {
+              "contentType":"Course",
+              ...addFilter,
+              "status": [
+                  "Live"
+              ]
+          },
+          "sort_by": {
+              "lastUpdatedOn": "desc"
+          },
+          "offset": 0,
+          "fields": [
+          ]
+      }
+    }
+    return request
+  }
+
+  loadCardSkeletonLoader(){
+    let sectionData = this.sectionList.filter((ele: any) => ele.key === 'contentSearch')
+    console.log(sectionData,'=============')
+    if(sectionData && sectionData.length) {
+        let strip: any = sectionData[0].column[0].data && sectionData[0].column[0].data.strips[0]
+      this.contentDataList = this.commonSvc.transformSkeletonToWidgets(strip)
     }
   }
 }
