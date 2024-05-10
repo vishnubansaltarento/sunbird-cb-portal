@@ -66,9 +66,9 @@
                     <div class="block md:hidden overflow-y-auto mb-3">
                         <sb-uic-data-points [objectData]="data?.metrics?.data" [layoutType]="'singleRow'"></sb-uic-data-points>
                     </div>
-                    <button  [routerLink]="['/app/learn/browse-by/provider', providerName, providerId, 'all-CBP']" mat-button type="button" class="view-btn margin-left-xs margin-right-xs small-button blue-border flex-auto-display">
+                    <button  [routerLink]="[data?.contentButton?.redirectUrl, providerName, providerId, 'all-CBP']" mat-button type="button" class="view-btn margin-left-xs margin-right-xs small-button blue-border flex-auto-display">
                         <span class="mat-heading-1 bold ws-mat-default-text" i18n>
-                        View all contents
+                            {{data?.contentButton?.title}}
                         </span>
                     </button>
                 </div>

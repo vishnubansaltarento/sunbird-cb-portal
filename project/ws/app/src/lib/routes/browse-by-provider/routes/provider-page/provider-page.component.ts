@@ -30,6 +30,16 @@ export class ProviderPageComponent implements OnInit {
             logo: "/assets/instances/eagle/app_logos/KarmayogiBharat_Logo_Horizontal.svg",
             title: "Department Of Education",
             description: "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.",
+            contentButton: {
+              title: "View All Contents",
+              redirectUrl: "/app/learn/browse-by/provider",
+              "queryParams": {
+                "tab": "Learn",
+                "q": "Salesforce",
+                "lang": "en",
+                "f": "{}"
+              },
+            },
             sliderData: {
               styleData : {
                 "bannerMetaClass": "inline-meta",
@@ -523,7 +533,7 @@ export class ProviderPageComponent implements OnInit {
     {
       "active": true,
       "enabled": true,
-      "title": "Core expeties",
+      "title": "Core Expeties",
       "navigation": true,
       "key": "sectionCompetency",
       "order": 5,
@@ -533,13 +543,33 @@ export class ProviderPageComponent implements OnInit {
           "active": true,
           "enabled": true,
           "key": "competency",
-          "title": "Competency Expertise",
+          "title": "Core Expeties",
           "colspan": 12,
           "background": 'competencies-backgroud',
           "data": [],
         }
       ],
-    }  
+    },
+    {
+      "active": true,
+      "enabled": true,
+      "title": "Training Calendar",
+      "navigation": true,
+      "key": "sectionTrainingCalendar",
+      "order": 2,
+      "navOrder": 4,
+      "column": [
+        {
+          "active": true,
+          "enabled": true,
+          "key": "trainingCalendar",
+          "title": "Training Calendar",
+          "colspan": 12,
+          "background": '',
+          "data": [],
+        }
+      ],
+    } 
   ]
 
   constructor(private route: ActivatedRoute) { 
