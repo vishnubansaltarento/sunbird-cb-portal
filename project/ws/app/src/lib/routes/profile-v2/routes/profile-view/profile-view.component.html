@@ -103,6 +103,7 @@
                       </div>
                     </div>
                   </ng-container>
+                  
                   <ng-container *ngIf="unVerifiedObj.designation">
                     <div class="flex flex-row gap-2 items-center info-value">
                       <div class="flex">{{ unVerifiedObj.designation }}</div>
@@ -140,12 +141,16 @@
             </div>
           </div>
   
-          <div class="flex flex-col sm:flex-row gap-2 sm:items-center" *ngIf="feedbackInfo">
-            <div class="flex items-center gap-1 info-text">
-              <mat-icon>info</mat-icon>
-              {{ feedbackInfo }}
-            </div>
-          </div>
+          <ng-container *ngFor="let item of approvalPendingFields">
+            <ng-container *ngIf="item?.comment">
+              <div class="flex flex-col sm:flex-row gap-2 sm:items-center">
+                <div class="flex items-center gap-1 info-text">
+                  <mat-icon>info</mat-icon>
+                  <div class="flex">{{ item?.comment }}</div>
+                </div>
+              </div>
+            </ng-container>
+          </ng-container>
   
           <div class="flex flex-row gap-4" *ngIf="editProfile">
             <button class="outline-button" (click)="editProfile = !editProfile">{{ 'profileInfo.cancel' | translate
@@ -537,7 +542,7 @@
       </div>
     </div>
   </div>
-  <mat-tab-group class="profile-tabs hide-for-desktop" [selectedIndex]="selectedTabIndex">
+  <mat-tab-group class="profile-tabs hide-for-desktop" [selectedIndex]="selectedTabIndex" id="matTabGroup">
     <mat-tab label="Profile">
       <ng-container [ngTemplateOutlet]="profileSection"></ng-container>
     </mat-tab>

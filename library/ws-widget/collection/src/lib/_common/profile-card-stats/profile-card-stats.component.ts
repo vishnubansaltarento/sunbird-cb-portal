@@ -168,7 +168,7 @@ export class ProfileCardStatsComponent implements OnInit {
 
   }
   gotoUserProfile() {
-    this.router.navigate(['app/user-profile/details'])
+    this.router.navigate(['/app/person-profile/me'])
   }
   toggle() {
     this.collapsed = !this.collapsed
