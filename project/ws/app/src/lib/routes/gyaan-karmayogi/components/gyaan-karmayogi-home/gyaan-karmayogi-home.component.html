@@ -64,7 +64,7 @@
                 <form [formGroup]="gyaanForm" (ngSubmit)="applyFilter(gyaanForm)">
                     <div class="flex gap-2 items-center flex-col md:flex-row md:items-end justify-between">
                             <div class="flex flex-col">
-                                <label for="">{{'gyaanKarmayogi.sectors'| translate}}</label>
+                                <label for="">{{'gyaanKarmayogi.sector'| translate}}</label>
                                 <mat-form-field  appearance="outline"  class="filter-select">
                                     <mat-select name="sectors" placeholder="{{'gyaanKarmayogi.sectors' | translate}}" (selectionChange)="sectorChange($event)" formControlName="sectors">
                                         <ng-container *ngFor="let sector of sectorsList">
@@ -74,7 +74,7 @@
                                 </mat-form-field>
                             </div>
                             <div class="flex flex-col">
-                                <label for="">{{'gyaanKarmayogi.subSectors'| translate}}</label>
+                                <label for="">{{'gyaanKarmayogi.subSector'| translate}}</label>
                                 <mat-form-field   appearance="outline" class="filter-select">
                                     <mat-select name="subSectors" placeholder="{{'gyaanKarmayogi.subSectors' | translate}}" (selectionChange)="subSectorChange($event)" formControlName="subSectors" >
                                     <ng-container *ngFor="let subData of subSector">
