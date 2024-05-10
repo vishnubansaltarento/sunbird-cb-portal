@@ -301,7 +301,7 @@ export class SCORMAdapterService {
     let req: any
     const requestCourse = this.viewerSvc.getBatchIdAndCourseId(this.activatedRoute.snapshot.queryParams.collectionId, 
       this.activatedRoute.snapshot.queryParams.batchId, this.contentId)
-    if (this.configSvc.userProfile) {
+    if (this.configSvc.userProfile && requestCourse.courseId && requestCourse.batchId) {
       req = {
         request: {
           userId: this.configSvc.userProfile.userId || '',
@@ -327,7 +327,7 @@ export class SCORMAdapterService {
     let req: any
     const requestCourse = this.viewerSvc.getBatchIdAndCourseId(this.activatedRoute.snapshot.queryParams.collectionId, 
       this.activatedRoute.snapshot.queryParams.batchId, this.contentId)
-    if (this.configSvc.userProfile) {
+    if (this.configSvc.userProfile && requestCourse.courseId && requestCourse.batchId) {
       req = {
         request: {
           userId: this.configSvc.userProfile.userId || '',
