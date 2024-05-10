@@ -730,7 +730,7 @@ export class ProfileViewComponent implements OnInit, AfterViewInit, OnDestroy {
     .pipe(takeUntil(this.destroySubject$))
     .subscribe((_res: any) => {
       this.approvalPendingFields = _res.result.data
-      
+
       if (!this.approvalPendingFields || !this.approvalPendingFields.length) { return }
       const exists = this.approvalPendingFields.filter((obj: any) => {
         if (obj.hasOwnProperty('name')) {
