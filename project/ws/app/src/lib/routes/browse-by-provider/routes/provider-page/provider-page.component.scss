@@ -45,7 +45,7 @@
 .view-btn {
     width: 150px;
     background: #fff;
-    padding: 12px 16px;
+    padding: 0px 16px;
     border-radius: 49px;
     border: 1px solid #1B4CA9;
     font-weight: 700 !important;
@@ -113,7 +113,11 @@
     padding-top: 32px
 }
 .infra-background {
-    background: #1B4CA1;
+    align-items: center;
+    justify-content: center;
+    display: flex;
+}
+.contributors-background {
     align-items: center;
     justify-content: center;
     display: flex;

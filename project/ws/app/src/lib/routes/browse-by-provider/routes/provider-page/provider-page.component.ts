@@ -20,8 +20,6 @@ export class ProviderPageComponent implements OnInit {
   }
 
   ngOnInit() {
-    debugger
-
     if(this.route.snapshot.data && this.route.snapshot.data.formData
       && this.route.snapshot.data.formData.data
       && this.route.snapshot.data.formData.data.result 

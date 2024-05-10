@@ -66,9 +66,9 @@
                     <div class="block md:hidden overflow-y-auto mb-3">
                         <sb-uic-data-points [objectData]="data?.metrics?.data" [layoutType]="'singleRow'"></sb-uic-data-points>
                     </div>
-                    <button  [routerLink]="['/app/learn/browse-by/provider', providerName, providerId, 'all-CBP']" mat-button type="button" class="view-btn margin-left-xs margin-right-xs small-button blue-border flex-auto-display">
+                    <button  [routerLink]="[data?.contentButton?.redirectUrl, providerName, providerId, 'all-CBP']" mat-button type="button" class="view-btn margin-left-xs margin-right-xs small-button blue-border flex-auto-display">
                         <span class="mat-heading-1 bold ws-mat-default-text" i18n>
-                        View all contents
+                            {{data?.contentButton?.title}}
                         </span>
                     </button>
                 </div>
@@ -89,7 +89,7 @@
 </ng-template>
 
 <ng-template #infra let-infra="infra">
-    <div class="{{infra.background}} px-5">
+    <div class="infra-background px-5" [style.background]="infra?.background">
         <div class="container">
             <div class="grid grid-cols-12 gap-4 infra-sec padding-top-l">
                 <div class="col-span-12 md:col-span-4 infra-sec-desc">
@@ -114,7 +114,7 @@
             </div>
         </div>
     </div>
-    <div class="{{infra.background}} slider-background">
+    <div class="infra-background slider-background" [style.background]="infra?.background">
     </div>
     <div class="slider-background1">
         <div class="container-balanced w-full slider-background-2">
@@ -127,7 +127,7 @@
 
 <!-- Start Competencies -->
 <ng-template #competency let-competency="competency">
-    <div class="padding-top-l padding-bottom-l {{competency?.background}}" *ngIf="!hideCompetencyBlock">
+    <div class="padding-top-l padding-bottom-l "  [style.background]="competency?.background" *ngIf="!hideCompetencyBlock">
         <div class="w-full container-balanced">
             <div class="mt-10 mb-10">
                 <sb-uic-competency-passbook (emptyResponse)="hideCompetency($event)" [objectData]="competency" [providerId]="providerId"></sb-uic-competency-passbook>         
