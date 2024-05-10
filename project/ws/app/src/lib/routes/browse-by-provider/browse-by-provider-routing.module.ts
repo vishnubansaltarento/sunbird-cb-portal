@@ -6,6 +6,7 @@ import { ProviderDetailsComponent } from './routes/provider-details/provider-det
 import { ProviderAllCbpComponent } from './routes/provider-all-cbp/provider-all-cbp.component'
 //import { InsightsComponent } from './routes/insights/insights.component'
 import { ProviderPageComponent } from './routes/provider-page/provider-page.component'
+import { ProviderFormResolverService } from './services/provider-form-resolver.service'
 
 const routes: Routes = [
   {
@@ -67,6 +68,9 @@ const routes: Routes = [
     data: {
       pageId: ':provider/:orgId',
       module: 'explore',
+    },
+    resolve: {
+      formData: ProviderFormResolverService,
     },
   },
 ]

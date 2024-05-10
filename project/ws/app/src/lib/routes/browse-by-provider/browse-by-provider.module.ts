@@ -46,6 +46,8 @@ import { HttpLoaderFactory } from 'src/app/app.module';
 import { ProviderPageComponent } from './routes/provider-page/provider-page.component'
 import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core'
 import {CompetencyPassbookModule, ContentStripWithTabsLibModule, DataPointsModule, SlidersLibModule} from '@sunbird-cb/consumption'
+import { ProviderFormResolverService } from './services/provider-form-resolver.service'
+import { FormExtService } from 'src/app/services/form-ext.service'
 
 @NgModule({
   declarations: [
@@ -106,7 +108,7 @@ import {CompetencyPassbookModule, ContentStripWithTabsLibModule, DataPointsModul
       },
     }),
   ],
-  providers: [BrowseProviderService],
+  providers: [BrowseProviderService, ProviderFormResolverService,FormExtService],
   schemas: [CUSTOM_ELEMENTS_SCHEMA]
 })
 export class BrowseByProviderModule { }
