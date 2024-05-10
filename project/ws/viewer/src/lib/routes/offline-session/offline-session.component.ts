@@ -146,7 +146,7 @@ export class OfflineSessionComponent implements OnInit, OnDestroy {
     if (this.configSvc.userProfile) {
       userId = this.configSvc.userProfile.userId || ''
     }
-    if(this.activatedRoute.snapshot.queryParams.collectionId
+    if (this.activatedRoute.snapshot.queryParams.collectionId
       && this.activatedRoute.snapshot.queryParams.batchId
       && this.activatedRoute.snapshot.params.resourceId
     ) {

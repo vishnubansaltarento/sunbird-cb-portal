@@ -90,7 +90,7 @@ export class PracticeTestComponent implements OnInit, OnDestroy {
             if (this.configSvc.userProfile) {
                 userId = this.configSvc.userProfile.userId || ''
             }
-            if(this.activatedRoute.snapshot.queryParams.collectionId
+            if (this.activatedRoute.snapshot.queryParams.collectionId
                 && this.activatedRoute.snapshot.queryParams.batchId
                 && identifier
             ) {
@@ -117,7 +117,7 @@ export class PracticeTestComponent implements OnInit, OnDestroy {
                                         // this.widgetResolverTestData.widgetData.resumePage = Number(content.progressdetails.current.pop())
                                         // console.log(progressdetails)
                                     } catch { }
-    
+
                                 }
                             }
                         }
@@ -127,7 +127,7 @@ export class PracticeTestComponent implements OnInit, OnDestroy {
                 )
             }
             resolve(true)
-            
+
         })
     }
     isErrorOccured(event: any) {

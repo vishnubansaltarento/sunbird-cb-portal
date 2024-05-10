@@ -232,7 +232,7 @@ export class SurveyComponent implements OnInit, OnDestroy {
       // this.activatedRoute.data.subscribe(data => {
       //   userId = data.profileData.data.userId
       // })
-      if(this.activatedRoute.snapshot.queryParams.collectionId
+      if (this.activatedRoute.snapshot.queryParams.collectionId
         && this.activatedRoute.snapshot.queryParams.batchId
         && surveyId
       ) {

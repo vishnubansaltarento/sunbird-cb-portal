@@ -594,7 +594,7 @@ export class PracticeComponent implements OnInit, OnChanges, OnDestroy {
     //   this.activatedRoute.snapshot.queryParams.collectionId : ''
     // const batchId = this.activatedRoute.snapshot.queryParams.batchId ?
     //   this.activatedRoute.snapshot.queryParams.batchId : ''
-    if(this.identifier && collectionId && batchId){
+    if (this.identifier && collectionId && batchId) {
       this.viewerSvc.realTimeProgressUpdateQuiz(this.identifier, collectionId, batchId, status)
     }
   }

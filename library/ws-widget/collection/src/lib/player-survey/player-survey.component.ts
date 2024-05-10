@@ -94,11 +94,11 @@ export class PlayerSurveyComponent extends WidgetBaseComponent
           userId = this.configSvc.userProfile.userId || ''
           this.userid = this.configSvc.userProfile.userId || ''
         }
-        if(this.activatedRoute.snapshot.queryParams.collectionId &&
+        if (this.activatedRoute.snapshot.queryParams.collectionId &&
           this.activatedRoute.snapshot.queryParams.batchId &&
-          this.identifierId){
+          this.identifierId) {
           const resData = this.viewerSvc.getBatchIdAndCourseId(this.activatedRoute.snapshot.queryParams.collectionId,
-                                                              this.activatedRoute.snapshot.queryParams.batchId, this.identifierId)
+                                                               this.activatedRoute.snapshot.queryParams.batchId, this.identifierId)
           const req = {
             request: {
               userId,
@@ -153,7 +153,7 @@ export class PlayerSurveyComponent extends WidgetBaseComponent
                                                          this.activatedRoute.snapshot.queryParams.batchId, id)
     const collectionId = (resData && resData.courseId) ? resData.courseId : this.widgetData.identifier
     const batchId = (resData && resData.batchId) ? resData.batchId : this.widgetData.identifier
-    if(collectionId && batchId && id) {
+    if (collectionId && batchId && id) {
       this.viewerSvc.realTimeProgressUpdateQuiz(id, collectionId, batchId, status)
     }
   }
