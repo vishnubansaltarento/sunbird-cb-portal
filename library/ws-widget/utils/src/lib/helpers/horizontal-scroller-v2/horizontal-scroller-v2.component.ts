@@ -28,7 +28,7 @@ export class HorizontalScrollerV2Component implements OnInit, OnChanges, OnDestr
   @Input() defaultMaxWidgets: any
   @Input() stripConfig: any
   @Input() stripsResultDataMap: any
-  @Input() subtype!: string;
+  @Input() subtype!: string
   @ViewChild('horizontalScrollElem', { static: true })
   horizontalScrollElem: ElementRef | null = null
 
@@ -39,8 +39,7 @@ export class HorizontalScrollerV2Component implements OnInit, OnChanges, OnDestr
   bottomDotsArray: any = []
   private scrollObserver: Subscription | null = null
 
-
-  constructor(private eventService : EventService) { }
+  constructor(private eventService: EventService) { }
 
   ngOnInit() {
     this.cardSubType = this.stripConfig && this.stripConfig.cardSubType ? this.stripConfig.cardSubType : 'standard'
@@ -109,9 +108,9 @@ export class HorizontalScrollerV2Component implements OnInit, OnChanges, OnDestr
   private raiseNavigationTelemetry(id: string) {
     this.eventService.raiseInteractTelemetry(
       {
+        id,
         type: WsEvents.EnumInteractTypes.CLICK,
-        subType: this.subtype, 
-        id: id,
+        subType: this.subtype,
       },
       {},
       {
