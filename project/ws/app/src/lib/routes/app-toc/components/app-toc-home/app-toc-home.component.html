@@ -111,7 +111,7 @@
         <ng-container *ngIf="courseCategory?.MODERATED_PROGRAM !== contentReadData?.courseCategory && !enrollBtnLoading">
           <ng-container
             *ngIf="!(content?.primaryCategory === primaryCategory.PROGRAM && currentCourseBatchId) && content?.primaryCategory !== primaryCategory.MANDATORY_COURSE_GOAL">
-            <span class="font-bold shadow-lg text-info-div" i18n>{{ 'apptochome.youAreNotInvited' | translate }}</span>
+            <span class="font-bold shadow-lg text-info-div" i18n>{{ 'apptochome.youAreNotInvited' | translate }} </span>
           </ng-container>
           <ng-container *ngIf="!isBatchInProgress && !!currentCourseBatchId && getStartDate === 'NA'">
             <span class="font-bold shadow-lg text-info-div" i18n>{{ 'apptochome.noActiveBatches' | translate }}</span>
@@ -209,13 +209,31 @@
       </ng-container>
       <!-- STANDALONE_ASSESSMENT black -->
       <ng-container
-        *ngIf="content?.primaryCategory === primaryCategory.STANDALONE_ASSESSMENT && !batchData?.enrolled && !enrollBtnLoading">
+        *ngIf="content?.primaryCategory === primaryCategory.STANDALONE_ASSESSMENT && !batchData?.enrolled && !enrollBtnLoading && content?.courseCategory !== 'Invite-Only Assessment'">
         <a class="flex action-button justify-center resume" (click)="handleAutoBatchAssign()">
           <ng-container *ngIf="!forPreview || isInIFrame; else authView" i18n>
-            {{ 'apptochome.enroll' | translate }}
+            {{ 'apptochome.enroll' | translate }} 
           </ng-container>
         </a>
       </ng-container>
+      <!-- INVITE ONLY STANDALONE ASSESSMENT block-->
+      <ng-container
+        *ngIf="content?.primaryCategory === primaryCategory.STANDALONE_ASSESSMENT && !batchData?.enrolled && !enrollBtnLoading && content?.courseCategory === 'Invite-Only Assessment'">
+        
+          <ng-container *ngIf="!forPreview || isInIFrame; else authView" i18n>
+            <span class="font-bold shadow-lg text-info-div" i18n>You are not Invited for this Assessment </span>
+          </ng-container>
+      </ng-container>
+      <ng-container
+        *ngIf="content?.primaryCategory === primaryCategory.STANDALONE_ASSESSMENT && batchData?.enrolled && !enrollBtnLoading && content?.courseCategory === 'Invite-Only Assessment'">
+        
+        <a class="flex action-button justify-center resume" (click)="handleAutoBatchAssign()">
+          <ng-container *ngIf="!forPreview || isInIFrame; else authView" i18n>
+            {{ 'apptochome.enroll' | translate }} 
+          </ng-container>
+        </a>
+      </ng-container>
+      
       <!-- STANDALONE_ASSESSMENT enrolled black -->
       <ng-container *ngIf="content?.primaryCategory === primaryCategory.STANDALONE_ASSESSMENT && batchData?.enrolled && !enrollBtnLoading">
         <a class="flex action-button justify-center resume" [routerLink]="firstResourceLink?.url"
