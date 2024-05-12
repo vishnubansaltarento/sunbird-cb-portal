@@ -1,11 +1,11 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core'
 import { Router } from '@angular/router'
-import { ConfigurationsService, MultilingualTranslationsService } from '@sunbird-cb/utils'
+import { ConfigurationsService, MultilingualTranslationsService,
+  EventService, WsEvents } from '@sunbird-cb/utils'
 import { PipeDurationTransformPipe } from '@sunbird-cb/utils/src/public-api'
 import { InfoDialogComponent } from '../info-dialog/info-dialog.component'
 import { MatDialog } from '@angular/material'
 import { HomePageService } from 'src/app/services/home-page.service'
-import { EventService, WsEvents } from '@sunbird-cb/utils'
 
 @Component({
   selector: 'ws-widget-profile-card-stats',
@@ -43,7 +43,6 @@ export class ProfileCardStatsComponent implements OnInit {
               private homePageSvc: HomePageService,
               private eventService: EventService,
               private dialog: MatDialog) { }
-              
 
   ngOnInit() {
     this.userInfo =  this.configSvc && this.configSvc.userProfile
@@ -176,7 +175,7 @@ export class ProfileCardStatsComponent implements OnInit {
       {
         type: WsEvents.EnumInteractTypes.CLICK,
         subType: WsEvents.EnumInteractSubTypes.PROFILE,
-        id: 'profile-icon'
+        id: 'profile-icon',
       },
       {},
       {

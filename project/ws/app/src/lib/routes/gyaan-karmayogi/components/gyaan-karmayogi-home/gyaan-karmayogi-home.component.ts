@@ -301,7 +301,13 @@ export class GyaanKarmayogiHomeComponent implements OnInit {
           this.sectorsList = [...this.sectorsList, ...data]
         }
         if (ele.name === gyaanConstants.resourceCategory)  {
-          this.categories = [...ele.values]
+          let catFinalList: any = []
+          if (this.pageConfig.pageData
+            && this.pageConfig.pageData.data
+            && this.pageConfig.pageData.data.allowedCategories) {
+              catFinalList = ele.values.filter((catInfo: any) => this.pageConfig.pageData.data.allowedCategories.includes(catInfo.name))
+            }
+          this.categories = [...catFinalList]
         }
       })
 
