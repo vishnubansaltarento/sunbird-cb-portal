@@ -242,14 +242,17 @@ export class GyaanKarmayogiViewAllComponent implements OnInit {
           const localFacetData: any = {
             sectorName: {
               name: gyaanConstants.sectors,
+              label: gyaanConstants.sectors,
               values: 'values',
             },
             subSectorName: {
               name: gyaanConstants.subSectors,
+              label: gyaanConstants.subSectors,
               values: 'values',
             },
             resourceCategory: {
               name: gyaanConstants.category,
+              label: gyaanConstants.singleCategory,
               values: 'values',
             },
           }
@@ -282,7 +285,18 @@ export class GyaanKarmayogiViewAllComponent implements OnInit {
                 }
 
               })
-              localFacetData[facet.name].values = facet.values
+              if (facet.name === gyaanConstants.resourceCategory) {
+                const pageConfigData = this.route.snapshot.data
+                let catFinalList: any = []
+                if (pageConfigData.pageData
+                  && pageConfigData.pageData.data
+                  && pageConfigData.pageData.data.allowedCategories) {
+                    catFinalList = facet.values.filter((ele: any) => pageConfigData.pageData.data.allowedCategories.includes(ele.name))
+                  }
+                  localFacetData[facet.name].values = catFinalList
+              } else {
+                localFacetData[facet.name].values = facet.values
+              }
             }
 
           })

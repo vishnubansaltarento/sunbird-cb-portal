@@ -6,6 +6,7 @@ import {
 } from 'rxjs'
 import { debounceTime, throttleTime } from 'rxjs/operators'
 import { TFetchStatus } from '../../constants/misc.constants'
+import { EventService, WsEvents } from '@sunbird-cb/utils'
 
 @Component({
   selector: 'ws-utils-horizontal-scroller-v2',
@@ -26,6 +27,8 @@ export class HorizontalScrollerV2Component implements OnInit, OnChanges, OnDestr
   @Input() widgetsLength: any
   @Input() defaultMaxWidgets: any
   @Input() stripConfig: any
+  @Input() stripsResultDataMap: any
+  @Input() subtype!: string
   @ViewChild('horizontalScrollElem', { static: true })
   horizontalScrollElem: ElementRef | null = null
 
@@ -36,7 +39,7 @@ export class HorizontalScrollerV2Component implements OnInit, OnChanges, OnDestr
   bottomDotsArray: any = []
   private scrollObserver: Subscription | null = null
 
-  constructor() { }
+  constructor(private eventService: EventService) { }
 
   ngOnInit() {
     this.cardSubType = this.stripConfig && this.stripConfig.cardSubType ? this.stripConfig.cardSubType : 'standard'
@@ -84,6 +87,7 @@ export class HorizontalScrollerV2Component implements OnInit, OnChanges, OnDestr
       })
 
       this.activeNav -= 1
+      this.raiseNavigationTelemetry('more-left')
     }
   }
 
@@ -98,7 +102,21 @@ export class HorizontalScrollerV2Component implements OnInit, OnChanges, OnDestr
         behavior: 'smooth',
       })
       this.activeNav += 1
+      this.raiseNavigationTelemetry('more-right')
     }
+  }
+  private raiseNavigationTelemetry(id: string) {
+    this.eventService.raiseInteractTelemetry(
+      {
+        id,
+        type: WsEvents.EnumInteractTypes.CLICK,
+        subType: this.subtype,
+      },
+      {},
+      {
+        module: WsEvents.EnumTelemetrymodules.HOME,
+      }
+    )
   }
 
   private updateNavigationBtnStatus(elem: HTMLElement) {

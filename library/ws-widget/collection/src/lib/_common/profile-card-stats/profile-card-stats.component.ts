@@ -1,6 +1,7 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core'
 import { Router } from '@angular/router'
-import { ConfigurationsService, MultilingualTranslationsService } from '@sunbird-cb/utils'
+import { ConfigurationsService, MultilingualTranslationsService,
+  EventService, WsEvents } from '@sunbird-cb/utils'
 import { PipeDurationTransformPipe } from '@sunbird-cb/utils/src/public-api'
 import { InfoDialogComponent } from '../info-dialog/info-dialog.component'
 import { MatDialog } from '@angular/material'
@@ -40,6 +41,7 @@ export class ProfileCardStatsComponent implements OnInit {
               private pipDuration: PipeDurationTransformPipe,
               private langtranslations: MultilingualTranslationsService,
               private homePageSvc: HomePageService,
+              private eventService: EventService,
               private dialog: MatDialog) { }
 
   ngOnInit() {
@@ -169,6 +171,17 @@ export class ProfileCardStatsComponent implements OnInit {
 
   }
   gotoUserProfile() {
+    this.eventService.raiseInteractTelemetry(
+      {
+        type: WsEvents.EnumInteractTypes.CLICK,
+        subType: WsEvents.EnumInteractSubTypes.PROFILE,
+        id: 'profile-icon',
+      },
+      {},
+      {
+        module: WsEvents.EnumTelemetrymodules.HOME,
+      }
+    )
     this.router.navigate(['app/user-profile/details'])
   }
   toggle() {
