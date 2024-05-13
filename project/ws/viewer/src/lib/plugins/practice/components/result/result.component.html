@@ -250,14 +250,18 @@
                     <mat-expansion-panel-header class="question-header">
                       <mat-panel-title class="mr-0">
                         <mat-panel-description class="panel-description">
-                          <p>{{ 'practiceoverview.question' | translate }} {{i+1}}</p>
+                          <div>
+                            <span [innerHtml]="'practiceoverview.question' | translate"></span>&nbsp;
+                            <span>{{i+1}}</span>
+                          </div>
+                          
                           <mat-icon *ngIf="!example.expanded">add</mat-icon>
                           <mat-icon *ngIf="example.expanded">remove</mat-icon>
                         </mat-panel-description>
                       </mat-panel-title>
                     </mat-expansion-panel-header>
                       <div>
-                        <p class="display-ques">{{question.question}}</p>
+                        <p class="display-ques" [innerHtml]="question.question"></p>
                       </div>
                   </mat-expansion-panel>
             </mat-accordion>
@@ -273,7 +277,7 @@
   <mat-card [ngClass]="{'highlight': selectedQuestionData?.sectionType === data.sectionType}" class="flex customcard flex-jc-space-between cursor-pointer margin-top-xs bg-gray" (click)="getQuestionCount(data,'wrong')">
     <div class="flex">
       <img src="assets/icons/final-assessment/{{data.imgIcon}}.svg">
-      <span class="mat-body-2 margin-left-xs">{{data.text}}</span>
+      <span class="mat-body-2 margin-left-xs" [innerHtml]="data.text"></span>
     </div>
     <mat-icon *ngIf="selectedQuestionData?.sectionType !== data.sectionType">add</mat-icon>
     <mat-icon *ngIf="selectedQuestionData?.sectionType === data.sectionType">remove</mat-icon>
@@ -285,7 +289,7 @@
   <mat-card [ngClass]="{'highlight': selectedQuestionData?.sectionType === data.sectionType}" class="flex customcard flex-jc-space-between cursor-pointer margin-top-xs bg-gray" (click)="getQuestionCount(data,'blank')">
     <div class="flex">
       <img src="assets/icons/final-assessment/{{data.imgIcon}}.svg">
-      <span class="mat-body-2 margin-left-xs">{{data.text}}</span>
+      <span class="mat-body-2 margin-left-xs" [innerHtml]="data.text"></span>
     </div>
     <mat-icon *ngIf="selectedQuestionData?.sectionType !== data.sectionType">add</mat-icon>
     <mat-icon *ngIf="selectedQuestionData?.sectionType === data.sectionType">remove</mat-icon>
@@ -296,7 +300,7 @@
   <mat-card class="flex customcard flex-jc-space-between cursor-pointer margin-top-xs bg-gray" [ngClass]="{'highlight': selectedQuestionData?.sectionType === data.sectionType}" (click)="getQuestionCount(data,'answer')">
     <div class="flex">
       <img src="assets/icons/final-assessment/{{data.imgIcon}}.svg">
-      <span class="mat-body-2 margin-left-xs">{{data.text}}</span>
+      <span class="mat-body-2 margin-left-xs" [innerHtml]="data.text"></span>
     </div>
     <mat-icon *ngIf="selectedQuestionData?.sectionType !== data.sectionType">add</mat-icon>
     <mat-icon *ngIf="selectedQuestionData?.sectionType === data.sectionType">remove</mat-icon>
