@@ -15,7 +15,7 @@ import { UserProfileService } from '@ws/app/src/lib/routes/user-profile/services
 import { IUserProfileDetailsFromRegistry } from '@ws/app/src/lib/routes/user-profile/models/user-profile.model'
 import { BtnSettingsService } from '@sunbird-cb/collection'
 
-import { NotificationComponent } from './notification/notification.component'
+// import { NotificationComponent } from './notification/notification.component'
 
 const API_END_POINTS = {
   fetchProfileById: (id: string) => `/apis/proxies/v8/api/user/v2/read/${id}`,
