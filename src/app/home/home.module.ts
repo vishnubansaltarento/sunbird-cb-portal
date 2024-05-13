@@ -30,6 +30,8 @@ import { HomeOtherPortalComponent } from '../component/home-other-portal/home-ot
 import { HomeContainerComponent } from '../component/home-container/home-container.component'
 import { DiscussHubComponent } from './home/discuss-hub/discuss-hub.component'
 import { NetworkHubComponent } from './home/network-hub/network-hub.component'
+import { NotificationComponent } from './home/notification/notification.component'
+
 import { HomePageService } from '../services/home-page.service'
 import { PendingRequestModule } from '@sunbird-cb/collection/src/lib/_common/pending-request/pending-request.module'
 import { TranslateLoader, TranslateModule } from '@ngx-translate/core'
@@ -43,7 +45,7 @@ import { MatTooltipModule } from '@angular/material'
     HomeComponent, FeedListComponent, InsightSideBarComponent,
     PageContainerComponent, DiscussionInfoComponent, ClientSliderComponent,
     HomeOtherPortalComponent, HomeContainerComponent, DiscussHubComponent,
-    NetworkHubComponent],
+    NetworkHubComponent, NotificationComponent],
   imports: [
     CommonModule,
     RouterModule,
@@ -84,6 +86,9 @@ import { MatTooltipModule } from '@angular/material'
   ],
   providers: [
     HomePageService,
+  ],
+  entryComponents: [
+    NotificationComponent,
   ],
 })
 export class HomeModule { }
