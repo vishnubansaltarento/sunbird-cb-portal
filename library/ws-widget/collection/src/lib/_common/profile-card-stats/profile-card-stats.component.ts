@@ -1,6 +1,7 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core'
 import { Router } from '@angular/router'
-import { ConfigurationsService, MultilingualTranslationsService } from '@sunbird-cb/utils'
+import { ConfigurationsService, MultilingualTranslationsService,
+  EventService, WsEvents } from '@sunbird-cb/utils'
 import { PipeDurationTransformPipe } from '@sunbird-cb/utils/src/public-api'
 import { InfoDialogComponent } from '../info-dialog/info-dialog.component'
 import { MatDialog } from '@angular/material'
@@ -40,6 +41,7 @@ export class ProfileCardStatsComponent implements OnInit {
               private pipDuration: PipeDurationTransformPipe,
               private langtranslations: MultilingualTranslationsService,
               private homePageSvc: HomePageService,
+              private eventService: EventService,
               private dialog: MatDialog) { }
 
   ngOnInit() {
@@ -115,6 +117,7 @@ export class ProfileCardStatsComponent implements OnInit {
           this.republicDayData['backgroupImage'] = data.backgroupImage
           this.republicDayData['info'] = data['webInfo'][rand]
           this.republicDayData['centerImage'] = data['centerImage'][rand]
+          this.republicDayData['textColor'] = data['textColor']
           // let userName = this.userInfo.firstName
           // if (userName.length > 18) {
           //   userName = `${this.userInfo.firstName.slice(0, 18)}...`
@@ -148,8 +151,8 @@ export class ProfileCardStatsComponent implements OnInit {
 
   getCounts() {
     let enrollList: any
-    if (localStorage.getItem('enrollmentData')) {
-      enrollList = JSON.parse(localStorage.getItem('enrollmentData') || '')
+    if (localStorage.getItem('userEnrollmentCount')) {
+      enrollList = JSON.parse(localStorage.getItem('userEnrollmentCount') || '')
       clearInterval(this.enrollInterval)
     }
 
@@ -165,18 +168,33 @@ export class ProfileCardStatsComponent implements OnInit {
         learningHours: this.pipDuration.transform(enrollList.userCourseEnrolmentInfo.timeSpentOnCompletedCourses, 'hms'),
       }
     }
-
   }
+
   gotoUserProfile() {
     this.router.navigate(['/app/person-profile/me'])
+    this.eventService.raiseInteractTelemetry(
+      {
+        type: WsEvents.EnumInteractTypes.CLICK,
+        subType: WsEvents.EnumInteractSubTypes.PROFILE,
+        id: 'profile-icon',
+      },
+      {},
+      {
+        module: WsEvents.EnumTelemetrymodules.HOME,
+      }
+    )
+    this.router.navigate(['app/user-profile/details'])
   }
+
   toggle() {
     this.collapsed = !this.collapsed
     this.expandCollapse.emit(this.collapsed)
   }
+
   myActivity() {
     this.activity.emit(true)
   }
+  
   translateLabels(label: string, type: any) {
     return this.langtranslations.translateActualLabel(label, type, '')
   }

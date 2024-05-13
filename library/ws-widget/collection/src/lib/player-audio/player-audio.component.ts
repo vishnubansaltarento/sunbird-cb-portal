@@ -81,6 +81,9 @@ export class PlayerAudioComponent extends WidgetBaseComponent
     if (audioTag) {
       audioTag.onended = () => {
         this.audioEnd = true
+        if (this.widgetData && this.widgetData.hideUpNext) {
+          this.replayAudioFlag = this.widgetData.hideUpNext ? true : false
+        }
         const audioTagElement: any = document.getElementById('audioTag')
         const autoPlayAudio: any = document.getElementById('auto-play-audio')
         if (audioTagElement) {
@@ -181,7 +184,7 @@ export class PlayerAudioComponent extends WidgetBaseComponent
                                                            this.activatedRoute.snapshot.queryParams.batchId, identifier)
       const collectionId = (resData && resData.courseId) ? resData.courseId : this.widgetData.identifier
       const batchId = (resData && resData.batchId) ? resData.batchId : this.widgetData.identifier
-      if (this.widgetData.identifier && identifier && data) {
+      if (this.widgetData.identifier && identifier && data && collectionId && batchId) {
         this.viewerSvc
           .realTimeProgressUpdate(identifier, data, collectionId, batchId)
       }

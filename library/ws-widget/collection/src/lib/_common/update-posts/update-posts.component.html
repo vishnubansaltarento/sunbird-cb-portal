@@ -6,7 +6,7 @@
                 <div class="text-sm" [routerLink]="['/app/discussion-forum']" [queryParams]="{page: 'home'}">{{ 'updateposts.showAll' | translate }}</div>
             </ng-container>
             <ng-container *ngIf="!isMobile">
-                <mat-icon class="cursor-pointer font-bold" *ngIf="!updatesPosts.loadSkeleton" [routerLink]="['/app/discussion-forum']" [queryParams]="{page: 'home', popup: 'show'}">add</mat-icon>
+                <mat-icon class="cursor-pointer font-bold" *ngIf="!updatesPosts.loadSkeleton" [routerLink]="['/app/discussion-forum']" [queryParams]="{page: 'home', popup: 'show'}" (click)="iconClicked()">add</mat-icon>
             </ng-container>
         </div>
     </div>

@@ -106,10 +106,14 @@ export class PlayerVideoComponent extends WidgetBaseComponent
         this.initializeVPlayer()
       }
     }
+
     const videoTag: any =   document.getElementsByTagName('video')[0]
     if (videoTag) {
       videoTag.onended = () => {
         this.videoEnd = true
+        if (this.widgetData && this.widgetData.hideUpNext) {
+          this.replayVideoFlag = this.widgetData.hideUpNext ? true : false
+        }
         const videoTagElement: any = document.getElementById('videoTag') || document.getElementById('realvideoTag')
         const autoPlayVideo: any = document.getElementById('auto-play-video')
         if (videoTagElement) {
@@ -305,7 +309,7 @@ export class PlayerVideoComponent extends WidgetBaseComponent
                                                            this.activatedRoute.snapshot.queryParams.batchId, identifier)
       const collectionId = (resData && resData.courseId) ? resData.courseId : this.widgetData.identifier
       const batchId = (resData && resData.batchId) ? resData.batchId : this.widgetData.identifier
-        if (this.widgetData.identifier && identifier && data) {
+        if (this.widgetData.identifier && identifier && data && collectionId && batchId) {
           this.viewerSvc
             .realTimeProgressUpdate(identifier, data, collectionId, batchId)
       }
