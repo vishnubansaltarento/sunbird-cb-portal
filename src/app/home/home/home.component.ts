@@ -247,12 +247,12 @@ export class HomeComponent implements OnInit, AfterViewInit {
     .subscribe((res: any) => {
       this.pendingApprovalList = res.result.data
 
-      // TODO... 
+      // TODO...
       // this.matSnackBar.openFromComponent(NotificationComponent, {
       //   data: { type: 'pending' },
       // ...this.configSuccess,
       // })
-      
+
       this.handleUpdateMobileNudge()
     },         (error: HttpErrorResponse) => {
       if (!error.ok) {
