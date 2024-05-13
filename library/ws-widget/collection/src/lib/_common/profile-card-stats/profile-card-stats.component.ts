@@ -168,9 +168,10 @@ export class ProfileCardStatsComponent implements OnInit {
         learningHours: this.pipDuration.transform(enrollList.userCourseEnrolmentInfo.timeSpentOnCompletedCourses, 'hms'),
       }
     }
-
   }
+
   gotoUserProfile() {
+    this.router.navigate(['/app/person-profile/me'])
     this.eventService.raiseInteractTelemetry(
       {
         type: WsEvents.EnumInteractTypes.CLICK,
@@ -184,13 +185,16 @@ export class ProfileCardStatsComponent implements OnInit {
     )
     this.router.navigate(['app/user-profile/details'])
   }
+
   toggle() {
     this.collapsed = !this.collapsed
     this.expandCollapse.emit(this.collapsed)
   }
+
   myActivity() {
     this.activity.emit(true)
   }
+
   translateLabels(label: string, type: any) {
     return this.langtranslations.translateActualLabel(label, type, '')
   }

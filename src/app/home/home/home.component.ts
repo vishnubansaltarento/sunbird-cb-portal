@@ -2,7 +2,7 @@ import { AfterViewInit, Component, HostListener, OnInit } from '@angular/core'
 import { HttpClient, HttpErrorResponse } from '@angular/common/http'
 import { ActivatedRoute, Router } from '@angular/router'
 import { TranslateService } from '@ngx-translate/core'
-import { MatSnackBar } from '@angular/material'
+import { MatSnackBar, MatSnackBarConfig } from '@angular/material'
 /* tslint:disable */
 import _ from 'lodash'
 /* tslint:enable */
@@ -15,6 +15,8 @@ import { UserProfileService } from '@ws/app/src/lib/routes/user-profile/services
 import { IUserProfileDetailsFromRegistry } from '@ws/app/src/lib/routes/user-profile/models/user-profile.model'
 import { BtnSettingsService } from '@sunbird-cb/collection'
 
+// import { NotificationComponent } from './notification/notification.component'
+
 const API_END_POINTS = {
   fetchProfileById: (id: string) => `/apis/proxies/v8/api/user/v2/read/${id}`,
 }
@@ -24,6 +26,18 @@ const API_END_POINTS = {
   styleUrls: ['./home.component.scss'],
 })
 export class HomeComponent implements OnInit, AfterViewInit {
+
+  constructor(
+    private activatedRoute: ActivatedRoute,
+    private configSvc: ConfigurationsService,
+    public btnSettingsSvc: BtnSettingsService,
+    private http: HttpClient,
+    public mobileAppsService: MobileAppsService,
+    private router: Router,
+    private translate: TranslateService,
+    private userProfileService: UserProfileService,
+    private matSnackBar: MatSnackBar
+  ) { }
   private destroySubject$ = new Subject()
   widgetData = {}
   sliderData = {}
@@ -44,17 +58,12 @@ export class HomeComponent implements OnInit, AfterViewInit {
   jan26Change: any
   pendingApprovalList: any
 
-  constructor(
-    private activatedRoute: ActivatedRoute,
-    private configSvc: ConfigurationsService,
-    public btnSettingsSvc: BtnSettingsService,
-    private http: HttpClient,
-    public mobileAppsService: MobileAppsService,
-    private router: Router,
-    private translate: TranslateService,
-    private userProfileService: UserProfileService,
-    private matSnackBar: MatSnackBar
-  ) { }
+  configSuccess: MatSnackBarConfig = {
+    panelClass: 'style-success',
+    duration: 20000,
+    horizontalPosition: 'center',
+    verticalPosition: 'bottom',
+  }
 
   ngOnInit() {
     if (this.configSvc) {
@@ -232,12 +241,18 @@ export class HomeComponent implements OnInit, AfterViewInit {
     const translationKey =  hubName
     return this.translate.instant(translationKey)
   }
-
   getListPendingApproval(): void {
     this.userProfileService.listApprovalPendingFields()
     .pipe(takeUntil(this.destroySubject$))
     .subscribe((res: any) => {
       this.pendingApprovalList = res.result.data
+
+      // TODO...
+      // this.matSnackBar.openFromComponent(NotificationComponent, {
+      //   data: { type: 'pending' },
+      // ...this.configSuccess,
+      // })
+
       this.handleUpdateMobileNudge()
     },         (error: HttpErrorResponse) => {
       if (!error.ok) {

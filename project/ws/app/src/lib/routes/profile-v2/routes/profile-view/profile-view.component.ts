@@ -1,6 +1,6 @@
-import { Component, OnDestroy, OnInit } from '@angular/core'
+import { AfterViewInit, Component, OnDestroy, OnInit } from '@angular/core'
 import { HttpErrorResponse } from '@angular/common/http'
-import { ActivatedRoute, Router } from '@angular/router'
+import { ActivatedRoute, Params, Router } from '@angular/router'
 import { MatDialog } from '@angular/material/dialog'
 import { MatSnackBar } from '@angular/material'
 import { FormControl, FormGroup, Validators } from '@angular/forms'
@@ -44,7 +44,7 @@ export const MY_FORMATS = {
   },
 }
 const EMAIL_PATTERN = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/
-const MOBILE_PATTERN = /^\d{10}$/
+const MOBILE_PATTERN = /^[0]?[6789]\d{9}$/
 const PIN_CODE_PATTERN = /^[1-9][0-9]{5}$/
 
 @Component({
@@ -60,7 +60,7 @@ const PIN_CODE_PATTERN = /^[1-9][0-9]{5}$/
   ],
 })
 
-export class ProfileViewComponent implements OnInit, OnDestroy {
+export class ProfileViewComponent implements OnInit, AfterViewInit, OnDestroy {
 
   currentUsername: any
   pageData: any
@@ -112,7 +112,7 @@ export class ProfileViewComponent implements OnInit, OnDestroy {
   profileName = ''
   enableWTR = false
   enableWR = false
-  feedbackInfo = ''
+  // feedbackInfo = ''
   skeletonLoader = false
   otherDetailsForm = new FormGroup({
     employeeCode: new FormControl('', []),
@@ -141,6 +141,7 @@ export class ProfileViewComponent implements OnInit, OnDestroy {
   })
   approvalPendingFields = []
   contextToken: any
+  params: any
 
   constructor(
     public dialog: MatDialog,
@@ -227,6 +228,10 @@ export class ProfileViewComponent implements OnInit, OnDestroy {
     this.pageData = this.route.parent && this.route.parent.snapshot.data.pageData.data
     this.currentUser = this.configService && this.configService.userProfile
 
+    this.route.queryParams.subscribe((params: Params) => {
+      this.params = params
+    })
+
     this.route.data.subscribe(data => {
       if (data.profile.data) {
         this.orgId = data.profile.data.rootOrgId
@@ -297,6 +302,19 @@ export class ProfileViewComponent implements OnInit, OnDestroy {
         }
       }
     )
+  }
+
+  ngAfterViewInit(): void {
+    if (this.params && this.params.tab) {
+      this.selectedTabIndex = this.params.tab
+      const matTabGroupElem = document.getElementById('matTabGroup')
+      if (matTabGroupElem) {
+        window.scrollTo({
+          top: (matTabGroupElem.offsetTop - 120),
+          behavior: 'smooth',
+        })
+      }
+    }
   }
 
   getInsightsData() {
@@ -709,10 +727,11 @@ export class ProfileViewComponent implements OnInit, OnDestroy {
 
   getSendApprovalStatus(): void {
     this.skeletonLoader = true
-    this.userProfileService.listApprovalPendingFields()
+    this.userProfileService.fetchApprovalPendingFields()
     .pipe(takeUntil(this.destroySubject$))
     .subscribe((_res: any) => {
       this.approvalPendingFields = _res.result.data
+
       if (!this.approvalPendingFields || !this.approvalPendingFields.length) { return }
       const exists = this.approvalPendingFields.filter((obj: any) => {
         if (obj.hasOwnProperty('name')) {
@@ -731,7 +750,6 @@ export class ProfileViewComponent implements OnInit, OnDestroy {
         this.enableWTR = true
       } else {
         this.enableWR = true
-        this.feedbackInfo = 'newRequestSent'
       }
       this.skeletonLoader = false
     },         (error: HttpErrorResponse) => {
@@ -809,7 +827,7 @@ export class ProfileViewComponent implements OnInit, OnDestroy {
       .subscribe((_res: any) => {
         this.unVerifiedObj.group = ''
         this.unVerifiedObj.designation = ''
-        this.feedbackInfo = ''
+        // this.feedbackInfo = ''
         this.matSnackBar.open(this.handleTranslateTo('withdrawRequestSuccess'))
         this.enableWR = false
       },         (error: HttpErrorResponse) => {
