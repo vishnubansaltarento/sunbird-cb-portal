@@ -194,7 +194,7 @@ export class ProfileCardStatsComponent implements OnInit {
   myActivity() {
     this.activity.emit(true)
   }
-  
+
   translateLabels(label: string, type: any) {
     return this.langtranslations.translateActualLabel(label, type, '')
   }
