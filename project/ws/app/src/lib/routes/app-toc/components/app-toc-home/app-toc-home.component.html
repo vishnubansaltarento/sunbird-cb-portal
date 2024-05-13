@@ -225,13 +225,18 @@
           </ng-container>
       </ng-container>
       <ng-container
-        *ngIf="content?.primaryCategory === primaryCategory.STANDALONE_ASSESSMENT && batchData?.enrolled && !enrollBtnLoading && content?.courseCategory === 'Invite-Only Assessment'">
-        
-        <a class="flex action-button justify-center resume" (click)="handleAutoBatchAssign()">
-          <ng-container *ngIf="!forPreview || isInIFrame; else authView" i18n>
-            {{ 'apptochome.enroll' | translate }} 
-          </ng-container>
+        *ngIf="content?.primaryCategory === primaryCategory.STANDALONE_ASSESSMENT && batchData?.enrolled && isBatchInProgress && !enrollBtnLoading && content?.courseCategory === 'Invite-Only Assessment'">        
+        <a class="flex action-button justify-center resume" [routerLink]="firstResourceLink?.url"
+          [queryParams]="(resumeData && !certData) ? generateQuery('RESUME') : generateQuery('START')">
+          <ng-container *ngIf="content.completionPercentage === 100">{{ 'apptochome.takeTestAgain' | translate }}</ng-container>
+          <ng-container *ngIf="content.completionPercentage < 100">{{ 'apptochome.takeTest' | translate }}</ng-container>
         </a>
+      </ng-container>
+      <ng-container *ngIf="!isBatchInProgress && !!currentCourseBatchId && getStartDate === 'NA' && content?.courseCategory === 'Invite-Only Assessment'">
+        <span class="font-bold shadow-lg text-info-div" i18n>{{ 'apptochome.noActiveBatches' | translate }}</span>
+      </ng-container>
+      <ng-container *ngIf="!isBatchInProgress && currentCourseBatchId && getStartDate !== 'NA' && content?.courseCategory === 'Invite-Only Assessment'">
+        <span class="font-bold shadow-lg text-info-div" i18n>{{ 'apptochome.batchWillStart' | translate }} {{getStartDate}}!</span>
       </ng-container>
       
       <!-- STANDALONE_ASSESSMENT enrolled black -->
