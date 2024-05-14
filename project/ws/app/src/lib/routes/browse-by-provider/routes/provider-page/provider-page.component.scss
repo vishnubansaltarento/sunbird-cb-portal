@@ -207,6 +207,26 @@
 .nav-up-arrow {
     height: 28px;
 }
+
+.img-left {
+    left: 0;
+}
+
+.img-right {
+    right: 0;
+}
+
+
+@media screen and (max-width: 1201px) { 
+    .img-left {
+        display: none;
+    }
+    
+    .img-right {
+        display: none;
+    }
+}
+
 @media screen and (max-width: 768px) { 
     .infra-sec {
         padding: 0;
@@ -254,3 +274,4 @@
 .competencies-backgroud {
     background-color: #1B2133;
 }
+

@@ -60,4 +60,9 @@ export class ProviderPageComponent implements OnInit {
       this.hideCompetencyBlock = true
     }
   }
+  hideContentStrip(event: any, contentStripData: any) {
+    if(event) {
+      contentStripData['hideSection'] = true
+    }
+  }
 }

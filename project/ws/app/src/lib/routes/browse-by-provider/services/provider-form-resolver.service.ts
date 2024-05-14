@@ -19,7 +19,6 @@ resolve(
     _route: ActivatedRouteSnapshot,
     _state: RouterStateSnapshot,
 ): Observable<IResolveResponse<any>> {
-  debugger
     const orgId = _route.params && _route.params.orgId || ''
     let requestData: any= {
       "request": {
