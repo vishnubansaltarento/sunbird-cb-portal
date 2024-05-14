@@ -47,7 +47,7 @@ export class HtmlMobileComponent implements OnInit, OnDestroy {
   constructor(
     private activatedRoute: ActivatedRoute,
     private contentSvc: WidgetContentService,
-    // private viewerSvc: ViewerUtilService,  
+    // private viewerSvc: ViewerUtilService,
     private respondSvc: SubapplicationRespondService,
     private eventSvc: EventService,
     private accessControlSvc: AccessControlService,
