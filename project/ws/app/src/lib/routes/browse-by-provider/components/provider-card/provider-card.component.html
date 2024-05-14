@@ -24,8 +24,8 @@
     [routerLink]="['/app/learn/browse-by/provider', provider?.name, provider?.orgId, 'micro-sites']">
     <div class="w-full flex flex-col card-container items-center justify-center">   
         <div class="flex flex-col item-center justify-center">
-            <img [src]="provider.logoUrl" class="p-logo" *ngIf="provider && provider.logoUrl" onerror="'/assets/images/micro-sites/image4.svg'">
-            <img src="/assets/images/micro-sites/image4.svg" style="height: 62px; width: 250px;" *ngIf="provider && !provider.logoUrl">
+            <img [src]="provider.logoUrl" class="p-logo" *ngIf="provider && provider.logoUrl" onerror="'/assets/images/micro-sites/default-provider.svg'">
+            <img src="/assets/images/micro-sites/default-provider.svg" style="height: 62px; width: 250px;" *ngIf="provider && !provider.logoUrl">
             <div class="pt-5 text-center name-provider">{{provider?.name}}</div>
         </div>
     </div>
