@@ -11,7 +11,7 @@
                                 <ng-container *ngSwitchCase="'infra'" [ngTemplateOutlet]="infra"
                                     [ngTemplateOutletContext]="{infra: column.data}"></ng-container>
                                 <ng-container *ngSwitchCase="'contentFeaturedStrip'" [ngTemplateOutlet]="contentStrip"
-                                    [ngTemplateOutletContext]="{contentStrip: column.data}"></ng-container>
+                                    [ngTemplateOutletContext]="{contentStrip: column?.data}"></ng-container>
                                 <ng-container *ngSwitchCase="'contentTopStrip'" [ngTemplateOutlet]="contentStrip"
                                     [ngTemplateOutletContext]="{contentStrip: column.data}"></ng-container>
                                 <ng-container *ngSwitchCase="'calendar'" [ngTemplateOutlet]="calendar"
@@ -44,12 +44,12 @@
         <div class="col-span-12 christy">
             <div class="grid grid-cols-12">
                 <div class="col-span-12 md:col-span-8">
-                    <div class="slider" *ngIf="data?.sliderData?.sliders">
-                        <sb-uic-sliders [widgetData]="data?.sliderData?.sliders" [styleData]="data?.sliderData?.styleData"></sb-uic-sliders>
+                    <div class="slider h-full" *ngIf="data?.sliderData?.sliders">
+                        <sb-uic-sliders [title]="providerName" [widgetData]="data?.sliderData?.sliders" [styleData]="data?.sliderData?.styleData"></sb-uic-sliders>
                     </div>
                 </div>
                 <div class="hidden md:block col-span-4 {{data?.metrics?.background}}" >
-                    <sb-uic-data-points [objectData]="data?.metrics?.data" [layoutType]="'multipleRows'"></sb-uic-data-points>
+                    <sb-uic-data-points  [providerId]="providerId" [fetchDataFromApi]="true" [objectData]="data?.metrics?.data" [layoutType]="'multipleRows'"></sb-uic-data-points>
                 </div>
             </div>
         </div>
@@ -61,10 +61,10 @@
                     </div>
                 </div>
                 <div class="flex-1 flex flex-col">
-                    <h1>{{data?.title}}</h1>
+                    <h1>{{data?.title || providerName}}</h1>
                     <p>{{data?.description}}</p>
                     <div class="block md:hidden overflow-y-auto mb-3">
-                        <sb-uic-data-points [objectData]="data?.metrics?.data" [layoutType]="'singleRow'"></sb-uic-data-points>
+                        <sb-uic-data-points [providerId]="providerId" [fetchDataFromApi]="true"  [objectData]="data?.metrics?.data" [layoutType]="'singleRow'"></sb-uic-data-points>
                     </div>
                     <button  [routerLink]="[data?.contentButton?.redirectUrl, providerName, providerId, 'all-CBP']" mat-button type="button" class="view-btn margin-left-xs margin-right-xs small-button blue-border flex-auto-display">
                         <span class="mat-heading-1 bold ws-mat-default-text" i18n>
@@ -78,14 +78,16 @@
 </ng-template>
 
 <ng-template #contentStrip let-contentStrip="contentStrip">
-    <div class="flex justify-center">
-        <div class="container ">
-            <div class="w-full">
-                <!-- <ws-widget-content-strip-with-tabs [widgetData]="contentStrip"></ws-widget-content-strip-with-tabs> -->
-                <sb-uic-content-strip-with-tabs  [widgetData]="contentStrip"></sb-uic-content-strip-with-tabs>
+    <ng-container *ngIf="!contentStrip?.hideSection">
+        <div class="flex justify-center relative mt-8 mb-8">
+            <img class="absolute {{contentStrip?.sectionImagePosition}}" src="{{contentStrip?.sectionImage}}" alt="">
+            <div class="container ">
+                <div class="w-full">
+                    <sb-uic-content-strip-with-tabs (emptyResponse)="hideContentStrip($event, contentStrip)" [providerId]="providerId" [widgetData]="contentStrip"></sb-uic-content-strip-with-tabs>
+                </div>
             </div>
         </div>
-    </div>
+    </ng-container>
 </ng-template>
 
 <ng-template #infra let-infra="infra">
@@ -127,12 +129,14 @@
 
 <!-- Start Competencies -->
 <ng-template #competency let-competency="competency">
-    <div class="padding-top-l padding-bottom-l" [style.background]="competency?.background">
+    <div class="padding-top-l padding-bottom-l relative"  [style.background]="competency?.background" *ngIf="!hideCompetencyBlock">
         <div class="w-full container-balanced">
-            <div class="mt-10 mb-10">
-                <sb-uic-competency-passbook [objectData]="competency"></sb-uic-competency-passbook>         
+            <div class="pl-4 pr-4 md:pl-0 md:pr-0">
+                <sb-uic-competency-passbook (emptyResponse)="hideCompetency($event)" [objectData]="competency" [providerId]="providerId"></sb-uic-competency-passbook>         
             </div>
+            
         </div>
+        <img class="absolute " src="assets/icons/microsite/competency.svg" alt="">
     </div>
 </ng-template>
 <!-- End Competencies -->
