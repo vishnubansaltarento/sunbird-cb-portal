@@ -25,6 +25,7 @@ import {
   MatSelectModule,
   MatTableModule,
   MatProgressSpinnerModule,
+  MatSidenavModule,
 } from '@angular/material'
 import { BrowserModule, HAMMER_GESTURE_CONFIG } from '@angular/platform-browser'
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations'
@@ -96,8 +97,10 @@ import { ProfileV3Module } from '@ws/app/src/lib/routes/profile-v3/profile-v3.mo
 import { NoDataComponent } from './component/no-data/no-data.component'
 import { SurveyShikshaComponent } from './component/survey-shiksha/survey-shiksha.component'
 import {
-WIDGET_REGISTERED_LIB_MODULES, WIDGET_REGISTRATION_LIB_CONFIG
+WIDGET_REGISTERED_LIB_MODULES, WIDGET_REGISTRATION_LIB_CONFIG,
 } from '@sunbird-cb/consumption'
+import { PrivacyPolicyComponent } from './component/privacy-policy/privacy-policy.component'
+
 @Injectable()
 export class HammerConfig extends GestureConfig {
   buildHammer(element: HTMLElement) {
@@ -149,6 +152,7 @@ export function HttpLoaderFactory(http: HttpClient) {
     FooterSectionComponent,
     AppLogoComponent,
     SurveyShikshaComponent,
+    PrivacyPolicyComponent,
   ],
   imports: [
     FormsModule,
@@ -164,7 +168,7 @@ export function HttpLoaderFactory(http: HttpClient) {
     AppRoutingModule,
     ...WIDGET_REGISTERED_MODULES,
     ...WIDGET_REGISTERED_LIB_MODULES,
-    WidgetResolverModule.forRoot([...WIDGET_REGISTRATION_CONFIG,...WIDGET_REGISTRATION_LIB_CONFIG]),
+    WidgetResolverModule.forRoot([...WIDGET_REGISTRATION_CONFIG, ...WIDGET_REGISTRATION_LIB_CONFIG]),
     StickyHeaderModule,
     ErrorResolverModule,
     // Material Imports
@@ -212,6 +216,7 @@ export function HttpLoaderFactory(http: HttpClient) {
       },
     }),
     ProfileV3Module,
+    MatSidenavModule,
   ],
   exports: [
     TncComponent,
@@ -271,6 +276,6 @@ export function HttpLoaderFactory(http: HttpClient) {
     { provide: 'environment', useValue: environment },
     GuidedTourService,
   ],
-  schemas: [CUSTOM_ELEMENTS_SCHEMA]
+  schemas: [CUSTOM_ELEMENTS_SCHEMA],
 })
 export class AppModule { }

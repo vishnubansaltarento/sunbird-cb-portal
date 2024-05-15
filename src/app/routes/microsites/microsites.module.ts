@@ -3,7 +3,7 @@ import { CommonModule } from '@angular/common'
 import { MicrosotesComponent } from './microsotes.component'
 import { MatFormFieldModule, MatIconModule, MatInputModule } from '@angular/material'
 import { ContentStripWithTabsModule, SlidersModule } from '@sunbird-cb/collection/src/public-api'
-import {CardsModule, CommonMethodsService, CompetencyPassbookModule, ContentStripWithTabsLibModule, DataPointsModule, SlidersLibModule} from '@sunbird-cb/consumption'
+import { CardsModule, CommonMethodsService, CompetencyPassbookModule, ContentStripWithTabsLibModule, DataPointsModule, SlidersLibModule } from '@sunbird-cb/consumption'
 import { MicrositeService } from './microsites.service'
 @NgModule({
   declarations: [MicrosotesComponent],
@@ -18,9 +18,9 @@ import { MicrositeService } from './microsites.service'
     CompetencyPassbookModule,
     MatFormFieldModule,
     MatInputModule,
-    CardsModule
+    CardsModule,
   ],
-  providers:[MicrositeService, CommonMethodsService],
-  schemas:[CUSTOM_ELEMENTS_SCHEMA]
+  providers: [MicrositeService, CommonMethodsService],
+  schemas: [CUSTOM_ELEMENTS_SCHEMA],
 })
 export class MicrositesModule { }

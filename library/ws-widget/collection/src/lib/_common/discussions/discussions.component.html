@@ -1,5 +1,5 @@
 <div class="flex-1 flex-col">
-    <ng-container *ngIf="discussion.loadSkeleton">
+    <ng-container *ngIf="discussion?.loadSkeleton">
         <div class="flex flex-col gap-3">
             <div class="flex flex-col gap-3 p-5" *ngFor="let i of countArr">
                 <ws-widget-skeleton-loader [bindingClass]="'flex rounded h-6'"></ws-widget-skeleton-loader>
@@ -16,7 +16,7 @@
         </div>
     </ng-container>
 
-    <ng-container *ngIf="!discussion.loadSkeleton">
+    <ng-container *ngIf="!discussion?.loadSkeleton">
         <ng-container *ngIf="!discussion?.data?.length && !discussion.error">
             <div class="flex flex-col items-center gap-4 p-5">
                 <img src="assets/icons/home/chat.svg" alt="chat img" />
@@ -27,11 +27,10 @@
                     [routerLink]="['/app/discussion-forum']" [queryParams]="{page: 'home'}">Start discussion</button>
             </div>
         </ng-container>
-
         <ng-container *ngIf="discussion?.data?.length">
             <div class="flex flex-col" [ngClass]="{'gap-4': trend}">
                 <ng-container *ngFor="let data of discussion.data | slice:0:count; let i = index">
-                    <div class="flex flex-col gap-2 p-4 hover-card" [ngClass]="{'discuss-card': (!trend && i===0), 'discussion-card': trend}" (click)="handleSelectedDiscuss(data, trend)"  >
+                    <div class="flex flex-col gap-2 p-4 hover-card" [ngClass]="{'discuss-card': (!trend && i===0), 'discussion-card': trend}"  (click)="handleSelectedDiscuss(data, trend ? 'trending-discussions' : 'my-discussions')" >
                         <div class="flex flex-row gap-2 items-center">
                             <div class="initial-circle rounded-full border-1 text-white leading-3 capitalize"
                                 [style.background]="data?.user['icon:bgColor']">

@@ -40,6 +40,8 @@ import { AppContentResolverService } from './services/app-content-read-resolver.
 import { SurveyShikshaComponent } from './component/survey-shiksha/survey-shiksha.component'
 import { MicrosotesComponent } from './routes/microsites/microsotes.component'
 import { MicrositesModule } from './routes/microsites/microsites.module'
+import { AppGyaanKarmayogiService } from './services/app-gyaan-karmayogi.service'
+import { PrivacyPolicyComponent } from './component/privacy-policy/privacy-policy.component'
 // 💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥
 // Please declare routes in alphabetical order
 // 😵😵😵😵😵😵😵😵😵😵😵😵😵😵😵😵😵😵😵😵😵😵😵😵😵😵😵😵😵😵😵😵😵😵😵😵😵😵😵
@@ -175,6 +177,21 @@ const routes: Routes = [
     },
     resolve: {
       pageData: PageResolve,
+    },
+  },
+  {
+    path: 'app/gyaan-karmayogi',
+    loadChildren: () =>
+      import('./routes/route-gyaan-karmayogi.module').then(u => u.RouteGyaanKarmayogiModule),
+    canActivate: [GeneralGuard],
+    data: {
+      pageType: 'feature',
+      pageKey: 'knowledge-resource',
+      pageId: 'app/knowledge-resource',
+    },
+    resolve: {
+      pageData: PageResolve,
+      gyaanData: AppGyaanKarmayogiService,
     },
   },
   {
@@ -896,6 +913,15 @@ const routes: Routes = [
     data: {
       module: 'sso',
       pageId: 'public/sso',
+    },
+  },
+
+  {
+    path: 'public/privacy-policy',
+    component: PrivacyPolicyComponent,
+    data: {
+      module: 'privacy-policy',
+      pageId: 'public/privacy-policy',
     },
   },
   {

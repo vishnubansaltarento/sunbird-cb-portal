@@ -43,13 +43,8 @@
         <div class="flex flex-middle padding-12">
             <div class="progress-wrapper">
               <svg xmlns="http://www.w3.org/2000/svg" *ngIf="userInfo.profileUpdateCompletion < 100" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="37 -5 120 100" width="64" height="64">
-                  <path class="grey" d="M55,90
-                          A55,55 0 1,1 140,90"
-                        style="fill:none;"/>
-                  <path class="progress-clr" d="M55,90
-                          A55,55 0 1,1 140,90"
-                        style="fill:none;"
-                        />
+                <path class="grey" d="M55,90 A55,55 0 1,1 140,90" style="fill:none;"/>
+                <path class="progress-clr" d="M55,90 A55,55 0 1,1 140,90" style="fill:none;" />
               </svg>
               <div class="user-img" [ngClass]="{'user-img-completion': userInfo.profileUpdateCompletion === 100}">
                 <ws-widget-avatar-photo [datalen]="1" [name]="userInfo.firstName" [datalen]="" [randomColor]="true" [photoUrl]="userInfo?.profileImageUrl" size="round-m">
@@ -61,7 +56,6 @@
                 <!-- <p class="margin-remove text-ellipses"  (click)="userInfo.profileUpdateCompletion < 100 && gotoUserProfile()">{{userInfo.firstName}} {{userInfo.lastName}}</p> -->
                 <p class="margin-remove text-ellipses"  (click)="userInfo.profileUpdateCompletion < 100 && gotoUserProfile()"> {{userFullName}} </p>
                 <mat-icon *ngIf="userInfo.profileUpdateCompletion < 100" class="ws-mat-default-text mr-3" (click)="gotoUserProfile()">chevron_right</mat-icon>
-              
             </div>
         </div>
         <hr class="divider">

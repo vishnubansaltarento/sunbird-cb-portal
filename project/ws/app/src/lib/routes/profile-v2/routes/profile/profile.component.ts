@@ -20,7 +20,7 @@ import _ from 'lodash'
 export class ProfileComponent implements OnInit, OnDestroy {
   sideNavBarOpened = true
   panelOpenState = false
-  titles = [{ title: 'Network', url: '/app/network-v2', icon: 'group' }]
+  titles = [{ title: 'Profile', url: 'none', icon: 'person' }]
   unread = 0
   currentRoute = 'home'
   banner!: NsWidgetResolver.IWidgetData<any>
@@ -46,14 +46,14 @@ export class ProfileComponent implements OnInit, OnDestroy {
             } else {
               this.userRouteName = `${this.configSvc.userProfile.firstName}`
             }
-            this.titles = [{ title: 'Network', url: '/app/network-v2', icon: 'group' }]
-            if (this.userRouteName && this.userRouteName.trim()) {
-              this.titles.push({
-                icon: '',
-                title: `${this.userRouteName}\'profile`,
-                url: 'none',
-              })
-            }
+            // this.titles = [{ title: 'Network', url: '/app/network-v2', icon: 'group' }]
+            // if (this.userRouteName && this.userRouteName.trim()) {
+            //   this.titles.push({
+            //     icon: '',
+            //     title: `${this.userRouteName}\'profile`,
+            //     url: 'none',
+            //   })
+            // }
           }
         } else {
           if (this.activeRoute.firstChild) {
@@ -72,14 +72,14 @@ export class ProfileComponent implements OnInit, OnDestroy {
                 `${(response.profile.data[0].personalDetails.firstname || '')}`
               }
             })
-            this.titles = [{ title: 'Network', url: '/app/network-v2', icon: 'group' }]
-            if (this.userRouteName && this.userRouteName.trim()) {
-              this.titles.push({
-                icon: '',
-                title: `${this.userRouteName}\'profile`,
-                url: 'none',
-              })
-            }
+            // this.titles = [{ title: 'Network', url: '/app/network-v2', icon: 'group' }]
+            // if (this.userRouteName && this.userRouteName.trim()) {
+            //   this.titles.push({
+            //     icon: '',
+            //     title: `${this.userRouteName}\'profile`,
+            //     url: 'none',
+            //   })
+            // }
           }
         }
       }
