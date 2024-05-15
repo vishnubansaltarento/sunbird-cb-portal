@@ -1,4 +1,4 @@
-<div class="banner-container {{widgetData[currentIndex].bannerMetaClass}}" (swipeleft)="slideTo(currentIndex + 1)" (swiperight)="slideTo(currentIndex - 1)"
+<div class="banner-container {{widgetData[currentIndex]?.bannerMetaClass}}" (swipeleft)="slideTo(currentIndex + 1)" (swiperight)="slideTo(currentIndex - 1)"
   *ngIf="widgetData?.length > 1">
   <a (click)="raiseTelemetry(widgetData[currentIndex].redirectUrl)"
     [routerLink]=" !isOpenInNewTab ? widgetData[currentIndex].redirectUrl : './'" class="banner-overlay"

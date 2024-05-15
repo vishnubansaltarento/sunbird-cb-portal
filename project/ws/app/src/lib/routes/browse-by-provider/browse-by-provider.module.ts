@@ -94,7 +94,6 @@ import { FormExtService } from 'src/app/services/form-ext.service'
     CardContentV2Module,
     SlidersModule,
     ContentStripWithTabsModule,
-    ContentStripWithTabsModule,
     ContentStripWithTabsLibModule,
     CompetencyPassbookModule,
     DataPointsModule,
