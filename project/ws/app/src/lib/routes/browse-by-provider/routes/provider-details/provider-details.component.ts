@@ -21,8 +21,8 @@ export class ProviderDetailsComponent implements OnInit, OnDestroy {
   provider = ''
   orgId = ''
   titles = [
-    { title: 'Learn', url: '/page/learn', icon: 'school', noTranslate: false },
-    { title: `All providers`, url: `/app/learn/browse-by/provider/all-providers`, icon: '', noTranslate: false },
+    { title: 'Learn', url: '/page/learn', icon: 'school', disableTranslate: false },
+    { title: `All providers`, url: `/app/learn/browse-by/provider/all-providers`, icon: '', disableTranslate: false },
     // { title: `${this.provider}`, url: `none`, icon: '' },
   ]
   unread = 0
@@ -71,8 +71,8 @@ export class ProviderDetailsComponent implements OnInit, OnDestroy {
       this.provider = _.get(params, 'provider')
       this.orgId = _.get(params, 'orgId')
       let urlTomicrosite = `/app/learn/browse-by/provider/${this.provider}/${this.orgId}/micro-sites`
-      this.titles.push({ title: this.provider, icon: '', url: urlTomicrosite, noTranslate: true})
-      this.titles.push({ title: 'All CBPs', icon: '', url: 'none', noTranslate: false })
+      this.titles.push({ title: this.provider, icon: '', url: urlTomicrosite,  disableTranslate: true})
+      this.titles.push({ title: 'All CBPs', icon: '', url: 'none', disableTranslate: false})
       this.initializeTabs()
     })
     this.defaultSideNavBarOpenedSubscription = this.isLtMedium$.subscribe(isLtMedium => {
@@ -90,12 +90,12 @@ export class ProviderDetailsComponent implements OnInit, OnDestroy {
       // this.titles.push({ title: this.provider, icon: '', url: 'none' })
       switch (path) {
         case 'overview':
-          this.titles.push({ title: 'Provider overview', icon: '', url: 'none', noTranslate: false })
+          this.titles.push({ title: 'Provider overview', icon: '', url: 'none', disableTranslate: false})
           break
         case 'all-CBP':
           break
         case 'insights':
-          this.titles.push({ title: 'Insights', icon: '', url: 'none', noTranslate: false })
+          this.titles.push({ title: 'Insights', icon: '', url: 'none', disableTranslate: false})
           break
         default:
           break
