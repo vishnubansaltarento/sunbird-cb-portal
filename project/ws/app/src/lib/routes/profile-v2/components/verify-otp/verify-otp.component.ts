@@ -9,6 +9,7 @@ import { takeUntil } from 'rxjs/operators'
 import * as _ from 'lodash'
 
 import { OtpService } from '../../../user-profile/services/otp.services'
+import { UserProfileService } from '../../../user-profile/services/user-profile.service'
 
 @Component({
   selector: 'ws-verify-otp',
@@ -30,7 +31,8 @@ export class VerifyOtpComponent implements OnInit, OnDestroy {
     public dialogRef: MatDialogRef<VerifyOtpComponent>,
     @Inject(MAT_DIALOG_DATA) public data: any,
     private otpService: OtpService,
-    private matSnackbar: MatSnackBar
+    private matSnackbar: MatSnackBar,
+    private userProfileService: UserProfileService
   ) { }
 
   ngOnInit() {
@@ -61,12 +63,12 @@ export class VerifyOtpComponent implements OnInit, OnDestroy {
     this.otpService.verifyEmailOTP(this.otpEntered, this.data.value)
     .pipe(takeUntil(this.destroySubject$))
     .subscribe((_res: any) => {
-      this.matSnackbar.open("OTP verification done successfully!")
+      this.matSnackbar.open(this.handleTranslateTo('OTPSentSuccess'))
       this.handleCloseModal()
       this.otpVerified.emit({type: 'email', token: _res.result.contextToken})
     }, (error: HttpErrorResponse) => {
       if (!error.ok) {
-        this.matSnackbar.open(_.get(error, 'error.params.errmsg') || "OTP verification failed! Please try again later!")
+        this.matSnackbar.open(_.get(error, 'error.params.errmsg') || this.handleTranslateTo('OTPVerifyFailed'))
         this.handleCloseModal()
       }
     })
@@ -76,12 +78,12 @@ export class VerifyOtpComponent implements OnInit, OnDestroy {
     this.otpService.verifyOTP(Number(this.otpEntered), this.data.value)
     .pipe(takeUntil(this.destroySubject$))
     .subscribe((_res: any) => {
-      this.matSnackbar.open("OTP verification done successfully!")
+      this.matSnackbar.open(this.handleTranslateTo('OTPSentSuccess'))
       this.handleCloseModal()
       this.otpVerified.emit({type: 'mobile'})
     }, (error: HttpErrorResponse) => {
       if (!error.ok) {
-        this.matSnackbar.open(_.get(error, 'error.params.errmsg') || "OTP verification failed! Please try again later!")
+        this.matSnackbar.open(_.get(error, 'error.params.errmsg') || this.handleTranslateTo('OTPVerifyFailed'))
         this.handleCloseModal()
       }
     })
@@ -96,6 +98,10 @@ export class VerifyOtpComponent implements OnInit, OnDestroy {
     this.showResendOTP = !this.resendOTP
     this.startTimer()
     this.resendOTP.emit(this.data.type)
+  }
+
+  handleTranslateTo(menuName: string): string {
+    return this.userProfileService.handleTranslateTo(menuName)
   }
 
   ngOnDestroy(): void {

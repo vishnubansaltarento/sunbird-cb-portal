@@ -24,8 +24,7 @@ export class WithdrawRequestComponent implements OnInit, OnDestroy {
     private matSnackBar: MatSnackBar,
     private userProfileService: UserProfileService,
     private configService: ConfigurationsService
-  ) {
-  }
+  ) { }
 
   ngOnInit() {
   }
@@ -39,15 +38,19 @@ export class WithdrawRequestComponent implements OnInit, OnDestroy {
       this.userProfileService.withDrawRequest(this.configService.unMappedUser.id, _obj.wfId)
       .pipe(takeUntil(this.destroySubject$))
       .subscribe((_res: any) => {
-        this.matSnackBar.open('Withdrawn transfer request successfully!')
+        this.matSnackBar.open(this.handleTranslateTo('withdrawTransferSuccess'))
         this.handleCloseModal()
         this.enableMakeTransfer.emit(true)
       },         (error: HttpErrorResponse) => {
         if (!error.ok) {
-          this.matSnackBar.open(`Unable to withdraw transfer request for ${_obj.name || _obj.designation || _obj.group}`)
+          this.matSnackBar.open(this.handleTranslateTo('withdrawTransferFailed'))
         }
       })
     })
+  }
+
+  handleTranslateTo(menuName: string): string {
+    return this.userProfileService.handleTranslateTo(menuName)
   }
 
   ngOnDestroy(): void {

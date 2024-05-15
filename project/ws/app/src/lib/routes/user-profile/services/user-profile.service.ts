@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core'
 import { HttpClient } from '@angular/common/http'
+import { TranslateService } from '@ngx-translate/core'
 import { Observable } from 'rxjs'
 import {
   IUserProfileDetails,
@@ -25,6 +26,7 @@ const API_ENDPOINTS = {
   getAllDepartments: '/apis/protected/v8/portal/listDeptNames',
   approveRequest: '/apis/protected/v8/workflowhandler/transition',
   getPendingFields: '/apis/protected/v8/workflowhandler/userWFApplicationFieldsSearch',
+  getApprovalPendingFields: '/apis/proxies/v8/workflow/v2/userWFApplicationFieldsSearch',
   getDesignation: '/apis/proxies/v8/user/v1/positions',
   editProfileDetails: '/apis/proxies/v8/user/v1/extPatch',
   updatePrimaryEmail: '/apis/proxies/v8/user/otp/v2/extPatch',
@@ -39,7 +41,20 @@ const API_ENDPOINTS = {
 export class UserProfileService {
   constructor(
     private http: HttpClient,
-  ) {}
+    private translateService: TranslateService
+  ) {
+    if (localStorage.getItem('websiteLanguage')) {
+      this.translateService.setDefaultLang('en')
+      const lang = localStorage.getItem('websiteLanguage')!
+      this.translateService.use(lang)
+    }
+  }
+
+  handleTranslateTo(menuName: string): string {
+    // tslint:disable-next-line: prefer-template
+    const translationKey = 'profileInfo.' + menuName.replace(/\s/g, '')
+    return this.translateService.instant(translationKey)
+  }
 
   editProfileDetails(data: any) {
     return this.http.post<any>(API_ENDPOINTS.editProfileDetails, data)
@@ -90,6 +105,13 @@ export class UserProfileService {
 
   listApprovalPendingFields() {
     return this.http.post<any>(API_ENDPOINTS.getPendingFields, {
+      serviceName: 'profile',
+      applicationStatus: 'SEND_FOR_APPROVAL',
+    })
+  }
+
+  fetchApprovalPendingFields() {
+    return this.http.post<any>(API_ENDPOINTS.getApprovalPendingFields, {
       serviceName: 'profile',
       applicationStatus: 'SEND_FOR_APPROVAL',
     })

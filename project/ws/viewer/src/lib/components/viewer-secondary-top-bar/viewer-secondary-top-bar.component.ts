@@ -10,6 +10,7 @@ import { ViewerDataService } from '../../viewer-data.service'
 import { ViewerUtilService } from '../../viewer-util.service'
 import { CourseCompletionDialogComponent } from '../course-completion-dialog/course-completion-dialog.component'
 import { PdfScormDataService } from '../../pdf-scorm-data-service'
+import { AppTocService } from '@ws/app/src/lib/routes/app-toc/services/app-toc.service'
 
 @Component({
   selector: 'viewer-viewer-secondary-top-bar',
@@ -61,6 +62,7 @@ export class ViewerSecondaryTopBarComponent implements OnInit, OnDestroy {
   canShare = false
   rootOrgId: any
   currentDataFromEnrollList: any
+  pageScrollSubscription: Subscription | null = null
   // primaryCategory = NsContent.EPrimaryCategory
   constructor(
     private activatedRoute: ActivatedRoute,
@@ -75,6 +77,7 @@ export class ViewerSecondaryTopBarComponent implements OnInit, OnDestroy {
     private viewerSvc: ViewerUtilService,
     private pdfScormDataService: PdfScormDataService,
     private events: EventService,
+    private appTocSvc: AppTocService,
   ) {
     this.valueSvc.isXSmall$.subscribe(isXSmall => {
       this.logo = !isXSmall
@@ -88,20 +91,33 @@ export class ViewerSecondaryTopBarComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     // this.getAuthDataIdentifer()
+
+    this.pageScrollSubscription = this.appTocSvc.updatePageScroll.subscribe((value: boolean) => {
+      if (value) {
+        setTimeout(() => {
+          if (document.getElementsByClassName('viewer-top-secondary')  &&
+          document.getElementsByClassName('viewer-top-secondary')[0]) {
+            document.getElementsByClassName('viewer-top-secondary')[0].scrollIntoView({
+              behavior: 'smooth',
+              block: 'start',
+              inline: 'start',
+           })
+          }
+        },         1000)
+      }
+    })
+
     if (window.innerWidth <= 1200) {
       this.isMobile = true
     } else {
       this.isMobile = false
     }
-
     this.pdfScormDataService.handleBackFromPdfScormFullScreen.subscribe((data: any) => {
       this.handleBackFromPdfScormFullScreenFlag = data
     })
-
     this.pdfScormDataService.handlePdfMarkComplete.subscribe((contentData: any) => {
       this.pdfContentProgressData = contentData
     })
-
     this.viewerSvc.autoPlayNextVideo.subscribe((autoPlayVideoData: any) => {
       if (autoPlayVideoData) {
         if (this.isTypeOfCollection && this.nextResourceUrl && this.nextResourceUrlParams && this.nextResourceUrlParams.queryParams) {
@@ -240,6 +256,9 @@ export class ViewerSecondaryTopBarComponent implements OnInit, OnDestroy {
     if (this.viewerDataServiceResourceSubscription) {
       this.viewerDataServiceResourceSubscription.unsubscribe()
     }
+    if (this.pageScrollSubscription) {
+      this.pageScrollSubscription.unsubscribe()
+    }
   }
 
   toggleSideBar() {
@@ -364,6 +383,13 @@ export class ViewerSecondaryTopBarComponent implements OnInit, OnDestroy {
       this.pdfContentProgressData['status'] = 2
       this.finishDialog()
     }
+    this.changeResource()
+  }
+
+  changeResource() {
+    setTimeout(() => {
+      this.appTocSvc.getPageScroll.next(true)
+    },         700)
   }
 
   checkForNextOfflineOnlineSession() {
@@ -376,6 +402,7 @@ export class ViewerSecondaryTopBarComponent implements OnInit, OnDestroy {
         this.router.navigate([this.nextResourceUrl], { queryParams: this.nextResourceUrlParams.queryParams })
       },         0)
     }
+    this.changeResource()
   }
 
   checkForPrevOfflineOnlineSession() {
@@ -389,6 +416,7 @@ export class ViewerSecondaryTopBarComponent implements OnInit, OnDestroy {
         this.router.navigate([this.prevResourceUrl], { queryParams: this.prevResourceUrlParams.queryParams })
       },         0)
     }
+    this.changeResource()
   }
 
   onClickOfShare() {

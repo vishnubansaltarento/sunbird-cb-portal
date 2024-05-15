@@ -21,21 +21,40 @@
   <track kind="captions" *ngIf="widgetData.subtitles" [src]="widgetData?.subtitles[0]?.url" srclang="en" label="English"
     default>
 </video>
-<div class="auto-play-video" id="auto-play-video" *ngIf="videoEnd">
-  <div class="up-next">
-    <div>{{'playerbrief.up' | translate}} &nbsp; {{'playerbrief.next' | translate}}</div>
-  </div>
-  <div class="circular-progress-container">
-    <div class="circular-progress">
-      <div class="play_arrow">
-        <mat-icon>play_arrow</mat-icon>
+
+<ng-container *ngIf="!widgetData?.hideUpNext">
+  <div class="auto-play-video" id="auto-play-video" *ngIf="videoEnd">
+    <div class="up-next">
+      <div>{{'playerbrief.up' | translate}} &nbsp; {{'playerbrief.next' | translate}}</div>
+    </div>
+    <div class="circular-progress-container">
+      <div class="circular-progress">
+        <div class="play_arrow">
+          <mat-icon>play_arrow</mat-icon>
+        </div>
       </div>
     </div>
+    <div class="cancel-auto-progress" (click)="closeAutoPlay()">
+      <span>{{'playerbrief.cancel' | translate}}</span>
+    </div>
   </div>
-  <div class="cancel-auto-progress" (click)="closeAutoPlay()">
-    <span>{{'playerbrief.cancel' | translate}}</span>
+  <div class="auto-play-video" id="auto-play-video" *ngIf="videoEnd">
+    <div class="up-next">
+      <div>{{'playerbrief.up' | translate}} &nbsp; {{'playerbrief.next' | translate}}</div>
+    </div>
+    <div class="circular-progress-container">
+      <div class="circular-progress">
+        <div class="play_arrow">
+          <mat-icon>play_arrow</mat-icon>
+        </div>
+      </div>
+    </div>
+    <div class="cancel-auto-progress" (click)="closeAutoPlay()">
+      <span>{{'playerbrief.cancel' | translate}}</span>
+    </div>
   </div>
-</div>
+</ng-container>
+
 
 <div class="auto-play-video" id="auto-play-video" *ngIf="replayVideoFlag" (click)="replayVideo()">
   <div class="cursor-pointer">

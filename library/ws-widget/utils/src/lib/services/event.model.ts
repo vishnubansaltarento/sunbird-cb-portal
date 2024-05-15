@@ -207,6 +207,7 @@ export namespace WsEvents {
   }
   export enum EnumInteractTypes {
     CLICK = 'click',
+    subType = 'subType',
   }
   export enum EnumInteractSubTypes {
     COURSE_TAB = 'course-tab',
@@ -217,9 +218,24 @@ export namespace WsEvents {
     DISCUSS_TAB = 'discuss-tab',
     EVENTS_TAB = 'events-tab',
     SIDE_MENU = 'side-menu',
+    MY_IGOT = 'my-igot',
+    MY_LEARNING = 'my-learning',
+    RECENTLY_ADDED = 'recently-added',
+    TRENDING_IN_YOUR_DEPARTMENT = 'trending-in-your-department',
+    TRENDING_ACROSS_YOUR_DEPARTMENTS = 'trending-across-your-departments',
+    LEARNING_UNDER_30_MINUTES = 'learning-under-30-minutes',
+    BLENDED_PROGRAM = 'blended program',
+    RECENT_CONNECTION_REQUEST = 'recent-connection-request',
+    CERTIFICATIONS_OF_THE_WEEK = 'certifications-of-the-week',
     HOME_PAGE_STRIP_TABS = 'home-page-strip-tabs',
     HUB_MENU = 'hub-menu',
     PORTAL_NUDGE = 'portal_nudge',
     CERTIFICATE = 'certificate',
+    DEFAULT_SUBTYPE = 'default-subtype',
+    SUGGESTED_CONNECTIONS = 'suggested-connections',
+    PROFILE = 'profile',
+    ADD_POST = 'add-post',
+    TRENDING_DISCUSSIONS = 'trending-discussions',
+    MY_DISCUSSIONS = 'my-discussions',
   }
 }

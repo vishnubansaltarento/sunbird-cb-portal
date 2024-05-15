@@ -125,10 +125,14 @@ export class HtmlComponent implements OnInit, OnChanges, OnDestroy {
       max_size: 1,
     }
     // this.fireRealTimeProgress()
-    if (!this.store.getItem('Initialized')) {
-      this.fireRealTimeProgress(this.htmlContent)
-      // this.store.clearAll()
-    }
+
+    // call for both LMS and duration calculation content
+    this.fireRealTimeProgress(this.htmlContent)
+
+    // if (!this.store.getItem('Initialized')) {
+    //   this.fireRealTimeProgress(this.htmlContent)
+    //   // this.store.clearAll()
+    // }
     this.sub.unsubscribe()
   }
 
@@ -143,12 +147,21 @@ export class HtmlComponent implements OnInit, OnChanges, OnDestroy {
       // const batchId = this.activatedRoute.snapshot.queryParams.batchId ?
       //   this.activatedRoute.snapshot.queryParams.batchId : ''
       const completionData = this.calculateCompletionStatus(htmlContent)
+
+      let progressData
+      if (this.store.getItem('Initialized')) {
+        progressData = { ...this.store.getAll() || 0 , spentTime: (completionData && completionData.spentTime) }
+      } else {
+        progressData = { spentTime: (completionData && completionData.spentTime) || 0 }
+      }
+
       const req = {
         ...this.realTimeProgressRequest,
         status: (completionData && completionData.status) || 0,
         completionPercentage: (completionData && completionData.completionPercentage) || 0,
-        progressDetails: { spentTime: (completionData && completionData.spentTime) || 0 },
+        progressDetails: progressData,
       }
+
       this.scormAdapterService.addDataV3(req, htmlContent.identifier).subscribe((_res: any) => {
         this.loggerSvc.log('Progress updated successfully')
         // for updating the progress hashmap, for instant progress to be shown
@@ -232,9 +245,11 @@ export class HtmlComponent implements OnInit, OnChanges, OnDestroy {
       this.oldData = this.htmlContent
     } else {
       if (this.htmlContent && (this.oldData.identifier !== this.htmlContent.identifier)) {
-        if (!this.store.getItem('Initialized')) {
-          this.fireRealTimeProgress(this.oldData)
-        }
+        // if (!this.store.getItem('Initialized')) {
+        //   this.fireRealTimeProgress(this.oldData)
+        // }
+        // call fireRealTimeProgress func for LMS data and non-LMS data also
+        this.fireRealTimeProgress(this.oldData)
         this.sub.unsubscribe()
         this.ticks = 0
         this.timer = timer(1000, 1000)

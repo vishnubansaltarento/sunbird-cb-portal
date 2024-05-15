@@ -25,6 +25,7 @@ import {
   MatSelectModule,
   MatTableModule,
   MatProgressSpinnerModule,
+  MatSidenavModule,
 } from '@angular/material'
 import { BrowserModule, HAMMER_GESTURE_CONFIG } from '@angular/platform-browser'
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations'
@@ -98,6 +99,8 @@ import { SurveyShikshaComponent } from './component/survey-shiksha/survey-shiksh
 import {
 WIDGET_REGISTERED_LIB_MODULES, WIDGET_REGISTRATION_LIB_CONFIG
 } from '@sunbird-cb/consumption'
+import { PrivacyPolicyComponent } from './component/privacy-policy/privacy-policy.component'
+
 @Injectable()
 export class HammerConfig extends GestureConfig {
   buildHammer(element: HTMLElement) {
@@ -149,6 +152,7 @@ export function HttpLoaderFactory(http: HttpClient) {
     FooterSectionComponent,
     AppLogoComponent,
     SurveyShikshaComponent,
+    PrivacyPolicyComponent,
   ],
   imports: [
     FormsModule,
@@ -212,6 +216,7 @@ export function HttpLoaderFactory(http: HttpClient) {
       },
     }),
     ProfileV3Module,
+    MatSidenavModule,
   ],
   exports: [
     TncComponent,
