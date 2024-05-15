@@ -1,4 +1,4 @@
-import { NgModule } from '@angular/core'
+import { NgModule, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core'
 import { CommonModule } from '@angular/common'
 import { BrowseByProviderRoutingModule } from './browse-by-provider-routing.module'
 import { BtnPageBackModule, CardContentModule, ContentStripWithTabsModule, SlidersModule } from '@sunbird-cb/collection'
@@ -42,10 +42,9 @@ import { ProviderCardComponent } from './components/provider-card/provider-card.
 import { CardContentV2Module } from '@sunbird-cb/collection/src/lib/card-content-v2/card-content-v2.module'
 import { HttpClient } from '@angular/common/http'
 import { TranslateModule, TranslateLoader } from '@ngx-translate/core'
-import { HttpLoaderFactory } from 'src/app/app.module';
+import { HttpLoaderFactory } from 'src/app/app.module'
 import { ProviderPageComponent } from './routes/provider-page/provider-page.component'
-import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core'
-import {CompetencyPassbookModule, ContentStripWithTabsLibModule, DataPointsModule, SlidersLibModule} from '@sunbird-cb/consumption'
+import { CompetencyPassbookModule, ContentStripWithTabsLibModule, DataPointsModule, SlidersLibModule } from '@sunbird-cb/consumption'
 import { ProviderFormResolverService } from './services/provider-form-resolver.service'
 import { FormExtService } from 'src/app/services/form-ext.service'
 
@@ -108,7 +107,7 @@ import { FormExtService } from 'src/app/services/form-ext.service'
       },
     }),
   ],
-  providers: [BrowseProviderService, ProviderFormResolverService,FormExtService],
-  schemas: [CUSTOM_ELEMENTS_SCHEMA]
+  providers: [BrowseProviderService, ProviderFormResolverService, FormExtService],
+  schemas: [CUSTOM_ELEMENTS_SCHEMA],
 })
 export class BrowseByProviderModule { }

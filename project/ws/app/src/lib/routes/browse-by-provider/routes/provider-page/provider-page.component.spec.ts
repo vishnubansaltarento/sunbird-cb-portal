@@ -1,25 +1,25 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { async, ComponentFixture, TestBed } from '@angular/core/testing'
 
-import { ProviderPageComponent } from './provider-page.component';
+import { ProviderPageComponent } from './provider-page.component'
 
 describe('ProviderPageComponent', () => {
-  let component: ProviderPageComponent;
-  let fixture: ComponentFixture<ProviderPageComponent>;
+  let component: ProviderPageComponent
+  let fixture: ComponentFixture<ProviderPageComponent>
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ ProviderPageComponent ]
+      declarations: [ProviderPageComponent],
     })
-    .compileComponents();
-  }));
+    .compileComponents()
+  }))
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(ProviderPageComponent);
-    component = fixture.componentInstance;
-    fixture.detectChanges();
-  });
+    fixture = TestBed.createComponent(ProviderPageComponent)
+    component = fixture.componentInstance
+    fixture.detectChanges()
+  })
 
   it('should create', () => {
-    expect(component).toBeTruthy();
-  });
-});
+    expect(component).toBeTruthy()
+  })
+})
