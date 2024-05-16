@@ -44,7 +44,7 @@
   
               <ng-container *ngIf="!skeletonLoader">
                 <ng-container *ngIf="!editProfile">
-                  <ng-container *ngIf="rejectedFields?.group">
+                  <ng-container *ngIf="(!enableWTR && !enableWR) && rejectedFields?.group">
                     <div class="flex flex-row gap-2 items-center info-value">
                       <div class="flex">{{ rejectedFields?.group }}</div>
                       <div class="profile-rejected">
@@ -53,7 +53,7 @@
                       </div>
                     </div>
                   </ng-container>
-                  <ng-container *ngIf="unVerifiedObj.group">
+                  <ng-container *ngIf="(enableWTR || enableWR) && unVerifiedObj.group">
                     <div class="flex flex-row gap-2 items-center info-value">
                       <div class="flex">{{ unVerifiedObj.group }}</div>
                       <div class="profile-not-verified">
@@ -94,7 +94,7 @@
   
               <ng-container *ngIf="!skeletonLoader">
                 <ng-container *ngIf="!editProfile">
-                  <ng-container *ngIf="rejectedFields?.designation">
+                  <ng-container *ngIf="(!enableWTR && !enableWR) && rejectedFields?.designation">
                     <div class="flex flex-row gap-2 items-center info-value">
                       <div class="flex">{{ rejectedFields?.designation }}</div>
                       <div class="profile-rejected">
@@ -104,7 +104,7 @@
                     </div>
                   </ng-container>
                   
-                  <ng-container *ngIf="unVerifiedObj.designation">
+                  <ng-container *ngIf="(enableWTR || enableWR) && unVerifiedObj.designation">
                     <div class="flex flex-row gap-2 items-center info-value">
                       <div class="flex">{{ unVerifiedObj.designation }}</div>
                       <div class="profile-not-verified">
@@ -141,14 +141,16 @@
             </div>
           </div>
   
-          <ng-container *ngFor="let item of approvalPendingFields">
-            <ng-container *ngIf="item?.comment">
-              <div class="flex flex-col sm:flex-row gap-2 sm:items-center">
-                <div class="flex items-center gap-1 info-text">
-                  <mat-icon>info</mat-icon>
-                  <div class="flex">{{ item?.comment }}</div>
+          <ng-container *ngIf="(!approvalPendingFields || !approvalPendingFields.length) && !portalProfile?.verifiedKarmayogi">
+            <ng-container *ngFor="let item of rejectedByMDOData">
+              <ng-container *ngIf="item?.comment">
+                <div class="flex flex-col sm:flex-row gap-2 sm:items-center">
+                  <div class="flex items-center gap-1 info-text">
+                    <mat-icon>info</mat-icon>
+                    <div class="flex">{{ item?.comment }}</div>
+                  </div>
                 </div>
-              </div>
+              </ng-container>
             </ng-container>
           </ng-container>
   
@@ -186,10 +188,14 @@
                 <ng-container *ngIf="!editDetails">
                   <div class="info-value">{{ portalProfile?.employmentDetails?.employeeCode || 'NA' }}</div>
                 </ng-container>
-                <div class="flex" *ngIf="editDetails">
+                <div class="flex flex-col" *ngIf="editDetails">
                   <mat-form-field class="profile-form-field">
                     <input type="text" class="input-text" matInput formControlName="employeeCode" />
                   </mat-form-field>
+                  <mat-error class="text-xs" *ngIf="otherDetailsForm.get('employeeCode').hasError('pattern')">
+                    Please enter an Alpha-numeric value only
+                    <!-- {{ 'profileInfo.invalidEmail' | translate }} -->
+                  </mat-error>
                 </div>
               </div>
   
@@ -322,7 +328,7 @@
             <div class="grid-container">
               <div class="info-div">
                 <div class="label">{{ 'profileInfo.eHRMSId' | translate }}</div>
-                <div class="info-value">NA</div>
+                <div class="info-value">{{ portalProfile?.additionalProperties?.externalSystemId || 'NA' }}</div>
               </div>
             </div>
   
@@ -475,7 +481,7 @@
     </div>
     <div class="flex-1 profile-info">
       <div class="flex flex-col gap-2">
-        <div class="flex flex-row" *ngIf="!portalProfile?.professionalDetails || !portalProfile?.professionalDetails[0]?.verifiedKarmayogi">
+        <div class="flex flex-row" *ngIf="!portalProfile?.verifiedKarmayogi">
           <div class="profile-not-verified">
             <div class="text">{{ 'profileInfo.profileNotVerified' | translate }}</div>
             <mat-icon>info_outline</mat-icon>
@@ -483,7 +489,7 @@
         </div>
         <div class="flex flex-row gap-4 items-center" *ngIf="!editName"> 
           <div class="name">{{ currentUser?.firstName }} {{ currentUser?.lastName }}</div>
-          <mat-icon class="profile-verified-check" *ngIf="portalProfile?.professionalDetails && portalProfile?.professionalDetails[0]?.verifiedKarmayogi">check_circle</mat-icon>
+          <mat-icon class="profile-verified-check" *ngIf="portalProfile?.verifiedKarmayogi">check_circle</mat-icon>
           <mat-icon class="cursor-pointer" (click)="editName = !editName">edit</mat-icon>
         </div>
         <div class="flex flex-row gap-4 items-center edit-name" *ngIf="editName">
@@ -507,19 +513,21 @@
                   <div class="flex flex-row gap-2 items-center make-transfer-div">
                     <ng-container *ngIf="!enableWR">
                       <div class="text-sm make-transer" (click)="handleTransferRequest()">{{ 'profileInfo.makeTransferRequest' | translate }}</div>
+                      <mat-icon [matTooltipPosition]="'below'" #tooltip="matTooltip"
+                        matTooltip="Click on the button to request a transfer to another MDO, but first, withdraw any pending fields awaiting approval from your current MDO." (click)="tooltip.toggle()">info_outline</mat-icon>
                     </ng-container>
                     <ng-container *ngIf="enableWR">
                       <div class="text-sm make-transer disable-button" [matTooltipPosition]="'below'"
                         #MTRTooltip="matTooltip" matTooltip="{{ 'profileInfo.withdrawPrimaryDetails' | translate }}" (click)="MTRTooltip.toggle()">{{ 'profileInfo.makeTransferRequest' | translate }}</div>
                     </ng-container>
-                    <mat-icon [matTooltipPosition]="'below'" #tooltip="matTooltip" matTooltip="{{ 'profileInfo.makeTransferToolTip' | translate }}" (click)="tooltip.toggle()">info_outline</mat-icon>
                   </div>
                 </ng-container>
   
                 <ng-container *ngIf="enableWTR">
                   <div class="flex flex-row gap-2 items-center make-transfer-div">
                     <div class="text-sm make-transer" (click)="handleWithdrawTransferRequest()">{{ 'profileInfo.withdrawTransferRequest' | translate }}</div>
-                    <mat-icon [matTooltipPosition]="'below'" #wTooltip="matTooltip" matTooltip="{{ 'profileInfo.withdrawTransferToolTip' | translate }}" (click)="wTooltip.toggle()">info_outline</mat-icon>
+                    <!-- <mat-icon [matTooltipPosition]="'below'" #wTooltip="matTooltip" matTooltip="{{ 'profileInfo.withdrawTransferToolTip' | translate }}" (click)="wTooltip.toggle()">info_outline</mat-icon> -->
+                    <mat-icon [matTooltipPosition]="'below'" #wTooltip="matTooltip"  matTooltip="If you choose to withdraw your transfer request, your transfer request will get cancelled" (click)="wTooltip.toggle()">info_outline</mat-icon>
                   </div>
                 </ng-container>
               </ng-container>

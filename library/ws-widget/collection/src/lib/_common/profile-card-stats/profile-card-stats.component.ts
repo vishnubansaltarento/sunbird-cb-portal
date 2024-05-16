@@ -171,7 +171,7 @@ export class ProfileCardStatsComponent implements OnInit {
   }
 
   gotoUserProfile() {
-    this.router.navigate(['/app/person-profile/me'])
+    // this.router.navigate(['/app/person-profile/me'])
     this.eventService.raiseInteractTelemetry(
       {
         type: WsEvents.EnumInteractTypes.CLICK,
@@ -183,7 +183,7 @@ export class ProfileCardStatsComponent implements OnInit {
         module: WsEvents.EnumTelemetrymodules.HOME,
       }
     )
-    this.router.navigate(['app/user-profile/details'])
+    this.router.navigate(['/app/person-profile/me'])
   }
 
   toggle() {

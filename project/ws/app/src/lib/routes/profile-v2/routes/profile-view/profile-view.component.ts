@@ -46,6 +46,7 @@ export const MY_FORMATS = {
 const EMAIL_PATTERN = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/
 const MOBILE_PATTERN = /^[0]?[6789]\d{9}$/
 const PIN_CODE_PATTERN = /^[1-9][0-9]{5}$/
+const EMP_ID_PATTERN = /^[a-z0-9]+$/i
 
 @Component({
   selector: 'app-profile-view',
@@ -115,7 +116,7 @@ export class ProfileViewComponent implements OnInit, AfterViewInit, OnDestroy {
   // feedbackInfo = ''
   skeletonLoader = false
   otherDetailsForm = new FormGroup({
-    employeeCode: new FormControl('', []),
+    employeeCode: new FormControl('', [Validators.pattern(EMP_ID_PATTERN)]),
     primaryEmail: new FormControl('', [Validators.pattern(EMAIL_PATTERN)]),
     mobile: new FormControl('', [Validators.minLength(10), Validators.maxLength(10), Validators.pattern(MOBILE_PATTERN)]),
     gender: new FormControl('', []),
@@ -140,6 +141,7 @@ export class ProfileViewComponent implements OnInit, AfterViewInit, OnDestroy {
     designation: new FormControl('', [Validators.required]),
   })
   approvalPendingFields = []
+  rejectedByMDOData = []
   contextToken: any
   params: any
 
@@ -669,6 +671,8 @@ export class ProfileViewComponent implements OnInit, AfterViewInit, OnDestroy {
     dialogRef.componentInstance.enableWithdraw.subscribe((value: boolean) => {
       if (value) {
         this.enableWTR = true
+        this.getSendApprovalStatus()
+        this.portalProfile.verifiedKarmayogi = false
       }
     })
   }
@@ -683,6 +687,8 @@ export class ProfileViewComponent implements OnInit, AfterViewInit, OnDestroy {
     dialogRef.componentInstance.enableMakeTransfer.subscribe((value: boolean) => {
       if (value) {
         this.enableWTR = false
+        this.unVerifiedObj.group = ''
+        this.unVerifiedObj.designation = ''
       }
     })
   }
@@ -726,13 +732,16 @@ export class ProfileViewComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   getSendApprovalStatus(): void {
-    this.skeletonLoader = true
+  this.skeletonLoader = true
     this.userProfileService.fetchApprovalPendingFields()
     .pipe(takeUntil(this.destroySubject$))
     .subscribe((_res: any) => {
       this.approvalPendingFields = _res.result.data
 
-      if (!this.approvalPendingFields || !this.approvalPendingFields.length) { return }
+      if (!this.approvalPendingFields || !this.approvalPendingFields.length) {
+        this.enableWTR = false
+        return
+      }
       const exists = this.approvalPendingFields.filter((obj: any) => {
         if (obj.hasOwnProperty('name')) {
           this.unVerifiedObj.organization = obj.name
@@ -766,6 +775,7 @@ export class ProfileViewComponent implements OnInit, AfterViewInit, OnDestroy {
     .pipe(takeUntil(this.destroySubject$))
     .subscribe((res: any) => {
       if (res.result && res.result.data && Array.isArray(res.result.data)) {
+        this.rejectedByMDOData = res.result.data
         res.result.data.forEach((obj: any) => {
           if (obj.hasOwnProperty('name')) {
             this.rejectedFields.name = obj.name
@@ -811,6 +821,7 @@ export class ProfileViewComponent implements OnInit, AfterViewInit, OnDestroy {
       this.matSnackBar.open(this.handleTranslateTo('requestSent'))
       this.editProfile = !this.editProfile
       this.enableWR = true
+      this.portalProfile.verifiedKarmayogi = false
       this.getSendApprovalStatus()
     },         (error: HttpErrorResponse) => {
       if (!error.ok) {
@@ -827,7 +838,6 @@ export class ProfileViewComponent implements OnInit, AfterViewInit, OnDestroy {
       .subscribe((_res: any) => {
         this.unVerifiedObj.group = ''
         this.unVerifiedObj.designation = ''
-        // this.feedbackInfo = ''
         this.matSnackBar.open(this.handleTranslateTo('withdrawRequestSuccess'))
         this.enableWR = false
       },         (error: HttpErrorResponse) => {

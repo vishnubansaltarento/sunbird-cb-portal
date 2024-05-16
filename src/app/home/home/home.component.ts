@@ -198,7 +198,7 @@ export class HomeComponent implements OnInit, AfterViewInit {
     this.sectionList.push({ section: 'network', isVisible: false })
 
     this.getListPendingApproval()
-    this.handleUpdateMobileNudge()
+    // this.handleUpdateMobileNudge()
     this.handleDefaultFontSetting()
 
     this.enrollInterval = setInterval(() => {
@@ -241,6 +241,7 @@ export class HomeComponent implements OnInit, AfterViewInit {
     const translationKey =  hubName
     return this.translate.instant(translationKey)
   }
+
   getListPendingApproval(): void {
     this.userProfileService.listApprovalPendingFields()
     .pipe(takeUntil(this.destroySubject$))
@@ -269,9 +270,9 @@ export class HomeComponent implements OnInit, AfterViewInit {
         if (_obj.profileDetails) {
           if (!_obj.profileDetails.verifiedKarmayogi && (this.pendingApprovalList && this.pendingApprovalList.length)
             && (profilePopUp === 'true' || profilePopUp === null)) {
-            this.isNudgeOpen = false
-          } else {
             this.isNudgeOpen = true
+          } else {
+            this.isNudgeOpen = false
           }
         } else {
           this.isNudgeOpen = true
@@ -349,7 +350,7 @@ export class HomeComponent implements OnInit, AfterViewInit {
   }
 
   fetchProfile() {
-    this.router.navigate(['/app/user-profile/details'])
+    this.router.navigate(['/app/person-profile/me'])
   }
 
   closeKarmaPointsPanel() {
