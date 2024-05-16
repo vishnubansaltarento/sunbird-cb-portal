@@ -31,6 +31,7 @@ import { NSProfileDataV3 } from '@ws/app/src/lib/routes/profile-v3/models/profil
 import { NPSGridService } from '@sunbird-cb/collection/src/lib/grid-layout/nps-grid.service'
 import moment from 'moment'
 import { TranslateService } from '@ngx-translate/core'
+import { SbUiResolverService } from '@sunbird-cb/resolver-v2'
 // import { of } from 'rxjs'
 /* tslint:enable */
 // interface IDetailsResponse {
@@ -77,6 +78,7 @@ export class InitService {
     private configSvc: ConfigurationsService,
     private authSvc: AuthKeycloakService,
     private widgetResolverService: WidgetResolverService,
+    private sbUiResolverService: SbUiResolverService,
     private settingsSvc: BtnSettingsService,
     private userPreference: UserPreferenceService,
     private http: HttpClient,
@@ -242,6 +244,12 @@ export class InitService {
     const widgetConfig = await widgetStatusPromise
     this.processWidgetStatus(widgetConfig)
     this.widgetResolverService.initialize(
+      this.configSvc.restrictedWidgets,
+      this.configSvc.userRoles,
+      this.configSvc.userGroups,
+      this.configSvc.restrictedFeatures,
+    )
+    this.sbUiResolverService.initialize(
       this.configSvc.restrictedWidgets,
       this.configSvc.userRoles,
       this.configSvc.userGroups,

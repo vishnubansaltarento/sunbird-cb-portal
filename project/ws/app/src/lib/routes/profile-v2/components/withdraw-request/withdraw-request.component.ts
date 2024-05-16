@@ -24,8 +24,7 @@ export class WithdrawRequestComponent implements OnInit, OnDestroy {
     private matSnackBar: MatSnackBar,
     private userProfileService: UserProfileService,
     private configService: ConfigurationsService
-  ) {
-  }
+  ) { }
 
   ngOnInit() {
   }
