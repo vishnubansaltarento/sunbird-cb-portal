@@ -34,6 +34,7 @@ import {
   StickyHeaderModule,
 } from '@sunbird-cb/collection'
 import { WidgetResolverModule } from '@sunbird-cb/resolver'
+import { SbUiResolverModule } from '@sunbird-cb/resolver-v2'
 import { LoggerService, PipeSafeSanitizerModule, ConfigurationsService, PipeOrderByModule } from '@sunbird-cb/utils'
 import { SearchModule } from '@ws/app/src/public-api'
 import 'hammerjs'
@@ -169,6 +170,7 @@ export function HttpLoaderFactory(http: HttpClient) {
     ...WIDGET_REGISTERED_MODULES,
     ...WIDGET_REGISTERED_LIB_MODULES,
     WidgetResolverModule.forRoot([...WIDGET_REGISTRATION_CONFIG, ...WIDGET_REGISTRATION_LIB_CONFIG]),
+    SbUiResolverModule.forRoot([...WIDGET_REGISTRATION_LIB_CONFIG]),
     StickyHeaderModule,
     ErrorResolverModule,
     // Material Imports
