@@ -9,7 +9,7 @@
           <span class="question-number">&nbsp;{{ total }}</span>
         </p>
       </div>
-      <div class="flex flex-row align-center justify-around">
+      <div class="flex flex-row align-center justify-around" *ngIf="!showQuestionOnly">
         <ng-container *ngIf="ePrimaryCategory.PRACTICE_RESOURCE === primaryCategory && ((questionNumber) <= totalQCount)">
           <div *ngIf="!isMobile"  class="cursor-pointer" [ngClass]="showAnswer ? 'rounded-flag':'rounded-flag-disable'">
             <div class="flex" (click)="checkAns(questionNumber)">

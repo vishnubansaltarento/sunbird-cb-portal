@@ -34,7 +34,14 @@ import { FillInTheBlankComponent } from './components/question/fitb/fitb.compone
 import { MultipleChoiseQuesComponent } from './components/question/mcq-mca/mcq-mca.component'
 import { SingleChoiseQuesComponent } from './components/question/mcq-sca/mcq-sca.component'
 import { MatchTheFollowingQuesComponent } from './components/question/mtf/mtf.component'
-import { TranslateModule } from '@ngx-translate/core'
+import { TranslateModule } from '@ngx-translate/core';
+import { StandaloneAssessmentComponent } from './components/standalone-assessment/standalone-assessment.component';
+import { AssessmentHeaderComponent } from './components/assessment-header/assessment-header.component';
+import { AssessmentFooterComponent } from './components/assessment-footer/assessment-footer.component';
+import { AssessmentQuestionContainerComponent } from './components/assessment-question-container/assessment-question-container.component';
+import { AssessmentQuestionCountContainerComponent } from './components/assessment-question-count-container/assessment-question-count-container.component';
+import { AssessmentPerformanceSummaryComponent } from './components/assessment-performance-summary/assessment-performance-summary.component';
+import { AssessmentPerformanceInsightSummaryComponent } from './components/assessment-performance-insight-summary/assessment-performance-insight-summary.component'
 
 @NgModule({
   declarations: [
@@ -47,6 +54,13 @@ import { TranslateModule } from '@ngx-translate/core'
     ResultComponent,
     SingleChoiseQuesComponent,
     SubmitQuizDialogComponent,
+    StandaloneAssessmentComponent,
+    AssessmentHeaderComponent,
+    AssessmentFooterComponent,
+    AssessmentQuestionContainerComponent,
+    AssessmentQuestionCountContainerComponent,
+    AssessmentPerformanceSummaryComponent,
+    AssessmentPerformanceInsightSummaryComponent,
   ],
   entryComponents: [SubmitQuizDialogComponent],
   imports: [
@@ -74,6 +88,13 @@ import { TranslateModule } from '@ngx-translate/core'
   ],
   exports: [
     PracticeComponent,
+    StandaloneAssessmentComponent,
+    AssessmentHeaderComponent,
+    AssessmentFooterComponent,
+    AssessmentQuestionContainerComponent,
+    AssessmentQuestionCountContainerComponent,
+    AssessmentPerformanceSummaryComponent,
+    AssessmentPerformanceInsightSummaryComponent
   ],
 })
 export class PracticePlModule { }

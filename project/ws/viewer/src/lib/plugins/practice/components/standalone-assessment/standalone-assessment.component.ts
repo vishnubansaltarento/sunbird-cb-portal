@@ -12,31 +12,31 @@ import {
 import { MatDialog, MatSidenav, MatSnackBar } from '@angular/material'
 import { Subscription, interval } from 'rxjs'
 import { filter, map } from 'rxjs/operators'
-import { NSPractice } from './practice.model'
-import { QuestionComponent } from './components/question/question.component'
-import { SubmitQuizDialogComponent } from './components/submit-quiz-dialog/submit-quiz-dialog.component'
+import { NSPractice } from './../../practice.model'
+import { QuestionComponent } from './../question/question.component'
+import { SubmitQuizDialogComponent } from './../submit-quiz-dialog/submit-quiz-dialog.component'
 import { OnConnectionBindInfo } from 'jsplumb'
-import { PracticeService } from './practice.service'
+import { PracticeService } from './../../practice.service'
 import { EventService, NsContent, ValueService, WsEvents } from '@sunbird-cb/utils'
 import { WidgetContentService } from '@sunbird-cb/collection';
 import { ActivatedRoute, NavigationStart, Router } from '@angular/router'
-import { ViewerUtilService } from '../../viewer-util.service'
+import { ViewerUtilService } from '../../../../viewer-util.service'
 // tslint:disable-next-line
 import _ from 'lodash'
-import { NSQuiz } from '../quiz/quiz.model'
+import { NSQuiz } from '../../../quiz/quiz.model'
 import { environment } from 'src/environments/environment'
 import { DomSanitizer, SafeHtml } from '@angular/platform-browser'
-import { ViewerDataService } from '../../viewer-data.service'
-import { ViewerHeaderSideBarToggleService } from './../../viewer-header-side-bar-toggle.service'
+import { ViewerDataService } from '../../../../viewer-data.service'
+import { ViewerHeaderSideBarToggleService } from './../../../../viewer-header-side-bar-toggle.service'
 // import { ViewerDataService } from '../../viewer-data.service'
 export type FetchStatus = 'hasMore' | 'fetching' | 'done' | 'error' | 'none'
 @Component({
-  selector: 'viewer-plugin-practice',
-  templateUrl: './practice.component.html',
-  styleUrls: ['./practice.component.scss'],
+  selector: 'viewer-standalone-assessment',
+  templateUrl: './standalone-assessment.component.html',
+  styleUrls: ['./standalone-assessment.component.scss'],
 })
 // ComponentCanDeactivate
-export class PracticeComponent implements OnInit, OnChanges, OnDestroy {
+export class StandaloneAssessmentComponent implements OnInit, OnChanges, OnDestroy {
   @Input() identifier = ''
   @Input() artifactUrl = ''
   @Input() name = ''
@@ -241,8 +241,12 @@ export class PracticeComponent implements OnInit, OnChanges, OnDestroy {
     if (this.quizSvc.questionAnswerHash.value) {
       this.questionAnswerHash = this.quizSvc.questionAnswerHash.getValue()
     }
+    // console.log(this.vws.resource)    
+    console.log('contentData-->',this.widgetContentService.currentMetaData.primaryCategory);
     this.coursePrimaryCategory = this.widgetContentService.currentMetaData.primaryCategory;
   }
+
+  
   get getTimeLimit(): number {
     let jsonTime = (this.quizJson.timeLimit || 0)
     if (this.retake && jsonTime === 0) {
@@ -333,6 +337,7 @@ export class PracticeComponent implements OnInit, OnChanges, OnDestroy {
       return []
     }
     const qq = _.filter(this.quizJson.questions, { section: this.selectedSection.identifier })
+    
     return qq
   }
   nextSection(section: NSPractice.IPaperSection) {
@@ -537,6 +542,8 @@ export class PracticeComponent implements OnInit, OnChanges, OnDestroy {
         }
       }
     }
+    console.log(this.quizJson);
+    // this.current_Question = this.quizJson.questions[0];
   }
   getNextQuestion(idx: any) {
     this.process = true

@@ -216,7 +216,7 @@
           </ng-container>
         </a>
       </ng-container>
-      <!-- INVITE ONLY STANDALONE ASSESSMENT block-->
+      <!-- INVITE ONLY STANDALONE ASSESSMENT block-->      
       <ng-container
         *ngIf="content?.primaryCategory === primaryCategory.STANDALONE_ASSESSMENT && !batchData?.enrolled && !enrollBtnLoading && content?.courseCategory === 'Invite-Only Assessment'">
         
@@ -240,7 +240,7 @@
       </ng-container>
       
       <!-- STANDALONE_ASSESSMENT enrolled black -->
-      <ng-container *ngIf="content?.primaryCategory === primaryCategory.STANDALONE_ASSESSMENT && batchData?.enrolled && !enrollBtnLoading">
+      <ng-container *ngIf="content?.primaryCategory === primaryCategory.STANDALONE_ASSESSMENT && batchData?.enrolled && !enrollBtnLoading && content?.courseCategory !== 'Invite-Only Assessment'">
         <a class="flex action-button justify-center resume" [routerLink]="firstResourceLink?.url"
           [queryParams]="(resumeData && !certData) ? generateQuery('RESUME') : generateQuery('START')">
           <ng-container *ngIf="content.completionPercentage === 100">{{ 'apptochome.takeTestAgain' | translate }}</ng-container>

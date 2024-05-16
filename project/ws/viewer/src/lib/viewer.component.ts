@@ -155,7 +155,7 @@ export class ViewerComponent implements OnInit, OnDestroy, AfterViewChecked {
     this.enrollmentList = this.activatedRoute.snapshot.data.enrollmentData
     && this.activatedRoute.snapshot.data.enrollmentData.data || ''
     && this.activatedRoute.snapshot.data.contentRead.data || ''
-
+    console.log('contentData-->', contentData);
     if (contentData && contentData.result && contentData.result.content) {
       this.hierarchyData = contentData.result.content
       this.manipulateHierarchyData()

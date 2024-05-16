@@ -1,7 +1,9 @@
 <viewer-overview *ngIf="viewState === 'initial'" [learningObjective]="learningObjective"
   [complexityLevel]="complexityLevel" [duration]="duration" [timeLimit]="getTimeLimit"
   [primaryCategory]="primaryCategory" [canAttempt]="canAttempt" [noOfQuestions]="noOfQuestions"
-  (userSelection)="getSections($event)">
+  (userSelection)="getSections($event)"
+  [coursePrimaryCategory]="coursePrimaryCategory"
+  >
 </viewer-overview>
 
 <div class="calculate-overlay" *ngIf="showOverlay"> 
@@ -16,8 +18,8 @@
    
 </div>
 
-<!-- Desktop -->
-<div #quizContainer class="quiz-container" *ngIf="viewState !== 'initial' && !isMobile && fetchingQuestionsStatus === 'done'">
+<!-- Desktop Not Standalone Assessment -->
+<div #quizContainer class="quiz-container" *ngIf="viewState !== 'initial' && !isMobile && fetchingQuestionsStatus === 'done' && coursePrimaryCategory !== 'Standalone Assessment'">
   <!-- <div class="flex flex-column quiz_inner_container"> -->
   <!-- <nav class="quiz-nav-bar mat-toolbar mat-caption flex-column">
       <div class="flex flex-1">
@@ -376,6 +378,21 @@
       </div>
     </ng-container>
   </div>
+</div>
+
+<div #quizContainer class="quiz-container" *ngIf="viewState !== 'initial' && !isMobile && fetchingQuestionsStatus === 'done' && coursePrimaryCategory === 'Standalone Assessment'">  
+  <viewer-standalone-assessment
+  [identifier]="identifier"
+  [artifactUrl]="artifactUrl"
+  [name]="name"
+  [learningObjective]="learningObjective"
+  [complexityLevel]="complexityLevel"
+  [duration]="duration"
+  [collectionId]="collectionId"
+  [primaryCategory]="primaryCategory"
+  [quizData]="quizData"
+  [quizJson]="quizJson"
+  ></viewer-standalone-assessment>
 </div>
 
 <!-- Mobile -->
