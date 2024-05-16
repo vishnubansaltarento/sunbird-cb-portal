@@ -46,6 +46,7 @@ export const MY_FORMATS = {
 const EMAIL_PATTERN = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/
 const MOBILE_PATTERN = /^[0]?[6789]\d{9}$/
 const PIN_CODE_PATTERN = /^[1-9][0-9]{5}$/
+const EMP_ID_PATTERN = /^[a-z0-9]+$/i
 
 @Component({
   selector: 'app-profile-view',
@@ -115,7 +116,7 @@ export class ProfileViewComponent implements OnInit, AfterViewInit, OnDestroy {
   // feedbackInfo = ''
   skeletonLoader = false
   otherDetailsForm = new FormGroup({
-    employeeCode: new FormControl('', []),
+    employeeCode: new FormControl('', [Validators.pattern(EMP_ID_PATTERN)]),
     primaryEmail: new FormControl('', [Validators.pattern(EMAIL_PATTERN)]),
     mobile: new FormControl('', [Validators.minLength(10), Validators.maxLength(10), Validators.pattern(MOBILE_PATTERN)]),
     gender: new FormControl('', []),
@@ -140,6 +141,7 @@ export class ProfileViewComponent implements OnInit, AfterViewInit, OnDestroy {
     designation: new FormControl('', [Validators.required]),
   })
   approvalPendingFields = []
+  rejectedByMDOData = []
   contextToken: any
   params: any
 
@@ -240,6 +242,7 @@ export class ProfileViewComponent implements OnInit, AfterViewInit, OnDestroy {
       if (data.profile.data.profileDetails) {
         this.portalProfile = data.profile.data.profileDetails
       }
+      // console.log("this.portalProfile - ", this.portalProfile);
 
       const user = this.portalProfile.userId || this.portalProfile.id || _.get(data, 'profile.data.id') || ''
       if (this.portalProfile && !(this.portalProfile.id && this.portalProfile.userId)) {
@@ -766,6 +769,7 @@ export class ProfileViewComponent implements OnInit, AfterViewInit, OnDestroy {
     .pipe(takeUntil(this.destroySubject$))
     .subscribe((res: any) => {
       if (res.result && res.result.data && Array.isArray(res.result.data)) {
+        this.rejectedByMDOData = res.result.data
         res.result.data.forEach((obj: any) => {
           if (obj.hasOwnProperty('name')) {
             this.rejectedFields.name = obj.name
