@@ -242,7 +242,6 @@ export class ProfileViewComponent implements OnInit, AfterViewInit, OnDestroy {
       if (data.profile.data.profileDetails) {
         this.portalProfile = data.profile.data.profileDetails
       }
-      // console.log("this.portalProfile - ", this.portalProfile);
 
       const user = this.portalProfile.userId || this.portalProfile.id || _.get(data, 'profile.data.id') || ''
       if (this.portalProfile && !(this.portalProfile.id && this.portalProfile.userId)) {
@@ -672,6 +671,8 @@ export class ProfileViewComponent implements OnInit, AfterViewInit, OnDestroy {
     dialogRef.componentInstance.enableWithdraw.subscribe((value: boolean) => {
       if (value) {
         this.enableWTR = true
+        this.getSendApprovalStatus()
+        this.portalProfile.verifiedKarmayogi = false
       }
     })
   }
@@ -686,6 +687,8 @@ export class ProfileViewComponent implements OnInit, AfterViewInit, OnDestroy {
     dialogRef.componentInstance.enableMakeTransfer.subscribe((value: boolean) => {
       if (value) {
         this.enableWTR = false
+        this.unVerifiedObj.group = ''
+        this.unVerifiedObj.designation = ''
       }
     })
   }
@@ -729,13 +732,16 @@ export class ProfileViewComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   getSendApprovalStatus(): void {
-    this.skeletonLoader = true
+  this.skeletonLoader = true
     this.userProfileService.fetchApprovalPendingFields()
     .pipe(takeUntil(this.destroySubject$))
     .subscribe((_res: any) => {
       this.approvalPendingFields = _res.result.data
 
-      if (!this.approvalPendingFields || !this.approvalPendingFields.length) { return }
+      if (!this.approvalPendingFields || !this.approvalPendingFields.length) {
+        this.enableWTR = false
+        return
+      }
       const exists = this.approvalPendingFields.filter((obj: any) => {
         if (obj.hasOwnProperty('name')) {
           this.unVerifiedObj.organization = obj.name
@@ -815,6 +821,7 @@ export class ProfileViewComponent implements OnInit, AfterViewInit, OnDestroy {
       this.matSnackBar.open(this.handleTranslateTo('requestSent'))
       this.editProfile = !this.editProfile
       this.enableWR = true
+      this.portalProfile.verifiedKarmayogi = false
       this.getSendApprovalStatus()
     },         (error: HttpErrorResponse) => {
       if (!error.ok) {
@@ -831,7 +838,6 @@ export class ProfileViewComponent implements OnInit, AfterViewInit, OnDestroy {
       .subscribe((_res: any) => {
         this.unVerifiedObj.group = ''
         this.unVerifiedObj.designation = ''
-        // this.feedbackInfo = ''
         this.matSnackBar.open(this.handleTranslateTo('withdrawRequestSuccess'))
         this.enableWR = false
       },         (error: HttpErrorResponse) => {

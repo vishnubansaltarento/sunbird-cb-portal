@@ -44,7 +44,7 @@
   
               <ng-container *ngIf="!skeletonLoader">
                 <ng-container *ngIf="!editProfile">
-                  <ng-container *ngIf="rejectedFields?.group">
+                  <ng-container *ngIf="(!enableWTR && !enableWR) && rejectedFields?.group">
                     <div class="flex flex-row gap-2 items-center info-value">
                       <div class="flex">{{ rejectedFields?.group }}</div>
                       <div class="profile-rejected">
@@ -53,7 +53,7 @@
                       </div>
                     </div>
                   </ng-container>
-                  <ng-container *ngIf="unVerifiedObj.group && !rejectedFields?.group">
+                  <ng-container *ngIf="(enableWTR || enableWR) && unVerifiedObj.group">
                     <div class="flex flex-row gap-2 items-center info-value">
                       <div class="flex">{{ unVerifiedObj.group }}</div>
                       <div class="profile-not-verified">
@@ -94,7 +94,7 @@
   
               <ng-container *ngIf="!skeletonLoader">
                 <ng-container *ngIf="!editProfile">
-                  <ng-container *ngIf="rejectedFields?.designation">
+                  <ng-container *ngIf="(!enableWTR && !enableWR) && rejectedFields?.designation">
                     <div class="flex flex-row gap-2 items-center info-value">
                       <div class="flex">{{ rejectedFields?.designation }}</div>
                       <div class="profile-rejected">
@@ -104,7 +104,7 @@
                     </div>
                   </ng-container>
                   
-                  <ng-container *ngIf="unVerifiedObj.designation && !rejectedFields?.designation">
+                  <ng-container *ngIf="(enableWTR || enableWR) && unVerifiedObj.designation">
                     <div class="flex flex-row gap-2 items-center info-value">
                       <div class="flex">{{ unVerifiedObj.designation }}</div>
                       <div class="profile-not-verified">
@@ -141,14 +141,16 @@
             </div>
           </div>
   
-          <ng-container *ngFor="let item of rejectedByMDOData">
-            <ng-container *ngIf="item?.comment">
-              <div class="flex flex-col sm:flex-row gap-2 sm:items-center">
-                <div class="flex items-center gap-1 info-text">
-                  <mat-icon>info</mat-icon>
-                  <div class="flex">{{ item?.comment }}</div>
+          <ng-container *ngIf="(!approvalPendingFields || !approvalPendingFields.length) && !portalProfile?.verifiedKarmayogi">
+            <ng-container *ngFor="let item of rejectedByMDOData">
+              <ng-container *ngIf="item?.comment">
+                <div class="flex flex-col sm:flex-row gap-2 sm:items-center">
+                  <div class="flex items-center gap-1 info-text">
+                    <mat-icon>info</mat-icon>
+                    <div class="flex">{{ item?.comment }}</div>
+                  </div>
                 </div>
-              </div>
+              </ng-container>
             </ng-container>
           </ng-container>
   
