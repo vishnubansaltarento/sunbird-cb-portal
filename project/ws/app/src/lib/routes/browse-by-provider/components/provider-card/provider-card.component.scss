@@ -91,3 +91,18 @@
 ::ng-deep .mat-drawer-content  {
     overflow: hidden!important;
 }
+
+
+.txt-ellipsis-3 {
+  display: inline;
+  -webkit-line-clamp: 3;
+  text-overflow: ellipsis;
+  overflow: hidden;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  word-wrap: break-word;
+}
+
+.width-inherit {
+    width: inherit;
+}

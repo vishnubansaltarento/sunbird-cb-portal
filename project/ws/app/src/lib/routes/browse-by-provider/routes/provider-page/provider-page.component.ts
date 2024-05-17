@@ -13,6 +13,9 @@ export class ProviderPageComponent implements OnInit {
   navList: any
   hideCompetencyBlock = false
   sectionList: any = []
+  titles = [
+    { title: `Providers`, url: `/app/learn/browse-by/provider/all-providers`, textClass:'ws-mat-black60-text', icon: '', disableTranslate: true }
+  ]
 
   constructor(private route: ActivatedRoute) {
 
@@ -31,6 +34,10 @@ export class ProviderPageComponent implements OnInit {
     this.route.params.subscribe(params => {
       this.providerName = params['provider']
       this.providerId = params['orgId']
+      this.titles.push({
+        title: this.providerName, icon: '', url: 'none', disableTranslate: true,
+        textClass: ''
+      })
     })
     this.getNavitems()
   }
