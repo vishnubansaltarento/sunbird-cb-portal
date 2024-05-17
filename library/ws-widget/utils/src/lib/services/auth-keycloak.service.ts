@@ -193,7 +193,7 @@ export class AuthKeycloakService {
 
     }
     storage.removeItem(storageKey)
-    await this.http.get('/apis/reset').toPromise()
+    await this.http.get('/apis/reset', { headers }).toPromise()
   }
   private addKeycloakEventListener() {
     this.keycloakSvc.keycloakEvents$.subscribe((event: KeycloakEvent) => {
