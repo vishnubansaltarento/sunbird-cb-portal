@@ -25,7 +25,7 @@ const API_ENDPOINTS = {
   getProfilePageMeta: '/apis/protected/v8/user/profileRegistry/getProfilePageMeta',
   getAllDepartments: '/apis/protected/v8/portal/listDeptNames',
   approveRequest: '/apis/protected/v8/workflowhandler/transition',
-  getPendingFields: '/apis/protected/v8/workflowhandler/userWFApplicationFieldsSearch',
+  getPendingFields: '/apis/proxies/v8/workflow/v2/userWFApplicationFieldsSearch',
   getApprovalPendingFields: '/apis/proxies/v8/workflow/v2/userWFApplicationFieldsSearch',
   getDesignation: '/apis/proxies/v8/user/v1/positions',
   editProfileDetails: '/apis/proxies/v8/user/v1/extPatch',

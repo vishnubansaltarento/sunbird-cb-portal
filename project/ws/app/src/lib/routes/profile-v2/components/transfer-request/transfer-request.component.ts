@@ -82,7 +82,8 @@ export class TransferRequestComponent implements OnInit, OnDestroy {
     this.userProfileService.editProfileDetails(postData)
     .pipe(takeUntil(this.destroySubject$))
     .subscribe((_res: any) => {
-      this.matSnackBar.open(this.handleTranslateTo('transferRequestSent'))
+      this.matSnackBar.open('Your transfer request has been sent for approval')
+      // this.matSnackBar.open(this.handleTranslateTo('transferRequestSent'))
       this.enableWithdraw.emit(true)
       this.handleCloseModal()
     },         (error: HttpErrorResponse) => {
