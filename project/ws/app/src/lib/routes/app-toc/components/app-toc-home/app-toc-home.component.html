@@ -221,7 +221,7 @@
         *ngIf="content?.primaryCategory === primaryCategory.STANDALONE_ASSESSMENT && !batchData?.enrolled && !enrollBtnLoading && content?.courseCategory === 'Invite-Only Assessment'">
         
           <ng-container *ngIf="!forPreview || isInIFrame; else authView" i18n>
-            <span class="font-bold shadow-lg text-info-div" i18n>You are not Invited for this Assessment </span>
+            <span class="font-bold shadow-lg text-info-div" i18n>{{ 'apptochome.youAreNotInvitedForAssessment' | translate }} </span>
           </ng-container>
       </ng-container>
       <ng-container
@@ -240,7 +240,7 @@
       </ng-container>
       
       <!-- STANDALONE_ASSESSMENT enrolled black -->
-      <ng-container *ngIf="content?.primaryCategory === primaryCategory.STANDALONE_ASSESSMENT && batchData?.enrolled && !enrollBtnLoading">
+      <ng-container *ngIf="content?.primaryCategory === primaryCategory.STANDALONE_ASSESSMENT && batchData?.enrolled && !enrollBtnLoading && content?.courseCategory !== 'Invite-Only Assessment'">
         <a class="flex action-button justify-center resume" [routerLink]="firstResourceLink?.url"
           [queryParams]="(resumeData && !certData) ? generateQuery('RESUME') : generateQuery('START')">
           <ng-container *ngIf="content.completionPercentage === 100">{{ 'apptochome.takeTestAgain' | translate }}</ng-container>
