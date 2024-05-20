@@ -12,6 +12,8 @@
                                 <ng-container *ngIf="column?.enabled" [ngSwitch]="column?.key">
                                     <ng-container *ngSwitchCase="'topSection'" [ngTemplateOutlet]="topSection"
                                         [ngTemplateOutletContext]="{data: column?.data}"></ng-container>
+                                    <ng-container *ngSwitchCase="'trainingCalendar'" [ngTemplateOutlet]="trainingCalendar"
+                                        [ngTemplateOutletContext]="{trainingCalendar: column.data}"></ng-container>
                                     <ng-container *ngSwitchCase="'contributors'" [ngTemplateOutlet]="contributors"
                                         [ngTemplateOutletContext]="{data: column?.data}"></ng-container>
                                     <ng-container *ngSwitchCase="'infra'" [ngTemplateOutlet]="infra"
@@ -20,8 +22,6 @@
                                         [ngTemplateOutletContext]="{contentStrip: column?.data}"></ng-container>
                                     <ng-container *ngSwitchCase="'contentTopStrip'" [ngTemplateOutlet]="contentStrip"
                                         [ngTemplateOutletContext]="{contentStrip: column?.data}"></ng-container>
-                                    <ng-container *ngSwitchCase="'calendar'" [ngTemplateOutlet]="calendar"
-                                        [ngTemplateOutletContext]="{calendar: column?.data}"></ng-container>
                                     <ng-container *ngSwitchCase="'bmetrics'" [ngTemplateOutlet]="bmetrics"
                                         [ngTemplateOutletContext]="{bmetrics: column}"></ng-container>  
                                     <ng-container *ngSwitchCase="'competency'" [ngTemplateOutlet]="competency"
@@ -117,7 +117,7 @@
                     </div>
                 </div>
                 <div class="col-span-12 md:col-span-9">
-                    <sb-uic-common-strip [widgetData]="data"></sb-uic-common-strip>
+                    <!-- <sb-uic-common-strip [widgetData]="data"></sb-uic-common-strip> -->
                 </div>
             </div>
             <div class="w-full section-divider pt-6">
@@ -176,3 +176,34 @@
     </div>
 </ng-template>
 <!-- End Competencies -->
+
+
+<ng-template #trainingCalendar let-trainingCalendar="trainingCalendar">
+    <div class="hidden md:block">
+        <div class="col-span-12 px-8 py-8" [style.background]="trainingCalendar?.background">
+            <div class="container-balanced flex flex-col">
+                <sb-uic-calender [objectData]="trainingCalendar" [fetchDataFromApi]="true" [layoutType]="'grid'"></sb-uic-calender>
+            </div>
+            <div class="flex item-center justify-center">
+                <button mat-button type="button" class="view-btn margin-left-xs margin-right-xs small-button blue-border flex-auto-display">
+                    <span class="mat-heading-1 bold ws-mat-default-text" i18n>
+                        {{trainingCalendar?.contentButton?.title}}
+                    </span>
+                </button>
+            </div>
+        </div>
+    </div>
+    <div class="block md:hidden">
+        <div class="col-span-12 px-5 py-3 mob-header">{{trainingCalendar?.title}}:  May 2024</div>
+        <div class="col-span-12">
+            <sb-uic-calender [objectData]="trainingCalendar" [fetchDataFromApi]="true" [layoutType]="'row'"></sb-uic-calender>
+        </div>
+        <div class="col-span-12 flex item-center justify-center pb-5" [style.background]="trainingCalendar?.mobileBackground">
+            <button mat-button type="button" class="view-btn margin-left-xs margin-right-xs small-button blue-border flex-auto-display">
+                <span class="mat-heading-1 bold ws-mat-default-text" i18n>
+                    {{trainingCalendar?.contentButton?.title}}
+                </span>
+            </button>
+        </div>
+    </div>
+</ng-template>
