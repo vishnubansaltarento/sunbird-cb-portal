@@ -159,3 +159,9 @@
 
 
 }
+
+::ng-deep  .mat-gyaan-filter{
+    label  {
+        text-wrap: balance;
+    }
+}
