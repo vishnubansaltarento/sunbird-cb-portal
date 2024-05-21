@@ -109,7 +109,7 @@ export class GridLayoutComponent extends WidgetBaseComponent
         if (value) {
           if (localStorage.getItem('ratingformID')) {
             this.isNPSOpen = true
-            this.submitBtnClick = true
+            // this.submitBtnClick = true
             if (this.isNPSOpen) {
               this.configSvc.updatePlatformRatingMethod({ bottom: '190px' })
             }
