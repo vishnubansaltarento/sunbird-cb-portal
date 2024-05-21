@@ -72,7 +72,7 @@
                     <div class="block md:hidden overflow-y-auto mb-3">
                         <sb-uic-data-points [providerId]="providerId" [fetchDataFromApi]="true"  [objectData]="data?.metrics?.data" [layoutType]="'singleRow'"></sb-uic-data-points>
                     </div>
-                    <button  [routerLink]="[data?.contentButton?.redirectUrl, providerName, providerId, 'all-CBP']" mat-button type="button" class="view-btn margin-left-xs margin-right-xs small-button blue-border flex-auto-display">
+                    <button [routerLink]="[data?.contentButton?.redirectUrl, providerName, providerId, 'all-CBP']" mat-button type="button" class="view-btn margin-left-xs margin-right-xs small-button blue-border flex-auto-display">
                         <span class="mat-heading-1 bold ws-mat-default-text" i18n>
                             {{data?.contentButton?.title}}
                         </span>
@@ -182,10 +182,18 @@
     <div class="hidden md:block">
         <div class="col-span-12 px-8 py-8" [style.background]="trainingCalendar?.background">
             <div class="container-balanced flex flex-col">
-                <sb-uic-calender [objectData]="trainingCalendar" [fetchDataFromApi]="true" [layoutType]="'grid'"></sb-uic-calender>
+                <sb-uic-calender
+                    [objectData]="trainingCalendar"
+                    [fetchDataFromApi]="true"
+                    [layoutType]="'grid'"
+                    [defaultDays]="trainingCalendar?.defaultDays"
+                    [providerId]="providerId">
+                </sb-uic-calender>
             </div>
             <div class="flex item-center justify-center">
-                <button mat-button type="button" class="view-btn margin-left-xs margin-right-xs small-button blue-border flex-auto-display">
+                <button mat-button type="button"
+                    [routerLink]="[trainingCalendar?.contentButton?.redirectUrl, providerName, providerId, 'training-calendar']"
+                    class="view-btn margin-left-xs margin-right-xs small-button blue-border flex-auto-display">
                     <span class="mat-heading-1 bold ws-mat-default-text" i18n>
                         {{trainingCalendar?.contentButton?.title}}
                     </span>
@@ -194,12 +202,20 @@
         </div>
     </div>
     <div class="block md:hidden">
-        <div class="col-span-12 px-5 py-3 mob-header">{{trainingCalendar?.title}}:  May 2024</div>
+        <div class="col-span-12 px-5 py-3 mob-header">{{trainingCalendar?.title}}:  {{currentMonthAndYear}}</div>
         <div class="col-span-12">
-            <sb-uic-calender [objectData]="trainingCalendar" [fetchDataFromApi]="true" [layoutType]="'row'"></sb-uic-calender>
+            <sb-uic-calender
+                [objectData]="trainingCalendar"
+                [fetchDataFromApi]="true"
+                [layoutType]="'row'"
+                [defaultDays]="trainingCalendar?.defaultDays"
+                [providerId]="providerId">
+            </sb-uic-calender>
         </div>
-        <div class="col-span-12 flex item-center justify-center pb-5" [style.background]="trainingCalendar?.mobileBackground">
-            <button mat-button type="button" class="view-btn margin-left-xs margin-right-xs small-button blue-border flex-auto-display">
+        <div class="col-span-12 flex item-center justify-center">
+            <button mat-button type="button"
+                [routerLink]="[trainingCalendar?.contentButton?.redirectUrl, providerName, providerId, 'training-calendar']"
+                class="view-btn margin-left-xs margin-right-xs small-button blue-border flex-auto-display">
                 <span class="mat-heading-1 bold ws-mat-default-text" i18n>
                     {{trainingCalendar?.contentButton?.title}}
                 </span>

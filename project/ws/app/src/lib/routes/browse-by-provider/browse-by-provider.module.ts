@@ -1,5 +1,5 @@
 import { NgModule, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core'
-import { CommonModule } from '@angular/common'
+import { CommonModule, DatePipe } from '@angular/common'
 import { BrowseByProviderRoutingModule } from './browse-by-provider-routing.module'
 import { BtnPageBackModule, CardContentModule, ContentStripWithTabsModule, SlidersModule } from '@sunbird-cb/collection'
 import {
@@ -44,9 +44,10 @@ import { HttpClient } from '@angular/common/http'
 import { TranslateModule, TranslateLoader } from '@ngx-translate/core'
 import { HttpLoaderFactory } from 'src/app/app.module'
 import { ProviderPageComponent } from './routes/provider-page/provider-page.component'
-import { CardsModule, CommonStripModule, CompetencyPassbookModule, ContentStripWithTabsLibModule, DataPointsModule, SlidersLibModule } from '@sunbird-cb/consumption'
+import { CalenderModule, CardsModule, CommonStripModule, CompetencyPassbookModule, ContentStripWithTabsLibModule, DataPointsModule, SlidersLibModule } from '@sunbird-cb/consumption'
 import { ProviderFormResolverService } from './services/provider-form-resolver.service'
-import { FormExtService } from 'src/app/services/form-ext.service'
+import { FormExtService } from 'src/app/services/form-ext.service';
+import { ProviderCalendarComponent } from './routes/provider-calendar/provider-calendar.component'
 
 @NgModule({
   declarations: [
@@ -59,6 +60,7 @@ import { FormExtService } from 'src/app/services/form-ext.service'
     PopularProviderCardComponent,
     ProviderCardComponent,
     ProviderPageComponent,
+    ProviderCalendarComponent,
   ],
   imports: [
     CommonModule,
@@ -99,6 +101,7 @@ import { FormExtService } from 'src/app/services/form-ext.service'
     DataPointsModule,
     SlidersLibModule,
     CommonStripModule,
+    CalenderModule,
     CardsModule,
     TranslateModule.forRoot({
       loader: {
@@ -108,7 +111,7 @@ import { FormExtService } from 'src/app/services/form-ext.service'
       },
     }),
   ],
-  providers: [BrowseProviderService, ProviderFormResolverService, FormExtService],
+  providers: [BrowseProviderService, DatePipe, ProviderFormResolverService, FormExtService],
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
 })
 export class BrowseByProviderModule { }
