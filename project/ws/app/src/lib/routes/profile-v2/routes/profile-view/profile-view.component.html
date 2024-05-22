@@ -69,9 +69,15 @@
                       <mat-icon class="verified-check">check_circle</mat-icon>
                     </div>
                   </ng-container>
-                  <div class="info-value"
+                  <div class="flex flex-row gap-2 items-center info-value"
                     *ngIf="!unVerifiedObj.group && !rejectedFields.group && (!portalProfile?.professionalDetails?.length || !portalProfile?.professionalDetails[0]?.group)">
-                    NA</div>
+                    NA<div>
+                      <div class="flex">{{ unVerifiedObj.designation }}</div>
+                      <div class="profile-not-verified">
+                        <div class="text">{{ 'profileInfo.notVerified' | translate }}</div>
+                        <mat-icon>info_outline</mat-icon>
+                      </div>
+                    </div></div>
                 </ng-container>
   
                 <ng-container *ngIf="editProfile">
@@ -120,9 +126,15 @@
                       <mat-icon class="verified-check">check_circle</mat-icon>
                     </div>
                   </ng-container>
-                  <div class="info-value"
+                  <div class="flex flex-row gap-2 items-center info-value"
                     *ngIf="!unVerifiedObj.designation && !rejectedFields?.designation && (!portalProfile?.professionalDetails?.length || !portalProfile?.professionalDetails[0]?.designation)">
-                    NA</div>
+                    NA<div class="">
+                      <div class="flex">{{ unVerifiedObj.designation }}</div>
+                      <div class="profile-not-verified">
+                        <div class="text">{{ 'profileInfo.notVerified' | translate }}</div>
+                        <mat-icon>info_outline</mat-icon>
+                      </div>
+                    </div></div>
                 </ng-container>
                 <ng-container *ngIf="editProfile">
                   <div class="flex flex-col designation">
@@ -493,7 +505,12 @@
           <mat-icon class="cursor-pointer" (click)="editName = !editName">edit</mat-icon>
         </div>
         <div class="flex flex-row gap-4 items-center edit-name" *ngIf="editName">
-          <input type="text" [(ngModel)]="profileName" class="input-text" />
+          <!--  pattern="/^[a-z0-9._-]+$/i" -->
+          <input #profileNameVar="ngModel" type="text" name="profileNameVar" [(ngModel)]="profileName" class="input-text"/>          
+          <!-- <div
+            *ngIf="profileNameVar.invalid && (profileNameVar.dirty || profileNameVar.touched)"
+            class="alert"
+          >Test</div> -->
           <mat-icon class="save cursor-pointer" (click)="handleUpdateName()">check</mat-icon>
           <mat-icon (click)="editName = !editName" class="cancel cursor-pointer">close</mat-icon>
         </div>
