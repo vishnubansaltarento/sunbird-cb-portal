@@ -7,6 +7,7 @@ import { ProviderAllCbpComponent } from './routes/provider-all-cbp/provider-all-
 // import { InsightsComponent } from './routes/insights/insights.component'
 import { ProviderPageComponent } from './routes/provider-page/provider-page.component'
 import { ProviderFormResolverService } from './services/provider-form-resolver.service'
+import { ProviderCalendarComponent } from './routes/provider-calendar/provider-calendar.component'
 
 const routes: Routes = [
   {
@@ -66,12 +67,23 @@ const routes: Routes = [
     path: ':provider/:orgId/micro-sites',
     component: ProviderPageComponent,
     data: {
-      pageId: ':provider/:orgId',
+      pageId: ':provider/:orgId/micro-sites',
       module: 'explore',
     },
     resolve: {
       formData: ProviderFormResolverService,
     },
+  },
+  {
+    path: ':provider/:orgId/training-calendar',
+    component: ProviderCalendarComponent,
+    data: {
+      pageId: ':provider/:orgId/training-calendar',
+      module: 'explore',
+    },
+    resolve: {
+      formData: ProviderFormResolverService,
+    },    
   },
 ]
 

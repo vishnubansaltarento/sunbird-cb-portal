@@ -1,3 +1,4 @@
+import { DatePipe } from '@angular/common'
 import { Component, OnInit } from '@angular/core'
 import { ActivatedRoute } from '@angular/router'
 
@@ -13,6 +14,7 @@ export class ProviderPageComponent implements OnInit {
   navList: any
   hideCompetencyBlock = false
   sectionList: any = []
+  currentMonthAndYear: any
   titles = [
     { title: `Providers`,
       url: `/app/learn/browse-by/provider/all-providers`,
@@ -21,7 +23,7 @@ export class ProviderPageComponent implements OnInit {
     },
   ]
 
-  constructor(private route: ActivatedRoute) {
+  constructor(private route: ActivatedRoute, private datePipe: DatePipe) {
 
   }
 
@@ -44,6 +46,7 @@ export class ProviderPageComponent implements OnInit {
       })
     })
     this.getNavitems()
+    this.currentMonthAndYear = this.datePipe.transform( new Date(), 'MMMM y')
   }
 
   getNavitems() {
