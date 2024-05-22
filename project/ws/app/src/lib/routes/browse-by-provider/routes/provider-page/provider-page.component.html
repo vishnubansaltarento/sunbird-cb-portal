@@ -1,3 +1,6 @@
+<ws-widget-btn-page-back [widgetData]="{ url: 'home', titles: titles, textClass:'ws-mat-black60-text' }">
+</ws-widget-btn-page-back>
+
 <div class="container-fluid" id="section-micro-sites">
     <div class="flex flex-col flex-1">
         <ng-container *ngIf="sectionList?.length">
@@ -8,6 +11,8 @@
                             <div id="{{column?.key}}" class="col-span-{{column.colspan || 12}} ">
                                 <ng-container *ngIf="column?.enabled" [ngSwitch]="column?.key">
                                     <ng-container *ngSwitchCase="'topSection'" [ngTemplateOutlet]="topSection"
+                                        [ngTemplateOutletContext]="{data: column?.data}"></ng-container>
+                                    <ng-container *ngSwitchCase="'contributors'" [ngTemplateOutlet]="contributors"
                                         [ngTemplateOutletContext]="{data: column?.data}"></ng-container>
                                     <ng-container *ngSwitchCase="'infra'" [ngTemplateOutlet]="infra"
                                         [ngTemplateOutletContext]="{infra: column?.data}"></ng-container>
@@ -40,7 +45,6 @@
 
 </div>
 
-
 <ng-template #topSection let-data="data">
     <!-- <div class="w-full grid grid-cols-12 gap-4"> -->
         <div class="col-span-12 christy">
@@ -62,8 +66,8 @@
                         <img alt="Application Logo" class="logo-img" [src]="data?.logo">
                     </div>
                 </div>
-                <div class="flex-1 flex flex-col">
-                    <h1>{{data?.title || providerName}}</h1>
+                <div class="w-full md:w-9/12 flex-1 flex flex-col">
+                    <h1 class=" txt-ellipsis-2 break-words">{{data?.title || providerName}}</h1>
                     <p>{{data?.description}}</p>
                     <div class="block md:hidden overflow-y-auto mb-3">
                         <sb-uic-data-points [providerId]="providerId" [fetchDataFromApi]="true"  [objectData]="data?.metrics?.data" [layoutType]="'singleRow'"></sb-uic-data-points>
@@ -90,6 +94,36 @@
             </div>
         </div>
     </ng-container>
+</ng-template>
+
+<ng-template #contributors  let-data="data">
+    <div class="contributors-background px-5 py-5" [style.background]="data?.background">
+        <div class="container">
+            <div class="grid grid-cols-12 gap-4 padding-top-l mb-6">
+                <div class="col-span-12 md:col-span-3 contributor-desc">
+                    <div class="infra-box flex flex-col">
+                        <div class="infra-title hidden md:block">
+                            {{data.detaulTitle}}
+                        </div>
+                        <div class="infra-title2 hidden md:block">
+                            {{data.myTitle}}
+                        </div>
+                        <div class="block md:hidden">
+                            <span class="infra-title">{{data.detaulTitle}}</span> <span class="infra-title2"> {{data.myTitle}}</span>
+                        </div>
+                        <div class="infra-description padding-top-s">
+                            {{data.description}}
+                        </div>
+                    </div>
+                </div>
+                <div class="col-span-12 md:col-span-9">
+                    <sb-uic-common-strip [widgetData]="data"></sb-uic-common-strip>
+                </div>
+            </div>
+            <div class="w-full section-divider pt-6">
+            </div>
+        </div>
+    </div>
 </ng-template>
 
 <ng-template #infra let-infra="infra">
@@ -120,7 +154,7 @@
     </div>
     <div class="infra-background slider-background" [style.background]="infra?.background">
     </div>
-    <div class="slider-background1">
+    <div class="slider-background1 mb-8">
         <div class="container-balanced w-full slider-background-2">
             <div class="info-slider">
                 <sb-uic-sliders [widgetData]="infra?.sliderData?.sliders" [styleData]="infra?.sliderData?.styleData"></sb-uic-sliders>
@@ -138,7 +172,7 @@
             </div>
             
         </div>
-        <img class="absolute " src="assets/icons/microsite/competency.svg" alt="">
+        <img class="absolute comp-back-img" src="assets/icons/microsite/competency.svg" alt="">
     </div>
 </ng-template>
 <!-- End Competencies -->

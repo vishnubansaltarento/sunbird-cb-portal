@@ -24,6 +24,7 @@ import {
   MatTooltipModule,
   MatChipsModule,
   MatCheckboxModule,
+  MatMenuModule,
 } from '@angular/material'
 
 import {
@@ -42,6 +43,7 @@ import { AssessmentQuestionContainerComponent } from './components/assessment-qu
 import { AssessmentQuestionCountContainerComponent } from './components/assessment-question-count-container/assessment-question-count-container.component';
 import { AssessmentPerformanceSummaryComponent } from './components/assessment-performance-summary/assessment-performance-summary.component';
 import { AssessmentPerformanceInsightSummaryComponent } from './components/assessment-performance-insight-summary/assessment-performance-insight-summary.component'
+import { FinalAssessmentPopupComponent } from './components/final-assessment-popup/final-assessment-popup.component'
 
 @NgModule({
   declarations: [
@@ -61,8 +63,12 @@ import { AssessmentPerformanceInsightSummaryComponent } from './components/asses
     AssessmentQuestionCountContainerComponent,
     AssessmentPerformanceSummaryComponent,
     AssessmentPerformanceInsightSummaryComponent,
+    FinalAssessmentPopupComponent,
   ],
-  entryComponents: [SubmitQuizDialogComponent],
+  entryComponents: [
+    SubmitQuizDialogComponent,
+    FinalAssessmentPopupComponent,
+  ],
   imports: [
     CommonModule,
     PipeDurationTransformModule,
@@ -85,6 +91,7 @@ import { AssessmentPerformanceInsightSummaryComponent } from './components/asses
     MatChipsModule,
     SkeletonLoaderModule,
     TranslateModule,
+    MatMenuModule,
   ],
   exports: [
     PracticeComponent,

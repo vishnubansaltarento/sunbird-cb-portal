@@ -117,6 +117,13 @@ export class UserProfileService {
     })
   }
 
+  fetchApprovedFields() {
+    return this.http.post<any>(API_ENDPOINTS.getApprovalPendingFields, {
+      serviceName: 'profile',
+      applicationStatus: 'APPROVED',
+    })
+  }
+
   listRejectedFields() {
     return this.http.post<any>(API_ENDPOINTS.getPendingFields, {
       serviceName: 'profile',
