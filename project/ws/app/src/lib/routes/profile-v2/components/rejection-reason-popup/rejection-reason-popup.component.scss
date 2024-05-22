@@ -1,0 +1,26 @@
+.rejectionReason {
+    .messageIcon {
+        height: 40px;
+        width: 40px;
+        font-size: 40px;
+        color: #F3962F !important;
+    }
+
+    .reason {
+        font-size: 14;
+        font-family: 'Lato';
+        color: #222;
+        text-align: center;
+    }
+
+    .okButton {
+        background-color: #1B4CA1;
+        min-width: 90px;
+        height: 40px;
+        border-radius: 4px;
+        padding: 0px 10px;
+        font-size: 14px;
+        font-weight: 700;
+        color: #FFFFFF;
+    }
+}
