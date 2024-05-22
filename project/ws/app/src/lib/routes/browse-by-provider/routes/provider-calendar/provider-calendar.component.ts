@@ -26,7 +26,6 @@ export class ProviderCalendarComponent implements OnInit {
         this.sectionList = this.route.snapshot.data.formData.data.result.form.data.sectionList.filter((sec:any) =>
             sec.key === 'sectionTrainingCalendar'
         )
-        console.log(this.sectionList[0].column)
         if (this.sectionList) {
           this.data = this.sectionList[0].column[0].data
         }
