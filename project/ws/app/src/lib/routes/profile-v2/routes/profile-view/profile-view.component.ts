@@ -31,6 +31,7 @@ import { WithdrawRequestComponent } from '../../components/withdraw-request/with
 import { NotificationComponent } from '@ws/author/src/lib/modules/shared/components/notification/notification.component'
 import { DesignationRequestComponent } from '../../components/designation-request/designation-request.component'
 import { HomePageService } from 'src/app/services/home-page.service'
+import { RejectionReasonPopupComponent } from '../../components/rejection-reason-popup/rejection-reason-popup.component'
 
 export const MY_FORMATS = {
   parse: {
@@ -130,11 +131,17 @@ export class ProfileViewComponent implements OnInit, AfterViewInit, OnDestroy {
     designation: '',
     group: '',
     organization: '',
+    groupRequestTime: 0,
+    designationRequestTime: 0,
   }
   rejectedFields: any = {
     name: '',
     group: '',
     designation: '',
+    groupRejectionComments: '',
+    designationRejectionComments: '',
+    groupRejectionTime: 0,
+    designationRejectionTime: 0,
   }
   primaryDetailsForm = new FormGroup({
     group: new FormControl('', [Validators.required]),
@@ -144,6 +151,11 @@ export class ProfileViewComponent implements OnInit, AfterViewInit, OnDestroy {
   rejectedByMDOData = []
   contextToken: any
   params: any
+
+  panelOpenState = false
+
+  groupApprovedTime = 0
+  designationApprovedTime = 0
 
   constructor(
     public dialog: MatDialog,
@@ -277,6 +289,7 @@ export class ProfileViewComponent implements OnInit, AfterViewInit, OnDestroy {
     this.getProfilePageMetaData()
     this.getSendApprovalStatus()
     this.getRejectedStatus()
+    this.getApprovedFields()
     this.getInsightsData()
     this.getAssessmentData()
   }
@@ -731,6 +744,25 @@ export class ProfileViewComponent implements OnInit, AfterViewInit, OnDestroy {
     })
   }
 
+  getApprovedFields(): void {
+    this.userProfileService.fetchApprovedFields()
+    .pipe(takeUntil(this.destroySubject$))
+    .subscribe((_res: any) => {
+      _res.result.data.filter((obj: any) => {
+        this.groupApprovedTime = (obj.hasOwnProperty('group') && obj.lastUpdatedOn > this.groupApprovedTime) ?
+          obj.lastUpdatedOn : this.groupApprovedTime
+
+        this.designationApprovedTime = (obj.hasOwnProperty('designation') && obj.lastUpdatedOn > this.designationApprovedTime) ?
+          obj.lastUpdatedOn : this.designationApprovedTime
+      })
+    },         (error: HttpErrorResponse) => {
+      if (!error.ok) {
+        this.matSnackBar.open(this.handleTranslateTo('approvedStatusFailed'))
+      }
+      this.skeletonLoader = false
+    })
+  }
+
   getSendApprovalStatus(): void {
   this.skeletonLoader = true
     this.userProfileService.fetchApprovalPendingFields()
@@ -746,11 +778,13 @@ export class ProfileViewComponent implements OnInit, AfterViewInit, OnDestroy {
         if (obj.hasOwnProperty('name')) {
           this.unVerifiedObj.organization = obj.name
         }
-        if (obj.hasOwnProperty('group')) {
+        if (obj.hasOwnProperty('group') && obj.lastUpdatedOn > this.unVerifiedObj.groupRequestTime) {
           this.unVerifiedObj.group = obj.group
+          this.unVerifiedObj.groupRequestTime = obj.lastUpdatedOn
         }
-        if (obj.hasOwnProperty('designation')) {
+        if (obj.hasOwnProperty('designation') && obj.lastUpdatedOn > this.unVerifiedObj.designationRequestTime) {
           this.unVerifiedObj.designation = obj.designation
+          this.unVerifiedObj.designationRequestTime = obj.lastUpdatedOn
         }
         return obj.hasOwnProperty('name')
       }).length > 0
@@ -780,11 +814,15 @@ export class ProfileViewComponent implements OnInit, AfterViewInit, OnDestroy {
           if (obj.hasOwnProperty('name')) {
             this.rejectedFields.name = obj.name
           }
-          if (obj.hasOwnProperty('group')) {
+          if (obj.hasOwnProperty('group') && obj.lastUpdatedOn > this.rejectedFields.groupRejectionTime) {
             this.rejectedFields.group = obj.group
+            this.rejectedFields.groupRejectionComments = obj.comment
+            this.rejectedFields.groupRejectionTime = obj.lastUpdatedOn
           }
-          if (obj.hasOwnProperty('designation')) {
+          if (obj.hasOwnProperty('designation') && obj.lastUpdatedOn > this.rejectedFields.designationRejectionTime) {
             this.rejectedFields.designation = obj.designation
+            this.rejectedFields.designationRejectionComments = obj.comment
+            this.rejectedFields.designationRejectionTime = obj.lastUpdatedOn
           }
         })
       }
@@ -795,6 +833,62 @@ export class ProfileViewComponent implements OnInit, AfterViewInit, OnDestroy {
       }
       this.skeletonLoader = false
     })
+  }
+
+  get showApprovalStatus(): boolean {
+    if (
+      this.groupApprovedTime < this.rejectedFields.groupRejectionTime ||
+      this.groupApprovedTime < this.unVerifiedObj.groupRequestTime ||
+      this.designationApprovedTime < this.rejectedFields.designationRejectionTime ||
+      this.designationApprovedTime < this.unVerifiedObj.designationRequestTime
+    ) {
+      return true
+    }
+    return false
+  }
+
+  get showGroupPending(): boolean {
+    if (
+      this.groupApprovedTime < this.unVerifiedObj.groupRequestTime &&
+      this.rejectedFields.groupRejectionTime < this.unVerifiedObj.groupRequestTime &&
+      this.unVerifiedObj.group
+    ) {
+      return true
+    }
+    return false
+  }
+
+  get showGroupRejection(): boolean {
+    if (
+      this.groupApprovedTime < this.rejectedFields.groupRejectionTime &&
+      this.unVerifiedObj.groupRequestTime < this.rejectedFields.groupRejectionTime &&
+      this.rejectedFields.group
+    ) {
+      return true
+    }
+    return false
+  }
+
+  get showDesignationPending(): boolean {
+    if (
+      this.designationApprovedTime < this.unVerifiedObj.designationRequestTime &&
+      this.rejectedFields.designationRejectionTime < this.unVerifiedObj.designationRequestTime &&
+      this.unVerifiedObj.designation
+    ) {
+      return true
+    }
+    return false
+  }
+
+  get showDesignationRejection(): boolean {
+    if (
+      this.designationApprovedTime < this.rejectedFields.designationRejectionTime &&
+      this.unVerifiedObj.designationRequestTime < this.rejectedFields.designationRejectionTime &&
+      this.rejectedFields.designation
+    ) {
+      return true
+    }
+    return false
   }
 
   handleSendApproval(): void {
@@ -974,5 +1068,17 @@ export class ProfileViewComponent implements OnInit, AfterViewInit, OnDestroy {
 
   ngOnDestroy() {
     this.destroySubject$.unsubscribe()
+  }
+
+  viewReason(comments: string) {
+    this.dialog.open(RejectionReasonPopupComponent, {
+      data: {
+        comments,
+        buttonText: 'OK',
+      },
+      disableClose: true,
+      width: '500px',
+      maxWidth: '90vw',
+    })
   }
 }
