@@ -109,11 +109,18 @@ export class UserProfileService {
       applicationStatus: 'SEND_FOR_APPROVAL',
     })
   }
-
+  
   fetchApprovalPendingFields() {
     return this.http.post<any>(API_ENDPOINTS.getApprovalPendingFields, {
       serviceName: 'profile',
       applicationStatus: 'SEND_FOR_APPROVAL',
+    })
+  }
+
+  fetchApprovedFields() {
+    return this.http.post<any>(API_ENDPOINTS.getApprovalPendingFields, {
+      serviceName: 'profile',
+      applicationStatus: 'APPROVED',
     })
   }
 

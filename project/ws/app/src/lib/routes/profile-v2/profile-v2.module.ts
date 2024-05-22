@@ -56,6 +56,7 @@ import { DesignationRequestComponent } from './components/designation-request/de
 import { LoaderService } from '@ws/author/src/lib/services/loader.service'
 import { InitResolver } from './resolvers/init-resolve.service'
 import { OtpService } from '../user-profile/services/otp.services'
+import { RejectionReasonPopupComponent } from './components/rejection-reason-popup/rejection-reason-popup.component'
 
 @NgModule({
   declarations: [
@@ -68,6 +69,7 @@ import { OtpService } from '../user-profile/services/otp.services'
     TransferRequestComponent,
     WithdrawRequestComponent,
     DesignationRequestComponent,
+    RejectionReasonPopupComponent
   ],
   imports: [
     CommonModule,
@@ -128,6 +130,7 @@ import { OtpService } from '../user-profile/services/otp.services'
     TransferRequestComponent,
     WithdrawRequestComponent,
     DesignationRequestComponent,
+    RejectionReasonPopupComponent
   ],
   providers: [
     LoaderService,
