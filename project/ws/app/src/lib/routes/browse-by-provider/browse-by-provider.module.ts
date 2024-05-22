@@ -46,7 +46,7 @@ import { HttpLoaderFactory } from 'src/app/app.module'
 import { ProviderPageComponent } from './routes/provider-page/provider-page.component'
 import { CalenderModule, CardsModule, CommonStripModule, CompetencyPassbookModule, ContentStripWithTabsLibModule, DataPointsModule, SlidersLibModule } from '@sunbird-cb/consumption'
 import { ProviderFormResolverService } from './services/provider-form-resolver.service'
-import { FormExtService } from 'src/app/services/form-ext.service';
+import { FormExtService } from 'src/app/services/form-ext.service'
 import { ProviderCalendarComponent } from './routes/provider-calendar/provider-calendar.component'
 
 @NgModule({

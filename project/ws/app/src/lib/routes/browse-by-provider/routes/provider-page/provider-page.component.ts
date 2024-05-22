@@ -24,7 +24,7 @@ export class ProviderPageComponent implements OnInit {
   ]
 
   constructor(private route: ActivatedRoute,
-    public router: Router, private datePipe: DatePipe) {
+              public router: Router, private datePipe: DatePipe) {
 
   }
 
@@ -47,7 +47,7 @@ export class ProviderPageComponent implements OnInit {
       })
     })
     this.getNavitems()
-    this.currentMonthAndYear = this.datePipe.transform( new Date(), 'MMMM y')
+    this.currentMonthAndYear = this.datePipe.transform(new Date(), 'MMMM y')
   }
 
   getNavitems() {
@@ -77,7 +77,7 @@ export class ProviderPageComponent implements OnInit {
       contentStripData['hideSection'] = true
     }
   }
-  showAllContent(_stripData: any){
+  showAllContent(_stripData: any) {
     this.router.navigate([`/app/learn/browse-by/provider/${this.providerName}/${this.providerId}/all-CBP`])
   }
 }
