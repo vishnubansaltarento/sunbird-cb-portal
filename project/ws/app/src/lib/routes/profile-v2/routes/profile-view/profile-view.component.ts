@@ -132,7 +132,7 @@ export class ProfileViewComponent implements OnInit, AfterViewInit, OnDestroy {
     group: '',
     organization: '',
     groupRequestTime: 0,
-    designationRequestTime: 0
+    designationRequestTime: 0,
   }
   rejectedFields: any = {
     name: '',
@@ -141,7 +141,7 @@ export class ProfileViewComponent implements OnInit, AfterViewInit, OnDestroy {
     groupRejectionComments: '',
     designationRejectionComments: '',
     groupRejectionTime: 0,
-    designationRejectionTime: 0
+    designationRejectionTime: 0,
   }
   primaryDetailsForm = new FormGroup({
     group: new FormControl('', [Validators.required]),
@@ -749,9 +749,11 @@ export class ProfileViewComponent implements OnInit, AfterViewInit, OnDestroy {
     .pipe(takeUntil(this.destroySubject$))
     .subscribe((_res: any) => {
       _res.result.data.filter((obj: any) => {
-        this.groupApprovedTime = (obj.hasOwnProperty('group') && obj.lastUpdatedOn > this.groupApprovedTime) ? obj.lastUpdatedOn : this.groupApprovedTime
+        this.groupApprovedTime = (obj.hasOwnProperty('group') && obj.lastUpdatedOn > this.groupApprovedTime) ?
+          obj.lastUpdatedOn : this.groupApprovedTime
 
-        this.designationApprovedTime = (obj.hasOwnProperty('designation') && obj.lastUpdatedOn > this.designationApprovedTime) ? obj.lastUpdatedOn : this.designationApprovedTime
+        this.designationApprovedTime = (obj.hasOwnProperty('designation') && obj.lastUpdatedOn > this.designationApprovedTime) ?
+          obj.lastUpdatedOn : this.designationApprovedTime
       })
     },         (error: HttpErrorResponse) => {
       if (!error.ok) {
@@ -847,7 +849,7 @@ export class ProfileViewComponent implements OnInit, AfterViewInit, OnDestroy {
 
   get showGroupPending(): boolean {
     if (
-      this.groupApprovedTime < this.unVerifiedObj.groupRequestTime && 
+      this.groupApprovedTime < this.unVerifiedObj.groupRequestTime &&
       this.rejectedFields.groupRejectionTime < this.unVerifiedObj.groupRequestTime &&
       this.unVerifiedObj.group
     ) {
@@ -858,7 +860,7 @@ export class ProfileViewComponent implements OnInit, AfterViewInit, OnDestroy {
 
   get showGroupRejection(): boolean {
     if (
-      this.groupApprovedTime < this.rejectedFields.groupRejectionTime && 
+      this.groupApprovedTime < this.rejectedFields.groupRejectionTime &&
       this.unVerifiedObj.groupRequestTime < this.rejectedFields.groupRejectionTime &&
       this.rejectedFields.group
     ) {
@@ -869,7 +871,7 @@ export class ProfileViewComponent implements OnInit, AfterViewInit, OnDestroy {
 
   get showDesignationPending(): boolean {
     if (
-      this.designationApprovedTime < this.unVerifiedObj.designationRequestTime && 
+      this.designationApprovedTime < this.unVerifiedObj.designationRequestTime &&
       this.rejectedFields.designationRejectionTime < this.unVerifiedObj.designationRequestTime &&
       this.unVerifiedObj.designation
     ) {
@@ -880,7 +882,7 @@ export class ProfileViewComponent implements OnInit, AfterViewInit, OnDestroy {
 
   get showDesignationRejection(): boolean {
     if (
-      this.designationApprovedTime < this.rejectedFields.designationRejectionTime && 
+      this.designationApprovedTime < this.rejectedFields.designationRejectionTime &&
       this.unVerifiedObj.designationRequestTime < this.rejectedFields.designationRejectionTime &&
       this.rejectedFields.designation
     ) {
@@ -888,7 +890,6 @@ export class ProfileViewComponent implements OnInit, AfterViewInit, OnDestroy {
     }
     return false
   }
-
 
   handleSendApproval(): void {
     const data: any = {
@@ -1072,12 +1073,12 @@ export class ProfileViewComponent implements OnInit, AfterViewInit, OnDestroy {
   viewReason(comments: string) {
     this.dialog.open(RejectionReasonPopupComponent, {
       data: {
-        comments: comments,
-        buttonText: 'OK'
+        comments,
+        buttonText: 'OK',
       },
       disableClose: true,
       width: '500px',
-      maxWidth: '90vw'
+      maxWidth: '90vw',
     })
   }
 }

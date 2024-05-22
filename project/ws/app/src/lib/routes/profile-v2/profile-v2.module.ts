@@ -69,7 +69,7 @@ import { RejectionReasonPopupComponent } from './components/rejection-reason-pop
     TransferRequestComponent,
     WithdrawRequestComponent,
     DesignationRequestComponent,
-    RejectionReasonPopupComponent
+    RejectionReasonPopupComponent,
   ],
   imports: [
     CommonModule,
@@ -130,7 +130,7 @@ import { RejectionReasonPopupComponent } from './components/rejection-reason-pop
     TransferRequestComponent,
     WithdrawRequestComponent,
     DesignationRequestComponent,
-    RejectionReasonPopupComponent
+    RejectionReasonPopupComponent,
   ],
   providers: [
     LoaderService,

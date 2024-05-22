@@ -51,7 +51,7 @@
                       <mat-icon class="verified-check">check_circle</mat-icon>
                     </div>
                   </ng-container>
-                  <div class="info-value"
+                  <div class="flex gap-2 items-center info-value"
                     *ngIf="(!portalProfile?.professionalDetails?.length || !portalProfile?.professionalDetails[0]?.group)">
                     NA<div class="profile-not-verified">
                         <div class="text">{{ 'profileInfo.notVerified' | translate }}</div>
@@ -116,7 +116,7 @@
                     </div>
                   </ng-container>
                   <ng-container *ngIf="(!portalProfile?.professionalDetails?.length || !portalProfile?.professionalDetails[0]?.designation)">
-                    <div class="info-value">NA<div class="profile-not-verified">
+                    <div class="flex gap-2 items-center info-value">NA<div class="profile-not-verified">
                       <div class="text">{{ 'profileInfo.notVerified' | translate }}</div>
                       <mat-icon>info_outline</mat-icon>
                     </div>
