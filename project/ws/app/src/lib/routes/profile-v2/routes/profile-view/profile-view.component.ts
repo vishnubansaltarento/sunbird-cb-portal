@@ -768,10 +768,13 @@ export class ProfileViewComponent implements OnInit, AfterViewInit, OnDestroy {
     this.userProfileService.fetchApprovalPendingFields()
     .pipe(takeUntil(this.destroySubject$))
     .subscribe((_res: any) => {
+      this.unVerifiedObj.groupRequestTime = 0
+      this.unVerifiedObj.designationRequestTime = 0
       this.approvalPendingFields = _res.result.data
 
       if (!this.approvalPendingFields || !this.approvalPendingFields.length) {
         this.enableWTR = false
+        this.skeletonLoader = false
         return
       }
       const exists = this.approvalPendingFields.filter((obj: any) => {
@@ -930,6 +933,7 @@ export class ProfileViewComponent implements OnInit, AfterViewInit, OnDestroy {
       this.userProfileService.withDrawRequest(this.configService.unMappedUser.id, _obj.wfId)
       .pipe(takeUntil(this.destroySubject$))
       .subscribe((_res: any) => {
+        this.getSendApprovalStatus()
         this.unVerifiedObj.group = ''
         this.unVerifiedObj.designation = ''
         this.matSnackBar.open(this.handleTranslateTo('withdrawRequestSuccess'))
