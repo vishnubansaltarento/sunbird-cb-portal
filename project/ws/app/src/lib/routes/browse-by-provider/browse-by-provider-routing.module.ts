@@ -83,7 +83,7 @@ const routes: Routes = [
     },
     resolve: {
       formData: ProviderFormResolverService,
-    },    
+    },
   },
 ]
 
