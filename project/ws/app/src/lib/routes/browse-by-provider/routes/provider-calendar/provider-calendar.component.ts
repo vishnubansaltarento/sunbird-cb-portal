@@ -1,10 +1,10 @@
-import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { Component, OnInit } from '@angular/core'
+import { ActivatedRoute } from '@angular/router'
 
 @Component({
   selector: 'ws-app-provider-calendar',
   templateUrl: './provider-calendar.component.html',
-  styleUrls: ['./provider-calendar.component.scss']
+  styleUrls: ['./provider-calendar.component.scss'],
 })
 export class ProviderCalendarComponent implements OnInit {
 
@@ -32,7 +32,7 @@ export class ProviderCalendarComponent implements OnInit {
         && this.route.snapshot.data.formData.data.result.form.data
         && this.route.snapshot.data.formData.data.result.form.data.sectionList
       ) {
-        this.sectionList = this.route.snapshot.data.formData.data.result.form.data.sectionList.filter((sec:any) =>
+        this.sectionList = this.route.snapshot.data.formData.data.result.form.data.sectionList.filter((sec: any) =>
             sec.key === 'sectionTrainingCalendar'
         )
         if (this.sectionList) {
@@ -52,6 +52,7 @@ export class ProviderCalendarComponent implements OnInit {
           title: "Full calendar view", icon: '', url: 'none', disableTranslate: true,
           textClass: '',
         })
-    })    
+    })
+    
   }
 }

@@ -1,25 +1,25 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { async, ComponentFixture, TestBed } from '@angular/core/testing'
 
-import { ProviderCalendarComponent } from './provider-calendar.component';
+import { ProviderCalendarComponent } from './provider-calendar.component'
 
 describe('ProviderCalendarComponent', () => {
-  let component: ProviderCalendarComponent;
-  let fixture: ComponentFixture<ProviderCalendarComponent>;
+  let component: ProviderCalendarComponent
+  let fixture: ComponentFixture<ProviderCalendarComponent>
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ ProviderCalendarComponent ]
+      declarations: [ProviderCalendarComponent],
     })
-    .compileComponents();
-  }));
+    .compileComponents()
+  }))
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(ProviderCalendarComponent);
-    component = fixture.componentInstance;
-    fixture.detectChanges();
-  });
+    fixture = TestBed.createComponent(ProviderCalendarComponent)
+    component = fixture.componentInstance
+    fixture.detectChanges()
+  })
 
   it('should create', () => {
-    expect(component).toBeTruthy();
-  });
-});
+    expect(component).toBeTruthy()
+  })
+})
