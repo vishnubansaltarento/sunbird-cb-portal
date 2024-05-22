@@ -103,7 +103,7 @@ export class GridLayoutComponent extends WidgetBaseComponent
 
     if (localStorage.getItem('platformRatingSubmit')) {
       this.isNPSOpen = false
-      this.submitBtnClick = false
+      // this.submitBtnClick = false
     } else {
       this.updateTelemetryDataSubscription = this.npsService.updateTelemetryDataObservable.subscribe((value: any) => {
         if (value) {
@@ -245,7 +245,7 @@ export class GridLayoutComponent extends WidgetBaseComponent
     }
     if (localStorage.getItem('platformRatingSubmit')) {
       this.isNPSOpen = false
-      this.submitBtnClick = false
+      // this.submitBtnClick = false
     } else {
       this.npsService.submitPlatformRating(reqbody).subscribe((resp: any) => {
         localStorage.setItem('platformRatingSubmit', 'true')
@@ -270,20 +270,20 @@ export class GridLayoutComponent extends WidgetBaseComponent
               if (localStorage.getItem('ratingfeedID')) {
                 localStorage.removeItem('ratingfeedID')
               }
-              this.submitBtnClick = false
+              // this.submitBtnClick = false
             }
           }, error => {
             // tslint:disable-next-line
             console.log(error)
             this.isNPSOpen = false
-            this.submitBtnClick = false
+            // this.submitBtnClick = false
           })
         }
       }, error => {
         // tslint:disable-next-line
         console.log(error)
         this.isNPSOpen = false
-        this.submitBtnClick = false
+        // this.submitBtnClick = false
       }
       )
     }
