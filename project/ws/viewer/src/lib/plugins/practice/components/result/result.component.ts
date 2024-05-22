@@ -31,15 +31,15 @@ export class ResultComponent implements OnInit, OnChanges {
   summaryTableDataSource = new MatTableDataSource([
     {
       subject: 'Section A',
-      yourScore: '0.25 / 35'
+      yourScore: '0.25 / 35',
     },
     {
       subject: 'Section B',
-      yourScore: '-1.25 / 35'
+      yourScore: '-1.25 / 35',
     },
     {
       subject: 'Section C',
-      yourScore: '-1.25 / 30'
+      yourScore: '-1.25 / 30',
     },
   ])
   summaryTableDisplayeColumns = [
@@ -51,12 +51,12 @@ export class ResultComponent implements OnInit, OnChanges {
     {
       subject: 'Section A',
       yourScore: '0.25 / 35',
-      topperScore: '35/35'
+      topperScore: '35/35',
     },
     {
       subject: 'Section B',
       yourScore: '-1.25 / 35',
-      topperScore: '32.5/35'
+      topperScore: '32.5/35',
     },
   ])
   competitiveTableDisplayedColumns = [
@@ -139,45 +139,45 @@ export class ResultComponent implements OnInit, OnChanges {
       question: 'Question: 1',
       status: 'Correct',
       questionTagg: 'Easy',
-      timeTaken: '00:00:09'
+      timeTaken: '00:00:09',
     },
     {
       question: 'Question: 2',
       status: 'Wrong',
       questionTagg: 'Moderate',
-      timeTaken: '00:00:09'
+      timeTaken: '00:00:09',
     },
     {
       question: 'Question: 3',
       status: 'Correct',
       questionTagg: 'Difficult',
-      timeTaken: '00:00:09'
+      timeTaken: '00:00:09',
     },
     {
       question: 'Question: 4',
       status: 'Correct',
       questionTagg: 'HOTS',
-      timeTaken: '00:00:09'
+      timeTaken: '00:00:09',
     },
     {
       question: 'Question: 5',
       status: 'Wrong',
       questionTagg: 'HOTS',
-      timeTaken: '00:00:09'
+      timeTaken: '00:00:09',
     },
     {
       question: 'Question: 6',
       status: 'Wrong',
       questionTagg: 'Easy',
-      timeTaken: '00:00:09'
+      timeTaken: '00:00:09',
     },
     {
       question: 'Question: 7',
       status: 'Correct',
       questionTagg: 'Difficult',
-      timeTaken: '00:00:09'
+      timeTaken: '00:00:09',
     },
-    
+
   ])
   questionStatuTableColumns = [
     { header: 'Questions', key: 'question' },
@@ -188,17 +188,16 @@ export class ResultComponent implements OnInit, OnChanges {
 
   sectionsList = [
     {
-      sectionName: 'Section A'
+      sectionName: 'Section A',
     },
     {
-      sectionName: 'Section B'
+      sectionName: 'Section B',
     },
     {
-      sectionName: 'Section C'
+      sectionName: 'Section C',
     },
   ]
 
-  
   constructor(private langtranslations: MultilingualTranslationsService) {
 
   }
@@ -249,8 +248,8 @@ export class ResultComponent implements OnInit, OnChanges {
     return this.langtranslations.translateLabelWithoutspace(label, type, '')
   }
 
-  getFinalColumns(displayedColumns: any) :string[] {
-    const displayColumns = _.map(displayedColumns, c => c.key);
+  getFinalColumns(displayedColumns: any): string[] {
+    const displayColumns = _.map(displayedColumns, c => c.key)
     return displayColumns
   }
 }

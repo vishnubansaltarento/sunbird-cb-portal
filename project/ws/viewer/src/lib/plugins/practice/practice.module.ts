@@ -35,7 +35,7 @@ import { FillInTheBlankComponent } from './components/question/fitb/fitb.compone
 import { MultipleChoiseQuesComponent } from './components/question/mcq-mca/mcq-mca.component'
 import { SingleChoiseQuesComponent } from './components/question/mcq-sca/mcq-sca.component'
 import { MatchTheFollowingQuesComponent } from './components/question/mtf/mtf.component'
-import { TranslateModule } from '@ngx-translate/core';
+import { TranslateModule } from '@ngx-translate/core'
 import { FinalAssessmentPopupComponent } from './components/final-assessment-popup/final-assessment-popup.component'
 
 @NgModule({
@@ -53,7 +53,7 @@ import { FinalAssessmentPopupComponent } from './components/final-assessment-pop
   ],
   entryComponents: [
     SubmitQuizDialogComponent,
-    FinalAssessmentPopupComponent
+    FinalAssessmentPopupComponent,
   ],
   imports: [
     CommonModule,
@@ -77,7 +77,7 @@ import { FinalAssessmentPopupComponent } from './components/final-assessment-pop
     MatChipsModule,
     SkeletonLoaderModule,
     TranslateModule,
-    MatMenuModule
+    MatMenuModule,
   ],
   exports: [
     PracticeComponent,

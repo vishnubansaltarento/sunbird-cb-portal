@@ -1150,7 +1150,8 @@ export class PracticeComponent implements OnInit, OnChanges, OnDestroy {
     }
   }
   checkAns(quesIdx: number) {
-    if (quesIdx > 0 && quesIdx <= this.totalQuestionsCount && this.current_Question.editorState && this.current_Question.editorState.options) {
+    if (quesIdx > 0 && quesIdx <= this.totalQuestionsCount &&
+        this.current_Question.editorState && this.current_Question.editorState.options) {
       this.showAnswer = true
       this.quizSvc.shCorrectAnswer(true)
     }
@@ -1297,7 +1298,7 @@ export class PracticeComponent implements OnInit, OnChanges, OnDestroy {
     }
     this.events.dispatchEvent(event)
   }
-  
+
   // openSectionPopup() {
   //   const tableColumns: any[] = [
   //     { header: 'Section', key: 'section' },
@@ -1307,7 +1308,7 @@ export class PracticeComponent implements OnInit, OnChanges, OnDestroy {
   //     { header: 'Marked for Review', key: 'markedForReview' },
   //     { header: 'Not Visited', key: 'notVisited' },
   //   ]
-    
+
   //   const tableData: any = [
   //     {
   //       section: 'Section A',
