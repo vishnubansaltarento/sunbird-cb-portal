@@ -81,6 +81,9 @@ const routes: Routes = [
       pageId: ':provider/:orgId/training-calendar',
       module: 'explore',
     },
+    resolve: {
+      formData: ProviderFormResolverService,
+    },    
   },
 ]
 

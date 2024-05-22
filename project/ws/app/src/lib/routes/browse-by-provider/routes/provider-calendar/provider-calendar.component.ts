@@ -10,23 +10,27 @@ export class ProviderCalendarComponent implements OnInit {
 
     providerName = ''
     providerId = ''
-    data = {
-        "title": "Training Calendar",
-        "activeBackgroudColor": "#1D8923",
-        "activeColor": "#FFFFFF",
-        "defaultDays": "2",
-        "contentButton": {
-            "title": "View Full Calendar",
-            "redirectUrl": "/app/learn/browse-by/provider"
-        },
-        "background": "",
-        "mobileBackground": "#FFFFFF",
-        "eventBackgroundColor": "#FFF4EC",
-        "webBackgroundColor": "#FFFFFF",
-    }
-  constructor(private route: ActivatedRoute) { }
+    data: any
+    sectionList: any
+    constructor(private route: ActivatedRoute) { }
 
-  ngOnInit() {
+    ngOnInit() {
+
+    if (this.route.snapshot.data && this.route.snapshot.data.formData
+        && this.route.snapshot.data.formData.data
+        && this.route.snapshot.data.formData.data.result
+        && this.route.snapshot.data.formData.data.result.form
+        && this.route.snapshot.data.formData.data.result.form.data
+        && this.route.snapshot.data.formData.data.result.form.data.sectionList
+      ) {
+        this.sectionList = this.route.snapshot.data.formData.data.result.form.data.sectionList.filter((sec:any) =>
+            sec.key === 'sectionTrainingCalendar'
+        )
+        console.log(this.sectionList[0].column)
+        if (this.sectionList) {
+          this.data = this.sectionList[0].column[0].data
+        }
+    }
     this.route.params.subscribe(params => {
         this.providerName = params['provider']
         this.providerId = params['orgId']
