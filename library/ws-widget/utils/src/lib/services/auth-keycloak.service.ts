@@ -198,12 +198,12 @@ export class AuthKeycloakService {
         window.location.href = `${this.defaultRedirectUrl}public/logout`
       }
     }
-    try {
-      sessionStorage.clear()
-      localStorage.clear()
-    } catch {
+    // try {
+    //   sessionStorage.clear()
+    //   localStorage.clear()
+    // } catch {
 
-    }
+    // }
     storage.removeItem(storageKey)
     if (localStorage.getItem('login') === 'true') {
       try {
