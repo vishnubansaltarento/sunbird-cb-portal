@@ -12,6 +12,15 @@ export class ProviderCalendarComponent implements OnInit {
     providerId = ''
     data: any
     sectionList: any
+
+    titles = [
+      { title: `Providers`,
+        url: `/app/learn/browse-by/provider/all-providers`,
+        textClass: 'ws-mat-black60-text',
+        icon: '', disableTranslate: true,
+      },
+    ]
+
     constructor(private route: ActivatedRoute) { }
 
     ngOnInit() {
@@ -33,6 +42,16 @@ export class ProviderCalendarComponent implements OnInit {
     this.route.params.subscribe(params => {
         this.providerName = params['provider']
         this.providerId = params['orgId']
+        this.titles.push({
+          title: this.providerName, icon: '',
+          url: `/app/learn/browse-by/provider/${this.providerName}/${this.providerId}/micro-sites`,
+          disableTranslate: true,
+          textClass: 'ws-mat-black60-text',
+        })
+        this.titles.push({
+          title: "Full calendar view", icon: '', url: 'none', disableTranslate: true,
+          textClass: '',
+        })
     })    
   }
 }
