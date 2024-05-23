@@ -2,6 +2,7 @@ import { NgModule } from '@angular/core'
 import { Routes, RouterModule } from '@angular/router'
 import { MdoChannelsMicrositeComponent } from './mdo-channels-microsite/mdo-channels-microsite.component'
 import { MdoChannelsComponent } from './mdo-channels/mdo-channels.component'
+import { MdoChannelFormService } from './service/mdo-channel-form.service'
 
 
 const routes: Routes = [
@@ -26,7 +27,7 @@ const routes: Routes = [
             module: 'Learn',
         },
         resolve: {
-            // formData: ProviderFormResolverService,
+            formData: MdoChannelFormService,
         },
     },
 ]

@@ -45,6 +45,7 @@ import { MdoChannelsComponent } from './mdo-channels/mdo-channels.component'
 import { MdoChannelsMicrositeComponent } from './mdo-channels-microsite/mdo-channels-microsite.component'
 import { MdoChannelsRoutingModule } from './mdo-channels-routing.module'
 import { BtnPageBackModule } from '@sunbird-cb/collection/src/public-api'
+import { MdoChannelFormService } from './service/mdo-channel-form.service';
 
 
 
@@ -94,7 +95,8 @@ import { BtnPageBackModule } from '@sunbird-cb/collection/src/public-api'
         deps: [HttpClient],
       },
     }),
-  ]
+  ],
+  providers:[MdoChannelFormService]
 })
 export class MDOChannelsModule { }
 
