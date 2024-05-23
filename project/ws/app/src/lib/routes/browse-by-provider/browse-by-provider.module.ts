@@ -44,7 +44,7 @@ import { HttpClient } from '@angular/common/http'
 import { TranslateModule, TranslateLoader } from '@ngx-translate/core'
 import { HttpLoaderFactory } from 'src/app/app.module'
 import { ProviderPageComponent } from './routes/provider-page/provider-page.component'
-import { CalenderModule, CardsModule, CommonStripModule, CompetencyPassbookModule, ContentStripWithTabsLibModule, DataPointsModule, SlidersLibModule } from '@sunbird-cb/consumption'
+import { CalenderModule, CardsModule, CommonStripModule, CompetencyPassbookModule, ContentStripWithTabsLibModule, DataPointsModule, SlidersLibModule, UserContentRatingLibModule } from '@sunbird-cb/consumption'
 import { ProviderFormResolverService } from './services/provider-form-resolver.service'
 import { FormExtService } from 'src/app/services/form-ext.service'
 import { ProviderCalendarComponent } from './routes/provider-calendar/provider-calendar.component'
@@ -101,6 +101,7 @@ import { ProviderCalendarComponent } from './routes/provider-calendar/provider-c
     DataPointsModule,
     SlidersLibModule,
     CommonStripModule,
+    UserContentRatingLibModule,
     CalenderModule,
     CardsModule,
     TranslateModule.forRoot({

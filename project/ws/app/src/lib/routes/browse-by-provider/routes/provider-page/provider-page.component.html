@@ -1,6 +1,5 @@
 <ws-widget-btn-page-back [widgetData]="{ url: 'home', titles: titles, textClass:'ws-mat-black60-text' }">
 </ws-widget-btn-page-back>
-
 <div class="container-fluid" id="section-micro-sites">
     <div class="flex flex-col flex-1">
         <ng-container *ngIf="sectionList?.length">
@@ -25,7 +24,9 @@
                                     <ng-container *ngSwitchCase="'bmetrics'" [ngTemplateOutlet]="bmetrics"
                                         [ngTemplateOutletContext]="{bmetrics: column}"></ng-container>  
                                     <ng-container *ngSwitchCase="'competency'" [ngTemplateOutlet]="competency"
-                                        [ngTemplateOutletContext]="{competency: column}"></ng-container>                          
+                                        [ngTemplateOutletContext]="{competency: column}"></ng-container>   
+                                        <ng-container *ngSwitchCase="'learnerReview'" [ngTemplateOutlet]="learnerReviewBlock"
+                                            [ngTemplateOutletContext]="{data: column?.data}"></ng-container>                         
                                 </ng-container>
                             </div>
                         </ng-container>
@@ -222,6 +223,30 @@
                     {{trainingCalendar?.contentButton?.title}}
                 </span>
             </button>
+        </div>
+    </div>
+</ng-template>
+<ng-template #learnerReviewBlock  let-data="data">
+    <div class="contributors-background px-5 py-5" [style.background]="data?.background" *ngIf="!contentStrip?.hideSection">
+        <div class="container">
+            <div class="grid grid-cols-12 gap-4 padding-top-l mb-6">
+                <div class="col-span-12 md:col-span-3 contributor-desc">
+                    <div class="infra-box flex flex-col">
+                        <div class="learner-title hidden md:block">
+                            {{data?.detaulTitle}}
+                        </div>
+                        <div class="infra-title2 hidden md:block">
+                            {{data?.myTitle}}
+                        </div>
+                        <div class="block md:hidden">
+                            <span class="learner-title">{{data?.detaulTitle}}</span> <span class="infra-title2"> {{data?.myTitle}}</span>
+                        </div>  
+                    </div> 
+                </div>
+                <div class="col-span-12 md:col-span-9">
+                    <sb-uic-user-content-rating (emptyResponse)="hideLearnerReview($event, data)"  [formData]="data" [providerId]="providerId"></sb-uic-user-content-rating>
+                </div>
+            </div>
         </div>
     </div>
 </ng-template>

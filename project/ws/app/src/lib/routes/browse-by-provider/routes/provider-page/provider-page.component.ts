@@ -77,6 +77,12 @@ export class ProviderPageComponent implements OnInit {
       contentStripData['hideSection'] = true
     }
   }
+  hideLearnerReview(event: any, learnerReview: any) {
+    if (event) {
+      learnerReview['hideSection'] = true
+    }
+  }
+
   showAllContent(_stripData: any) {
     this.router.navigate([`/app/learn/browse-by/provider/${this.providerName}/${this.providerId}/all-CBP`])
   }
