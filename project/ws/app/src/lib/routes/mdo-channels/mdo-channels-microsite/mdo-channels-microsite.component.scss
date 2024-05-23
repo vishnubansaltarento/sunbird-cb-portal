@@ -1,0 +1,24 @@
+@import 'ws-mixins';
+@import 'ws-common';
+
+.container-balanced {
+    @extend %page-center;
+}
+
+.container {
+    max-width: 1200px;
+}
+
+.banner-container {
+    align-items: center;
+    background: #eee;
+    padding: 16px;
+    gap: 2.5rem;
+    justify-content: center;
+}
+
+.logo-square {
+    width: 167px;
+    height: 107px;
+    border-radius: 12px;
+}

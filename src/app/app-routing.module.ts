@@ -285,6 +285,21 @@ const routes: Routes = [
     },
   },
   {
+    path: 'app/learn/mdo-channels',
+    loadChildren: () =>
+      import('./routes/route-mdo-channels.module').then(u => u.RouteMdoChannelsModule),
+    canActivate: [GeneralGuard],
+    data: {
+      // pageType: 'feature',
+      // pageKey: 'browse by competency',
+      pageId: 'app/learn/mdo-channels',
+      module: 'explore',
+    },
+    resolve: {
+      pageData: PageResolve,
+    },
+  },
+  {
     path: 'app/learn/mandatory-course',
     loadChildren: () =>
       import('./routes/route-mandatory-course.module').then(u => u.RouteMandatoryCourseModule),
