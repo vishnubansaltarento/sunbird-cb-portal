@@ -14,6 +14,7 @@ export class MdoChannelsMicrositeComponent implements OnInit {
   channnelName = ''
   orgId = ''
   selectedIndex = 0
+  sectionList: any = []
   titles = [
     {
       title: `MDO channel`,
@@ -26,7 +27,17 @@ export class MdoChannelsMicrositeComponent implements OnInit {
   constructor(
     private route: ActivatedRoute,
     private eventSvc: EventService,
-  ) { }
+  ) { 
+    if (this.route.snapshot.data && this.route.snapshot.data.formData
+      && this.route.snapshot.data.formData.data
+      && this.route.snapshot.data.formData.data.result
+      && this.route.snapshot.data.formData.data.result.form
+      && this.route.snapshot.data.formData.data.result.form.data
+      && this.route.snapshot.data.formData.data.result.form.data.sectionList
+    ) {
+      this.sectionList = this.route.snapshot.data.formData.data.result.form.data.sectionList
+    }
+  }
 
   ngOnInit() {
     this.route.params.subscribe(params => {
