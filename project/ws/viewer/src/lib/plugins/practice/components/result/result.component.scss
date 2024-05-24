@@ -633,6 +633,10 @@
         }
     }
 
+    .wrap-mweb {
+        flex-wrap: nowrap;
+    }
+
     .results-card {
         height: 90px;
         width: 100%;
@@ -758,6 +762,21 @@
         border-radius: 5px;
         font-size: 14px;
         color: #1B4CA1;
+    }
+}
+
+.questions-table-section {
+    width: 100%;
+    overflow-x: auto;
+
+    .questions-table {
+        min-width: 500px;
+    }
+}
+
+@media (max-width: 768px) {
+    .wrap-mweb {
+        flex-wrap: wrap !important;
     }
 }
 
