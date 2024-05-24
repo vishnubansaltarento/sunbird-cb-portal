@@ -1,17 +1,17 @@
-import { Component, OnInit } from '@angular/core';
-import { FormControl, FormGroup } from '@angular/forms';
-import { Observable, Subject } from 'rxjs';
-import { BrowseProviderService } from '../../browse-by-provider/services/browse-provider.service';
-import { LocalDataService } from '../../browse-by-competency/services/localService';
-import { TranslateService } from '@ngx-translate/core';
-import { MultilingualTranslationsService } from '@sunbird-cb/utils-v2';
-import { debounceTime, switchMap, takeUntil } from 'rxjs/operators';
-import _ from 'lodash';
+import { Component, OnInit } from '@angular/core'
+import { FormControl, FormGroup } from '@angular/forms'
+import { Observable, Subject } from 'rxjs'
+import { BrowseProviderService } from '../../browse-by-provider/services/browse-provider.service'
+import { LocalDataService } from '../../browse-by-competency/services/localService'
+import { TranslateService } from '@ngx-translate/core'
+import { MultilingualTranslationsService } from '@sunbird-cb/utils-v2'
+import { debounceTime, switchMap, takeUntil } from 'rxjs/operators'
+import lodash from 'lodash'
 
 @Component({
   selector: 'ws-app-mdo-channels',
   templateUrl: './mdo-channels.component.html',
-  styleUrls: ['./mdo-channels.component.scss']
+  styleUrls: ['./mdo-channels.component.scss'],
 })
 export class MdoChannelsComponent implements OnInit {
   public displayLoader!: Observable<boolean>
@@ -59,47 +59,53 @@ export class MdoChannelsComponent implements OnInit {
     this.allProviders = [
       {
         content: {
-          posterImage: "https://portal.karmayogi.nic.in/content-store/content/do_114051411119235072127/artifact/do_114051411119235072127_1715260168985_default-provider.svg",
-          appIcon: "",
-          name: "Ministry of Consumer Affairs, Food and Public Distribution"
-        }
+          // tslint:disable-next-line: max-line-length
+          posterImage: 'https://portal.karmayogi.nic.in/content-store/content/do_114051411119235072127/artifact/do_114051411119235072127_1715260168985_default-provider.svg',
+          appIcon: '',
+          name: 'Ministry of Consumer Affairs, Food and Public Distribution',
+        },
       },
       {
         content: {
-            posterImage: "https://portal.karmayogi.nic.in/content-store/content/do_114051411119235072127/artifact/do_114051411119235072127_1715260168985_default-provider.svg",
-            appIcon: "",
-            name: "Ministry of Railways"
-        }
+          // tslint:disable-next-line: max-line-length
+            posterImage: 'https://portal.karmayogi.nic.in/content-store/content/do_114051411119235072127/artifact/do_114051411119235072127_1715260168985_default-provider.svg',
+            appIcon: '',
+            name: 'Ministry of Railways',
+        },
       },
       {
         content: {
-            posterImage: "https://portal.karmayogi.nic.in/content-store/content/do_114051411119235072127/artifact/do_114051411119235072127_1715260168985_default-provider.svg",
-            appIcon: "",
-            name: "Department of Post"
-        }
+          // tslint:disable-next-line: max-line-length
+            posterImage: 'https://portal.karmayogi.nic.in/content-store/content/do_114051411119235072127/artifact/do_114051411119235072127_1715260168985_default-provider.svg',
+            appIcon: '',
+            name: 'Department of Post',
+        },
       },
       {
         content: {
-            posterImage: "https://portal.karmayogi.nic.in/content-store/content/do_114051411119235072127/artifact/do_114051411119235072127_1715260168985_default-provider.svg",
-            appIcon: "",
-            name: "NLC India Limited"
-        }
+          // tslint:disable-next-line: max-line-length
+            posterImage: 'https://portal.karmayogi.nic.in/content-store/content/do_114051411119235072127/artifact/do_114051411119235072127_1715260168985_default-provider.svg',
+            appIcon: '',
+            name: 'NLC India Limited',
+        },
       },
       {
         content: {
-            posterImage: "https://portal.karmayogi.nic.in/content-store/content/do_114051411119235072127/artifact/do_114051411119235072127_1715260168985_default-provider.svg",
-            appIcon: "",
-            name: "Mission Karmayogi"
-        }
+          // tslint:disable-next-line: max-line-length
+            posterImage: 'https://portal.karmayogi.nic.in/content-store/content/do_114051411119235072127/artifact/do_114051411119235072127_1715260168985_default-provider.svg',
+            appIcon: '',
+            name: 'Mission Karmayogi',
+        },
       },
       {
         content: {
-            posterImage: "https://portal.karmayogi.nic.in/content-store/content/do_114051411119235072127/artifact/do_114051411119235072127_1715260168985_default-provider.svg",
-            appIcon: "",
-            name: "Mission Karmayogi"
-        }
+          // tslint:disable-next-line: max-line-length
+            posterImage: 'https://portal.karmayogi.nic.in/content-store/content/do_114051411119235072127/artifact/do_114051411119235072127_1715260168985_default-provider.svg',
+            appIcon: '',
+            name: 'Mission Karmayogi',
+        },
       },
-      
+
     ]
     this.clonesProviders = this.allProviders
    }
@@ -119,7 +125,7 @@ export class MdoChannelsComponent implements OnInit {
         }),
         takeUntil(this.unsubscribe)
       ).subscribe()
-    //this.getAllProviders()
+    // this.getAllProviders()
   }
 
   getAllProviders(req?: any) {
@@ -204,14 +210,14 @@ export class MdoChannelsComponent implements OnInit {
     this.getAllProvidersReq.request.limit = this.defaultLimit
     this.page = 1
     this.getAllProvidersReq.request.sort_by.orgName = this.sortBy
-    //this.getAllProviders()
+    // this.getAllProviders()
     this.filterChannles(key)
   }
 
   filterChannles(value: string) {
     if (value) {
       const filterValue = value.toLowerCase()
-      this.clonesProviders = this.allProviders.filter((p:any) => p.content.name.toLowerCase().includes(filterValue))
+      this.clonesProviders = this.allProviders.filter((p: any) => p.content.name.toLowerCase().includes(filterValue))
     }
     if (!value) {
       this.clonesProviders = this.allProviders
