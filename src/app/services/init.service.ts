@@ -12,7 +12,7 @@ import {
   WidgetResolverService,
 } from '@sunbird-cb/resolver'
 import {
-  AuthKeycloakService,
+  // AuthKeycloakService,
   // AuthKeycloakService,
   ConfigurationsService,
   LoggerService,
@@ -75,7 +75,7 @@ export class InitService {
   constructor(
     private logger: LoggerService,
     private configSvc: ConfigurationsService,
-    private authSvc: AuthKeycloakService,
+    // private authSvc: AuthKeycloakService,
     private widgetResolverService: WidgetResolverService,
     private settingsSvc: BtnSettingsService,
     private userPreference: UserPreferenceService,
