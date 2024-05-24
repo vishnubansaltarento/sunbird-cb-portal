@@ -86,7 +86,7 @@
                         </mat-tab>
                     </mat-tab-group>
                 </div>
-                <div class="col-span-12 md:col-span-{{data.announcementSection.colspan}}">
+                <div class="col-span-12 md:col-span-{{data.announcementSection.colspan}}" *ngIf="data?.announcementSection?.data">
                     <div class="pt-4">
                         <sb-uic-announcements
                             [objectData]="data?.announcementSection?.data">
