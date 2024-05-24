@@ -1,5 +1,5 @@
-import { NgModule } from '@angular/core';
-import { CommonModule } from '@angular/common';
+import { NgModule } from '@angular/core'
+import { CommonModule } from '@angular/common'
 import {
   PipeOrderByModule,
   PipeFilterV2Module,
@@ -27,7 +27,7 @@ import {
   MatProgressSpinnerModule,
   MatButtonToggleModule,
   MatTabsModule,
-  MatAutocompleteModule
+  MatAutocompleteModule,
 } from '@angular/material'
 import { CardContentV2Module } from '@sunbird-cb/collection/src/lib/card-content-v2/card-content-v2.module'
 import { HttpClient } from '@angular/common/http'
@@ -40,17 +40,14 @@ import {
   CompetencyPassbookModule,
   ContentStripWithTabsLibModule,
   DataPointsModule,
-  SlidersLibModule
+  SlidersLibModule,
 } from '@sunbird-cb/consumption'
 import { MdoChannelsComponent } from './mdo-channels/mdo-channels.component'
 import { MdoChannelsMicrositeComponent } from './mdo-channels-microsite/mdo-channels-microsite.component'
 import { MdoChannelsRoutingModule } from './mdo-channels-routing.module'
 import { BtnPageBackModule } from '@sunbird-cb/collection/src/public-api'
-import { MdoChannelFormService } from './service/mdo-channel-form.service';
-import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-
-
-
+import { MdoChannelFormService } from './service/mdo-channel-form.service'
+import { FormsModule, ReactiveFormsModule } from '@angular/forms'
 
 @NgModule({
   declarations: [MdoChannelsComponent, MdoChannelsMicrositeComponent],
@@ -101,7 +98,6 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
       },
     }),
   ],
-  providers:[MdoChannelFormService]
+  providers: [MdoChannelFormService],
 })
 export class MDOChannelsModule { }
-

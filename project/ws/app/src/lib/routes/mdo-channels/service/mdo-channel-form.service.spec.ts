@@ -1,12 +1,12 @@
-import { TestBed } from '@angular/core/testing';
+import { TestBed } from '@angular/core/testing'
 
-import { MdoChannelFormService } from './mdo-channel-form.service';
+import { MdoChannelFormService } from './mdo-channel-form.service'
 
 describe('MdoChannelFormService', () => {
-  beforeEach(() => TestBed.configureTestingModule({}));
+  beforeEach(() => TestBed.configureTestingModule({}))
 
   it('should be created', () => {
-    const service: MdoChannelFormService = TestBed.get(MdoChannelFormService);
-    expect(service).toBeTruthy();
-  });
-});
+    const service: MdoChannelFormService = TestBed.get(MdoChannelFormService)
+    expect(service).toBeTruthy()
+  })
+})

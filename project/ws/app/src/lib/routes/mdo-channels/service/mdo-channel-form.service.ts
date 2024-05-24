@@ -6,7 +6,7 @@ import { catchError, map, tap } from 'rxjs/operators'
 import { FormExtService } from 'src/app/services/form-ext.service'
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class MdoChannelFormService implements
 Resolve<Observable<IResolveResponse<any>> | IResolveResponse<any>> {
@@ -20,12 +20,12 @@ resolve(
     const orgId = _route.params && _route.params.orgId || ''
     const requestData: any = {
       'request': {
-      "type": "MDO-channel",
-        "subType": "microsite",
-        "action": "page-configuration",
-        "component": "portal",
-        "rootOrgId": orgId
-      }
+      'type': 'MDO-channel',
+        'subType': 'microsite',
+        'action': 'page-configuration',
+        'component': 'portal',
+        'rootOrgId': orgId,
+      },
   }
         // 'request': {
       //     'type': 'ATI-CTI',

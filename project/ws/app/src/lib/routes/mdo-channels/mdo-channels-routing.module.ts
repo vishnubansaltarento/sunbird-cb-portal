@@ -4,7 +4,6 @@ import { MdoChannelsMicrositeComponent } from './mdo-channels-microsite/mdo-chan
 import { MdoChannelsComponent } from './mdo-channels/mdo-channels.component'
 import { MdoChannelFormService } from './service/mdo-channel-form.service'
 
-
 const routes: Routes = [
     {
         path: '',
