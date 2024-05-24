@@ -34,6 +34,7 @@ import { HttpClient } from '@angular/common/http'
 import { TranslateModule, TranslateLoader } from '@ngx-translate/core'
 import { HttpLoaderFactory } from 'src/app/app.module'
 import {
+  AnnouncementsModule,
   CardsModule,
   CommonStripModule,
   CompetencyPassbookModule,
@@ -46,6 +47,7 @@ import { MdoChannelsMicrositeComponent } from './mdo-channels-microsite/mdo-chan
 import { MdoChannelsRoutingModule } from './mdo-channels-routing.module'
 import { BtnPageBackModule } from '@sunbird-cb/collection/src/public-api'
 import { MdoChannelFormService } from './service/mdo-channel-form.service';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 
 
@@ -54,6 +56,8 @@ import { MdoChannelFormService } from './service/mdo-channel-form.service';
   declarations: [MdoChannelsComponent, MdoChannelsMicrositeComponent],
   imports: [
     CommonModule,
+    FormsModule,
+    ReactiveFormsModule,
     MdoChannelsRoutingModule,
     MatToolbarModule,
     MatIconModule,
@@ -88,6 +92,7 @@ import { MdoChannelFormService } from './service/mdo-channel-form.service';
     SlidersLibModule,
     CommonStripModule,
     CardsModule,
+    AnnouncementsModule,
     TranslateModule.forRoot({
       loader: {
         provide: TranslateLoader,

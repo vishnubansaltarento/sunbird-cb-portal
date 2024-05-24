@@ -49,10 +49,10 @@ export class ProviderCalendarComponent implements OnInit {
           textClass: 'ws-mat-black60-text',
         })
         this.titles.push({
-          title: "Full calendar view", icon: '', url: 'none', disableTranslate: true,
+          title: 'Full calendar view', icon: '', url: 'none', disableTranslate: true,
           textClass: '',
         })
     })
-    
+
   }
 }

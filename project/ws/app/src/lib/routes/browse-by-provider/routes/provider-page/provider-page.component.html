@@ -73,7 +73,8 @@
                     <div class="block md:hidden overflow-y-auto mb-3">
                         <sb-uic-data-points [providerId]="providerId" [fetchDataFromApi]="true"  [objectData]="data?.metrics?.data" [layoutType]="'singleRow'"></sb-uic-data-points>
                     </div>
-                    <button [routerLink]="[data?.contentButton?.redirectUrl, providerName, providerId, 'all-CBP']" mat-button type="button" class="view-btn margin-left-xs margin-right-xs small-button blue-border flex-auto-display">
+                    <button [routerLink]="[data?.contentButton?.redirectUrl, providerName, providerId, 'all-CBP']" mat-button type="button"
+                     class="view-btn margin-left-xs margin-right-xs small-button blue-border flex-auto-display">
                         <span class="mat-heading-1 bold ws-mat-default-text" i18n>
                             {{data?.contentButton?.title}}
                         </span>
@@ -227,7 +228,7 @@
     </div>
 </ng-template>
 <ng-template #learnerReviewBlock  let-data="data">
-    <div class="contributors-background px-5 py-5" [style.background]="data?.background" *ngIf="!contentStrip?.hideSection">
+    <div class="contributors-background px-5 py-5" [style.background]="data?.background" *ngIf="!data?.hideSection">
         <div class="container">
             <div class="grid grid-cols-12 gap-4 padding-top-l mb-6">
                 <div class="col-span-12 md:col-span-3 contributor-desc">

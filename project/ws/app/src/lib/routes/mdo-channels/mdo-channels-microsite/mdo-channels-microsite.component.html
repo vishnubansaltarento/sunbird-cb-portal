@@ -36,7 +36,7 @@
                         <div class="flex items-center logo-square ">
                             <img alt="Application Logo" class="logo-img" [src]="data?.logo">
                         </div>
-                        <div>
+                        <div class="mt-6 pt-6">
                             <h1 >{{data.title}}</h1>
                             <p>{{data.description}}</p>
                         </div>
@@ -63,6 +63,21 @@
 <ng-template #mainContent let-data="data">
     <div class="flex  items-center justify-center" [ngStyle]="{'background': data.background}">
         <div class="container">
+            <div class="block md:hidden col-span-12 mt-6">
+                <sb-uic-announcements
+                    [layoutType]="'mobile'"
+                    (openDialog)="triggerOpenDialog($event)"
+                    [objectData]="data?.announcementSection?.data">
+                </sb-uic-announcements>
+                <!-- <div class="announcements-container" *ngIf="showModal">
+                    <div class="cursor-pointer close-share-dialog">
+                        <mat-icon (click)="onClose()" class="close-icon">close</mat-icon>
+                    </div>
+                    <div class="share-modal">
+                        venkastert
+                    </div>
+                </div> -->
+            </div>
             <div class="grid grid-cols-12 gap-4 padding-top-l mb-6">
                 <div class="col-span-12 md:col-span-{{data.tabSection.colspan}}">
                     <!-- Tabs Section -->
@@ -88,9 +103,14 @@
                         </mat-tab>
                     </mat-tab-group>
                 </div>
-                <div class="col-span-12 md:col-span-{{data.announcementSection.colspan}}">
-                    <!-- Announcement Section -->
-                    <h1>Announcement</h1>
+                <div class="hidden md:block col-span-12 md:col-span-{{data.announcementSection.colspan}}" 
+                    *ngIf="data?.announcementSection?.data">
+                    <div class="pt-4">
+                        <sb-uic-announcements
+                            [layoutType]="'web'"
+                            [objectData]="data?.announcementSection?.data">
+                        </sb-uic-announcements>
+                    </div>                    
                 </div>
             </div>
         </div>

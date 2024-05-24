@@ -19,7 +19,7 @@
         (showAns && option?.isCorrect)
     }" [hidden]="showAns && !option?.isCorrect && isSelected(option)">
           <!-- {{option?.text}} -->
-          <div class="no-margin-p" [innerHTML]="option?.text"></div>
+          <div class="no-margin-p html-option" [innerHTML]="option?.text"></div>
         </div>
       </mat-list-option>
       <div class="background-well padding-left-m padding-xs"
