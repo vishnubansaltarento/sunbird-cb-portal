@@ -47,6 +47,7 @@ import { MdoChannelsMicrositeComponent } from './mdo-channels-microsite/mdo-chan
 import { MdoChannelsRoutingModule } from './mdo-channels-routing.module'
 import { BtnPageBackModule } from '@sunbird-cb/collection/src/public-api'
 import { MdoChannelFormService } from './service/mdo-channel-form.service';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 
 
@@ -55,6 +56,8 @@ import { MdoChannelFormService } from './service/mdo-channel-form.service';
   declarations: [MdoChannelsComponent, MdoChannelsMicrositeComponent],
   imports: [
     CommonModule,
+    FormsModule,
+    ReactiveFormsModule,
     MdoChannelsRoutingModule,
     MatToolbarModule,
     MatIconModule,

@@ -1,6 +1,6 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { MdoChannelsComponent } from './mdo-channels.component';
 
-import { MdoChannelsComponent } from '../mdo-channels.component';
 
 describe('MdoChannelsComponent', () => {
   let component: MdoChannelsComponent;
