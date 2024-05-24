@@ -692,7 +692,10 @@ export class ProfileViewComponent implements OnInit, AfterViewInit, OnDestroy {
 
   handleWithdrawTransferRequest(): void {
     const dialogRef = this.dialog.open(WithdrawRequestComponent, {
-      data: { approvalPendingFields: this.approvalPendingFields },
+      data: {
+        approvalPendingFields: this.approvalPendingFields,
+        withDrawType: 'department',
+      },
       disableClose: true,
       panelClass: 'common-modal',
     })
@@ -768,10 +771,13 @@ export class ProfileViewComponent implements OnInit, AfterViewInit, OnDestroy {
     this.userProfileService.fetchApprovalPendingFields()
     .pipe(takeUntil(this.destroySubject$))
     .subscribe((_res: any) => {
+      this.unVerifiedObj.groupRequestTime = 0
+      this.unVerifiedObj.designationRequestTime = 0
       this.approvalPendingFields = _res.result.data
 
       if (!this.approvalPendingFields || !this.approvalPendingFields.length) {
         this.enableWTR = false
+        this.skeletonLoader = false
         return
       }
       const exists = this.approvalPendingFields.filter((obj: any) => {
@@ -925,11 +931,28 @@ export class ProfileViewComponent implements OnInit, AfterViewInit, OnDestroy {
 
   }
 
+  showWithdrawRequestPopup() {
+    const dialogRef = this.dialog.open(WithdrawRequestComponent, {
+      data: {
+        withDrawType: 'primaryDetails',
+      },
+      disableClose: true,
+      panelClass: 'common-modal',
+    })
+
+    dialogRef.afterClosed().subscribe((value: boolean) => {
+      if (value) {
+        this.handleWithdrawRequest()
+      }
+    })
+  }
+
   handleWithdrawRequest(): void {
     this.approvalPendingFields.forEach((_obj: any) => {
       this.userProfileService.withDrawRequest(this.configService.unMappedUser.id, _obj.wfId)
       .pipe(takeUntil(this.destroySubject$))
       .subscribe((_res: any) => {
+        this.getSendApprovalStatus()
         this.unVerifiedObj.group = ''
         this.unVerifiedObj.designation = ''
         this.matSnackBar.open(this.handleTranslateTo('withdrawRequestSuccess'))
