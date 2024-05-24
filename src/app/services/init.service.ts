@@ -468,6 +468,7 @@ export class InitService {
               email: 'null',
             }
           }
+          localStorage.setItem('login', 'true')
         } else {
           this.authSvc.force_logout()
           this.updateTelemetryConfig()
@@ -594,6 +595,7 @@ export class InitService {
               email: 'null',
             }
           }
+          localStorage.setItem('login', 'true')
         } else {
           this.authSvc.force_logout()
           this.updateTelemetryConfig()
