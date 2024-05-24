@@ -34,6 +34,7 @@ import { HttpClient } from '@angular/common/http'
 import { TranslateModule, TranslateLoader } from '@ngx-translate/core'
 import { HttpLoaderFactory } from 'src/app/app.module'
 import {
+  AnnouncementsModule,
   CardsModule,
   CommonStripModule,
   CompetencyPassbookModule,
@@ -88,6 +89,7 @@ import { MdoChannelFormService } from './service/mdo-channel-form.service';
     SlidersLibModule,
     CommonStripModule,
     CardsModule,
+    AnnouncementsModule,
     TranslateModule.forRoot({
       loader: {
         provide: TranslateLoader,

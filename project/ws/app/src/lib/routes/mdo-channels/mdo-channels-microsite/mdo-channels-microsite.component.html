@@ -63,7 +63,6 @@
 <ng-template #mainContent let-data="data">
     <div class="flex  items-center justify-center" [ngStyle]="{'background': data.background}">
         <div class="container">
-            {{data | json}}
             <div class="grid grid-cols-12 gap-4 padding-top-l mb-6">
                 <div class="col-span-12 md:col-span-{{data.tabSection.colspan}}">
                     <!-- Tabs Section -->
@@ -87,9 +86,13 @@
                         </mat-tab>
                     </mat-tab-group>
                 </div>
-                <div class="col-span-12 md:col-span-{{data.announcementSection.colspan}}">
-                    <!-- Announcement Section -->
-                    <h1>Announcement</h1>
+                <div class="col-span-12 md:col-span-{{data.announcementSection.colspan}}" *ngIf="data?.announcementSection?.data">
+                    <div class="pt-4">
+                        <sb-uic-announcements
+                            [objectData]="data?.announcementSection?.data">
+                        </sb-uic-announcements>
+                    </div>
+                    
                 </div>
             </div>
         </div>
