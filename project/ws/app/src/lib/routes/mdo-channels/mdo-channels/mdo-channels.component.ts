@@ -59,7 +59,7 @@ export class MdoChannelsComponent implements OnInit {
     this.allProviders = [
       {
         content: {
-          //posterImage: "https://portal.karmayogi.nic.in/content-store/content/do_114051411119235072127/artifact/do_114051411119235072127_1715260168985_default-provider.svg",
+          posterImage: "https://portal.karmayogi.nic.in/content-store/content/do_114051411119235072127/artifact/do_114051411119235072127_1715260168985_default-provider.svg",
           appIcon: "",
           name: "Ministry of Consumer Affairs, Food and Public Distribution"
         }
