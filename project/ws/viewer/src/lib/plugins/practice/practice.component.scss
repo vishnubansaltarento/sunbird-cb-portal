@@ -409,6 +409,12 @@ $nav-height: 40px;
   width: 100%;
 }
 
+.question-list-mweb {
+  background-color: #EDF1F7;
+  width: 94%;
+  box-shadow: 5px 0px 5px 0px #ccc;
+}
+
 // ::ng-deep .mat-checkbox .mat-checkbox-inner-container {
 //   height: 24px !important;
 //   width: 40px !important;
@@ -511,7 +517,7 @@ $nav-height: 40px;
   height: 100%;
   box-shadow: 0px 5px 5px 0px rgb(0,0,0,0.16);
   margin-top: -20px;
-  background-color: #EDF1F7;
+  // background-color: #EDF1F7;
 
   .questions {
     font-size: 16px;
@@ -571,31 +577,40 @@ $nav-height: 40px;
   }
 
   .expand-icon {
-    width: 32px;
-    height: 32px;
+    width: 55px;
+    height: 25px;
     position: absolute;
-    background: #000;
+    background: #17468C;
     color: #fff;
-    border-radius: 50%;
     display: flex;
     align-items: center;
     justify-content: center;
-    left: 47%;
-    right: 50%;
-    margin-top: -16px;
+    right: calc(50% - 16px);
+    top: 0px;
+    z-index: 1;
     cursor: pointer;
+    border-bottom-left-radius: 5px;
+    border-bottom-right-radius: 5px;
+    box-shadow: 0px 4px 0px 0px #ccc;
+    
+    .expantionIcons {
+      font-size: 20px;
+      height: 20px;
+      width: 20px;
+    }
   }
 
   
 
   .exapnd-collapse {
-    height: 32px;
+    height: 0px;
     width: 100%;
     padding: 0;
-    background: #EBEDEE;
+    background: #EDF1F7;
     margin-top: 20px;
     display: flex;
     flex-direction: row;
+    position: relative;
   }
 
   .assessment-header {
@@ -827,7 +842,7 @@ $nav-height: 40px;
 
 .quest_num_box_mobile {
   overflow-y: auto;
-  height: 130px;
+  min-height: 130px;
 }
 
 @media only screen and (min-width: 280px) and (max-width: 360px) {
