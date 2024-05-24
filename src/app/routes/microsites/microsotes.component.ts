@@ -789,6 +789,26 @@ export class MicrosotesComponent implements OnInit {
               },
 
             ],
+            "channels": [
+              {
+                "appIcon": "https://static.karmayogiprod.nic.in/igotqa/collection/do_1140612307621969921232/artifact/do_1140144030484480001206_1710742559879_capture391710742560259.thumb.png",
+                "posterImage": "https://portal.karmayogiqa.nic.in/content-store/content/do_1140144030484480001206/artifact/do_1140144030484480001206_1710742559879_capture391710742560259.png",
+                "identifier" : "do_1140612307621969921232",
+                "name": "National Institute of Ayurveda"
+              },
+              {
+                "appIcon": "https://static.karmayogiprod.nic.in/igotqa/collection/do_1140612307621969921232/artifact/do_1140144030484480001206_1710742559879_capture391710742560259.thumb.png",
+                "posterImage": "https://portal.karmayogiqa.nic.in/content-store/content/do_1140144030484480001206/artifact/do_1140144030484480001206_1710742559879_capture391710742560259.png",
+                "identifier" : "do_1140612307621969921232",
+                "name": "Ministry of External Affairs"
+              },
+              {
+                "appIcon": "https://static.karmayogiprod.nic.in/igotqa/collection/do_1140612307621969921232/artifact/do_1140144030484480001206_1710742559879_capture391710742560259.thumb.png",
+                "posterImage": "https://portal.karmayogiqa.nic.in/content-store/content/do_1140144030484480001206/artifact/do_1140144030484480001206_1710742559879_capture391710742560259.png",
+                "identifier" : "do_1140612307621969921232",
+                "name": "The National Fisheries Development Board (NFDB"
+              },
+            ]
           },
         },
       ],
