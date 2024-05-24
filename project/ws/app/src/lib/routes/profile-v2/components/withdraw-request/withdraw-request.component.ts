@@ -34,19 +34,24 @@ export class WithdrawRequestComponent implements OnInit, OnDestroy {
   }
 
   handleWithdrawRequest(): void {
-    this.data.approvalPendingFields.forEach((_obj: any) => {
-      this.userProfileService.withDrawRequest(this.configService.unMappedUser.id, _obj.wfId)
-      .pipe(takeUntil(this.destroySubject$))
-      .subscribe((_res: any) => {
-        this.matSnackBar.open(this.handleTranslateTo('withdrawTransferSuccess'))
-        this.handleCloseModal()
-        this.enableMakeTransfer.emit(true)
-      },         (error: HttpErrorResponse) => {
-        if (!error.ok) {
-          this.matSnackBar.open(this.handleTranslateTo('withdrawTransferFailed'))
-        }
+    if (this.data.withDrawType === 'department') {
+      this.data.approvalPendingFields.forEach((_obj: any) => {
+        this.userProfileService.withDrawRequest(this.configService.unMappedUser.id, _obj.wfId)
+        .pipe(takeUntil(this.destroySubject$))
+        .subscribe((_res: any) => {
+          this.matSnackBar.open(this.handleTranslateTo('withdrawTransferSuccess'))
+          this.handleCloseModal()
+          this.enableMakeTransfer.emit(true)
+        },         (error: HttpErrorResponse) => {
+          if (!error.ok) {
+            this.matSnackBar.open(this.handleTranslateTo('withdrawTransferFailed'))
+          }
+        })
       })
-    })
+    } else {
+      const withdraw = true
+      this.dialogRef.close(withdraw)
+    }
   }
 
   handleTranslateTo(menuName: string): string {

@@ -692,7 +692,10 @@ export class ProfileViewComponent implements OnInit, AfterViewInit, OnDestroy {
 
   handleWithdrawTransferRequest(): void {
     const dialogRef = this.dialog.open(WithdrawRequestComponent, {
-      data: { approvalPendingFields: this.approvalPendingFields },
+      data: {
+        approvalPendingFields: this.approvalPendingFields,
+        withDrawType: 'department',
+      },
       disableClose: true,
       panelClass: 'common-modal',
     })
@@ -926,6 +929,22 @@ export class ProfileViewComponent implements OnInit, AfterViewInit, OnDestroy {
       }
     })
 
+  }
+
+  showWithdrawRequestPopup() {
+    const dialogRef = this.dialog.open(WithdrawRequestComponent, {
+      data: {
+        withDrawType: 'primaryDetails',
+      },
+      disableClose: true,
+      panelClass: 'common-modal',
+    })
+
+    dialogRef.afterClosed().subscribe((value: boolean) => {
+      if (value) {
+        this.handleWithdrawRequest()
+      }
+    })
   }
 
   handleWithdrawRequest(): void {
