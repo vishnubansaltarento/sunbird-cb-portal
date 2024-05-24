@@ -6,7 +6,8 @@ import { LocalDataService } from '../../browse-by-competency/services/localServi
 import { TranslateService } from '@ngx-translate/core'
 import { MultilingualTranslationsService } from '@sunbird-cb/utils-v2'
 import { debounceTime, switchMap, takeUntil } from 'rxjs/operators'
-import lodash from 'lodash'
+// tslint:disable
+import _ from 'lodash'
 
 @Component({
   selector: 'ws-app-mdo-channels',
