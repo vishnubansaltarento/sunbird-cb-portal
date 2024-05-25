@@ -1,4 +1,4 @@
-// import { HttpClient, HttpHeaders } from '@angular/common/http'
+import { HttpClient } from '@angular/common/http'
 import { Injectable } from '@angular/core'
 import { KeycloakEvent, KeycloakEventType, KeycloakInitOptions, KeycloakService } from 'keycloak-angular'
 import { fromEvent, ReplaySubject } from 'rxjs'
@@ -23,7 +23,7 @@ const storageKey = 'kc'
 export class AuthKeycloakService {
   private loginChangeSubject = new ReplaySubject<boolean>(1)
   constructor(
-    // private http: HttpClient,
+    private http: HttpClient,
     private configSvc: ConfigurationsService,
     private keycloakSvc: KeycloakService,
     private msAuthSvc: AuthMicrosoftService,
@@ -162,8 +162,8 @@ export class AuthKeycloakService {
     }
     storage.removeItem(storageKey)
     // alert(`${redirectUrl}apis/reset`)
-    // window.location.href = `${redirectUrl}apis/reset`
-    window.location.href = `${redirectUrl}public/logout`
+    window.location.href = `${redirectUrl}apis/reset`
+    // window.location.href = `${redirectUrl}public/logout`
     // window.location.href = 'http://localhost:3003/reset'
     //  await this.http.get('/apis/reset').toPromise()
     // setTimeout(window.location.href = `${redirectUrl}apis/reset`, 13000)
@@ -175,48 +175,21 @@ export class AuthKeycloakService {
     // }
   }
   async force_logout() {
-    // const headers = new HttpHeaders({
-    //   'Cache-Control':  'no-cache, no-store, must-revalidate, post-check=0, pre-check=0',
-    //   Pragma: 'no-cache',
-    //   Expires: '0',
-    // })
     if (storage.getItem('telemetrySessionId')) {
       storage.removeItem('telemetrySessionId')
     } else {
       // window.location.href = '/public/home'
       storage.removeItem(storageKey)
-      // await this.http.get('/apis/reset', { headers }).toPromise()
-      if (localStorage.getItem('login') === 'true') {
-        try {
-          sessionStorage.clear()
-          localStorage.clear()
-        } catch {
-
-        }
-        window.location.href = `${this.defaultRedirectUrl}apis/reset`
-      } else {
-        window.location.href = `${this.defaultRedirectUrl}public/logout`
-      }
+      await this.http.get('/apis/reset').toPromise()
     }
-    // try {
-    //   sessionStorage.clear()
-    //   localStorage.clear()
-    // } catch {
+    try {
+      sessionStorage.clear()
+      localStorage.clear()
+    } catch {
 
-    // }
+    }
     storage.removeItem(storageKey)
-    if (localStorage.getItem('login') === 'true') {
-      try {
-        sessionStorage.clear()
-        localStorage.clear()
-      } catch {
-
-      }
-      window.location.href = `${this.defaultRedirectUrl}apis/reset`
-    } else {
-      window.location.href = `${this.defaultRedirectUrl}public/logout`
-    }
-    // await this.http.get('/apis/reset', { headers }).toPromise()
+    await this.http.get('/apis/reset').toPromise()
   }
   private addKeycloakEventListener() {
     this.keycloakSvc.keycloakEvents$.subscribe((event: KeycloakEvent) => {

@@ -12,7 +12,7 @@ import {
   WidgetResolverService,
 } from '@sunbird-cb/resolver'
 import {
-  // AuthKeycloakService,
+  AuthKeycloakService,
   // AuthKeycloakService,
   ConfigurationsService,
   LoggerService,
@@ -75,7 +75,7 @@ export class InitService {
   constructor(
     private logger: LoggerService,
     private configSvc: ConfigurationsService,
-    // private authSvc: AuthKeycloakService,
+    private authSvc: AuthKeycloakService,
     private widgetResolverService: WidgetResolverService,
     private settingsSvc: BtnSettingsService,
     private userPreference: UserPreferenceService,
@@ -468,11 +468,11 @@ export class InitService {
               email: 'null',
             }
           }
-          localStorage.setItem('login', 'true')
+          // localStorage.setItem('login', 'true')
         } else {
-          // this.authSvc.force_logout()
+          this.authSvc.force_logout()
           // await this.http.get('/apis/reset').toPromise()
-          window.location.href = `${this.defaultRedirectUrl}apis/reset`
+          // window.location.href = `${this.defaultRedirectUrl}apis/reset`
           this.updateTelemetryConfig()
         }
         const details = {
@@ -597,10 +597,10 @@ export class InitService {
               email: 'null',
             }
           }
-          localStorage.setItem('login', 'true')
+          // localStorage.setItem('login', 'true')
         } else {
-          // this.authSvc.force_logout()
-          window.location.href = `${this.defaultRedirectUrl}apis/reset`
+          this.authSvc.force_logout()
+          // window.location.href = `${this.defaultRedirectUrl}apis/reset`
           this.updateTelemetryConfig()
         }
         const details = {
@@ -841,14 +841,14 @@ export class InitService {
     })
   }
 
-  //get default url 
+  // get default url
 
-  private get defaultRedirectUrl(): string {
-    try {
-      const baseUrl = document.baseURI
-      return baseUrl || location.origin
-    } catch (error) {
-      return location.origin
-    }
-  }
+  // private get defaultRedirectUrl(): string {
+  //   try {
+  //     const baseUrl = document.baseURI
+  //     return baseUrl || location.origin
+  //   } catch (error) {
+  //     return location.origin
+  //   }
+  // }
 }
