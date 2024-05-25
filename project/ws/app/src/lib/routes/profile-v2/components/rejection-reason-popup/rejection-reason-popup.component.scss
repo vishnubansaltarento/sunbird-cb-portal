@@ -11,6 +11,8 @@
         font-family: 'Lato';
         color: #222;
         text-align: center;
+        width: 100%;
+        word-wrap: break-word;
     }
 
     .okButton {
@@ -22,5 +24,12 @@
         font-size: 14px;
         font-weight: 700;
         color: #FFFFFF;
+        margin: 10px 0;
+    }
+}
+
+@media (min-width : 360px) and (max-width : 767px){  
+    .rejectionReason { 
+      height: 375px;
     }
 }

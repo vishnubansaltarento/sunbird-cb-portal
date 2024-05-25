@@ -549,9 +549,9 @@ export class ProfileViewComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   handleDateFormat(dateString: string): any {
-    const dateArr = dateString.split('-')
-    const newDateStr = `${dateArr[1]}/${dateArr[0]}/${dateArr[2]}`
-    return moment(new Date(newDateStr)).format('D MMM YYYY')
+    // const dateArr = dateString.split('-')
+    // const newDateStr = `${dateArr[1]}/${dateArr[0]}/${dateArr[2]}`
+    return moment(new Date(dateString)).format('D MMM YYYY')
   }
 
   handleVerifyOTP(verifyType: string, _value?: string): void {
