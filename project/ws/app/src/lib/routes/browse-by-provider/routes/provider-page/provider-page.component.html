@@ -1,6 +1,5 @@
 <ws-widget-btn-page-back [widgetData]="{ url: 'home', titles: titles, textClass:'ws-mat-black60-text' }">
 </ws-widget-btn-page-back>
-
 <div class="container-fluid" id="section-micro-sites">
     <div class="flex flex-col flex-1">
         <ng-container *ngIf="sectionList?.length">
@@ -12,6 +11,8 @@
                                 <ng-container *ngIf="column?.enabled" [ngSwitch]="column?.key">
                                     <ng-container *ngSwitchCase="'topSection'" [ngTemplateOutlet]="topSection"
                                         [ngTemplateOutletContext]="{data: column?.data}"></ng-container>
+                                    <ng-container *ngSwitchCase="'trainingCalendar'" [ngTemplateOutlet]="trainingCalendar"
+                                        [ngTemplateOutletContext]="{trainingCalendar: column.data}"></ng-container>
                                     <ng-container *ngSwitchCase="'contributors'" [ngTemplateOutlet]="contributors"
                                         [ngTemplateOutletContext]="{data: column?.data}"></ng-container>
                                     <ng-container *ngSwitchCase="'infra'" [ngTemplateOutlet]="infra"
@@ -20,12 +21,12 @@
                                         [ngTemplateOutletContext]="{contentStrip: column?.data}"></ng-container>
                                     <ng-container *ngSwitchCase="'contentTopStrip'" [ngTemplateOutlet]="contentStrip"
                                         [ngTemplateOutletContext]="{contentStrip: column?.data}"></ng-container>
-                                    <ng-container *ngSwitchCase="'calendar'" [ngTemplateOutlet]="calendar"
-                                        [ngTemplateOutletContext]="{calendar: column?.data}"></ng-container>
                                     <ng-container *ngSwitchCase="'bmetrics'" [ngTemplateOutlet]="bmetrics"
                                         [ngTemplateOutletContext]="{bmetrics: column}"></ng-container>  
                                     <ng-container *ngSwitchCase="'competency'" [ngTemplateOutlet]="competency"
-                                        [ngTemplateOutletContext]="{competency: column}"></ng-container>                          
+                                        [ngTemplateOutletContext]="{competency: column}"></ng-container>   
+                                        <ng-container *ngSwitchCase="'learnerReview'" [ngTemplateOutlet]="learnerReviewBlock"
+                                            [ngTemplateOutletContext]="{data: column?.data}"></ng-container>                         
                                 </ng-container>
                             </div>
                         </ng-container>
@@ -47,7 +48,7 @@
 
 <ng-template #topSection let-data="data">
     <!-- <div class="w-full grid grid-cols-12 gap-4"> -->
-        <div class="col-span-12 christy">
+        <div class="col-span-12 ">
             <div class="grid grid-cols-12">
                 <div class="col-span-12 md:col-span-8">
                     <div class="slider h-full" *ngIf="data?.sliderData?.sliders">
@@ -72,7 +73,8 @@
                     <div class="block md:hidden overflow-y-auto mb-3">
                         <sb-uic-data-points [providerId]="providerId" [fetchDataFromApi]="true"  [objectData]="data?.metrics?.data" [layoutType]="'singleRow'"></sb-uic-data-points>
                     </div>
-                    <button  [routerLink]="[data?.contentButton?.redirectUrl, providerName, providerId, 'all-CBP']" mat-button type="button" class="view-btn margin-left-xs margin-right-xs small-button blue-border flex-auto-display">
+                    <button [routerLink]="[data?.contentButton?.redirectUrl, providerName, providerId, 'all-CBP']" mat-button type="button"
+                     class="view-btn margin-left-xs margin-right-xs small-button blue-border flex-auto-display">
                         <span class="mat-heading-1 bold ws-mat-default-text" i18n>
                             {{data?.contentButton?.title}}
                         </span>
@@ -89,7 +91,8 @@
             <img class="absolute {{contentStrip?.sectionImagePosition}}" src="{{contentStrip?.sectionImage}}" alt="">
             <div class="container ">
                 <div class="w-full">
-                    <sb-uic-content-strip-with-tabs (emptyResponse)="hideContentStrip($event, contentStrip)" [providerId]="providerId" [widgetData]="contentStrip"></sb-uic-content-strip-with-tabs>
+                    <sb-uic-content-strip-with-tabs [emitViewAll]="true" (viewAllResponse)="showAllContent($event)"  
+                    (emptyResponse)="hideContentStrip($event, contentStrip)" [providerId]="providerId" [widgetData]="contentStrip"></sb-uic-content-strip-with-tabs>
                 </div>
             </div>
         </div>
@@ -176,3 +179,75 @@
     </div>
 </ng-template>
 <!-- End Competencies -->
+
+
+<ng-template #trainingCalendar let-trainingCalendar="trainingCalendar">
+    <div class="hidden md:block">
+        <div class="col-span-12 px-8 py-8" [style.background]="trainingCalendar?.background">
+            <div class="container-balanced flex flex-col">
+                <div class="col-span-12 mat-subheading-1 margin-remove">{{trainingCalendar?.title}}:  {{currentMonthAndYear}}</div>
+                <sb-uic-calender
+                    [objectData]="trainingCalendar"
+                    [fetchDataFromApi]="true"
+                    [layoutType]="'grid'"
+                    [defaultDays]="trainingCalendar?.defaultDays"
+                    [providerId]="providerId">
+                </sb-uic-calender>
+            </div>
+            <div class="flex item-center justify-center">
+                <button mat-button type="button"
+                    [routerLink]="[trainingCalendar?.contentButton?.redirectUrl, providerName, providerId, 'training-calendar']"
+                    class="view-btn margin-left-xs margin-right-xs small-button blue-border flex-auto-display">
+                    <span class="mat-heading-1 bold ws-mat-default-text" i18n>
+                        {{trainingCalendar?.contentButton?.title}}
+                    </span>
+                </button>
+            </div>
+        </div>
+    </div>
+    <div class="block md:hidden">
+        <div class="col-span-12 px-5 py-3 mob-header">{{trainingCalendar?.title}}:  {{currentMonthAndYear}}</div>
+        <div class="col-span-12">
+            <sb-uic-calender
+                [objectData]="trainingCalendar"
+                [fetchDataFromApi]="true"
+                [layoutType]="'row'"
+                [defaultDays]="trainingCalendar?.defaultDays"
+                [providerId]="providerId">
+            </sb-uic-calender>
+        </div>
+        <div class="col-span-12 flex item-center justify-center">
+            <button mat-button type="button"
+                [routerLink]="[trainingCalendar?.contentButton?.redirectUrl, providerName, providerId, 'training-calendar']"
+                class="view-btn margin-left-xs margin-right-xs small-button blue-border flex-auto-display">
+                <span class="mat-heading-1 bold ws-mat-default-text" i18n>
+                    {{trainingCalendar?.contentButton?.title}}
+                </span>
+            </button>
+        </div>
+    </div>
+</ng-template>
+<ng-template #learnerReviewBlock  let-data="data">
+    <div class="contributors-background px-5 py-5" [style.background]="data?.background" *ngIf="!data?.hideSection">
+        <div class="container">
+            <div class="grid grid-cols-12 gap-4 padding-top-l mb-6">
+                <div class="col-span-12 md:col-span-3 contributor-desc">
+                    <div class="infra-box flex flex-col">
+                        <div class="learner-title hidden md:block">
+                            {{data?.detaulTitle}}
+                        </div>
+                        <div class="infra-title2 hidden md:block">
+                            {{data?.myTitle}}
+                        </div>
+                        <div class="block md:hidden">
+                            <span class="learner-title">{{data?.detaulTitle}}</span> <span class="infra-title2"> {{data?.myTitle}}</span>
+                        </div>  
+                    </div> 
+                </div>
+                <div class="col-span-12 md:col-span-9">
+                    <sb-uic-user-content-rating (emptyResponse)="hideLearnerReview($event, data)"  [formData]="data" [providerId]="providerId"></sb-uic-user-content-rating>
+                </div>
+            </div>
+        </div>
+    </div>
+</ng-template>

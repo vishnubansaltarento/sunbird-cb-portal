@@ -1,5 +1,6 @@
+import { DatePipe } from '@angular/common'
 import { Component, OnInit } from '@angular/core'
-import { ActivatedRoute } from '@angular/router'
+import { ActivatedRoute, Router } from '@angular/router'
 
 @Component({
   selector: 'ws-app-provider-page',
@@ -13,6 +14,7 @@ export class ProviderPageComponent implements OnInit {
   navList: any
   hideCompetencyBlock = false
   sectionList: any = []
+  currentMonthAndYear: any
   titles = [
     { title: `Providers`,
       url: `/app/learn/browse-by/provider/all-providers`,
@@ -21,7 +23,8 @@ export class ProviderPageComponent implements OnInit {
     },
   ]
 
-  constructor(private route: ActivatedRoute) {
+  constructor(private route: ActivatedRoute,
+              public router: Router, private datePipe: DatePipe) {
 
   }
 
@@ -44,6 +47,7 @@ export class ProviderPageComponent implements OnInit {
       })
     })
     this.getNavitems()
+    this.currentMonthAndYear = this.datePipe.transform(new Date(), 'MMMM y')
   }
 
   getNavitems() {
@@ -72,5 +76,14 @@ export class ProviderPageComponent implements OnInit {
     if (event) {
       contentStripData['hideSection'] = true
     }
+  }
+  hideLearnerReview(event: any, learnerReview: any) {
+    if (event) {
+      learnerReview['hideSection'] = true
+    }
+  }
+
+  showAllContent(_stripData: any) {
+    this.router.navigate([`/app/learn/browse-by/provider/${this.providerName}/${this.providerId}/all-CBP`])
   }
 }

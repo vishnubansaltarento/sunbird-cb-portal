@@ -54,6 +54,12 @@
     border: 1px solid #1B4CA9;
     font-weight: 700 !important;
     font-size: 14px;
+    margin-top: 4px;
+    margin-bottom: 4px;
+    @include breakpoint-xs {
+        margin-top: 12px;
+        margin-bottom: 16px;
+    }
 }
 
 
@@ -302,4 +308,20 @@
     margin-left: auto;
     margin-right: auto;
     width: 50%;
+}
+
+.mob-header {
+    font-family: Lato;
+    font-size: 16px;
+    font-weight: 600;
+}
+
+.learner-title {
+    //styleName: Heading 1;
+    font-family: Montserrat;
+    font-size: 24px;
+    font-weight: 600;
+    line-height: 29.26px;
+    text-align: left;
+    color: #000;
 }
