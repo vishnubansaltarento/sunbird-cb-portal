@@ -1,25 +1,25 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { async, ComponentFixture, TestBed } from '@angular/core/testing'
 
-import { MdoChannelsMicrositeComponent } from './mdo-channels-microsite.component';
+import { MdoChannelsMicrositeComponent } from './mdo-channels-microsite.component'
 
 describe('MdoChannelsMicrositeComponent', () => {
-  let component: MdoChannelsMicrositeComponent;
-  let fixture: ComponentFixture<MdoChannelsMicrositeComponent>;
+  let component: MdoChannelsMicrositeComponent
+  let fixture: ComponentFixture<MdoChannelsMicrositeComponent>
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ MdoChannelsMicrositeComponent ]
+      declarations: [MdoChannelsMicrositeComponent],
     })
-    .compileComponents();
-  }));
+    .compileComponents()
+  }))
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(MdoChannelsMicrositeComponent);
-    component = fixture.componentInstance;
-    fixture.detectChanges();
-  });
+    fixture = TestBed.createComponent(MdoChannelsMicrositeComponent)
+    component = fixture.componentInstance
+    fixture.detectChanges()
+  })
 
   it('should create', () => {
-    expect(component).toBeTruthy();
-  });
-});
+    expect(component).toBeTruthy()
+  })
+})
