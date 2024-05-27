@@ -73,13 +73,13 @@ export class MdoChannelsMicrositeComponent implements OnInit {
   triggerOpenDialog(event: boolean) {
     if(event) {
       this.showModal = true
-      document.body.style.overflow = 'hidden';
+      document.body.style.overflow = 'hidden'
     }
   }
 
   onClose() {
     this.showModal = false
-    document.body.style.overflow = 'auto';
+    document.body.style.overflow = 'auto'
   }
 
 }

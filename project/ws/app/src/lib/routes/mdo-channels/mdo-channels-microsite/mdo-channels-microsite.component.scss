@@ -77,14 +77,8 @@
 .close-icon {
     color: #fff;
     border-radius: 15px;
-    padding: 3px;
-    float: righ;
-}
-
-.announcements-modal {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    height: inherit;
-    width: inherit;
+    float: right;
+    position: absolute;
+    top: 15px;
+    right: 15px;
 }
