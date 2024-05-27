@@ -126,6 +126,7 @@ export class PracticeComponent implements OnInit, OnChanges, OnDestroy {
   currentSetNumber = 0
   noOfQuestionsPerSet = 20
   totalQuestionsCount = 0
+  instructionAssessment = ''
   constructor(
     private events: EventService,
     public dialog: MatDialog,
@@ -163,13 +164,15 @@ export class PracticeComponent implements OnInit, OnChanges, OnDestroy {
     }
   }
   init() {
-
+    console.log('this.activatedRoute',this.activatedRoute)
     if (window.innerWidth < 768) {
       this.isMobile = true
     } else {
       this.isMobile = false
     }
-    // this.getSections()
+    if(this.coursePrimaryCategory === 'Standalone Assessment') {
+      this.getSections()
+    }    
     this.isSubmitted = false
     this.markedQuestions = new Set([])
     this.questionAnswerHash = {}
@@ -246,6 +249,8 @@ export class PracticeComponent implements OnInit, OnChanges, OnDestroy {
       this.questionAnswerHash = this.quizSvc.questionAnswerHash.getValue()
     }
     this.coursePrimaryCategory = this.widgetContentService.currentMetaData.primaryCategory;
+    this.instructionAssessment = this.widgetContentService.currentMetaData.instructions;
+    console.log('this.widgetContentService.currentMetaData', this.widgetContentService.currentMetaData)
   }
   get getTimeLimit(): number {
     let jsonTime = (this.quizJson.timeLimit || 0)
@@ -255,7 +260,7 @@ export class PracticeComponent implements OnInit, OnChanges, OnDestroy {
     }
     return jsonTime + this.assessmentBuffer
   }
-  getSections(_event: NSPractice.TUserSelectionType) {
+  getSections() {
     // this.identifier
     this.fetchingSectionsStatus = 'fetching'
     if (this.quizSvc.paperSections && this.quizSvc.paperSections.value
@@ -284,7 +289,7 @@ export class PracticeComponent implements OnInit, OnChanges, OnDestroy {
             // this.quizJson.timeLimit = this.duration * 60
             this.quizJson.timeLimit = this.quizJson.timeLimit
           }
-          this.quizSvc.paperSections.next(section.result)
+          // this.quizSvc.paperSections.next(section.result)
           const tempObj = _.get(section, 'result.questionSet.children')
           this.updataDB(tempObj)
           this.paperSections = []
@@ -352,12 +357,12 @@ export class PracticeComponent implements OnInit, OnChanges, OnDestroy {
     return this.totalQuestionsCount > this.noOfQuestionsPerSet * (this.currentSetNumber + 1)
   }
   nextSection(section: NSPractice.IPaperSection) {
-    this.quizSvc.currentSection.next(section)
+    // this.quizSvc.currentSection.next(section)
     this.startSection(section)
   }
   startSection(section: NSPractice.IPaperSection) {
     if (section) {
-      this.quizSvc.currentSection.next(section)
+      // this.quizSvc.currentSection.next(section)
       this.fetchingQuestionsStatus = 'fetching'
       this.selectedSection = section
       if (this.secQuestions && this.secQuestions.length > 0) {

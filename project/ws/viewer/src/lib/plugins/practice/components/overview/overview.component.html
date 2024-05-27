@@ -110,6 +110,14 @@
      </ul>
     </div>
   </div>
+  <div class="summary flex flex-col" *ngIf="coursePrimaryCategory == 'Standalone Assessment'">
+    <div>
+      <h2 class="summary-label">{{ 'practiceoverview.summary' | translate }}</h2>
+    </div>
+    <div class="summary-detail">
+      <p [innerHtml]="instructionAssessment"></p>
+    </div>
+  </div>
 
   
 </div>

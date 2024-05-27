@@ -18,6 +18,7 @@ export class OverviewComponent implements OnInit, OnDestroy {
   @Input() noOfQuestions = 0
   @Input() canAttempt!: NSPractice.IRetakeAssessment
   @Input() coursePrimaryCategory:any;
+  @Input() instructionAssessment:any;
   @Output() userSelection = new EventEmitter<NSPractice.TUserSelectionType>()
   questionTYP = NsContent.EPrimaryCategory
   // staticImage = '/assets/images/exam/practice-test.png'
