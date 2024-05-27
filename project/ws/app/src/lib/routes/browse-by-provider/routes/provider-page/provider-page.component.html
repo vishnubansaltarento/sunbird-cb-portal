@@ -69,7 +69,12 @@
                 </div>
                 <div class="w-full md:w-9/12 flex-1 flex flex-col">
                     <h1 class=" txt-ellipsis-2 break-words">{{data?.title || providerName}}</h1>
-                    <p>{{data?.description}}</p>
+                    <p>{{expanded ? data?.description : data?.description | slice:0:descriptionMaxLength}}
+                        <span (click)="viewMoreOrLess()"
+                            *ngIf="data?.description?.length > descriptionMaxLength"
+                            class="cursor-pointer ws-mat-default-text font-bold"> ...View {{expanded ? 'less' : 'more' }}
+                        </span>
+                    </p>
                     <div class="block md:hidden overflow-y-auto mb-3">
                         <sb-uic-data-points [providerId]="providerId" [fetchDataFromApi]="true"  [objectData]="data?.metrics?.data" [layoutType]="'singleRow'"></sb-uic-data-points>
                     </div>
