@@ -24,7 +24,7 @@ export class ProviderPageComponent implements OnInit {
   ]
 
   descriptionMaxLength = 1000
-  expanded: boolean = false
+  expanded = false
 
   constructor(private route: ActivatedRoute,
               public router: Router, private datePipe: DatePipe) {

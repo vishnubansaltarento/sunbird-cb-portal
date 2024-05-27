@@ -18,7 +18,7 @@ export class ProviderCardComponent implements OnInit {
     this.events.raiseInteractTelemetry(
       {
         type: 'click',
-        id: "card-content",
+        id: 'card-content',
       },
       {
         id: this.provider.name,
