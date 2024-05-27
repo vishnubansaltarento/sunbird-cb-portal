@@ -271,6 +271,7 @@ export class ProfileViewComponent implements OnInit, AfterViewInit, OnDestroy {
           : this.portalProfile.userName
       }
     })
+
   }
 
   ngOnInit() {

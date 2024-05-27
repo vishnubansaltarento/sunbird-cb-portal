@@ -586,7 +586,7 @@
     </div>
     <div class="flex-1 profile-info">
       <div class="flex flex-col gap-2">
-        <div class="flex flex-row" *ngIf="!portalProfile?.verifiedKarmayogi">
+        <div class="flex flex-row" *ngIf="portalProfile?.profileStatus !== 'VERIFIED'">
           <div class="profile-not-verified">
             <div class="text">{{ 'profileInfo.profileNotVerified' | translate }}</div>
             <mat-icon>info_outline</mat-icon>
@@ -594,7 +594,7 @@
         </div>
         <div class="flex flex-row gap-4 items-center" *ngIf="!editName"> 
           <div class="name">{{ currentUser?.firstName }} {{ currentUser?.lastName }}</div>
-          <mat-icon class="profile-verified-check" *ngIf="portalProfile?.verifiedKarmayogi">check_circle</mat-icon>
+          <mat-icon class="profile-verified-check" *ngIf="portalProfile?.profileStatus === 'VERIFIED'">check_circle</mat-icon>
           <mat-icon class="cursor-pointer" (click)="editName = !editName">edit</mat-icon>
         </div>
         <div class="flex flex-row gap-4 items-center edit-name" *ngIf="editName">
