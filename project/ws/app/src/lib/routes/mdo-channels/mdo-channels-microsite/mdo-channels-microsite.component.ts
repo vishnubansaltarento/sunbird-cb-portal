@@ -23,6 +23,7 @@ export class MdoChannelsMicrositeComponent implements OnInit {
       icon: '', disableTranslate: true,
     },
   ]
+  showModal: boolean = false
 
   constructor(
     private route: ActivatedRoute,
@@ -67,6 +68,18 @@ export class MdoChannelsMicrositeComponent implements OnInit {
       }
     )
 
+  }
+
+  triggerOpenDialog(event: boolean) {
+    if(event) {
+      this.showModal = true
+      document.body.style.overflow = 'hidden'
+    }
+  }
+
+  onClose() {
+    this.showModal = false
+    document.body.style.overflow = 'auto'
   }
 
 }

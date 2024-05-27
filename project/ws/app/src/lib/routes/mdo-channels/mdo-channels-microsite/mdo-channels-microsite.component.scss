@@ -46,3 +46,39 @@
 .mob-metrics {
     overflow: auto;
 }
+
+.metrics-section {
+    margin-top: -30px;
+}
+.empty-div {
+    height: 15px;
+}
+.mob-metrics-sec {
+    padding-top: 3.4rem;
+}
+
+
+// Announcement modal
+
+.announcements-container {
+    position: fixed;
+    height: calc(100vh - 67px);
+    background: #131313a3;
+    width: 100vw;
+    top: 0;
+    left: 0;
+    z-index: 1000;
+}
+.close-announcements-dialog {
+    position: absolute;
+    right: 30px;
+    top: 30px;
+}
+.close-icon {
+    color: #fff;
+    border-radius: 15px;
+    float: right;
+    position: absolute;
+    top: 15px;
+    right: 15px;
+}
