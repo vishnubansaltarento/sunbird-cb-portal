@@ -131,6 +131,12 @@
 
     }
 
+    @media screen and (min-width: 360px) and (max-width: 576px) {
+        .provider_card_box  {
+            justify-content: center;
+        }
+      }
+
     a.load_more_link {
         margin:35px auto 0 auto;
         text-align:center;
