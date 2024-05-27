@@ -68,5 +68,10 @@ export class MdoChannelsMicrositeComponent implements OnInit {
     )
 
   }
+  hideContentStrip(event: any, contentStripData: any) {
+    if (event) {
+      contentStripData['hideSection'] = true
+    }
+  }
 
 }
