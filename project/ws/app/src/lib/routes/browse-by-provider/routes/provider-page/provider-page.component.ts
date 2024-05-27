@@ -23,6 +23,9 @@ export class ProviderPageComponent implements OnInit {
     },
   ]
 
+  descriptionMaxLength = 1000
+  expanded: boolean = false
+
   constructor(private route: ActivatedRoute,
               public router: Router, private datePipe: DatePipe) {
 
@@ -85,5 +88,9 @@ export class ProviderPageComponent implements OnInit {
 
   showAllContent(_stripData: any) {
     this.router.navigate([`/app/learn/browse-by/provider/${this.providerName}/${this.providerId}/all-CBP`])
+  }
+
+  viewMoreOrLess() {
+    this.expanded = !this.expanded
   }
 }
