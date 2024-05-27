@@ -521,6 +521,23 @@ export class AppTocHomeComponent implements OnInit, OnDestroy, AfterViewChecked,
     }
   }
 
+  raiseTelemeteryForProvider(providerName: string, prividerId: string){
+    this.events.raiseInteractTelemetry(
+      {
+        type: 'click',
+        id: 'btn-provider',
+      },
+      {
+        id: providerName,
+        type: prividerId,
+      },
+      {
+        pageIdExt: 'btn-provider',
+        module: WsEvents.EnumTelemetrymodules.CONTENT,
+      })
+
+  }
+
   raiseTelemetry() {
     this.events.raiseInteractTelemetry(
       {

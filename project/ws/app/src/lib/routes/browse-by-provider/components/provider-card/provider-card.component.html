@@ -20,7 +20,8 @@
 
 <!-- TODO: Remove this below card, when the above card (card 1) information is available from backend -->
 <!-- Card 2 start -->
-<div class="cursor-pointer card2  item-center single_provider_card mat-card " 
+<div class="cursor-pointer card2  item-center single_provider_card mat-card "
+    (click)="raiseTelemetery()"
     [routerLink]="['/app/learn/browse-by/provider', provider?.name, provider?.orgId, 'micro-sites']">
     <div class="w-full flex flex-col card-container items-center justify-center">   
         <div class="flex width-inherit flex-col item-center justify-center aliginCenter">
