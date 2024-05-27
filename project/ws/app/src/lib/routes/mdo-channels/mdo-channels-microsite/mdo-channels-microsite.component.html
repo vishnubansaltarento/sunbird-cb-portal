@@ -50,9 +50,41 @@
             </div>
         </div>
     </div>
+    <div class="hidden md:block">
+        <ng-container>
+            <div class="flex items-center justify-center empty-div" [ngStyle]="{'background': data.background}"></div>    
+        </ng-container>
+        
+    </div>
+    <div class="flex items-center justify-center">
+        <div class="container metrics-section" >
+            <div class="hidden md:block">
+                <div class="metrics"
+                    [ngStyle]="{'background': data?.metrics?.background}">
+                    <sb-uic-data-points
+                        [providerId]="orgId"
+                        [fetchDataFromApi]="false" 
+                        [objectData]="data?.metrics?.data"
+                        [layoutType]="'singleFlexeRow'">
+                    </sb-uic-data-points>
+                </div>
+            </div>
+            <div class="block md:hidden  pt-14 px-4">
+                <div class="mob-metrics mob-metrics-sec">
+                    <sb-uic-data-points
+                        [providerId]="orgId"
+                        [fetchDataFromApi]="false"
+                        [objectData]="data?.metrics?.data"
+                        [layoutType]="'singleRow'">
+                    </sb-uic-data-points>
+                </div>
+                
+            </div>
+        </div>
+    </div>
 </ng-template>
 
-<ng-template #metrics let-data="data">
+<!-- <ng-template #metrics let-data="data">
     <div class="flex items-center justify-center">
         <div class="container">
             <div class="hidden md:block">
@@ -78,7 +110,7 @@
             </div>
         </div>
     </div>
-</ng-template>
+</ng-template> -->
 
 <ng-template #mainContent let-data="data">
     <div class="flex  items-center justify-center" [ngStyle]="{'background': data.background}">
