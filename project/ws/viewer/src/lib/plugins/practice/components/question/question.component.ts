@@ -57,7 +57,10 @@ export class QuestionComponent implements OnInit, OnChanges, AfterViewInit {
   isMobile = false
   @Input() mobileQuestionSetExpand: any = false
   @Input() coursePrimaryCategory:any
+  @Input() showOnlyQuestion:any;
+  @Input() showMarkForReview:any = false;
   expandedQuestionSetSubscription: any
+  
   constructor(
     // private domSanitizer: DomSanitizer,
     // private elementRef: ElementRef,

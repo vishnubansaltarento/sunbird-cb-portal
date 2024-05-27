@@ -11,6 +11,7 @@ import { SkeletonLoaderModule } from '@sunbird-cb/collection/src/lib/_common/ske
 import {
   MatCardModule,
   MatDialogModule,
+  MatInputModule,
   MatFormFieldModule,
   MatIconModule,
   MatListModule,
@@ -25,8 +26,8 @@ import {
   MatChipsModule,
   MatCheckboxModule,
   MatMenuModule,
+  MatSelectModule,
 } from '@angular/material'
-
 import {
   BtnFullscreenModule,
 } from '@sunbird-cb/collection'
@@ -75,6 +76,7 @@ import { FinalAssessmentPopupComponent } from './components/final-assessment-pop
     PipeLimitToModule,
     MatCardModule,
     MatDialogModule,
+    MatInputModule,
     MatFormFieldModule,
     MatIconModule,
     MatListModule,
@@ -92,6 +94,7 @@ import { FinalAssessmentPopupComponent } from './components/final-assessment-pop
     SkeletonLoaderModule,
     TranslateModule,
     MatMenuModule,
+    MatSelectModule
   ],
   exports: [
     PracticeComponent,

@@ -124,7 +124,7 @@ export class PracticeComponent implements OnInit, OnChanges, OnDestroy {
   showToolTip = false
   coursePrimaryCategory : any;
   currentSetNumber = 0
-  noOfQuestionsPerSet = 2
+  noOfQuestionsPerSet = 20
   totalQuestionsCount = 0
   constructor(
     private events: EventService,

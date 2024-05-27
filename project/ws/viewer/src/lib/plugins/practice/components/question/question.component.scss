@@ -202,7 +202,27 @@ color: rgb(27, 76, 161)
   color: #fff !important;
 }
 
+.question-with-background {
+  background-color: #f5f5f5;
+}
 
+.show-only-question {
+  padding: 0;
+  margin: 0;
+}
+
+.question-heading {
+  padding: 10px;
+    height: 28px;
+}
+
+.quest_btn_review {
+  background: #EDF1F7 !important;
+  width: auto;
+  border-radius: 63px;
+  color: #000 !important;
+
+}
 
 @media only screen and (min-width: 360px) and (max-width:767px) {
       .mobile-responsive-question-container{
