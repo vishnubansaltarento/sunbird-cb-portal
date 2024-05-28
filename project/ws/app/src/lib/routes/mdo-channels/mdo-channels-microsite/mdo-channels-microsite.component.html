@@ -63,9 +63,10 @@
                     [ngStyle]="{'background': data?.metrics?.background}">
                     <sb-uic-data-points
                         [providerId]="orgId"
-                        [fetchDataFromApi]="false" 
+                        [fetchDataFromApi]="true"
                         [objectData]="data?.metrics?.data"
-                        [layoutType]="'singleFlexeRow'">
+                        [layoutType]="'singleFlexeRow'"
+                        [pageLayout]="'mdo'">
                     </sb-uic-data-points>
                 </div>
             </div>
@@ -73,9 +74,10 @@
                 <div class="mob-metrics mob-metrics-sec">
                     <sb-uic-data-points
                         [providerId]="orgId"
-                        [fetchDataFromApi]="false"
+                        [fetchDataFromApi]="true"
                         [objectData]="data?.metrics?.data"
-                        [layoutType]="'singleRow'">
+                        [layoutType]="'singleRow'"
+                        [pageLayout]="'mdo'">
                     </sb-uic-data-points>
                 </div>
                 
@@ -83,34 +85,6 @@
         </div>
     </div>
 </ng-template>
-
-<!-- <ng-template #metrics let-data="data">
-    <div class="flex items-center justify-center">
-        <div class="container">
-            <div class="hidden md:block">
-                <div class="metrics" [ngStyle]="{'background': data.background}">
-                    <sb-uic-data-points
-                        [providerId]="orgId"
-                        [fetchDataFromApi]="false" 
-                        [objectData]="data?.metrics?.data"
-                        [layoutType]="'singleFlexeRow'">
-                    </sb-uic-data-points>
-                </div>
-            </div>
-            <div class="block md:hidden mt-6 px-4">
-                <div class="mob-metrics">
-                    <sb-uic-data-points
-                        [providerId]="orgId"
-                        [fetchDataFromApi]="false"
-                        [objectData]="data?.metrics?.data"
-                        [layoutType]="'singleRow'">
-                    </sb-uic-data-points>
-                </div>
-                
-            </div>
-        </div>
-    </div>
-</ng-template> -->
 
 <ng-template #mainContent let-data="data">
     <div class="flex  items-center justify-center" [ngStyle]="{'background': data.background}">
