@@ -191,7 +191,7 @@
     <div class="padding-top-l padding-bottom-l relative"  [style.background]="competency?.background" *ngIf="!hideCompetencyBlock">
         <div class="w-full container-balanced">
             <div class="pl-4 pr-4 md:pl-0 md:pr-0">
-                <sb-uic-competency-passbook [cardDisplayCount]="2" (emptyResponse)="hideCompetency($event)" [objectData]="competency" [providerId]="providerId"></sb-uic-competency-passbook>         
+                <sb-uic-competency-passbook [dynamicColor]="'#999999'" [dynamicAlignPills]="'start'" [cardDisplayCount]="2" (emptyResponse)="hideCompetency($event)" [objectData]="competency" [providerId]="providerId"></sb-uic-competency-passbook>         
             </div>
         </div>
         <!-- <img class="absolute comp-back-img" src="assets/icons/microsite/competency.svg" alt=""> -->
