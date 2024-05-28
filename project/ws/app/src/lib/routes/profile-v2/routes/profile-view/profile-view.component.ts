@@ -654,6 +654,8 @@ export class ProfileViewComponent implements OnInit, AfterViewInit, OnDestroy {
           'personalDetails': {},
           'employmentDetails': {
             'employeeCode': this.otherDetailsForm.value['employeeCode'],
+            'pincode': this.otherDetailsForm.value['pincode'],
+            'mobile': this.otherDetailsForm.value['mobile'],
           },
         },
       },
@@ -915,21 +917,31 @@ export class ProfileViewComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   get enableEditBtn(): boolean {
-    if (this.portalProfile.professionalDetails[0].group !== this.primaryDetailsForm.get('group')!.value &&
-    this.portalProfile.professionalDetails[0].designation !== this.primaryDetailsForm.get('designation')!.value
-    ) {
-      return true
+    if (this.portalProfile.professionalDetails && this.portalProfile.professionalDetails.length) {
+      if (this.portalProfile.professionalDetails[0].group !== this.primaryDetailsForm.get('group')!.value &&
+      this.portalProfile.professionalDetails[0].designation !== this.primaryDetailsForm.get('designation')!.value
+      ) {
+        return true
 
-    }  if (this.portalProfile.professionalDetails[0].group !== this.primaryDetailsForm.get('group')!.value &&
-    ((this.designationApprovedTime + 100) <= this.rejectedFields.groupRejectionTime ||
-    (this.designationApprovedTime - 100) <= this.rejectedFields.groupRejectionTime ||
-    this.designationApprovedTime === this.groupApprovedTime)) {
-      return true
-    }  if (this.portalProfile.professionalDetails[0].designation !== this.primaryDetailsForm.get('designation')!.value &&
-    ((this.groupApprovedTime + 100) <= this.rejectedFields.designationRejectionTime ||
-      (this.groupApprovedTime - 100) <= this.rejectedFields.designationRejectionTime ||
+      }
+    }
+
+    if (this.portalProfile.professionalDetails && this.portalProfile.professionalDetails.length) {
+      if (this.portalProfile.professionalDetails[0].group !== this.primaryDetailsForm.get('group')!.value &&
+      ((this.designationApprovedTime + 100) <= this.rejectedFields.groupRejectionTime ||
+      (this.designationApprovedTime - 100) <= this.rejectedFields.groupRejectionTime ||
       this.designationApprovedTime === this.groupApprovedTime)) {
-      return true
+        return true
+      }
+    }
+
+    if (this.portalProfile.professionalDetails && this.portalProfile.professionalDetails.length) {
+      if (this.portalProfile.professionalDetails[0].designation !== this.primaryDetailsForm.get('designation')!.value &&
+      ((this.groupApprovedTime + 100) <= this.rejectedFields.designationRejectionTime ||
+        (this.groupApprovedTime - 100) <= this.rejectedFields.designationRejectionTime ||
+        this.designationApprovedTime === this.groupApprovedTime)) {
+        return true
+      }
     }
 
     return false
@@ -938,10 +950,17 @@ export class ProfileViewComponent implements OnInit, AfterViewInit, OnDestroy {
   handleSendApproval(): void {
     const data: any = {
     }
-    if (this.portalProfile.professionalDetails[0].designation !== this.primaryDetailsForm.get('designation')!.value) {
+    if (this.portalProfile.professionalDetails && this.portalProfile.professionalDetails.length) {
+      if (this.portalProfile.professionalDetails &&
+        this.portalProfile.professionalDetails[0].designation !== this.primaryDetailsForm.get('designation')!.value) {
+        data['designation'] = this.primaryDetailsForm.get('designation')!.value
+      }
+      if (this.portalProfile.professionalDetails &&
+        this.portalProfile.professionalDetails[0].group !== this.primaryDetailsForm.get('group')!.value) {
+        data['group'] = this.primaryDetailsForm.get('group')!.value
+      }
+    } else {
       data['designation'] = this.primaryDetailsForm.get('designation')!.value
-    }
-    if (this.portalProfile.professionalDetails[0].group !== this.primaryDetailsForm.get('group')!.value) {
       data['group'] = this.primaryDetailsForm.get('group')!.value
     }
 

@@ -37,6 +37,7 @@ export namespace NSProfileDataV2 {
     profileImageUrl: string
     additionalProperties: any
     verifiedKarmayogi: boolean
+    profileStatus: string
   }
 
   export interface IKarmapoints {
