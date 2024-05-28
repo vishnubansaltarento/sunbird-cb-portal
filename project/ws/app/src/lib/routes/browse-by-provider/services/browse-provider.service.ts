@@ -43,8 +43,8 @@ export class BrowseProviderService {
     }
   }
   postApiMethod(apiUrl: any, req: any): Observable<NsContent.IContent> {
-    req.query = req.query || '';
-    return this.http.post<NsContent.IContent>(apiUrl, req);
+    req.query = req.query || ''
+    return this.http.post<NsContent.IContent>(apiUrl, req)
   }
 
 }
