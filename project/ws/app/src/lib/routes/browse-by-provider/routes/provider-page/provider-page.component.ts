@@ -87,14 +87,17 @@ export class ProviderPageComponent implements OnInit  {
   }
 
   showAllContent(_stripData: any, contentStrip: any) {
-    if(contentStrip && contentStrip.strips && contentStrip.strips.length) {
-      let stripData: any = contentStrip.strips[0]
-      if(stripData && stripData.request) {
+    if (contentStrip && contentStrip.strips && contentStrip.strips.length) {
+      const stripData: any = contentStrip.strips[0]
+      if (stripData && stripData.request) {
         delete(stripData['loaderWidgets'])
-        this.router.navigate([`/app/learn/browse-by/provider/${this.providerName}/${this.providerId}/all-content`], { queryParams: { stripData: JSON.stringify(stripData)}})
+        this.router.navigate(
+          [`/app/learn/browse-by/provider/${this.providerName}/${this.providerId}/all-content`],
+          { queryParams: { stripData: JSON.stringify(stripData) } })
       }
     } else {
-       this.router.navigate([`/app/learn/browse-by/provider/${this.providerName}/${this.providerId}/all-CBP`])
+       this.router.navigate(
+        [`/app/learn/browse-by/provider/${this.providerName}/${this.providerId}/all-CBP`])
     }
   }
 
