@@ -25,6 +25,8 @@ import {
   MatSidenavModule,
   MatChipsModule,
   MatProgressSpinnerModule,
+  MatCheckboxModule,
+  MatTooltipModule,
 } from '@angular/material'
 import { MatCardModule } from '@angular/material/card'
 import { ReactiveFormsModule, FormsModule } from '@angular/forms'
@@ -47,7 +49,9 @@ import { ProviderPageComponent } from './routes/provider-page/provider-page.comp
 import { CalenderModule, CardsModule, CommonStripModule, CompetencyPassbookModule, ContentStripWithTabsLibModule, DataPointsModule, SlidersLibModule, UserContentRatingLibModule } from '@sunbird-cb/consumption'
 import { ProviderFormResolverService } from './services/provider-form-resolver.service'
 import { FormExtService } from 'src/app/services/form-ext.service'
-import { ProviderCalendarComponent } from './routes/provider-calendar/provider-calendar.component'
+import { ProviderCalendarComponent } from './routes/provider-calendar/provider-calendar.component';
+import { ProviderContentAllComponent } from './routes/provider-content-all/provider-content-all.component'
+
 
 @NgModule({
   declarations: [
@@ -61,6 +65,7 @@ import { ProviderCalendarComponent } from './routes/provider-calendar/provider-c
     ProviderCardComponent,
     ProviderPageComponent,
     ProviderCalendarComponent,
+    ProviderContentAllComponent
   ],
   imports: [
     CommonModule,
@@ -104,6 +109,8 @@ import { ProviderCalendarComponent } from './routes/provider-calendar/provider-c
     UserContentRatingLibModule,
     CalenderModule,
     CardsModule,
+    MatCheckboxModule,
+    MatTooltipModule,
     TranslateModule.forRoot({
       loader: {
         provide: TranslateLoader,

@@ -8,6 +8,7 @@ import { ProviderAllCbpComponent } from './routes/provider-all-cbp/provider-all-
 import { ProviderPageComponent } from './routes/provider-page/provider-page.component'
 import { ProviderFormResolverService } from './services/provider-form-resolver.service'
 import { ProviderCalendarComponent } from './routes/provider-calendar/provider-calendar.component'
+import { ProviderContentAllComponent } from './routes/provider-content-all/provider-content-all.component'
 
 const routes: Routes = [
   {
@@ -50,6 +51,14 @@ const routes: Routes = [
         component: ProviderAllCbpComponent,
         data: {
           pageId: 'all-CBP',
+          module: 'explore',
+        },
+      },
+      {
+        path: 'all-content',
+        component: ProviderContentAllComponent,
+        data: {
+          pageId: 'all-content',
           module: 'explore',
         },
       },
