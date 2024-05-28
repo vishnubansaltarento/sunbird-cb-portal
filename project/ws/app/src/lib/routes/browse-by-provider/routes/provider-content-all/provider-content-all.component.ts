@@ -73,7 +73,7 @@ export class ProviderContentAllComponent implements OnInit {
         if (response && response.results) {
           // console.log('calling  after-- ')
           if (response.results.result.content && response.results.result.content.length) {
-            // this.contentDataList = this.commonSvc.transformContentsToWidgets(response.results.result.content, strip)
+            this.contentDataList = this.commonSvc.transformContentsToWidgets(response.results.result.content, strip)
           } else {
             this.contentDataList = []
           }
@@ -103,7 +103,7 @@ export class ProviderContentAllComponent implements OnInit {
         if (response && response.results) {
           // console.log('calling  after-- ')
           if (response.results.result.content && response.results.result.content.length) {
-            // this.contentDataList = this.commonSvc.transformContentsToWidgets(response.results.result.content, strip)
+            this.contentDataList = this.commonSvc.transformContentsToWidgets(response.results.result.content, strip)
 
           } else {
             this.contentDataList = []
