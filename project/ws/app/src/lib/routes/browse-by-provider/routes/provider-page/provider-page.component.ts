@@ -1,5 +1,5 @@
 import { DatePipe } from '@angular/common'
-import { Component, OnInit } from '@angular/core'
+import {  Component, OnInit } from '@angular/core'
 import { ActivatedRoute, Router } from '@angular/router'
 
 @Component({
@@ -7,7 +7,7 @@ import { ActivatedRoute, Router } from '@angular/router'
   templateUrl: './provider-page.component.html',
   styleUrls: ['./provider-page.component.scss'],
 })
-export class ProviderPageComponent implements OnInit {
+export class ProviderPageComponent implements OnInit  {
 
   providerName = ''
   providerId = ''
@@ -86,8 +86,16 @@ export class ProviderPageComponent implements OnInit {
     }
   }
 
-  showAllContent(_stripData: any) {
-    this.router.navigate([`/app/learn/browse-by/provider/${this.providerName}/${this.providerId}/all-CBP`])
+  showAllContent(_stripData: any, contentStrip: any) {
+    if(contentStrip && contentStrip.strips && contentStrip.strips.length) {
+      let stripData: any = contentStrip.strips[0]
+      if(stripData && stripData.request) {
+        delete(stripData['loaderWidgets'])
+        this.router.navigate([`/app/learn/browse-by/provider/${this.providerName}/${this.providerId}/all-content`], { queryParams: { stripData: JSON.stringify(stripData)}})
+      }
+    } else {
+       this.router.navigate([`/app/learn/browse-by/provider/${this.providerName}/${this.providerId}/all-CBP`])
+    }
   }
 
   viewMoreOrLess() {
