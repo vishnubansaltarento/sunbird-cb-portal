@@ -15,6 +15,7 @@ export class ResultComponent implements OnInit, OnChanges {
   @Input() isPassed = false
   @Input() quizCategory!: NsContent.EPrimaryCategory
   @Input() quizResponse!: NSPractice.IQuizSubmitResponseV2
+  @Input() coursePrimaryCategory:any;
   @Output() userSelection = new EventEmitter<string>()
   @Output() fetchResult = new EventEmitter<string>()
   @ViewChild(MatAccordion, { static: true }) accordion: MatAccordion | undefined
@@ -208,9 +209,11 @@ export class ResultComponent implements OnInit, OnChanges {
     } else {
       this.isMobile = false
     }
+    console.log('quizResponse',this.quizResponse)
   }
 
   ngOnChanges() {
+    console.log('quizResponse',this.quizResponse)
   }
 
   action(event: NSPractice.TUserSelectionType) {

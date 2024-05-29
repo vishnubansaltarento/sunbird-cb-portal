@@ -1176,9 +1176,7 @@
 </ng-container>
 
 <!-- Desktop Standalone Assessment-->
-
 <ng-container *ngIf="coursePrimaryCategory == 'Standalone Assessment'">
-   <!-- Desktop Not Standalone Assessment -->
    <div #quizContainer class="quiz-container" *ngIf="viewState !== 'initial' && !isMobile && fetchingQuestionsStatus === 'done'">
     <div class="margin-m"
       *ngIf="fetchingQuestionsStatus === 'done' && viewState !== 'detail' && !(viewState === 'answer') && !isSubmitted">
@@ -1205,13 +1203,14 @@
         <div class="flex flex-row justify-between question-section-container">
           <div class="section-dd-container">
             <mat-form-field  appearance="none">
-              <select matNativeControl required class="section-dd" #choosedValue (selectionChange)="startSection(choosedValue)">
-                <option [value]="section.identifier" *ngFor="let section of paperSections">{{section?.name}}</option>
+              <select matNativeControl required class="section-dd" #choosedValue (change)="changeSection($event.target.value)">
+                <option [value]="section.identifier" [selected]="section.identifier === selectedSectionIdentifier" *ngFor="let section of paperSections">{{section?.name}}</option>
               </select>
             </mat-form-field>
           </div>
           <div>
-            <a *ngIf="(currentQuestionIndex + 1) === totalQCount"
+            <!-- *ngIf="(currentQuestionIndex + 1) === totalQCount" -->
+            <a 
               class="text-white ws-mat-primary-background margin-xs quest_btn" mat-button (click)="proceedToSubmit()">
               <ng-container *ngIf="!isXsmall">{{ 'playerbrief.submit' | translate }}</ng-container>
             </a>
@@ -1412,16 +1411,24 @@
                       !isQuestionAttempted(question?.questionId) &&
                       currentTheme !== 'black-theme'
             -->
+
+
+            <!-- 'marked-question marked-question-background': isQuestionMarked(question?.questionId),
+            'attempted-question attempted-question-background':
+              !isQuestionMarked(question?.questionId) &&
+                (question?.questionId)      -->
+
             <div *ngIf="!isSubmitted && !isXsmall && viewState === 'attempt'" class="flex flex-1 question-box-auto-height">
               <ng-template *ngIf="fetchingQuestionsStatus === 'fetching'" [ngTemplateOutlet]="showLoading"></ng-template>
               <div class="flex flex-wrap margin-right-s margin-left-s quest_num_box quest_num_box"
                 *ngIf="fetchingQuestionsStatus === 'done'">
                 <div class="col question-list-item" *ngFor="let question of secQuestions; let i = index">
-                  <div (click)="scroll(i + 1)" [ngClass]="{
+                  <div (click)="scroll(i + 1)" class="not-visited-question not-visited-background" [ngClass]="{
                     'marked-question marked-question-background': isQuestionMarked(question?.questionId),
-                    'attempted-question attempted-question-background':
-                      !isQuestionMarked(question?.questionId) &&
-                      isQuestionAttempted(question?.questionId)               
+                    'attempted-question attempted-question-background':isQuestionAttempted(question?.questionId),
+                    'not-attempted-question not-answered-background':!isQuestionAttempted(question?.questionId) && !isQuestionMarked(question?.questionId) && isQuestionVisited(question.questionId)
+                   
+
                   }" class="margin-side-8 not-visited-question not-visited-background flex justify-center items-center">
                     <div *ngIf="!isQuestionMarked(question?.questionId) &&
                       isQuestionAttempted(question?.questionId)"  [ngClass]="(currentQuestionIndex + 1) === getQuestionIndex(i) ? 'current-question': 'dark-border'">
@@ -1437,6 +1444,7 @@
                         </mat-chip>
                       </mat-chip-list> -->
                     </div>
+                    
                     <div *ngIf="!(!isQuestionMarked(question?.questionId) &&
                       isQuestionAttempted(question?.questionId)) && (!isQuestionMarked(question?.questionId))"
                       class="ovel question-number" [ngClass]="(currentQuestionIndex + 1) === getQuestionIndex(i) ? 'current-question': 'dark-border'"><span [ngClass]="(currentQuestionIndex + 1) === getQuestionIndex(i) ? 'mat-body-2-bold': 'mat-body-2'">
@@ -1491,7 +1499,7 @@
         </div>
       </div>    
     </div>
-    <div class="standalone-quiz-container-controls">
+    <div class="standalone-quiz-container-controls" *ngIf="fetchingQuestionsStatus === 'done' && viewState !== 'detail' && !(viewState === 'answer') && !isSubmitted">
       <div class="flex flex-row justify-between">
       <div class="flex">
         <div>
@@ -1542,7 +1550,8 @@
     <div id="quiz-end"></div>
     <ng-container *ngIf="isSubmitted && (viewState === 'answer' || viewState === 'review')">
       <viewer-result [quizCategory]="primaryCategory" [quizResponse]="finalResponse" [percentage]="result"
-        [isPassed]="finalResponse?.pass" (userSelection)="action($event)" (fetchResult)="getQuizResult()">
+        [isPassed]="finalResponse?.pass" (userSelection)="action($event)" (fetchResult)="getQuizResult()" 
+        [coursePrimaryCategory]="coursePrimaryCategory">
       </viewer-result>
     </ng-container>
     <!-- </div> -->
@@ -1993,7 +2002,6 @@
     </div>
   </div>
   <!-- Desktop Skeleton UI -->
-  {{fetchingQuestionsStatus}}, {{viewState}}, {{isSubmitted}}
   <div class="flex flex-row quiz-container" *ngIf="!isMobile && fetchingQuestionsStatus !== 'done' && viewState !== 'initial' 
   && !(viewState === 'answer') && !isSubmitted">          
     <div class="left-container">
