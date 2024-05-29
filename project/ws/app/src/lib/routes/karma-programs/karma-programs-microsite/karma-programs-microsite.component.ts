@@ -1,21 +1,21 @@
-import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
-import { CommonMethodsService } from '@sunbird-cb/consumption';
-import { KarmaProgramsService } from '../service/karma-programs.service';
+import { Component, OnInit } from '@angular/core'
+import { ActivatedRoute } from '@angular/router'
+import { CommonMethodsService } from '@sunbird-cb/consumption'
+import { KarmaProgramsService } from '../service/karma-programs.service'
 
 @Component({
   selector: 'ws-app-karma-programs-microsite',
   templateUrl: './karma-programs-microsite.component.html',
-  styleUrls: ['./karma-programs-microsite.component.scss']
+  styleUrls: ['./karma-programs-microsite.component.scss'],
 })
 export class KarmaProgramsMicrositeComponent implements OnInit {
 
-  sectionList: any =[]
+  sectionList: any = []
   contentDataList: any = []
   loadContentSearch = false
   constructor(private route: ActivatedRoute,
-    public contentSvc: KarmaProgramsService,
-    public commonSvc: CommonMethodsService) { }
+              public contentSvc: KarmaProgramsService,
+              public commonSvc: CommonMethodsService) { }
 
   ngOnInit() {
     if (this.route.snapshot.data && this.route.snapshot.data.formData
@@ -30,7 +30,6 @@ export class KarmaProgramsMicrositeComponent implements OnInit {
       this.getDataFromSearch()
     }
   }
-
 
   async getDataFromSearch(requestData?: any) {
     const request  = requestData || this.formRequest()

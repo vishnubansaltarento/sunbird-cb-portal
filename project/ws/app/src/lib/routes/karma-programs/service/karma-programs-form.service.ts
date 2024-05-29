@@ -20,7 +20,7 @@ resolve(
     const orgId = _route.params && _route.params.orgId || ''
     const requestData: any = {
       'request': {
-        "type": "karma-program",
+        'type': 'karma-program',
         'subType': 'microsite',
         'action': 'page-configuration',
         'component': 'portal',

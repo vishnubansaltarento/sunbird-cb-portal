@@ -1,25 +1,25 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { async, ComponentFixture, TestBed } from '@angular/core/testing'
 
-import { KarmaProgramsMicrositeComponent } from './karma-programs-microsite.component';
+import { KarmaProgramsMicrositeComponent } from './karma-programs-microsite.component'
 
 describe('KarmaProgramsMicrositeComponent', () => {
-  let component: KarmaProgramsMicrositeComponent;
-  let fixture: ComponentFixture<KarmaProgramsMicrositeComponent>;
+  let component: KarmaProgramsMicrositeComponent
+  let fixture: ComponentFixture<KarmaProgramsMicrositeComponent>
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ KarmaProgramsMicrositeComponent ]
+      declarations: [KarmaProgramsMicrositeComponent],
     })
-    .compileComponents();
-  }));
+    .compileComponents()
+  }))
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(KarmaProgramsMicrositeComponent);
-    component = fixture.componentInstance;
-    fixture.detectChanges();
-  });
+    fixture = TestBed.createComponent(KarmaProgramsMicrositeComponent)
+    component = fixture.componentInstance
+    fixture.detectChanges()
+  })
 
   it('should create', () => {
-    expect(component).toBeTruthy();
-  });
-});
+    expect(component).toBeTruthy()
+  })
+})
