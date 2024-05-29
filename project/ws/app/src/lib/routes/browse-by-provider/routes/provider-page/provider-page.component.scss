@@ -85,8 +85,7 @@
     }
     &.top{
         position: absolute;
-        top: calc(-50% - 1.25rem);
-        // transform: translateY(1.25rem);
+        top: -110px
     }
 }
 
@@ -285,6 +284,13 @@
         justify-content: left;
         bottom: 63px;
     }
+
+    .logo-box-rounded {
+        &.top{
+            position: absolute;
+            top: -50px
+        }
+    }
     
 }
 
@@ -325,3 +331,4 @@
     text-align: left;
     color: #000;
 }
+

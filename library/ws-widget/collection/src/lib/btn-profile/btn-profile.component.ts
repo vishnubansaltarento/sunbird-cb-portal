@@ -60,7 +60,7 @@ export class BtnProfileComponent extends WidgetBaseComponent
     super()
     this.btnAppsConfig = { ...this.basicBtnAppsConfig }
     this.btnSettingsConfig = { ... this.settingBtnConfig }
-    if (this.configSvc.unMappedUser.profileDetails.verifiedKarmayogi === true) {
+    if (this.configSvc.unMappedUser.profileDetails.profileStatus === 'VERIFIED') {
       this.verifiedBadge = true
     }
     this.updateUserInfo()

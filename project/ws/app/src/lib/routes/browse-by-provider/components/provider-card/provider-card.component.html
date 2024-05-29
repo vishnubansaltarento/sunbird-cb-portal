@@ -20,12 +20,13 @@
 
 <!-- TODO: Remove this below card, when the above card (card 1) information is available from backend -->
 <!-- Card 2 start -->
-<div class="cursor-pointer card2  item-center single_provider_card mat-card " 
+<div class="cursor-pointer card2  item-center single_provider_card mat-card "
+    (click)="raiseTelemetery()"
     [routerLink]="['/app/learn/browse-by/provider', provider?.name, provider?.orgId, 'micro-sites']">
     <div class="w-full flex flex-col card-container items-center justify-center">   
         <div class="flex width-inherit flex-col item-center justify-center">
-            <img [src]="provider.logoUrl" class="p-logo" *ngIf="provider && provider.logoUrl" onerror="'/assets/images/micro-sites/default-provider.svg'">
-            <img src="/assets/images/micro-sites/default-provider.svg" style="height: 62px; width: 250px;" *ngIf="provider && !provider.logoUrl">
+            <div class="flex items-center justify-center"><img [src]="provider.logoUrl" class="p-logo" *ngIf="provider && provider.logoUrl" onerror="'/assets/images/micro-sites/default-provider.svg'"></div>
+            <div class="flex items-center justify-center"><img src="/assets/images/micro-sites/default-provider.svg" class="p-logo" *ngIf="provider && !provider.logoUrl"></div>
             <div class="pt-5 text-center txt-ellipsis-3  name-provider">{{provider?.name}}</div>
         </div>
     </div>

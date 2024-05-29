@@ -97,7 +97,7 @@ export class VerifyOtpComponent implements OnInit, OnDestroy {
     this.timeLeft = 150
     this.showResendOTP = !this.resendOTP
     this.startTimer()
-    this.resendOTP.emit(this.data.type)
+    this.resendOTP.emit(this.data)
   }
 
   handleTranslateTo(menuName: string): string {
