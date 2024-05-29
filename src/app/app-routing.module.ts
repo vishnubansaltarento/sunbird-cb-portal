@@ -300,6 +300,19 @@ const routes: Routes = [
     },
   },
   {
+    path: 'app/learn/karma-programs',
+    loadChildren: () =>
+      import('./routes/route-karma-programs.module').then(u => u.RouteKarmaProgramsModule),
+    canActivate: [GeneralGuard],
+    data: {
+      pageId: 'app/learn/karma-programs',
+      module: 'explore',
+    },
+    resolve: {
+      pageData: PageResolve,
+    },
+  },
+  {
     path: 'app/learn/mandatory-course',
     loadChildren: () =>
       import('./routes/route-mandatory-course.module').then(u => u.RouteMandatoryCourseModule),
