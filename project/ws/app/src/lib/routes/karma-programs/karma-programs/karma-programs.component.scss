@@ -121,21 +121,15 @@
 
         // disable if flex layout is needed and not grid
         display: grid;
-        grid-gap: 32px;
+        grid-gap: 27px;
         grid-template-columns: repeat(auto-fill, 275px);
-        justify-content: space-between;
+        //justify-content: space-between;
 
         @media (max-width:1024px) {
             justify-content: flex-start;
         }
 
     }
-
-    @media screen and (min-width: 360px) and (max-width: 576px) {
-        .provider_card_box  {
-            justify-content: center;
-        }
-      }
 
     a.load_more_link {
         margin:35px auto 0 auto;
@@ -144,3 +138,25 @@
     }
 
 }
+::ng-deep .mat-form-search-programs {
+  
+    .mat-form-field-infix {
+      border-top: 0.2em solid transparent !important;
+    }
+  
+    .mat-form-field-wrapper {
+      padding-bottom: 0
+    }
+  
+    .mat-select-panel .mat-optgroup-label,
+    .mat-select-panel .mat-option {
+      font-size: inherit;
+      line-height: 3em;
+      height: 4em;
+      padding-top: 8px;
+    }
+  
+    // .mat-select-arrow {
+    //   margin-top: 12px;
+    // }
+  }

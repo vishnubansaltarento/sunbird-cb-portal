@@ -610,7 +610,7 @@
                   <img *ngIf="content?.creatorLogo" [src]="content?.creatorLogo" alt="{{ 'apptocsinglepage.provider' | translate }}" />
                   <img *ngIf="!content?.creatorLogo" class="mat-icon" src="/assets/instances/eagle/app_logos/KarmayogiBharat_Logo.svg" alt="{{ 'apptocsinglepage.provider' | translate }}" />
                 </div>
-                <div class="text-sm word-break cursor-pointer" *ngIf="content?.createdFor?.length"
+                <div class="text-sm word-break cursor-pointer" *ngIf="content?.createdFor?.length" (click)="raiseTelemeteryForProvider(content?.source, content?.createdFor[0])"
                   [routerLink]="['/app/learn/browse-by/provider', content?.source, content?.createdFor[0], 'micro-sites']">{{ handleCapitalize(content?.source, 'source') }}
                 </div>
                 <div class="text-sm word-break" *ngIf="!content?.createdFor?.length">{{ handleCapitalize(content?.source, 'source') }}

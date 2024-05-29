@@ -15,6 +15,7 @@ export class OtpService {
         private http: HttpClient,
     ) {
     }
+
     sendOtp(mob: number): Observable<any> {
         const reqObj = {
             request: {
@@ -24,6 +25,7 @@ export class OtpService {
         }
         return this.http.post(API_ENDPOINTS.sendOtp, reqObj)
     }
+
     resendOtp(mob: number) {
         const reqObj = {
             request: {
@@ -34,6 +36,7 @@ export class OtpService {
         return this.http.post(API_ENDPOINTS.ReSendOtp, reqObj)
 
     }
+
     verifyOTP(otp: string, mob: number) {
         const reqObj = {
             request: {
@@ -79,6 +82,5 @@ export class OtpService {
             },
         }
         return this.http.post(API_ENDPOINTS.VerifyEmailOtp, reqObj)
-
     }
 }

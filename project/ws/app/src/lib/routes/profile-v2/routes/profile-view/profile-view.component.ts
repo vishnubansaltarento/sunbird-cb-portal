@@ -44,7 +44,7 @@ export const MY_FORMATS = {
     monthYearA11yLabel: 'YYYY',
   },
 }
-const EMAIL_PATTERN = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/
+const EMAIL_PATTERN = /^[a-zA-Z0-9](\.?[a-zA-Z0-9_]+)*@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/
 const MOBILE_PATTERN = /^[0]?[6789]\d{9}$/
 const PIN_CODE_PATTERN = /^[1-9][0-9]{5}$/
 const EMP_ID_PATTERN = /^[a-z0-9]+$/i
@@ -271,6 +271,7 @@ export class ProfileViewComponent implements OnInit, AfterViewInit, OnDestroy {
           : this.portalProfile.userName
       }
     })
+
   }
 
   ngOnInit() {
@@ -549,9 +550,9 @@ export class ProfileViewComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   handleDateFormat(dateString: string): any {
-    // const dateArr = dateString.split('-')
-    // const newDateStr = `${dateArr[1]}/${dateArr[0]}/${dateArr[2]}`
-    return moment(new Date(dateString)).format('D MMM YYYY')
+    const dateArr = dateString.split('-')
+    const newDateStr = `${dateArr[1]}/${dateArr[0]}/${dateArr[2]}`
+    return moment(new Date(newDateStr)).format('D MMM YYYY')
   }
 
   handleVerifyOTP(verifyType: string, _value?: string): void {
@@ -562,9 +563,7 @@ export class ProfileViewComponent implements OnInit, AfterViewInit, OnDestroy {
     })
 
     dialogRef.componentInstance.resendOTP.subscribe((data: any) => {
-      if (data !== 'email') {
-        this.handleGenerateOTP()
-      }
+      this.handleResendOTP(data)
     })
 
     dialogRef.componentInstance.otpVerified.subscribe((data: any) => {
@@ -577,11 +576,33 @@ export class ProfileViewComponent implements OnInit, AfterViewInit, OnDestroy {
     })
   }
 
+  handleResendOTP(data: any): void {
+    let otpValue$: any
+    if (data.type === 'email') {
+      otpValue$ = this.otpService.sendEmailOtp(data.value)
+    } else {
+      otpValue$ = this.otpService.resendOtp(data.value)
+    }
+
+    otpValue$.pipe(takeUntil(this.destroySubject$))
+    .subscribe((_res: any) => {
+      if (data.type === 'email') {
+        this.matSnackBar.open(this.handleTranslateTo('otpSentEmail'))
+      } else {
+        this.matSnackBar.open(this.handleTranslateTo('otpSentMobile'))
+      }
+    },         (error: any) => {
+      if (!error.ok) {
+        this.matSnackBar.open(_.get(error, 'error.params.errmsg') ||  'Unable to resend OTP, please try again later!')
+      }
+    })
+  }
+
   handleGenerateEmailOTP(verifyType?: any): void {
     this.otpService.sendEmailOtp(this.otherDetailsForm.value['primaryEmail'])
     .pipe(takeUntil(this.destroySubject$))
     .subscribe((_res: any) => {
-      this.matSnackBar.open('otpSentEmail')
+      this.matSnackBar.open(this.handleTranslateTo('otpSentEmail'))
       if (verifyType) {
         this.handleVerifyOTP(verifyType, this.otherDetailsForm.value['primaryEmail'])
       }
@@ -653,6 +674,8 @@ export class ProfileViewComponent implements OnInit, AfterViewInit, OnDestroy {
           'personalDetails': {},
           'employmentDetails': {
             'employeeCode': this.otherDetailsForm.value['employeeCode'],
+            'pincode': this.otherDetailsForm.value['pincode'],
+            'mobile': this.otherDetailsForm.value['mobile'],
           },
         },
       },
@@ -914,21 +937,31 @@ export class ProfileViewComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   get enableEditBtn(): boolean {
-    if (this.portalProfile.professionalDetails[0].group !== this.primaryDetailsForm.get('group')!.value &&
-    this.portalProfile.professionalDetails[0].designation !== this.primaryDetailsForm.get('designation')!.value
-    ) {
-      return true
+    if (this.portalProfile.professionalDetails && this.portalProfile.professionalDetails.length) {
+      if (this.portalProfile.professionalDetails[0].group !== this.primaryDetailsForm.get('group')!.value &&
+      this.portalProfile.professionalDetails[0].designation !== this.primaryDetailsForm.get('designation')!.value
+      ) {
+        return true
 
-    }  if (this.portalProfile.professionalDetails[0].group !== this.primaryDetailsForm.get('group')!.value &&
-    ((this.designationApprovedTime + 100) <= this.rejectedFields.groupRejectionTime ||
-    (this.designationApprovedTime - 100) <= this.rejectedFields.groupRejectionTime ||
-    this.designationApprovedTime === this.groupApprovedTime)) {
-      return true
-    }  if (this.portalProfile.professionalDetails[0].designation !== this.primaryDetailsForm.get('designation')!.value &&
-    ((this.groupApprovedTime + 100) <= this.rejectedFields.designationRejectionTime ||
-      (this.groupApprovedTime - 100) <= this.rejectedFields.designationRejectionTime ||
+      }
+    }
+
+    if (this.portalProfile.professionalDetails && this.portalProfile.professionalDetails.length) {
+      if (this.portalProfile.professionalDetails[0].group !== this.primaryDetailsForm.get('group')!.value &&
+      ((this.designationApprovedTime + 100) <= this.rejectedFields.groupRejectionTime ||
+      (this.designationApprovedTime - 100) <= this.rejectedFields.groupRejectionTime ||
       this.designationApprovedTime === this.groupApprovedTime)) {
-      return true
+        return true
+      }
+    }
+
+    if (this.portalProfile.professionalDetails && this.portalProfile.professionalDetails.length) {
+      if (this.portalProfile.professionalDetails[0].designation !== this.primaryDetailsForm.get('designation')!.value &&
+      ((this.groupApprovedTime + 100) <= this.rejectedFields.designationRejectionTime ||
+        (this.groupApprovedTime - 100) <= this.rejectedFields.designationRejectionTime ||
+        this.designationApprovedTime === this.groupApprovedTime)) {
+        return true
+      }
     }
 
     return false
@@ -937,10 +970,17 @@ export class ProfileViewComponent implements OnInit, AfterViewInit, OnDestroy {
   handleSendApproval(): void {
     const data: any = {
     }
-    if (this.portalProfile.professionalDetails[0].designation !== this.primaryDetailsForm.get('designation')!.value) {
+    if (this.portalProfile.professionalDetails && this.portalProfile.professionalDetails.length) {
+      if (this.portalProfile.professionalDetails &&
+        this.portalProfile.professionalDetails[0].designation !== this.primaryDetailsForm.get('designation')!.value) {
+        data['designation'] = this.primaryDetailsForm.get('designation')!.value
+      }
+      if (this.portalProfile.professionalDetails &&
+        this.portalProfile.professionalDetails[0].group !== this.primaryDetailsForm.get('group')!.value) {
+        data['group'] = this.primaryDetailsForm.get('group')!.value
+      }
+    } else {
       data['designation'] = this.primaryDetailsForm.get('designation')!.value
-    }
-    if (this.portalProfile.professionalDetails[0].group !== this.primaryDetailsForm.get('group')!.value) {
       data['group'] = this.primaryDetailsForm.get('group')!.value
     }
 

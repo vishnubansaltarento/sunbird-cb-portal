@@ -46,6 +46,7 @@
 
 </div>
 
+
 <ng-template #topSection let-data="data">
     <!-- <div class="w-full grid grid-cols-12 gap-4"> -->
         <div class="col-span-12 ">
@@ -69,7 +70,12 @@
                 </div>
                 <div class="w-full md:w-9/12 flex-1 flex flex-col">
                     <h1 class=" txt-ellipsis-2 break-words">{{data?.title || providerName}}</h1>
-                    <p>{{data?.description}}</p>
+                    <p>{{expanded ? data?.description : data?.description | slice:0:descriptionMaxLength}}
+                        <span (click)="viewMoreOrLess()"
+                            *ngIf="data?.description?.length > descriptionMaxLength"
+                            class="cursor-pointer ws-mat-default-text font-bold"> ...View {{expanded ? 'less' : 'more' }}
+                        </span>
+                    </p>
                     <div class="block md:hidden overflow-y-auto mb-3">
                         <sb-uic-data-points [providerId]="providerId" [fetchDataFromApi]="true"  [objectData]="data?.metrics?.data" [layoutType]="'singleRow'"></sb-uic-data-points>
                     </div>
@@ -91,7 +97,7 @@
             <img class="absolute {{contentStrip?.sectionImagePosition}}" src="{{contentStrip?.sectionImage}}" alt="">
             <div class="container ">
                 <div class="w-full">
-                    <sb-uic-content-strip-with-tabs [emitViewAll]="true" (viewAllResponse)="showAllContent($event)"  
+                    <sb-uic-content-strip-with-tabs [emitViewAll]="true" (viewAllResponse)="showAllContent($event,contentStrip)"  
                     (emptyResponse)="hideContentStrip($event, contentStrip)" [providerId]="providerId" [widgetData]="contentStrip"></sb-uic-content-strip-with-tabs>
                 </div>
             </div>
