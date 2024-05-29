@@ -281,7 +281,7 @@ export class ProfileViewComponent implements OnInit, AfterViewInit, OnDestroy {
     }
 
     this.getInitials()
-    this.profileName = this.currentUser.firstName
+    this.profileName = this.portalProfile.personalDetails && this.portalProfile.personalDetails.firstname
 
     this.prefillForm()
     this.getMasterNationality()
@@ -1064,7 +1064,7 @@ export class ProfileViewComponent implements OnInit, AfterViewInit, OnDestroy {
     this.userProfileService.editProfileDetails(postData)
     .pipe(takeUntil(this.destroySubject$))
     .subscribe((_res: any) => {
-      this.currentUser.firstName = this.profileName
+      this.portalProfile.personalDetails.firstname = this.profileName
       this.getInitials()
       this.matSnackBar.open(this.handleTranslateTo('userNameUpdated'))
       this.editName = !this.editName

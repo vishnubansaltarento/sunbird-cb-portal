@@ -594,7 +594,7 @@
           </div>
         </div>
         <div class="flex flex-row gap-4 items-center" *ngIf="!editName"> 
-          <div class="name">{{ currentUser?.firstName }} {{ currentUser?.lastName }}</div>
+          <div class="name">{{ portalProfile?.personalDetails?.firstname }}</div>
           <mat-icon class="profile-verified-check" *ngIf="portalProfile?.profileStatus === 'VERIFIED'">check_circle</mat-icon>
           <mat-icon class="cursor-pointer" (click)="editName = !editName">edit</mat-icon>
         </div>
