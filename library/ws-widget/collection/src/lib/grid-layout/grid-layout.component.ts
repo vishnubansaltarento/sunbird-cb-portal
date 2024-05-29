@@ -251,20 +251,20 @@ export class GridLayoutComponent extends WidgetBaseComponent
       this.npsService.submitPlatformRating(reqbody).subscribe((resp: any) => {
         // tslint:disable-next-line
         console.log(resp)
-        localStorage.setItem('platformRatingSubmit', 'true')     
+        localStorage.setItem('platformRatingSubmit', 'true')
         this.isNPSOpen = false
           const feedIDN = JSON.parse(this.feedID).map((item: any) => {
             return item.replace(/\"/g, '')
            })
           // const feedIDN = this.feedID.replace(/\"/g, '')
-          if(feedIDN.length > 0 ) {   
+          if (feedIDN.length > 0) {
             if (localStorage.getItem('ratingformID')) {
               localStorage.removeItem('ratingformID')
             }
             if (localStorage.getItem('ratingfeedID')) {
               localStorage.removeItem('ratingfeedID')
             }
-            for (let item of feedIDN) {
+            for (const item of feedIDN) {
               const req = {
                 request: {
                   userId: this.configSvc.unMappedUser.id,
@@ -301,14 +301,14 @@ export class GridLayoutComponent extends WidgetBaseComponent
           const feedIDN = JSON.parse(this.feedID).map((item: any) => {
             return item.replace(/\"/g, '')
            })
-           if(feedIDN.length > 0 ) {   
+           if (feedIDN.length > 0) {
             if (localStorage.getItem('ratingformID')) {
               localStorage.removeItem('ratingformID')
             }
             if (localStorage.getItem('ratingfeedID')) {
               localStorage.removeItem('ratingfeedID')
             }
-            for (let item of feedIDN) {
+            for (const item of feedIDN) {
               const req = {
                 request: {
                   userId: this.configSvc.unMappedUser.id,
@@ -317,14 +317,14 @@ export class GridLayoutComponent extends WidgetBaseComponent
                 },
               }
               this.npsService.deleteFeed(req).subscribe((res: any) => {
-                if(res) {
+                if (res) {
                   this.configSvc.updatePlatformRatingMethod({ bottom: '120px' })
                   this.raisePlatformRatingEndTelemetry()
                 }
               }
               )
             }
-          }   
+          }
       })
     } else {
       this.isNPSOpen = false
