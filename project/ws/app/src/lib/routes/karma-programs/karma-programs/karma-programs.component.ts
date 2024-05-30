@@ -248,7 +248,8 @@ export class KarmaProgramsComponent implements OnInit {
 
   sortType(sortType: any){
     if(this.searchForm && this.searchForm.get('sortByControl')){
-      this.searchForm.get('sortByControl').setValue(sortType)
+      // tslint:disable-next-line: no-non-null-assertion
+      this.searchForm.get('sortByControl')!.setValue(sortType)
       this.sortBy = sortType;
       this.allProviders = _.orderBy(this.allProviders.length ? this.allProviders : this.allProviders, ['content.name'], [this.sortBy])
     }
