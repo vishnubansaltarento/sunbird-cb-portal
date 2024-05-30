@@ -1,7 +1,7 @@
 import { DatePipe } from '@angular/common'
 import {  Component, OnInit } from '@angular/core'
 import { ActivatedRoute, Router } from '@angular/router'
-import { EventService } from '@sunbird-cb/utils'
+import { EventService, WsEvents } from '@sunbird-cb/utils'
 import * as _ from 'lodash'
 
 @Component({
@@ -105,7 +105,10 @@ export class ProviderPageComponent implements OnInit  {
   }
 
   raiseTelemetryInteratEvent(event: any) {
-    if (!this.isTelemetryRaised) {
+    if (event && event.viewMoreUrl) {
+      this.raiseTelemetry(`${event.stripTitle} ${event.viewMoreUrl.viewMoreText}`)
+    }
+    if (event && !event.viewMoreUrl && !this.isTelemetryRaised) {
       this.events.raiseInteractTelemetry(
         {
           type: 'click',
@@ -127,5 +130,37 @@ export class ProviderPageComponent implements OnInit  {
 
   viewMoreOrLess() {
     this.expanded = !this.expanded
+  }
+
+  raiseCompetencyTelemetry(name: string) {
+    this.raiseTelemetry(`${name} core expertise`)
+  }
+
+  raiseTelemetry(name: string) {
+    this.events.raiseInteractTelemetry(
+      {
+        type: 'click',
+        subType: 'ATI/CTI',
+        id: `${_.kebabCase(name).toLocaleLowerCase()}`,
+      },
+      {},
+      {
+        module: WsEvents.EnumTelemetrymodules.LEARN,
+      }
+    )
+  }
+
+  raiseNavTelemetry(name: string) {
+    this.events.raiseInteractTelemetry(
+      {
+        type: 'click',
+        subType: 'ATI/CTI',
+        id: `tab-${_.kebabCase(name).toLocaleLowerCase()}`,
+      },
+      {},
+      {
+        module: WsEvents.EnumTelemetrymodules.LEARN,
+      }
+    )
   }
 }
