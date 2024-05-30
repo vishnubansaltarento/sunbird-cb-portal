@@ -40,7 +40,13 @@
                             </div>
                             <div class="mt-6 pt-6">
                                 <h1  class=" txt-ellipsis-2 break-words">{{data.title}}</h1>
-                                <p>{{data.description}}</p>
+                                <p>
+                                    {{expanded ? data?.description : data?.description | slice:0:descriptionMaxLength}}
+                                    <span (click)="viewMoreOrLess()"
+                                        *ngIf="data?.description?.length > descriptionMaxLength"
+                                        class="cursor-pointer ws-mat-default-text font-bold"> ...View {{expanded ? 'less' : 'more' }}
+                                    </span>
+                                </p>
                             </div>
                         </div>
                     </div>
