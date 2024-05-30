@@ -247,7 +247,6 @@ export class KarmaProgramsComponent implements OnInit {
   }
 
   sortType(sortType: any){
-    console.log(sortType)
     if(this.searchForm && this.searchForm.get('sortByControl')){
       this.searchForm.get('sortByControl').setValue(sortType)
       this.sortBy = sortType;
