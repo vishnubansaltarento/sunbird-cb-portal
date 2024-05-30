@@ -78,7 +78,18 @@ export namespace NSPractice {
     correct: number
     passPercent: number
     inCorrect: number
-    pass: boolean
+    pass: boolean,
+    children:sectionQuestion[]
+  }
+
+  export interface sectionQuestion {
+    identifier: string,
+    mimeType: string,
+    objectType: string
+    primaryCategory: string
+    qType: string 
+    question: string
+    result: string
   }
   export interface IQuizSubmitResponseV2 {
     identifier: string

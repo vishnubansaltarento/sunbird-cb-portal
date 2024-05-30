@@ -28,8 +28,9 @@ export class ResultComponent implements OnInit, OnChanges {
   value = 45
   showText = 'Rating'
   isMobile = false
-
-  summaryTableDataSource = new MatTableDataSource([
+  showInsight = false
+  questionStatuTableData:any = [];
+  summaryTableDataSource:any = new MatTableDataSource([
     {
       subject: 'Section A',
       yourScore: '0.25 / 35',
@@ -71,7 +72,7 @@ export class ResultComponent implements OnInit, OnChanges {
       imgType: 'icon',
       imgPath: 'speed',
       class: 'icon-bg-blue',
-      summary: '-2.25/100',
+      summary: '',
       summaryType: 'Score',
     },
     {
@@ -85,21 +86,21 @@ export class ResultComponent implements OnInit, OnChanges {
       imgType: 'img',
       imgPath: '/assets/icons/final-assessment/assignment.svg',
       class: 'icon-bg-pink',
-      summary: '84/100',
+      summary: '',
       summaryType: 'Attempted',
     },
     {
       imgType: 'icon',
       imgPath: 'check_circle_outline',
       class: 'icon-bg-yellow',
-      summary: '15/100',
+      summary: '',
       summaryType: 'Correct',
     },
     {
       imgType: 'img',
       imgPath: '/assets/icons/final-assessment/target.svg',
       class: 'icon-bg-dark-green',
-      summary: '17.86%',
+      summary: '',
       summaryType: 'Accuracy',
     },
   ]
@@ -135,51 +136,7 @@ export class ResultComponent implements OnInit, OnChanges {
     },
   ]
 
-  questionStatuTableDataSource = new MatTableDataSource([
-    {
-      question: 'Question: 1',
-      status: 'Correct',
-      questionTagg: 'Easy',
-      timeTaken: '00:00:09',
-    },
-    {
-      question: 'Question: 2',
-      status: 'Wrong',
-      questionTagg: 'Moderate',
-      timeTaken: '00:00:09',
-    },
-    {
-      question: 'Question: 3',
-      status: 'Correct',
-      questionTagg: 'Difficult',
-      timeTaken: '00:00:09',
-    },
-    {
-      question: 'Question: 4',
-      status: 'Correct',
-      questionTagg: 'HOTS',
-      timeTaken: '00:00:09',
-    },
-    {
-      question: 'Question: 5',
-      status: 'Wrong',
-      questionTagg: 'HOTS',
-      timeTaken: '00:00:09',
-    },
-    {
-      question: 'Question: 6',
-      status: 'Wrong',
-      questionTagg: 'Easy',
-      timeTaken: '00:00:09',
-    },
-    {
-      question: 'Question: 7',
-      status: 'Correct',
-      questionTagg: 'Difficult',
-      timeTaken: '00:00:09',
-    },
-
-  ])
+  questionStatuTableDataSource:any = new MatTableDataSource([])
   questionStatuTableColumns = [
     { header: 'Questions', key: 'question' },
     { header: 'Status', key: 'status' },
@@ -187,17 +144,7 @@ export class ResultComponent implements OnInit, OnChanges {
     { header: 'Time Taken', key: 'timeTaken' },
   ]
 
-  sectionsList = [
-    {
-      sectionName: 'Section A',
-    },
-    {
-      sectionName: 'Section B',
-    },
-    {
-      sectionName: 'Section C',
-    },
-  ]
+  sectionsList:any = []
 
   constructor(private langtranslations: MultilingualTranslationsService) {
 
@@ -214,6 +161,177 @@ export class ResultComponent implements OnInit, OnChanges {
 
   ngOnChanges() {
     console.log('quizResponse',this.quizResponse)
+    if(this.quizResponse) {
+      let sectionTableData = [];
+      
+      for(let i=0; i< this.quizResponse.children.length;i++) {
+        if(this.quizResponse.children[i]) {
+          let sectionObj = {subject: 'Section'+i, yourScore : (this.quizResponse.children[i]['correct'])/(this.quizResponse.children[i]['total'])}
+          sectionTableData.push(sectionObj);
+        }        
+      }
+      this.summaryTableDataSource = new MatTableDataSource(sectionTableData)
+      this.summaryTableDisplayeColumns = [
+        { header: 'Subject', key: 'subject' },
+        { header: 'Your Score', key: 'yourScore' },
+      ]
+    
+      this.competitiveTableDataSource = new MatTableDataSource([
+        {
+          subject: 'Section A',
+          yourScore: '0.25 / 35',
+          topperScore: '35/35',
+        },
+        {
+          subject: 'Section B',
+          yourScore: '-1.25 / 35',
+          topperScore: '32.5/35',
+        },
+      ])
+      this.competitiveTableDisplayedColumns = [
+        { header: 'Subject', key: 'subject' },
+        { header: 'Your Score', key: 'yourScore' },
+        { header: 'Topper Score', key: 'topperScore' },
+      ]
+    
+      this.overAllSummary = [
+        {
+          imgType: 'icon',
+          imgPath: 'speed',
+          class: 'icon-bg-blue',
+          summary: this.percentage+'/100',
+          summaryType: 'Score',
+        },
+        {
+          imgType: 'img',
+          imgPath: '/assets/icons/final-assessment/nest_clock_farsight_analog.svg',
+          class: 'icon-bg-lite-green',
+          summary: '0:9:8',
+          summaryType: 'Time Taken',
+        },
+        {
+          imgType: 'img',
+          imgPath: '/assets/icons/final-assessment/assignment.svg',
+          class: 'icon-bg-pink',
+          summary: (this.quizResponse.correct+this.quizResponse.incorrect)+'/'+this.quizResponse.total,
+          summaryType: 'Attempted',
+        },
+        {
+          imgType: 'icon',
+          imgPath: 'check_circle_outline',
+          class: 'icon-bg-yellow',
+          summary: this.quizResponse.correct+'/'+this.quizResponse.total,
+          summaryType: 'Correct',
+        },
+        {
+          imgType: 'img',
+          imgPath: '/assets/icons/final-assessment/target.svg',
+          class: 'icon-bg-dark-green',
+          summary: (this.quizResponse.correct/this.quizResponse.total)*100+'%',
+          summaryType: 'Accuracy',
+        },
+      ]
+    
+      this.scoreSummary = [
+        {
+          imgType: 'img',
+          imgPath: '/assets/icons/final-assessment/nest_clock_farsight_analog.svg',
+          class: 'icon-bg-lite-green',
+          summary: '0:9:8',
+          summaryType: 'Time Taken',
+        },
+        {
+          imgType: 'img',
+          imgPath: '/assets/icons/final-assessment/assignment.svg',
+          class: 'icon-bg-pink',
+          summary: (this.quizResponse.correct+this.quizResponse.incorrect)+'/'+this.quizResponse.total,
+          summaryType: 'Attempted',
+        },
+        {
+          imgType: 'icon',
+          imgPath: 'check_circle_outline',
+          class: 'icon-bg-yellow',
+          summary: this.quizResponse.correct+'/'+this.quizResponse.total,
+          summaryType: 'Correct',
+        },
+        {
+          imgType: 'icon',
+          imgPath: 'cancel',
+          class: 'icon-bg-red',
+          summary: this.quizResponse.incorrect.toString(),
+          summaryType: 'Wrong',
+        },
+      ]
+    
+      this.questionStatuTableDataSource = new MatTableDataSource([
+      ])
+      this.questionStatuTableColumns = [
+        { header: 'Questions', key: 'question' },
+        { header: 'Status', key: 'status' },
+        { header: 'Question Tagging', key: 'questionTagg' },
+        { header: 'Time Taken', key: 'timeTaken' },
+      ]
+
+      for(let i=0; i<this.quizResponse.children.length;i++) {
+        let obj:any = {
+                  sectionName: 'Section '+i, 
+                  identifier: this.quizResponse.children[i]['identifier']
+        };
+        for(let j=0; j<this.quizResponse.children[i].children.length; j++) {
+          let obj:any = {
+            question: this.quizResponse.children[i].children[j]['question'],
+            status: this.quizResponse.children[i].children[j]['result'],
+            questionTagg: 'Easy',
+            timeTaken: '00:00:09',
+          }
+          this.questionStatuTableData.push(obj);
+        }
+        this.sectionsList.push(obj);  
+      }
+    
+      this.getSectionalData('all', 'all')
+      // this.sectionsList = [
+      //   {
+      //     sectionName: 'Section A',
+      //   },
+      //   {
+      //     sectionName: 'Section B',
+      //   },
+      //   {
+      //     sectionName: 'Section C',
+      //   },
+      // ]
+    }
+  }
+
+  getSectionalData(sectionId:string, resultType:string) {
+    console.log('resultType',resultType)
+    let quizResponse:any;
+    quizResponse = this.quizResponse;
+    if(sectionId === 'all') {
+    } else {
+      for(let i=0; i<this.quizResponse.children.length;i++) {
+        console.log(this.quizResponse.children[i], this.quizResponse.children[i]['identifier'], sectionId)
+        if(this.quizResponse.children[i]['identifier'] === sectionId) {
+          this.quizResponse.children.splice(i,1)
+          break;
+        }
+      }
+    }
+    console.log('quizResponse',quizResponse)
+    for(let i=0; i<this.quizResponse.children.length;i++) {      
+      for(let j=0; j<this.quizResponse.children[i].children.length; j++) {
+        let obj:any = {
+          question: this.quizResponse.children[i].children[j]['question'],
+          status: this.quizResponse.children[i].children[j]['result'],
+          questionTagg: 'Easy',
+          timeTaken: '00:00:09',
+        }
+        this.questionStatuTableData.push(obj);
+      }
+    }
+    this.questionStatuTableDataSource = this.questionStatuTableData;
+    console.log('quizResponse',quizResponse)
   }
 
   action(event: NSPractice.TUserSelectionType) {

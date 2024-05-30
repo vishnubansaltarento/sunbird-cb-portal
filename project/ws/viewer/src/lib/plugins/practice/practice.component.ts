@@ -382,7 +382,7 @@ export class PracticeComponent implements OnInit, OnChanges, OnDestroy {
   }
 
   changeSection(identifier:any) {
-    
+    console.log('identifier---------------->', identifier)
    let selectedSection:any =  _.filter(this.paperSections, { identifier: identifier })
    if(selectedSection && selectedSection.length) {
     this.selectedSectionIdentifier = selectedSection[0]['identifier'];
@@ -390,7 +390,9 @@ export class PracticeComponent implements OnInit, OnChanges, OnDestroy {
    }   
   }
   startSection(section: NSPractice.IPaperSection) {
-    console.log('section--', section)
+    
+    this.selectedSectionIdentifier = section.identifier
+    console.log('identifier---------------->', this.selectedSectionIdentifier)
     if (section) {
       // this.quizSvc.currentSection.next(section)
       this.fetchingQuestionsStatus = 'fetching'

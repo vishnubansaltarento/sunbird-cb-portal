@@ -387,7 +387,7 @@
         </div>
         <div class="separator"></div>
         <div class="flex justify-center items-center totalScore w-full">
-          -2.25/100
+          {{percentage}}/100
         </div>
       </div>
     
@@ -422,7 +422,7 @@
         </button>
         <mat-menu #sectionsMenu="matMenu" yPosition="below">
           <ng-container *ngFor="let section of sectionsList">
-            <button mat-menu-item class="questionType-btn">{{section.sectionName}} </button>
+            <button mat-menu-item class="questionType-btn" (click)="getSectionalData(section.identifier)">{{section.sectionName}} </button>
           </ng-container>
         </mat-menu>
       </div>
