@@ -1,6 +1,8 @@
 import { DatePipe } from '@angular/common'
 import {  Component, OnInit } from '@angular/core'
 import { ActivatedRoute, Router } from '@angular/router'
+import { EventService } from '@sunbird-cb/utils'
+import * as _ from 'lodash'
 
 @Component({
   selector: 'ws-app-provider-page',
@@ -25,9 +27,10 @@ export class ProviderPageComponent implements OnInit  {
 
   descriptionMaxLength = 1000
   expanded = false
+  isTelemetryRaised = false
 
   constructor(private route: ActivatedRoute,
-              public router: Router, private datePipe: DatePipe) {
+              public router: Router, private datePipe: DatePipe, private events: EventService) {
 
   }
 
@@ -98,6 +101,27 @@ export class ProviderPageComponent implements OnInit  {
     } else {
        this.router.navigate(
         [`/app/learn/browse-by/provider/${this.providerName}/${this.providerId}/all-CBP`])
+    }
+  }
+
+  raiseTelemetryInteratEvent(event: any) {
+    if (!this.isTelemetryRaised) {
+      this.events.raiseInteractTelemetry(
+        {
+          type: 'click',
+          subType: 'ATI/CTI',
+          id: `${_.camelCase(event.primaryCategory)}-card`,
+        },
+        {
+          id: event.identifier,
+          type: event.primaryCategory,
+        },
+        {
+          pageIdExt: `${_.camelCase(event.primaryCategory)}-card`,
+          module: _.camelCase(event.primaryCategory),
+        }
+      )
+      this.isTelemetryRaised = true
     }
   }
 

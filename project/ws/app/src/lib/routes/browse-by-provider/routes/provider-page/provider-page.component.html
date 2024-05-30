@@ -97,8 +97,14 @@
             <img class="absolute {{contentStrip?.sectionImagePosition}}" src="{{contentStrip?.sectionImage}}" alt="">
             <div class="container ">
                 <div class="w-full">
-                    <sb-uic-content-strip-with-tabs [emitViewAll]="true" (viewAllResponse)="showAllContent($event,contentStrip)"  
-                    (emptyResponse)="hideContentStrip($event, contentStrip)" [providerId]="providerId" [widgetData]="contentStrip"></sb-uic-content-strip-with-tabs>
+                    <sb-uic-content-strip-with-tabs
+                        [emitViewAll]="true"
+                        (viewAllResponse)="showAllContent($event,contentStrip)"
+                        (emptyResponse)="hideContentStrip($event, contentStrip)"
+                        (telemtryResponse)="raiseTelemetryInteratEvent($event)"
+                        [providerId]="providerId"
+                        [widgetData]="contentStrip">
+                    </sb-uic-content-strip-with-tabs>
                 </div>
             </div>
         </div>
