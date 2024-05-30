@@ -140,7 +140,6 @@
 
 .infra-box {
     width: 256px;
-    height: 146px;       
 }
 .infra-title {
     font-family: Montserrat;
@@ -165,6 +164,11 @@
     line-height: 16.8px;
     text-align: left;
     color: white;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    display: -webkit-box;
+    -webkit-line-clamp: 4;
+    -webkit-box-orient: vertical;
 }
 
 .overlay {
