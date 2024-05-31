@@ -113,15 +113,15 @@ export class ProviderPageComponent implements OnInit  {
         {
           type: 'click',
           subType: 'ATI/CTI',
-          id: `${_.camelCase(event.primaryCategory)}-card`,
+          id: `${_.kebabCase(event.typeOfTelemetry.toLocaleLowerCase())}-card`,
         },
         {
           id: event.identifier,
           type: event.primaryCategory,
         },
         {
-          pageIdExt: `${_.camelCase(event.primaryCategory)}-card`,
-          module: _.camelCase(event.primaryCategory),
+          pageIdExt: `${_.kebabCase(event.primaryCategory.toLocaleLowerCase())}-card`,
+          module: WsEvents.EnumTelemetrymodules.LEARN
         }
       )
       this.isTelemetryRaised = true
@@ -155,7 +155,7 @@ export class ProviderPageComponent implements OnInit  {
       {
         type: 'click',
         subType: 'ATI/CTI',
-        id: `tab-${_.kebabCase(name).toLocaleLowerCase()}`,
+        id: `nav-${_.kebabCase(name).toLocaleLowerCase()}`,
       },
       {},
       {
