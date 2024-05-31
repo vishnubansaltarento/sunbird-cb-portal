@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core'
 import { MatTabChangeEvent } from '@angular/material'
 import { ActivatedRoute } from '@angular/router'
-import { EventService, WsEvents } from '@sunbird-cb/utils-v2'
+import { EventService, WsEvents } from '@sunbird-cb/utils'
 /* tslint:disable */
 import * as _ from 'lodash'
 
@@ -26,6 +26,7 @@ export class MdoChannelsMicrositeComponent implements OnInit {
   showModal: boolean = false
   descriptionMaxLength = 500
   expanded = false
+  isTelemetryRaised: boolean = false
 
   constructor(
     private route: ActivatedRoute,
@@ -54,22 +55,7 @@ export class MdoChannelsMicrositeComponent implements OnInit {
   }
 
   public tabClicked(tabEvent: MatTabChangeEvent) {
-    const data: WsEvents.ITelemetryTabData = {
-      label: `${tabEvent.tab.textLabel}`,
-      index: tabEvent.index,
-    }
-    this.eventSvc.raiseInteractTelemetry(
-      {
-        type: WsEvents.EnumInteractTypes.CLICK,
-        subType: WsEvents.EnumInteractSubTypes.PROFILE_EDIT_TAB,
-        id: `${_.camelCase(data.label)}-tab`,
-      },
-      {},
-      {
-        module: WsEvents.EnumTelemetrymodules.PROFILE,
-      }
-    )
-
+    this.raiseTelemetry(`${tabEvent.tab.textLabel} tab`)
   }
   hideContentStrip(event: any, contentStripData: any) {
     if (event) {
@@ -91,6 +77,44 @@ export class MdoChannelsMicrositeComponent implements OnInit {
 
   viewMoreOrLess() {
     this.expanded = !this.expanded
+  }
+
+  raiseTelemetryInteratEvent(event: any) {
+    if (event && event.viewMoreUrl) {
+      this.raiseTelemetry(`${event.stripTitle} ${event.viewMoreUrl.viewMoreText}`)
+    }
+    if (!this.isTelemetryRaised) {
+      this.eventSvc.raiseInteractTelemetry(
+        {
+          type: 'click',
+          subType: 'MDO-channel',
+          id: `${_.kebabCase(event.typeOfTelemetry.toLocaleLowerCase())}-card`,
+        },
+        {
+          id: event.identifier,
+          type: event.primaryCategory,
+        },
+        {
+          pageIdExt: `${_.kebabCase(event.primaryCategory.toLocaleLowerCase())}-card`,
+          module: WsEvents.EnumTelemetrymodules.LEARN,
+        }
+      )
+      this.isTelemetryRaised = true
+    }
+  }
+
+  raiseTelemetry(name: string) {
+    this.eventSvc.raiseInteractTelemetry(
+      {
+        type: 'click',
+        subType: 'MDO-channel',
+        id: `${_.kebabCase(name).toLocaleLowerCase()}`,
+      },
+      {},
+      {
+        module: WsEvents.EnumTelemetrymodules.LEARN,
+      }
+    )
   }
 
 }

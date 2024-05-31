@@ -120,7 +120,9 @@
                 <sb-uic-announcements
                     [layoutType]="'mobile'"
                     (openDialog)="triggerOpenDialog($event)"
-                    [objectData]="data?.announcementSection?.data">
+                    [objectData]="data?.announcementSection?.data"
+                    [fetchDataFromApi]="true"
+                    [channelId]="orgId">
                 </sb-uic-announcements>
                 <div class="announcements-container" *ngIf="showModal">
                     <div class="cursor-pointer close-share-dialog">
@@ -131,7 +133,9 @@
                             [layoutType]="'web'"
                             (openDialog)="triggerOpenDialog($event)"
                             [objectData]="data?.announcementSection?.data"
-                            [mobileHeight]="true">
+                            [mobileHeight]="true"
+                            [fetchDataFromApi]="true"
+                            [channelId]="orgId">
                         </sb-uic-announcements>
                     </div>
                 </div>
@@ -166,6 +170,8 @@
                     <div class="pt-4">
                         <sb-uic-announcements
                             [layoutType]="'web'"
+                            [mobileHeight]="false"
+                            [fetchDataFromApi]="true"
                             [objectData]="data?.announcementSection?.data">
                         </sb-uic-announcements>
                     </div>                    
@@ -230,8 +236,16 @@
     <ng-container *ngIf="!contentStrip?.hideSection">
         <div class="flex  mt-8 mb-8">
             <div class="w-full">
-                <sb-uic-content-strip-with-tabs [emitViewAll]="true" (viewAllResponse)="showAllContent($event)"  
-                (emptyResponse)="hideContentStrip($event, contentStrip)" [providerId]="'01381906916850892825'" [widgetData]="contentStrip"></sb-uic-content-strip-with-tabs>
+                <sb-uic-content-strip-with-tabs
+                    [emitViewAll]="true"
+                    (viewAllResponse)="showAllContent($event)"
+                    (telemtryResponse)="raiseTelemetryInteratEvent($event)"
+                    (emptyResponse)="hideContentStrip($event, contentStrip)"
+                    [providerId]="'01381906916850892825'"
+                    [widgetData]="contentStrip"
+                    (telemtryResponse)="raiseTelemetryInteratEvent($event)"
+                    >
+                </sb-uic-content-strip-with-tabs>
             </div>
         </div>
     </ng-container>
