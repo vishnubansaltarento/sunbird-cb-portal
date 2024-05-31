@@ -1,7 +1,7 @@
 import { DatePipe } from '@angular/common'
 import {  Component, OnInit } from '@angular/core'
 import { ActivatedRoute, Router } from '@angular/router'
-import { EventService } from '@sunbird-cb/utils'
+import { EventService, WsEvents } from '@sunbird-cb/utils'
 import * as _ from 'lodash'
 
 @Component({
@@ -105,20 +105,23 @@ export class ProviderPageComponent implements OnInit  {
   }
 
   raiseTelemetryInteratEvent(event: any) {
+    if (event && event.viewMoreUrl) {
+      this.raiseTelemetry(`${event.stripTitle} ${event.viewMoreUrl.viewMoreText}`)
+    }
     if (!this.isTelemetryRaised) {
       this.events.raiseInteractTelemetry(
         {
           type: 'click',
           subType: 'ATI/CTI',
-          id: `${_.camelCase(event.primaryCategory)}-card`,
+          id: `${_.kebabCase(event.typeOfTelemetry.toLocaleLowerCase())}-card`,
         },
         {
-          id: event.identifier,
+          id: `${_.kebabCase(event.typeOfTelemetry.toLocaleLowerCase())}-card`,
           type: event.primaryCategory,
         },
         {
-          pageIdExt: `${_.camelCase(event.primaryCategory)}-card`,
-          module: _.camelCase(event.primaryCategory),
+          pageIdExt: `${_.kebabCase(event.primaryCategory.toLocaleLowerCase())}-card`,
+          module: WsEvents.EnumTelemetrymodules.LEARN,
         }
       )
       this.isTelemetryRaised = true
@@ -127,5 +130,37 @@ export class ProviderPageComponent implements OnInit  {
 
   viewMoreOrLess() {
     this.expanded = !this.expanded
+  }
+
+  raiseCompetencyTelemetry(name: string) {
+    this.raiseTelemetry(`${name} core expertise`)
+  }
+
+  raiseTelemetry(name: string) {
+    this.events.raiseInteractTelemetry(
+      {
+        type: 'click',
+        subType: 'ATI/CTI',
+        id: `${_.kebabCase(name).toLocaleLowerCase()}`,
+      },
+      {},
+      {
+        module: WsEvents.EnumTelemetrymodules.LEARN,
+      }
+    )
+  }
+
+  raiseNavTelemetry(name: string) {
+    this.events.raiseInteractTelemetry(
+      {
+        type: 'click',
+        subType: 'ATI/CTI',
+        id: `${_.kebabCase(name).toLocaleLowerCase()}-navigation`,
+      },
+      {},
+      {
+        module: WsEvents.EnumTelemetrymodules.LEARN,
+      }
+    )
   }
 }
