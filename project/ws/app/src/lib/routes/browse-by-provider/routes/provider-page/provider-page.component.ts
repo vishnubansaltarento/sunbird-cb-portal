@@ -116,7 +116,7 @@ export class ProviderPageComponent implements OnInit  {
           id: `${_.kebabCase(event.typeOfTelemetry.toLocaleLowerCase())}-card`,
         },
         {
-          id: `${_.kebabCase(event.typeOfTelemetry.toLocaleLowerCase())}-card`,
+          id: event.identifier,
           type: event.primaryCategory,
         },
         {
