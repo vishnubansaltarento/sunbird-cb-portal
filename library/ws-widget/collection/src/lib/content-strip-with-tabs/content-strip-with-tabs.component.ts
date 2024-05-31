@@ -1124,7 +1124,7 @@ export class ContentStripWithTabsComponent extends WidgetBaseComponent
       all.push(e)
       if (e.planDuration === NsCardContent.ACBPConst.OVERDUE) {
         overdue.push(e)
-      } else if (e.planDuration === NsCardContent.ACBPConst.UPCOMING) {
+      } else if (e.planDuration === NsCardContent.ACBPConst.UPCOMING || e.planDuration === NsCardContent.ACBPConst.SUCCESS) {
         upcoming.push(e)
       }
     })
@@ -1167,17 +1167,20 @@ export class ContentStripWithTabsComponent extends WidgetBaseComponent
     })
     // this.getSelectedIndex(1)
     return [
-    { value: 'all', widgets: this.transformContentsToWidgets(all, strip) },
-    { value: 'upcoming', widgets: this.transformContentsToWidgets(upcoming, strip) },
-    { value: 'overdue', widgets: this.transformContentsToWidgets(overdue, strip) }]
+      { value: 'upcoming', widgets: this.transformContentsToWidgets(upcoming, strip) },
+      { value: 'overdue', widgets: this.transformContentsToWidgets(overdue, strip) },
+      { value: 'completed', widgets: this.transformContentsToWidgets(allCompleted, strip) },
+      { value: 'all', widgets: this.transformContentsToWidgets(all, strip) }]
   }
 
   getSelectedIndex(stripsResultDataMap: any, key: any): number {
     let returnValue = 0
     if (key === 'cbpPlan') {
       if (stripsResultDataMap.tabs.length) {
-        const data = stripsResultDataMap.tabs.filter((ele: any) => ele.value === 'upcoming')
-        returnValue = data[0].widgets && data[0].widgets.length > 0 ? 1 : 0
+        // const data = stripsResultDataMap.tabs.filter((ele: any) => ele.value === 'upcoming')
+        // returnValue = data[0].widgets && data[0].widgets.length > 0 ? 1 : 0
+        const data = stripsResultDataMap.tabs.filter((ele: any) => ele.value === 'upcoming' || ele.value === 'overdue')
+        returnValue = (data[0].widgets && data[0].widgets.length > 0) ? 0 : (data[1].widgets && data[1].widgets.length > 0) ? 1 : 2
       }
     }
     return returnValue

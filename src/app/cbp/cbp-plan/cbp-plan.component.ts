@@ -30,6 +30,7 @@ export class CbpPlanComponent implements OnInit {
   overDueList: any = []
   overdueUncompleted: any = []
   upcomingUncompleted: any = []
+  completedList: any = []
   toggleFilter = false
   cbpOriginalData: any
   filteredData: any
@@ -83,6 +84,7 @@ export class CbpPlanComponent implements OnInit {
       this.upcommingList = []
       this.contentFeedList = []
       this.overDueList = []
+      this.completedList = []
       response = response.sort((a: any, b: any): any => {
         if (a.planDuration === NsCardContent.ACBPConst.OVERDUE && b.planDuration === NsCardContent.ACBPConst.OVERDUE) {
           const firstDate: any = new Date(a.endDate)
@@ -97,7 +99,7 @@ export class CbpPlanComponent implements OnInit {
           this.upcommingList.push(ele)
         }
       })
-
+      this.completedList = response.filter((allData: any) => allData.contentStatus === 2)
       this.contentFeedListCopy = response
       this.contentFeedList = this.transformContentsToWidgets(response, this.getFeedStrip())
       this.upcommingList = this.transformContentsToWidgets(this.upcommingList, this.cbpAllConfig.cbpUpcomingStrips)
@@ -105,9 +107,9 @@ export class CbpPlanComponent implements OnInit {
       const vall = this.overDueList.length + this.upcommingList.length
       this.upcommingList.filter((data: any) => {
         if (data && data.widgetData &&  data.widgetData.content && data.widgetData.content.contentStatus < 2) {
-           if (data.widgetData.content.planDuration && data.widgetData.content.planDuration !== 'success') {
+          // if (data.widgetData.content.planDuration && data.widgetData.content.planDuration !== 'success') {
             this.upcomingUncompleted.push(data)
-           }
+          // }
         }
       })
       this.overDueList.filter((data: any) => {
@@ -118,12 +120,14 @@ export class CbpPlanComponent implements OnInit {
       this.usersCbpCount = {
         upcoming: this.upcomingUncompleted.length,
         overdue: this.overdueUncompleted.length,
+        completed: this.completedList.length,
         all: vall,
       }
     } else {
       this.upcommingList = []
       this.overDueList = []
       this.contentFeedList = []
+      this.completedList = []
     }
     this.cbpLoader = false
     // this.widgetSvc.fetchCbpPlanList().subscribe(async (res: any) => {
