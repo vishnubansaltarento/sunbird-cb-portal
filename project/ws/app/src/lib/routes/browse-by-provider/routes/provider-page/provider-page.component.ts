@@ -108,7 +108,7 @@ export class ProviderPageComponent implements OnInit  {
     if (event && event.viewMoreUrl) {
       this.raiseTelemetry(`${event.stripTitle} ${event.viewMoreUrl.viewMoreText}`)
     }
-    if (event && !event.viewMoreUrl && !this.isTelemetryRaised) {
+    if (!this.isTelemetryRaised) {
       this.events.raiseInteractTelemetry(
         {
           type: 'click',
@@ -116,12 +116,12 @@ export class ProviderPageComponent implements OnInit  {
           id: `${_.kebabCase(event.typeOfTelemetry.toLocaleLowerCase())}-card`,
         },
         {
-          id: event.identifier,
+          id: `${_.kebabCase(event.typeOfTelemetry.toLocaleLowerCase())}-card`,
           type: event.primaryCategory,
         },
         {
           pageIdExt: `${_.kebabCase(event.primaryCategory.toLocaleLowerCase())}-card`,
-          module: WsEvents.EnumTelemetrymodules.LEARN
+          module: WsEvents.EnumTelemetrymodules.LEARN,
         }
       )
       this.isTelemetryRaised = true

@@ -40,7 +40,7 @@
     <div class="flex sticky-navigator gap-4">
         <mat-icon class="nav-up-arrow cursor-pointer" (click)="scrollToSection('section-micro-sites')">arrow_upwards</mat-icon>
         <ng-container *ngFor="let section of navList">
-            <div class="nav-button" (click)="scrollToSection(section?.key);raiseNavTelemetry(section?.title)">{{section?.title}}</div>
+            <div class="nav-button" (click)="scrollToSection(section?.key); raiseNavTelemetry(section?.title)">{{section?.title}}</div>
         </ng-container>
     </div>
 
@@ -192,7 +192,6 @@
                     [providerId]="providerId">
                 </sb-uic-competency-passbook>
             </div>
-            
         </div>
         <img class="absolute comp-back-img" src="assets/icons/microsite/competency.svg" alt="">
     </div>
