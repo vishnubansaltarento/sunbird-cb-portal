@@ -972,7 +972,7 @@ export class ProfileViewComponent implements OnInit, AfterViewInit, OnDestroy {
         return true
       }
 
-    } else if(this.primaryDetailsForm.get('group')!.value || this.primaryDetailsForm.get('designation')!.value) {
+    } else if (this.primaryDetailsForm.get('group')!.value || this.primaryDetailsForm.get('designation')!.value) {
       return true
     }
 
