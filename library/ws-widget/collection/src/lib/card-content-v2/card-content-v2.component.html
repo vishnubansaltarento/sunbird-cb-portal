@@ -1592,8 +1592,8 @@
 
 <ng-template #cbpPlan  let-data="data">
   <div class="cbp-mark left-0 border-top-radius">
-    <p *ngIf="data.cbpData.planDuration === acbpConstants?.UPCOMING && data?.cbpData?.contentStatus < 2"  class="cbp-warning">{{data.cbpData.endDate | date: 'd MMM, y'}}</p>
-    <p *ngIf="data.cbpData.planDuration === acbpConstants?.SUCCESS && data?.cbpData?.contentStatus < 2"  class="cbp-success">{{data.cbpData.endDate | date: 'd MMM, y'}}</p>
+    <p *ngIf="data.cbpData.planDuration === acbpConstants?.UPCOMING && data?.cbpData?.contentStatus < 2"  class="cbp-warning">{{data?.cbpData?.endDate | date: 'd MMM, y'}}</p>
+    <p *ngIf="data.cbpData.planDuration === acbpConstants?.SUCCESS && data?.cbpData?.contentStatus < 2"  class="cbp-success">{{data?.cbpData?.endDate | date: 'd MMM, y'}}</p>
     <p *ngIf="data.cbpData.planDuration === acbpConstants?.OVERDUE && data?.cbpData?.contentStatus < 2" class="cbp-danger">{{'cardcontentv2.overDue' | translate}}</p>
   </div>
 </ng-template>

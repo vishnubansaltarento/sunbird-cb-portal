@@ -1180,7 +1180,8 @@ export class ContentStripWithTabsComponent extends WidgetBaseComponent
         // const data = stripsResultDataMap.tabs.filter((ele: any) => ele.value === 'upcoming')
         // returnValue = data[0].widgets && data[0].widgets.length > 0 ? 1 : 0
         const data = stripsResultDataMap.tabs.filter((ele: any) => ele.value === 'upcoming' || ele.value === 'overdue')
-        returnValue = (data[0].widgets && data[0].widgets.length > 0) ? 0 : (data[1].widgets && data[1].widgets.length > 0) ? 1 : 2
+        returnValue = (data && data[0].widgets && data[0].widgets.length > 0) ? 0 :
+        (data && data[1].widgets && data[1].widgets.length > 0) ? 1 : 2
       }
     }
     return returnValue
