@@ -199,11 +199,21 @@
     <div class="flex flex-column width-100" [ngClass]="mobileQuestionSetExpand ? 'mobile-responsive-question-container-expand' : 'mobile-responsive-question-container'">
       <div class="flex flex-row width-100 justify-between question-with-background" *ngIf="showOnlyQuestion">
         <div class="question-heading">
-          <p class="margin-bottom-m">
-            <ng-container i18n="question number label"><span class="subheading-1">{{ 'practiceoverview.question' | translate }}</span></ng-container><span class="question-number">&nbsp;{{ questionNumber }}&nbsp;</span>
-            <ng-container i18n="question number of total questions"><span class="question-number">{{ 'practiceoverview.of' | translate }}</span></ng-container>
-            <span class="question-number">&nbsp;{{ total }}</span>
-          </p>
+          <div>
+            <p class="margin-bottom-m">
+              <ng-container><span class="standalone-question">{{ 'practiceoverview.question' | translate }}&nbsp;No.{{ questionNumber }}</span></ng-container>
+              <!-- <ng-container i18n="question number of total questions"><span class="question-number">{{ 'practiceoverview.of' | translate }}</span></ng-container>
+              <span class="question-number">&nbsp;{{ total }}</span> -->
+             
+            </p>
+
+          </div>
+         
+        </div>
+        <div>
+          <div class="question-marks">
+            <p>2 Marks</p>
+          </div>
         </div>
         <!-- <div class="flex flex-row align-center justify-around" *ngIf="!showQuestionOnly">
           <ng-container *ngIf="ePrimaryCategory.PRACTICE_RESOURCE === primaryCategory && ((questionNumber) <= totalQCount)">

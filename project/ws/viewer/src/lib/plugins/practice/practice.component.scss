@@ -161,6 +161,21 @@ $nav-height: 40px;
   color: #212529;
 }
 
+.question-guide-text-legend {
+  font-size: 16px;
+  font-weight: 400;
+  color: #fff;
+  font-family: 'Lato';
+
+}
+
+.question-guide-text-legend-not-visited {
+  font-size: 16px;
+  font-weight: 400;
+  color: #000;
+  font-family: 'Lato';
+}
+
 .assessment_card {
   padding: 24px 16px;
 }
@@ -329,7 +344,7 @@ $nav-height: 40px;
 }
 
 .assessment-header {
-  margin-bottom: 34px;
+  margin-bottom: 10px;
 }
 
 .quest_btn {
@@ -567,6 +582,26 @@ $nav-height: 40px;
   color: rgb(27, 76, 161) !important;
 }
 
+
+.exapnd-collapse-desktop {
+  background: #17468C;
+  width: 20px;
+  height: 50px;
+  border-top-left-radius: 5px;
+  border-bottom-left-radius: 5px;
+  cursor: pointer;
+  margin-top: 10%;
+}
+
+.exapnd-collapse-desktop .mat-icon{
+  color: #fff;
+  margin-top: 12.5px;
+}
+
+.quiz-question-right-container-hide {
+  display:none;
+}
+
 @media only screen and (max-width: 600px) {
   .align-end {
     align-items: end;
@@ -620,6 +655,8 @@ $nav-height: 40px;
     flex-direction: row;
     position: relative;
   }
+
+
 
   .assessment-header {
     margin-bottom: 0;
@@ -822,14 +859,18 @@ $nav-height: 40px;
   padding: 12px 16px;
   /* height: 18px; */
   color: #1b4ca1;
-  width: 124px;
+  width: auto;
   height: 40px;
   font-size: 14px;
   font-weight: 700;
 }
 
+::ng-deep .section-dd-container .mat-form-field-wrapper {
+  padding-bottom: 0.5em !important;
+}
+
 ::ng-deep .section-dd-container .mat-form-field-infix {
-  width: 124px !important;
+  width: auto !important;
 }
 
 ::ng-deep .section-dd-container .mat-form-field-type-mat-native-select .mat-form-field-infix::after {
@@ -838,7 +879,11 @@ $nav-height: 40px;
 
 ::ng-deep .section-dd-container .mat-form-field-type-mat-native-select .mat-form-field-infix::after {
   top:35% !important;
-  right: 10% !important;
+  right: 15% !important;
+}
+
+::ng-deep .section-dd-container .mat-form-field-type-mat-native-select .mat-input-element {
+  padding-right: 35px;
 }
 
 ::ng-deep .section-dd .mat-form-field-underline {
@@ -855,20 +900,41 @@ $nav-height: 40px;
 }
 
 .quiz-question-left-container {
-  width: 78%;
+  width: 75%;
+}
+.quiz-question-left-container-full {
+  width: 100%;
 }
 .quiz-question-right-container {
-  width: 22%;
-  margin-left: 1% ;
+  width: 25%;
   background-color: #EDF1F7;
+  display: block;
 }
 
 .standalone-quiz-container-controls {
   position: fixed;
-    bottom: 0;
-    box-shadow: 5px 5px 5px 5px #ccc;
-    width: 100%;
-    height: 68px;
+  bottom: 0;
+  box-shadow: 5px 5px 5px 5px #ccc;
+  width: 100%;
+  background-color: #fff;
+}
+
+.section-info img{
+  height: 24px;
+  width: 24px;
+  margin-top: 15px;
+  margin-left: 8px;
+}
+
+.stats-label-top {
+  font-size: 16px;
+  font-weight: 700;
+  color: rgba(0, 0, 0, 0.87);
+  font-family: "Lato";
+}
+
+.margin-left-64 {
+  margin-left: 64px
 }
 @media only screen and (min-width: 280px) and (max-width: 767px) {
  

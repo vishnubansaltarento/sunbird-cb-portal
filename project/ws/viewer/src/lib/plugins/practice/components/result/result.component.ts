@@ -30,6 +30,8 @@ export class ResultComponent implements OnInit, OnChanges {
   isMobile = false
   showInsight = false
   questionStatuTableData:any = [];
+  quizResponseClone:any;
+  selectedSectionId='';
   summaryTableDataSource:any = new MatTableDataSource([
     {
       subject: 'Section A',
@@ -156,18 +158,19 @@ export class ResultComponent implements OnInit, OnChanges {
     } else {
       this.isMobile = false
     }
-    console.log('quizResponse',this.quizResponse)
   }
 
-  ngOnChanges() {
-    console.log('quizResponse',this.quizResponse)
+  ngOnChanges() {    
     if(this.quizResponse) {
+      this.quizResponseClone = _.clone(this.quizResponse)
       let sectionTableData = [];
       
       for(let i=0; i< this.quizResponse.children.length;i++) {
         if(this.quizResponse.children[i]) {
-          let sectionObj = {subject: 'Section'+i, yourScore : (this.quizResponse.children[i]['correct'])/(this.quizResponse.children[i]['total'])}
-          sectionTableData.push(sectionObj);
+          if(this.quizResponse.children[i]['correct']) {
+            let sectionObj = {subject: 'Section'+i, yourScore : (this.quizResponse.children[i]['correct'])/(this.quizResponse.children[i]['total'])}
+            sectionTableData.push(sectionObj);
+          }          
         }        
       }
       this.summaryTableDataSource = new MatTableDataSource(sectionTableData)
@@ -304,34 +307,121 @@ export class ResultComponent implements OnInit, OnChanges {
     }
   }
 
-  getSectionalData(sectionId:string, resultType:string) {
-    console.log('resultType',resultType)
-    let quizResponse:any;
-    quizResponse = this.quizResponse;
-    if(sectionId === 'all') {
+  getSectionalData(sectionId:string='all', resultType:string='all') {
+    let quizResponse:any = this.quizResponse;
+    this.selectedSectionId = sectionId;
+    this.questionStatuTableData = [];
+    if(this.selectedSectionId === 'all') {
+      for(let i=0; i<this.quizResponse.children.length;i++) {      
+        for(let j=0; j<this.quizResponse.children[i].children.length; j++) {
+          if(resultType === 'all') {
+            let obj:any = {
+              question: this.quizResponse.children[i].children[j]['question'],
+              status: this.quizResponse.children[i].children[j]['result'],
+              questionTagg: 'Easy',
+              timeTaken: '00:00:09',
+            }
+            console.log("obj", obj)
+            this.questionStatuTableData.push(obj);
+          } else if (resultType === 'correct') {
+            if(this.quizResponse.children[i].children[j]['result'] === 'correct') {
+              let obj:any = {
+                question: this.quizResponse.children[i].children[j]['question'],
+                status: this.quizResponse.children[i].children[j]['result'],
+                questionTagg: 'Easy',
+                timeTaken: '00:00:09',
+              }
+              console.log("obj", obj)
+              this.questionStatuTableData.push(obj);
+            }           
+          } else if (resultType === 'wrong') {
+            if(this.quizResponse.children[i].children[j]['result'] === 'incorrect') {
+              let obj:any = {
+                question: this.quizResponse.children[i].children[j]['question'],
+                status: this.quizResponse.children[i].children[j]['result'],
+                questionTagg: 'Easy',
+                timeTaken: '00:00:09',
+              }
+              console.log("obj", obj)
+              this.questionStatuTableData.push(obj);
+            }           
+          }  else if (resultType === 'notAnswered') {
+            if(this.quizResponse.children[i].children[j]['result'] === 'blank') {
+              let obj:any = {
+                question: this.quizResponse.children[i].children[j]['question'],
+                status: this.quizResponse.children[i].children[j]['result'],
+                questionTagg: 'Easy',
+                timeTaken: '00:00:09',
+              }
+              console.log("obj", obj)
+              this.questionStatuTableData.push(obj);
+            }           
+          }
+          
+        }
+      }
+      this.questionStatuTableDataSource = this.questionStatuTableData;
     } else {
       for(let i=0; i<this.quizResponse.children.length;i++) {
-        console.log(this.quizResponse.children[i], this.quizResponse.children[i]['identifier'], sectionId)
-        if(this.quizResponse.children[i]['identifier'] === sectionId) {
-          this.quizResponse.children.splice(i,1)
+        console.log(this.quizResponse.children[i], this.quizResponse.children[i]['identifier'], this.selectedSectionId)
+        if(this.quizResponse.children[i]['identifier'] === this.selectedSectionId) {
+          quizResponse = this.quizResponse.children[i];
           break;
         }
-      }
-    }
-    console.log('quizResponse',quizResponse)
-    for(let i=0; i<this.quizResponse.children.length;i++) {      
-      for(let j=0; j<this.quizResponse.children[i].children.length; j++) {
-        let obj:any = {
-          question: this.quizResponse.children[i].children[j]['question'],
-          status: this.quizResponse.children[i].children[j]['result'],
-          questionTagg: 'Easy',
-          timeTaken: '00:00:09',
+      }   
+      for(let j=0; j<quizResponse.children.length; j++) {
+        if(resultType === 'all') {
+          let obj:any = {
+            question: quizResponse.children[j]['question'],
+            status: quizResponse.children[j]['result'],
+            questionTagg: 'Easy',
+            timeTaken: '00:00:09',
+          }
+          console.log("obj", obj)
+          this.questionStatuTableData.push(obj);
+        } else if (resultType === 'correct') {
+          if(quizResponse.children[j]['result'] === 'correct') {
+            let obj:any = {
+              question: quizResponse.children[j]['question'],
+              status: quizResponse.children[j]['result'],
+              questionTagg: 'Easy',
+              timeTaken: '00:00:09',
+            }
+            console.log("obj", obj)
+            this.questionStatuTableData.push(obj);
+          }           
+        } else if (resultType === 'wrong') {
+          if(quizResponse.children[j]['result'] === 'incorrect') {
+            let obj:any = {
+              question: quizResponse.children[j]['question'],
+              status: quizResponse.children[j]['result'],
+              questionTagg: 'Easy',
+              timeTaken: '00:00:09',
+            }
+            console.log("obj", obj)
+            this.questionStatuTableData.push(obj);
+          }           
+        }  else if (resultType === 'notAnswered') {
+          if(quizResponse.children[j]['result'] === 'blank') {
+            let obj:any = {
+              question: quizResponse.children[j]['question'],
+              status: quizResponse.children[j]['result'],
+              questionTagg: 'Easy',
+              timeTaken: '00:00:09',
+            }
+            console.log("obj", obj)
+            this.questionStatuTableData.push(obj);
+          }           
         }
-        this.questionStatuTableData.push(obj);
-      }
-    }
+      }      
     this.questionStatuTableDataSource = this.questionStatuTableData;
-    console.log('quizResponse',quizResponse)
+    }
+    
+   
+  }
+
+  getQuestionByStatus(status:string) {
+    this.getSectionalData(this.selectedSectionId, status);
   }
 
   action(event: NSPractice.TUserSelectionType) {

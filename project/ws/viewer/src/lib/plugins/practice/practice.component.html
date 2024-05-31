@@ -1189,30 +1189,38 @@
           </div>
           <div>
             <div class="flex flex-row">
-              <div class="flex flex-col stats-label">
+              <div class="flex flex-col stats-label-top">
                   <div><img src="assets/icons/final-assessment/assessment.svg"></div>
                   <div>{{noOfQuestions}} {{ 'playerbrief.questions' | translate }}</div>
               </div>
-              <div class="flex flex-col margin-left-64 stats-label">
+              <div class="flex flex-col margin-left-64 stats-label-top" *ngIf="quizJson?.timeLimit">
                 <div><img src="assets/icons/final-assessment/timer.svg"></div>
-                <div>{{( timeLimit | pipeDurationTransform: 'hms')}}</div>
+                <div>{{( quizJson?.timeLimit | pipeDurationTransform: 'hms')}}</div>
               </div>
             </div>
           </div>
         </div>
         <div class="flex flex-row justify-between question-section-container">
           <div class="section-dd-container">
-            <mat-form-field  appearance="none">
-              <select matNativeControl required class="section-dd" #choosedValue (change)="changeSection($event.target.value)">
-                <option [value]="section.identifier" [selected]="section.identifier === selectedSectionIdentifier" *ngFor="let section of paperSections">{{section?.name}}</option>
-              </select>
-            </mat-form-field>
+            <div class="flex flex-row">
+            <div>
+              <mat-form-field  appearance="none">
+                <select matNativeControl required class="section-dd" #choosedValue (change)="changeSection($event.target.value)">
+                  <option [value]="section.identifier" [selected]="section.identifier === selectedSectionIdentifier" *ngFor="let section of paperSections">{{section?.name}}</option>
+                </select>
+              </mat-form-field>
+            </div>
+            <div class="section-info" *ngIf="instructionAssessment" matTooltipClass="right-nav-tooltip" [matTooltip]="instructionAssessment">
+              <img src="assets/icons/final-assessment/question_info.svg"/>              
+            </div>     
+          </div>       
           </div>
+          
           <div>
             <!-- *ngIf="(currentQuestionIndex + 1) === totalQCount" -->
             <a 
               class="text-white ws-mat-primary-background margin-xs quest_btn" mat-button (click)="proceedToSubmit()">
-              <ng-container *ngIf="!isXsmall">{{ 'playerbrief.submit' | translate }}</ng-container>
+              <ng-container *ngIf="!isXsmall">{{ 'playerbrief.submitTheTest' | translate }}</ng-container>
             </a>
           </div>
           <!-- <div>
@@ -1262,8 +1270,9 @@
         </div>
 
       </div>
+       
       <div class="standalone-quiz-container flex flex-row">
-        <div class="quiz-question-left-container">
+        <div class="quiz-question-left-container" [ngClass]="expandFalse ? 'quiz-question-left-container': 'quiz-question-left-container-full'">
          
           <div class="border-outline">
             
@@ -1295,7 +1304,7 @@
                   Check Answer
                 </button>
               </ng-container> -->
-              <div class="flex flex-1 flex-row-reverse margin-right-m butto_box end">
+              <!-- <div class="flex flex-1 flex-row-reverse margin-right-m butto_box end">
                 <ng-container
                   *ngIf="!allSecAttempted.full && allSecAttempted.next && ((currentQuestionIndex+1) === totalQCount)">
                   <button class="text-white ws-mat-primary-background margin-xs quest_btn" mat-raised-button
@@ -1303,12 +1312,20 @@
                     {{ 'practiceoverview.nextSection' | translate }}
                   </button>
                 </ng-container>
-              </div>
+              </div> -->
             </div>
             <ng-template *ngIf="!(current_Question && !process)" [ngTemplateOutlet]="showLoading"></ng-template>
           </div>
         </div>
-        <div class="quiz-question-right-container">
+        <div class="exapnd-collapse-desktop">
+          <div class="expand-icon" (click)="toggleExpandforMobile()">
+            <mat-icon class="mat-icon notranslate material-icons mat-icon-no-color" role="img" aria-hidden="true">
+              <span *ngIf="expandFalse">arrow_forward</span>
+              <span *ngIf="!expandFalse">arrow_backward</span>
+            </mat-icon>
+          </div>
+        </div>
+        <div [ngClass]="expandFalse ? 'quiz-question-right-container': 'quiz-question-right-container-hide'">
           <div class="question-list">
             <div class="ques_stats_container">
               <div class="flex flex-row justify-between ques_stats_container_box">
@@ -1318,7 +1335,7 @@
                         {{ 'playerbrief.questions' | translate | titlecase}}
                       </p>
                     </div>
-                    <div class="question-info">
+                    <!-- <div class="question-info">
                       <img src="assets/icons/final-assessment/question_info.svg"/>
                     </div>
                     <div class="info-hover">
@@ -1327,7 +1344,7 @@
                           <div class="info-tooltip-container-item"><img src="assets/icons/final-assessment/not-answered-checkbox.svg"><span>{{ 'playerbrief.notAnswered' | translate }}</span></div>
                           <div class="info-tooltip-container-item"><img src="assets/icons/final-assessment/flag-check-box.svg"><span>{{ 'playerbrief.flagged' | translate }}</span></div>
                       </div>
-                    </div>
+                    </div> -->
                 </div>
                 
                 <div class="timer" *ngIf="primaryCategory !== ePrimaryCategory.PRACTICE_RESOURCE">
@@ -1457,34 +1474,34 @@
             </div>
               <ng-container >
                 <div class="flex justify-end items-center mt-1 mb-4 gap-3 margin-right-s">
-                    <mat-icon [ngClass]="currentSetNumber <= 0 ? 'questions-navigate-disable' : 'questions-navigate-enable' " (click)="currentSetNumber = currentSetNumber - 1">keyboard_arrow_left</mat-icon>
-                    <mat-icon [ngClass]="hasNextSet ? 'questions-navigate-enable' : 'questions-navigate-disable' " (click)="currentSetNumber = currentSetNumber + 1">keyboard_arrow_right</mat-icon>
+                    <mat-icon *ngIf="!(currentSetNumber <= 0)" [ngClass]="currentSetNumber <= 0 ? 'questions-navigate-disable' : 'questions-navigate-enable' " (click)="currentSetNumber = currentSetNumber - 1">keyboard_arrow_left</mat-icon>
+                    <mat-icon *ngIf="hasNextSet" [ngClass]="hasNextSet ? 'questions-navigate-enable' : 'questions-navigate-disable' " (click)="currentSetNumber = currentSetNumber + 1">keyboard_arrow_right</mat-icon>
                 </div>
               </ng-container>
             <div class="seperate-text">
-              <span>legend</span>
+              <span>Legend</span>
             </div>
             <div class="my-8 mx-6">
               <div class="flex justify-between">
                 <div class="gap-4 flex flex-col">
-                  <div class="flex gap-2">
-                    <div class="flex justify-center items-center attempted-question-background question-guide">1</div>
+                  <div class="flex gap-2  align-center">
+                    <div class="flex justify-center items-center attempted-question-background question-guide"><span class="question-guide-text-legend">1</span></div>
                     <div class="question-guide-text">Answered</div>
                   </div>
-                  <div class="flex gap-2">
-                    <div class="flex justify-center items-center question-guide marked-question-background">3</div>
+                  <div class="flex gap-2  align-center">
+                    <div class="flex justify-center items-center question-guide marked-question-background"><span class="question-guide-text-legend">3</span></div>
                     <div class="question-guide-text">Marked</div>
                   </div>
                 </div>
   
                 <div class="gap-4 flex flex-col">
-                  <div class="flex gap-2">
-                    <div class="flex justify-center items-center question-guide not-answered-background">2</div>
+                  <div class="flex gap-2  align-center">
+                    <div class="flex justify-center items-center question-guide not-answered-background"><span class="question-guide-text-legend">2</span></div>
                     <div class="question-guide-text">Not Answered</div>
                   </div>
         
-                  <div class="flex gap-2">
-                    <div class="flex justify-center items-center question-guide not-visited-background">4</div>
+                  <div class="flex gap-2  align-center">
+                    <div class="flex justify-center items-center question-guide not-visited-background"><span class="question-guide-text-legend-not-visited">4</span></div>
                     <div class="question-guide-text">Not Visited</div>
                   </div>
                 </div>

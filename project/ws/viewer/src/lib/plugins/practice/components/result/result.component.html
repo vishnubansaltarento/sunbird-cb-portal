@@ -428,10 +428,10 @@
       </div>
     
       <div class="flex wrap-mweb gap-4">
-        <button mat-button class="btn-full flex justify-center items-center px-4 gap-2">All</button>
-        <button mat-button class="btn-outline flex justify-center items-center px-4">Correct</button>
-        <button mat-button class="btn-outline flex justify-center items-center px-4">Wrong</button>
-        <button mat-button class="btn-outline flex justify-center items-center px-4">Unattempted</button>
+        <button mat-button class="btn-full flex justify-center items-center px-4 gap-2" (click)="getQuestionByStatus('all')">All</button>
+        <button mat-button class="btn-outline flex justify-center items-center px-4" (click)="getQuestionByStatus('correct')">Correct</button>
+        <button mat-button class="btn-outline flex justify-center items-center px-4" (click)="getQuestionByStatus('wrong')">Wrong</button>
+        <button mat-button class="btn-outline flex justify-center items-center px-4" (click)="getQuestionByStatus('notAnswered')">Unattempted</button>
       </div>
     
       <div class="questions-table-section">
@@ -451,7 +451,7 @@
                           mat-cell
                           *matCellDef="let element; let rowIndex = index;"
                       >
-                          <span [ngClass]="{'correct': element[disCol.key] === 'Correct', 'wrong': element[disCol.key] === 'Wrong'}">{{ element[disCol.key] }}</span>
+                          <span [ngClass]="{'correct': element[disCol.key] === 'correct', 'wrong': element[disCol.key] === 'incorrect'}">{{ element[disCol.key] | titlecase }}</span>
                       </td>
                   </ng-container>
               </ng-container>
