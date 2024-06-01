@@ -228,9 +228,9 @@ export class PlayerVideoComponent extends WidgetBaseComponent
     }
     const fireRProgress: fireRealTimeProgressFunction = (identifier, data) => {
       const collectionId = this.activatedRoute.snapshot.queryParams.collectionId ?
-              this.activatedRoute.snapshot.queryParams.collectionId : this.widgetData.identifier
+              this.activatedRoute.snapshot.queryParams.collectionId : ''
       const batchId = this.activatedRoute.snapshot.queryParams.batchId ?
-              this.activatedRoute.snapshot.queryParams.batchId : this.widgetData.identifier
+              this.activatedRoute.snapshot.queryParams.batchId : ''
 
       if (this.widgetData.identifier && identifier && data) {
           this.viewerSvc
@@ -307,8 +307,8 @@ export class PlayerVideoComponent extends WidgetBaseComponent
     const fireRProgress: fireRealTimeProgressFunction = (identifier, data) => {
       const resData = this.viewerSvc.getBatchIdAndCourseId(this.activatedRoute.snapshot.queryParams.collectionId,
                                                            this.activatedRoute.snapshot.queryParams.batchId, identifier)
-      const collectionId = (resData && resData.courseId) ? resData.courseId : this.widgetData.identifier
-      const batchId = (resData && resData.batchId) ? resData.batchId : this.widgetData.identifier
+      const collectionId = (resData && resData.courseId) ? resData.courseId : ''
+      const batchId = (resData && resData.batchId) ? resData.batchId : ''
         if (this.widgetData.identifier && identifier && data && collectionId && batchId) {
           this.viewerSvc
             .realTimeProgressUpdate(identifier, data, collectionId, batchId)
