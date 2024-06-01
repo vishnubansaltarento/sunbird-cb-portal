@@ -38,7 +38,7 @@
                             <ng-container  *ngIf="facet?.key !== 'resourceCategory'">
                                 <ng-container *ngFor="let sectors of facet?.value?.values">
                                     <div class="check-list">
-                                        <mat-checkbox [checked]="sectors?.checked" (change)="changeSelection($event?.checked,facet?.key, sectors)" class="text-capitalize">{{sectors.name}}</mat-checkbox>
+                                        <mat-checkbox [checked]="sectors?.checked" (change)="changeSelection($event?.checked,facet?.key, sectors)" class="mat-gyaan-filter text-capitalize">{{sectors.name}}</mat-checkbox>
                                     </div>
                                 </ng-container>
                             </ng-container>

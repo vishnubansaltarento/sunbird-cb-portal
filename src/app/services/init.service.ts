@@ -12,7 +12,7 @@ import {
   WidgetResolverService,
 } from '@sunbird-cb/resolver'
 import {
-  AuthKeycloakService,
+  // AuthKeycloakService,
   // AuthKeycloakService,
   ConfigurationsService,
   LoggerService,
@@ -76,7 +76,7 @@ export class InitService {
   constructor(
     private logger: LoggerService,
     private configSvc: ConfigurationsService,
-    private authSvc: AuthKeycloakService,
+    // private authSvc: AuthKeycloakService,
     private widgetResolverService: WidgetResolverService,
     private sbUiResolverService: SbUiResolverService,
     private settingsSvc: BtnSettingsService,
@@ -476,8 +476,11 @@ export class InitService {
               email: 'null',
             }
           }
+          localStorage.setItem('login', 'true')
         } else {
-          this.authSvc.force_logout()
+          // this.authSvc.force_logout()
+          // await this.http.get('/apis/reset').toPromise()
+          window.location.href = `${this.defaultRedirectUrl}apis/reset`
           this.updateTelemetryConfig()
         }
         const details = {
@@ -602,8 +605,10 @@ export class InitService {
               email: 'null',
             }
           }
+          localStorage.setItem('login', 'true')
         } else {
-          this.authSvc.force_logout()
+          // this.authSvc.force_logout()
+          window.location.href = `${this.defaultRedirectUrl}apis/reset`
           this.updateTelemetryConfig()
         }
         const details = {
@@ -826,18 +831,33 @@ export class InitService {
 
   // for NPS user feed check
   private checkUserFeed() {
+    const feedId: any = []
     this.npsSvc.getFeedStatus(this.configSvc.unMappedUser.id).subscribe((res: any) => {
       if (res.result.response.userFeed && res.result.response.userFeed.length > 0) {
         const feed = res.result.response.userFeed
         feed.forEach((item: any) => {
-          if (item.category === 'NPS' && item.data.actionData.formId) {
+          if (item.category === 'NPS' && item && item.data && item.data.actionData && item.data.actionData.formId) {
+            feedId.push(item.id)
+            // console.log(feedId, "feed id items============")
               const currentTime = moment()
               localStorage.platformratingTime = currentTime
               localStorage.setItem('ratingformID', JSON.stringify(item.data.actionData.formId))
-              localStorage.setItem('ratingfeedID', JSON.stringify(item.id))
+              localStorage.setItem('ratingfeedID', JSON.stringify(feedId))
+
           }
         })
       }
     })
+  }
+
+  // get default url
+
+  private get defaultRedirectUrl(): string {
+    try {
+      const baseUrl = document.baseURI
+      return baseUrl || location.origin
+    } catch (error) {
+      return location.origin
+    }
   }
 }

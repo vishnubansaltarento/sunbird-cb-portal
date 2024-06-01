@@ -215,8 +215,8 @@ export class PlayerYoutubeComponent extends WidgetBaseComponent
     const fireRProgress: fireRealTimeProgressFunction = (identifier, data) => {
       const resData = this.viewerSvc.getBatchIdAndCourseId(this.activatedRoute.snapshot.queryParams.collectionId,
                                                            this.activatedRoute.snapshot.queryParams.batchId, identifier)
-      const collectionId = (resData && resData.courseId) ? resData.courseId : this.widgetData.identifier
-      const batchId = (resData && resData.batchId) ? resData.batchId : this.widgetData.identifier
+      const collectionId = (resData && resData.courseId) ? resData.courseId : ''
+      const batchId = (resData && resData.batchId) ? resData.batchId : ''
       // const collectionId = this.activatedRoute.snapshot.queryParams.collectionId ?
       //   this.activatedRoute.snapshot.queryParams.collectionId : this.widgetData.identifier
       // const batchId = this.activatedRoute.snapshot.queryParams.batchId ?

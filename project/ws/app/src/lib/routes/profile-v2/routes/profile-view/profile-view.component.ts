@@ -108,7 +108,7 @@ export class ProfileViewComponent implements OnInit, AfterViewInit, OnDestroy {
   masterLanguageBackup: any[] | undefined
   dateOfBirth: any | undefined
   groupData: any | undefined
-  profileMetaData: any | undefined
+  // profileMetaData: any | undefined
   imageTypes = PROFILE_IMAGE_SUPPORT_TYPES
   photoUrl!: string | ArrayBuffer | null
   profileName = ''
@@ -156,6 +156,8 @@ export class ProfileViewComponent implements OnInit, AfterViewInit, OnDestroy {
 
   groupApprovedTime = 0
   designationApprovedTime = 0
+  currentDate = new Date()
+  designationsMeta: any
 
   constructor(
     public dialog: MatDialog,
@@ -281,13 +283,14 @@ export class ProfileViewComponent implements OnInit, AfterViewInit, OnDestroy {
     }
 
     this.getInitials()
-    this.profileName = this.currentUser.firstName
+    this.profileName = this.portalProfile.personalDetails && this.portalProfile.personalDetails.firstname
 
     this.prefillForm()
     this.getMasterNationality()
     this.getMasterLanguage()
     this.getGroupData()
-    this.getProfilePageMetaData()
+    // this.getProfilePageMetaData()
+    this.loadDesignations()
     this.getSendApprovalStatus()
     this.getRejectedStatus()
     this.getApprovedFields()
@@ -699,7 +702,7 @@ export class ProfileViewComponent implements OnInit, AfterViewInit, OnDestroy {
 
   handleTransferRequest(): void {
     const dialogRef = this.dialog.open(TransferRequestComponent, {
-      data: { portalProfile : this.portalProfile, groupData: this.groupData, profileMetaData: this.profileMetaData },
+      data: { portalProfile : this.portalProfile, groupData: this.groupData, designationsMeta: this.designationsMeta },
       disableClose: true,
       panelClass: 'common-modal',
     })
@@ -758,17 +761,26 @@ export class ProfileViewComponent implements OnInit, AfterViewInit, OnDestroy {
     })
   }
 
-  getProfilePageMetaData(): void {
-    this.userProfileService.getProfilePageMeta()
-    .pipe(takeUntil(this.destroySubject$))
-    .subscribe(res => {
-      this.profileMetaData = res
-    },         (error: HttpErrorResponse) => {
-      if (!error.ok) {
-        this.matSnackBar.open(this.handleTranslateTo('profilePageFetchFailed'))
-      }
-    })
+  loadDesignations() {
+    this.userProfileService.getDesignations({}).subscribe(
+      (data: any) => {
+        this.designationsMeta = data.responseData
+      },
+      (_err: any) => {
+      })
   }
+
+  // getProfilePageMetaData(): void {
+  //   this.userProfileService.getProfilePageMeta()
+  //   .pipe(takeUntil(this.destroySubject$))
+  //   .subscribe(res => {
+  //     this.profileMetaData = res
+  //   },         (error: HttpErrorResponse) => {
+  //     if (!error.ok) {
+  //       this.matSnackBar.open(this.handleTranslateTo('profilePageFetchFailed'))
+  //     }
+  //   })
+  // }
 
   getApprovedFields(): void {
     this.userProfileService.fetchApprovedFields()
@@ -942,28 +954,40 @@ export class ProfileViewComponent implements OnInit, AfterViewInit, OnDestroy {
       this.portalProfile.professionalDetails[0].designation !== this.primaryDetailsForm.get('designation')!.value
       ) {
         return true
-
       }
-    }
 
-    if (this.portalProfile.professionalDetails && this.portalProfile.professionalDetails.length) {
       if (this.portalProfile.professionalDetails[0].group !== this.primaryDetailsForm.get('group')!.value &&
-      ((this.designationApprovedTime + 100) <= this.rejectedFields.groupRejectionTime ||
-      (this.designationApprovedTime - 100) <= this.rejectedFields.groupRejectionTime ||
-      this.designationApprovedTime === this.groupApprovedTime)) {
+      (
+        (this.designationApprovedTime <= (this.rejectedFields.groupRejectionTime + 100) &&
+        this.rejectedFields.designationRejectionTime <= (this.rejectedFields.groupRejectionTime + 100)) ||
+      this.GroupAndDesignationApproved)) {
         return true
       }
-    }
 
-    if (this.portalProfile.professionalDetails && this.portalProfile.professionalDetails.length) {
       if (this.portalProfile.professionalDetails[0].designation !== this.primaryDetailsForm.get('designation')!.value &&
-      ((this.groupApprovedTime + 100) <= this.rejectedFields.designationRejectionTime ||
-        (this.groupApprovedTime - 100) <= this.rejectedFields.designationRejectionTime ||
-        this.designationApprovedTime === this.groupApprovedTime)) {
+      (
+        (this.groupApprovedTime <= (this.rejectedFields.designationRejectionTime + 100) &&
+        this.rejectedFields.groupRejectionTime <= (this.rejectedFields.designationRejectionTime + 100)) ||
+        this.GroupAndDesignationApproved)) {
         return true
       }
+
+    } else if (this.primaryDetailsForm.get('group')!.value || this.primaryDetailsForm.get('designation')!.value) {
+      return true
     }
 
+    return false
+  }
+
+  get GroupAndDesignationApproved(): Boolean {
+    if ((this.designationApprovedTime === this.groupApprovedTime) ||
+    (this.designationApprovedTime > this.rejectedFields.designationRejectionTime &&
+      this.groupApprovedTime > this.rejectedFields.groupRejectionTime) ||
+    (this.designationApprovedTime + 100 >= this.groupApprovedTime &&
+        this.groupApprovedTime + 100 >= this.designationApprovedTime)
+      ) {
+        return true
+      }
     return false
   }
 
@@ -980,22 +1004,26 @@ export class ProfileViewComponent implements OnInit, AfterViewInit, OnDestroy {
         data['group'] = this.primaryDetailsForm.get('group')!.value
       }
     } else {
-      data['designation'] = this.primaryDetailsForm.get('designation')!.value
-      data['group'] = this.primaryDetailsForm.get('group')!.value
+      if (this.primaryDetailsForm.get('designation')!.value) {
+        data['designation'] = this.primaryDetailsForm.get('designation')!.value
+      }
+      if (this.primaryDetailsForm.get('group')!.value) {
+        data['group'] = this.primaryDetailsForm.get('group')!.value
+      }
     }
 
     if (data.designation || data.group) {
-    const postData: any = {
-      'request': {
-        'userId': this.configService.unMappedUser.id,
-        'employmentDetails': {
-          'departmentName': this.primaryDetailsForm.value['designation'],
+      const postData: any = {
+        'request': {
+          'userId': this.configService.unMappedUser.id,
+          'employmentDetails': {
+            'departmentName': this.primaryDetailsForm.value['designation'],
+          },
+          'profileDetails': {
+            'professionalDetails': [],
+          },
         },
-        'profileDetails': {
-          'professionalDetails': [],
-        },
-      },
-    }
+      }
 
       postData.request.profileDetails.professionalDetails.push(data)
       this.userProfileService.editProfileDetails(postData)
@@ -1064,7 +1092,7 @@ export class ProfileViewComponent implements OnInit, AfterViewInit, OnDestroy {
     this.userProfileService.editProfileDetails(postData)
     .pipe(takeUntil(this.destroySubject$))
     .subscribe((_res: any) => {
-      this.currentUser.firstName = this.profileName
+      this.portalProfile.personalDetails.firstname = this.profileName
       this.getInitials()
       this.matSnackBar.open(this.handleTranslateTo('userNameUpdated'))
       this.editName = !this.editName
