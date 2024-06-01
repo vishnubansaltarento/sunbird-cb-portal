@@ -132,9 +132,10 @@ export class AudioComponent implements OnInit, OnDestroy {
                 this.activatedRoute.snapshot.queryParams.collectionId,
                 this.audioData.identifier,
               )
-            } else {
-              await this.fetchContinueLearning(this.audioData.identifier, this.audioData.identifier)
             }
+            // else {
+            //   await this.fetchContinueLearning(this.audioData.identifier, this.audioData.identifier)
+            // }
           }
           if (this.forPreview) {
             // this.widgetResolverAudioData.widgetData.disableTelemetry = true
