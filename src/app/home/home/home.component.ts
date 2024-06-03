@@ -14,6 +14,7 @@ import { MobileAppsService } from '../../services/mobile-apps.service'
 import { UserProfileService } from '@ws/app/src/lib/routes/user-profile/services/user-profile.service'
 import { IUserProfileDetailsFromRegistry } from '@ws/app/src/lib/routes/user-profile/models/user-profile.model'
 import { BtnSettingsService } from '@sunbird-cb/collection'
+import { EventService, WsEvents } from '@sunbird-cb/utils'
 
 // import { NotificationComponent } from './notification/notification.component'
 
@@ -36,7 +37,8 @@ export class HomeComponent implements OnInit, AfterViewInit {
     private router: Router,
     private translate: TranslateService,
     private userProfileService: UserProfileService,
-    private matSnackBar: MatSnackBar
+    private matSnackBar: MatSnackBar,
+    private events: EventService,
   ) { }
   private destroySubject$ = new Subject()
   widgetData = {}
@@ -363,5 +365,22 @@ export class HomeComponent implements OnInit, AfterViewInit {
 
   closeKarmaPointsPanel() {
     this.isKPPanelenabled = false
+  }
+
+  raiseTelemetryInteratEvent(event: any) {
+    this.events.raiseInteractTelemetry(
+      {
+        type: 'click',
+        subType: 'mdo-channel',
+        id: 'content-card',
+      },
+      {
+        id: event.identifier,
+        type: event.orgName,
+      },
+      {
+        module: WsEvents.EnumTelemetrymodules.HOME,
+      }
+    )
   }
 }

@@ -73,7 +73,7 @@
                 </div>
             </div>
             <div class="w-full md:w-9/12 flex-1 flex flex-col">
-                <h1 class=" txt-ellipsis-2 break-words">{{data?.title | channnelName}}</h1>
+                <h1 class=" txt-ellipsis-2 break-words">{{data?.title || channnelName}}</h1>
                 <p class="mat-body-2">
                     {{expanded ? data?.description : data?.description | slice:0:descriptionMaxLength}}
                     <span (click)="viewMoreOrLess()"
@@ -257,7 +257,6 @@
                     (emptyResponse)="hideContentStrip($event, contentStrip)"
                     [providerId]="orgId"
                     [widgetData]="contentStrip"
-                    (telemtryResponse)="raiseTelemetryInteratEvent($event)"
                     >
                 </sb-uic-content-strip-with-tabs>
             </div>
