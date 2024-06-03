@@ -8,6 +8,7 @@ import { EventService, MultilingualTranslationsService, WsEvents } from '@sunbir
 import { debounceTime, switchMap, takeUntil } from 'rxjs/operators'
 // tslint:disable
 import _ from 'lodash'
+import { ActivatedRoute } from '@angular/router'
 
 @Component({
   selector: 'ws-app-mdo-channels',
@@ -50,7 +51,19 @@ export class MdoChannelsComponent implements OnInit {
     private translate: TranslateService,
     private langtranslations: MultilingualTranslationsService,
     private events: EventService,
+    private route: ActivatedRoute,
   ) {
+    if (this.route.snapshot.data && this.route.snapshot.data.channelData
+      && this.route.snapshot.data.channelData.data
+      && this.route.snapshot.data.channelData.data.result
+      && this.route.snapshot.data.channelData.data.result.data
+      && this.route.snapshot.data.channelData.data.result.data.orgList
+      && this.route.snapshot.data.channelData.data.result.data.orgList.length
+    ) {
+      this.allProviders = this.route.snapshot.data.channelData.data.result.data.orgList
+      console.log(this.allProviders,';=-=-=-=-=-=-=-=-=')
+      // .data.result.form.data.sectionList
+    }
     this.langtranslations.languageSelectedObservable.subscribe(() => {
       if (localStorage.getItem('websiteLanguage')) {
         this.translate.setDefaultLang('en')
@@ -58,57 +71,6 @@ export class MdoChannelsComponent implements OnInit {
         this.translate.use(lang)
       }
     })
-    this.allProviders = [
-      {
-        content: {
-          // tslint:disable-next-line: max-line-length
-          posterImage: 'https://portal.karmayogi.nic.in/content-store/content/do_114051411119235072127/artifact/do_114051411119235072127_1715260168985_default-provider.svg',
-          appIcon: '',
-          name: 'Ministry of Consumer Affairs, Food and Public Distribution',
-        },
-      },
-      {
-        content: {
-          // tslint:disable-next-line: max-line-length
-            posterImage: 'https://portal.karmayogi.nic.in/content-store/content/do_114051411119235072127/artifact/do_114051411119235072127_1715260168985_default-provider.svg',
-            appIcon: '',
-            name: 'Ministry of Railways',
-        },
-      },
-      {
-        content: {
-          // tslint:disable-next-line: max-line-length
-            posterImage: 'https://portal.karmayogi.nic.in/content-store/content/do_114051411119235072127/artifact/do_114051411119235072127_1715260168985_default-provider.svg',
-            appIcon: '',
-            name: 'Department of Post',
-        },
-      },
-      {
-        content: {
-          // tslint:disable-next-line: max-line-length
-            posterImage: 'https://portal.karmayogi.nic.in/content-store/content/do_114051411119235072127/artifact/do_114051411119235072127_1715260168985_default-provider.svg',
-            appIcon: '',
-            name: 'NLC India Limited',
-        },
-      },
-      {
-        content: {
-          // tslint:disable-next-line: max-line-length
-            posterImage: 'https://portal.karmayogi.nic.in/content-store/content/do_114051411119235072127/artifact/do_114051411119235072127_1715260168985_default-provider.svg',
-            appIcon: '',
-            name: 'Mission Karmayogi',
-        },
-      },
-      {
-        content: {
-          // tslint:disable-next-line: max-line-length
-            posterImage: 'https://portal.karmayogi.nic.in/content-store/content/do_114051411119235072127/artifact/do_114051411119235072127_1715260168985_default-provider.svg',
-            appIcon: '',
-            name: 'Mission Karmayogi',
-        },
-      },
-
-    ]
     this.clonesProviders = this.allProviders
    }
 
@@ -220,7 +182,7 @@ export class MdoChannelsComponent implements OnInit {
   filterChannles(value: string) {
     if (value) {
       const filterValue = value.toLowerCase()
-      this.clonesProviders = this.allProviders.filter((p: any) => p.content.name.toLowerCase().includes(filterValue))
+      this.clonesProviders = this.allProviders.filter((p: any) => p &&  p.orgName && p.orgName.toLowerCase().includes(filterValue))
     }
     if (!value) {
       this.clonesProviders = this.allProviders
@@ -245,7 +207,7 @@ export class MdoChannelsComponent implements OnInit {
       // tslint:disable-next-line: no-non-null-assertion
       this.searchForm.get('sortByControl')!.setValue(sortType)
       this.sortBy = sortType;
-      this.allProviders = _.orderBy(this.allProviders &&this.allProviders.length ? this.allProviders : this.allProviders, ['content.name'], [this.sortBy])
+      this.allProviders = _.orderBy(this.allProviders &&this.allProviders.length ? this.allProviders : this.allProviders, ['orgName'], [this.sortBy])
     }
   }
 

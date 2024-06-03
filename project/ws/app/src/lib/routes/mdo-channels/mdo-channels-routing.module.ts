@@ -3,6 +3,7 @@ import { Routes, RouterModule } from '@angular/router'
 import { MdoChannelsMicrositeComponent } from './mdo-channels-microsite/mdo-channels-microsite.component'
 import { MdoChannelsComponent } from './mdo-channels/mdo-channels.component'
 import { MdoChannelFormService } from './service/mdo-channel-form.service'
+import { MdoChannelDataService } from './service/mdo-channel-data.service'
 
 const routes: Routes = [
     {
@@ -16,6 +17,9 @@ const routes: Routes = [
         data: {
             pageId: 'all-channels',
             module: 'Learn',
+        },
+        resolve: {
+            channelData: MdoChannelDataService,
         },
     },
     {
