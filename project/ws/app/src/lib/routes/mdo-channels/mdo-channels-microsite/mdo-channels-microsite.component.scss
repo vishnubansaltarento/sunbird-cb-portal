@@ -78,7 +78,7 @@
     height: 15px;
 }
 .mob-metrics-sec {
-    padding-top: 3.4rem;
+    padding-top: 1rem;
 }
 
 
@@ -105,4 +105,11 @@
     position: absolute;
     top: 15px;
     right: 15px;
+}
+
+@media screen and (max-width: 768px) { 
+
+    .metrics-section {
+        margin-top: 0px;
+    }
 }

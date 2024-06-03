@@ -4,7 +4,7 @@ import { Observable, Subject } from 'rxjs'
 import { BrowseProviderService } from '../../browse-by-provider/services/browse-provider.service'
 import { LocalDataService } from '../../browse-by-competency/services/localService'
 import { TranslateService } from '@ngx-translate/core'
-import { MultilingualTranslationsService } from '@sunbird-cb/utils-v2'
+import { EventService, MultilingualTranslationsService, WsEvents } from '@sunbird-cb/utils'
 import { debounceTime, switchMap, takeUntil } from 'rxjs/operators'
 // tslint:disable
 import _ from 'lodash'
@@ -49,6 +49,7 @@ export class MdoChannelsComponent implements OnInit {
     private localService: LocalDataService,
     private translate: TranslateService,
     private langtranslations: MultilingualTranslationsService,
+    private events: EventService,
   ) {
     this.langtranslations.languageSelectedObservable.subscribe(() => {
       if (localStorage.getItem('websiteLanguage')) {
@@ -246,6 +247,22 @@ export class MdoChannelsComponent implements OnInit {
       this.sortBy = sortType;
       this.allProviders = _.orderBy(this.allProviders &&this.allProviders.length ? this.allProviders : this.allProviders, ['content.name'], [this.sortBy])
     }
+  }
+
+  raiseMDOChannleCard(obj: any) {
+    this.events.raiseInteractTelemetry(
+      {
+        type: 'click',
+        id: 'card-content',
+        subType: "mdo-channel"
+      },
+      {
+        id: obj.identifier,
+        type: obj.name,
+      },
+      {
+        module: WsEvents.EnumTelemetrymodules.LEARN,
+      })
   }
 
 }

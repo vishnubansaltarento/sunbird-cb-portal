@@ -43,9 +43,11 @@
         (click)="raiseTelemetry(btn.name)"
         class="explore_btn margin-left-xs small-button blue-border flex-auto-display"
         [routerLink]="btn?.route" [queryParams]="btn?.queryParams">
-        <mat-icon class="ws-mat-default-text icon-margin mat-icon notranslate material-icons mat-icon-no-color">
+        <mat-icon class="ws-mat-default-text icon-margin mat-icon notranslate material-icons mat-icon-no-color" 
+          *ngIf="btn.icon">
           {{btn.icon}}
         </mat-icon>
+        <img [src]="btn.image" *ngIf="btn.image" class="channle-icon icon-margin">
         <span class="ws-mat-default-text" i18n>
           {{ translateLabels(btn.name, 'learn')}}
         </span>

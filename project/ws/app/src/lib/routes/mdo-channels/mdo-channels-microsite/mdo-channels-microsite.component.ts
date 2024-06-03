@@ -68,14 +68,17 @@ export class MdoChannelsMicrositeComponent implements OnInit {
       this.showModal = true
       document.body.style.overflow = 'hidden'
     }
+    this.raiseTelemetry('btn open key annoucements')
   }
 
   onClose() {
     this.showModal = false
     document.body.style.overflow = 'auto'
+    this.raiseTelemetry('btn close key annoucements')
   }
 
   viewMoreOrLess() {
+    console.log("expanded ", this.expanded)
     this.expanded = !this.expanded
   }
 
@@ -87,7 +90,7 @@ export class MdoChannelsMicrositeComponent implements OnInit {
       this.eventSvc.raiseInteractTelemetry(
         {
           type: 'click',
-          subType: 'MDO-channel',
+          subType: 'mdo-channel',
           id: `${_.kebabCase(event.typeOfTelemetry.toLocaleLowerCase())}-card`,
         },
         {
@@ -103,11 +106,15 @@ export class MdoChannelsMicrositeComponent implements OnInit {
     }
   }
 
+  raiseCompetencyTelemetry(name: string) {
+    this.raiseTelemetry(`${name} core expertise`)
+  }
+
   raiseTelemetry(name: string) {
     this.eventSvc.raiseInteractTelemetry(
       {
         type: 'click',
-        subType: 'MDO-channel',
+        subType: 'mdo-channel',
         id: `${_.kebabCase(name).toLocaleLowerCase()}`,
       },
       {},

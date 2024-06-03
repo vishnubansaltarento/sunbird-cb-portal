@@ -91,7 +91,7 @@
 
                     <div class="provider_card_box mt-8 justify-center md:justify-start">
                         <ng-container *ngFor="let p of clonesProviders">
-                            <sb-uic-card-mdo-channel [widgetData]="p"></sb-uic-card-mdo-channel>
+                            <sb-uic-card-mdo-channel [widgetData]="p" (emitTelemetry)="raiseMDOChannleCard($event)"></sb-uic-card-mdo-channel>
                         </ng-container>
                         <h4 *ngIf="clonesProviders?.length <=0 && ((displayLoader | async) === false)" class="w-full text-left ws-mat-black60-text ">
                             {{ 'allChannelsComponent.noChannelsFound' | translate }}
