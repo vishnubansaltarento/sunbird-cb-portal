@@ -49,6 +49,7 @@ import { MdoChannelsRoutingModule } from './mdo-channels-routing.module'
 import { BtnPageBackModule } from '@sunbird-cb/collection/src/public-api'
 import { MdoChannelFormService } from './service/mdo-channel-form.service'
 import { FormsModule, ReactiveFormsModule } from '@angular/forms'
+import { MdoChannelDataService } from './service/mdo-channel-data.service'
 
 @NgModule({
   declarations: [MdoChannelsComponent, MdoChannelsMicrositeComponent],
@@ -100,6 +101,6 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms'
       },
     }),
   ],
-  providers: [MdoChannelFormService],
+  providers: [MdoChannelFormService, MdoChannelDataService],
 })
 export class MDOChannelsModule { }

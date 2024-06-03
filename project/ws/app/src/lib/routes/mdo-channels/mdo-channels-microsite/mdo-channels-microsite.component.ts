@@ -4,6 +4,7 @@ import { ActivatedRoute } from '@angular/router'
 import { EventService, WsEvents } from '@sunbird-cb/utils'
 /* tslint:disable */
 import * as _ from 'lodash'
+import { environment } from 'src/environments/environment'
 
 @Component({
   selector: 'ws-app-mdo-channels-microsite',
@@ -41,6 +42,7 @@ export class MdoChannelsMicrositeComponent implements OnInit {
     ) {
       this.sectionList = this.route.snapshot.data.formData.data.result.form.data.sectionList
     }
+    console.log(environment,';=-=-=-=-=-=-=-=-=')
   }
 
   ngOnInit() {
