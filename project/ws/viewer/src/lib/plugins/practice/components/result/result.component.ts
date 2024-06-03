@@ -32,6 +32,7 @@ export class ResultComponent implements OnInit, OnChanges {
   questionStatuTableData:any = [];
   quizResponseClone:any;
   selectedSectionId='';
+  selectedStatus= 'all';
   summaryTableDataSource:any = new MatTableDataSource([
     {
       subject: 'Section A',
@@ -421,6 +422,7 @@ export class ResultComponent implements OnInit, OnChanges {
   }
 
   getQuestionByStatus(status:string) {
+    this.selectedStatus = status;
     this.getSectionalData(this.selectedSectionId, status);
   }
 

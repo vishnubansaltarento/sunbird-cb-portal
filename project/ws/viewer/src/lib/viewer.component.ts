@@ -71,6 +71,7 @@ export class ViewerComponent implements OnInit, OnDestroy, AfterViewChecked {
   tocConfig: any = null
   isAssessmentScreen = false
   pageScrollSubscription: Subscription | null = null
+  coursePrimaryCategory:any= ''
   constructor(
     private activatedRoute: ActivatedRoute,
     private router: Router,
@@ -118,6 +119,8 @@ export class ViewerComponent implements OnInit, OnDestroy, AfterViewChecked {
       if (data.content && data.content.data) {
         this.content = data.content.data
         this.contentMIMEType = data.content.data.mimeType
+        console.log('data', data)
+        
       }
     })
   }
@@ -182,6 +185,7 @@ export class ViewerComponent implements OnInit, OnDestroy, AfterViewChecked {
 
     this.viewerHeaderSideBarToggleService.visibilityStatus.subscribe((data: any) => {
       const sideNavBarDrawerState: any = document.getElementById('side-nav-drawer-state')
+      
       if (data) {
         if (this.isMobile) {
           this.sideNavBarOpened = false

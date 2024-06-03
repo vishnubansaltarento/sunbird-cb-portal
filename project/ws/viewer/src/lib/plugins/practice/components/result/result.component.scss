@@ -296,6 +296,19 @@
     }
 }
 
+.box-height-standalone-assessment {
+    height: 533px;
+    box-sizing: border-box;
+    overflow: hidden;
+    overflow-y: auto;
+    background-color: #fff;
+    .small-screen {
+        @include breakpoint-xs {
+            display: none !important;
+        }
+    }
+}
+
 .summary-label {
     margin-top: 24px;
     color: rgba(113,113,113);
@@ -579,6 +592,19 @@
         font-weight: 400;
         line-height: 16px;
         letter-spacing: 0.25px;
+    }
+
+    .box-height-standalone-assessment {
+        height: auto;
+        box-sizing: border-box;
+        overflow: hidden;
+        overflow-y: auto;
+        background-color: #fff;
+        .small-screen {
+            @include breakpoint-xs {
+                display: none !important;
+            }
+        }
     }
 
 

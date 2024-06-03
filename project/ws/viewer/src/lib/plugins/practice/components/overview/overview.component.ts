@@ -31,7 +31,7 @@ export class OverviewComponent implements OnInit, OnDestroy {
   ]
   isretakeAllowed = false
   dataSubscription: any
-
+  consentGiven = false
   constructor(
     private route: ActivatedRoute,
     public viewerHeaderSideBarToggleService: ViewerHeaderSideBarToggleService,
@@ -75,5 +75,10 @@ export class OverviewComponent implements OnInit, OnDestroy {
 
   translateLabels(label: string, type: any) {
     return this.langtranslations.translateLabel(label, type, '')
+  }
+
+  startTestEnable(event:any) {
+    console.log('event', event)
+    this.consentGiven = !this.consentGiven
   }
 }

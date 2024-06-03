@@ -1,5 +1,5 @@
 <div [ngClass]="coursePrimaryCategory !== 'Standalone Assessment' ? 'blue-bg':''">
-  <div class="flex flex-col box-height">
+  <div class="flex flex-col" [ngClass]="coursePrimaryCategory == 'Standalone Assessment' ? 'box-height-standalone-assessment':'box-height'">
     <ng-container *ngIf="coursePrimaryCategory !== 'Standalone Assessment' && quizResponse">
       <div class="assessment-container">
         <div class="assessment-stats-count">
@@ -275,7 +275,7 @@
       </div>
     </ng-container>
     <ng-container *ngIf="coursePrimaryCategory == 'Standalone Assessment' && quizResponse && !showInsight">
-      <div class="results flex flex-col gap-6 px-10 py-4">
+      <div class="results flex flex-col gap-6 px-5 py-4">
         <div class="header-text flex flex-col">
           My Overall performance summary
           <span class="mt-1"></span>
@@ -380,7 +380,7 @@
       </div>
     </ng-container>
     <ng-container *ngIf="coursePrimaryCategory == 'Standalone Assessment' && quizResponse && showInsight">
-      <div class="results flex flex-col gap-6 px-10 py-4">
+      <div class="results flex flex-col gap-6 px-5 py-4">
       <div class="flex overAllScore justify-center items-center">
         <div class="flex justify-center items-center totalScore w-full">
           Your SCORE
@@ -428,10 +428,10 @@
       </div>
     
       <div class="flex wrap-mweb gap-4">
-        <button mat-button class="btn-full flex justify-center items-center px-4 gap-2" (click)="getQuestionByStatus('all')">All</button>
-        <button mat-button class="btn-outline flex justify-center items-center px-4" (click)="getQuestionByStatus('correct')">Correct</button>
-        <button mat-button class="btn-outline flex justify-center items-center px-4" (click)="getQuestionByStatus('wrong')">Wrong</button>
-        <button mat-button class="btn-outline flex justify-center items-center px-4" (click)="getQuestionByStatus('notAnswered')">Unattempted</button>
+        <button mat-button [ngClass]="selectedStatus === 'all' ? 'btn-full':'btn-outline'" class="flex justify-center items-center px-4 gap-2" (click)="getQuestionByStatus('all')">All</button>
+        <button mat-button [ngClass]="selectedStatus === 'correct' ? 'btn-full':'btn-outline'" class="flex justify-center items-center px-4" (click)="getQuestionByStatus('correct')">Correct</button>
+        <button mat-button [ngClass]="selectedStatus === 'wrong' ? 'btn-full':'btn-outline'" class="flex justify-center items-center px-4" (click)="getQuestionByStatus('wrong')">Wrong</button>
+        <button mat-button [ngClass]="selectedStatus === 'notAnswered' ? 'btn-full':'btn-outline'" class="flex justify-center items-center px-4" (click)="getQuestionByStatus('notAnswered')">Unattempted</button>
       </div>
     
       <div class="questions-table-section">
@@ -468,24 +468,22 @@
       </div>      
       </div>
     </ng-container>
-</div>
-
-
-<div class="footer flex justify-center items-center gap-2" *ngIf="coursePrimaryCategory == 'Standalone Assessment' && quizResponse">
-  
-    <ng-container *ngIf="!showInsight">
-      <button mat-button class="flex justify-center items-center px-4 inSight gap-2" (click)="showInsight = true">
-        <img class="mr-2" src="/assets/icons/final-assessment/insight.svg">
-        <span>Insights</span>
-        <mat-icon class="plus">add</mat-icon>
-      </button>
-    </ng-container>
-    <ng-container>
-      <button mat-button class="flex justify-center items-center px-4 reAttempt gap-2">
-        <img src="/assets/icons/final-assessment/reattempt.svg">
-        <span> Reattempt Test</span>
-      </button>
-    </ng-container>
+  </div>
+  <div class="footer flex justify-center items-center gap-2" *ngIf="coursePrimaryCategory == 'Standalone Assessment' && quizResponse">    
+      <ng-container *ngIf="!showInsight">
+        <button mat-button class="flex justify-center items-center px-4 inSight gap-2" (click)="showInsight = true">
+          <img class="mr-2" src="/assets/icons/final-assessment/insight.svg">
+          <span>Insights</span>
+          <mat-icon class="plus">add</mat-icon>
+        </button>
+      </ng-container>
+      <ng-container>
+        <button mat-button class="flex justify-center items-center px-4 reAttempt gap-2" (click)="action('retake')">
+          <img src="/assets/icons/final-assessment/reattempt.svg">
+          <span> Reattempt Test</span>
+        </button>
+      </ng-container>
+  </div>
 </div>
 <ng-template #incorrectDetail let-data="data" >
   <mat-card [ngClass]="{'highlight': selectedQuestionData?.sectionType === data.sectionType}" class="flex customcard flex-jc-space-between cursor-pointer margin-top-xs bg-gray" (click)="getQuestionCount(data,'wrong')">

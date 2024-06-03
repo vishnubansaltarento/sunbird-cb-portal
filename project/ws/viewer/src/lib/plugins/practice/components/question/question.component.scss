@@ -240,6 +240,16 @@ color: rgb(27, 76, 161)
 
 }
 
+@media only screen and (min-width: 360px) and (max-width: 767px) {
+  .standalone-assessment.mat-card {
+    padding: 0 !important
+  }
+  .standalone-assessment.respo {
+    margin: 0 !important
+  }
+
+}
+
 @media only screen and (min-width: 360px) and (max-width:767px) {
       .mobile-responsive-question-container{
          
