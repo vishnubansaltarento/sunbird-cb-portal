@@ -1259,8 +1259,8 @@
             </div>
           </div>
         </div>
-        <div class="flex flex-row justify-between question-section-container">
-          <div class="section-dd-container">
+        <div class="flex flex-row question-section-container" [ngClass]="assessmentType !== 'optionWeightage' ? 'justify-between': 'justify-right'">
+          <div class="section-dd-container" *ngIf="assessmentType !== 'optionWeightage'">
             <div class="flex flex-row">
               <div>
                 <mat-form-field appearance="none">
@@ -1279,7 +1279,7 @@
           </div>
 
           <div>
-            <a class="text-white ws-mat-primary-background margin-xs quest_btn" mat-button (click)="proceedToSubmit()">
+            <a class="text-white ws-mat-primary-background margin-xs quest_btn justify-right" mat-button (click)="proceedToSubmit()">
               <ng-container *ngIf="!isXsmall">{{ 'playerbrief.submitTheTest' | translate }}</ng-container>
             </a>
           </div>
@@ -1293,7 +1293,8 @@
               [primaryCategory]="primaryCategory" [ePrimaryCategory]="ePrimaryCategory" [totalQCount]="totalQCount"
               (itemSelected)="fillSelectedItems(current_Question, $event)" [showAnswer]="showAnswer"
               [currentQuestion]="current_Question" [coursePrimaryCategory]="coursePrimaryCategory"
-              [showOnlyQuestion]="true" [showMarkForReview]="false">
+              [showOnlyQuestion]="true" [showMarkForReview]="false"
+              [assessmentType]="assessmentType">
             </viewer-question>
           </ng-container>
         </div>
@@ -1301,8 +1302,8 @@
       </div>
 
       <div class="standalone-quiz-container flex flex-row">
-        <div class="quiz-question-left-container"
-          [ngClass]="expandFalse ? 'quiz-question-left-container': 'quiz-question-left-container-full'">
+        <div 
+          [ngClass]="expandFalse ? ( assessmentType !== 'optionWeightage' ? 'quiz-question-left-container' : 'quiz-question-left-container-full') : 'quiz-question-left-container-full'">
 
           <div class="border-outline">
 
@@ -1327,7 +1328,7 @@
             <ng-template *ngIf="!(current_Question && !process)" [ngTemplateOutlet]="showLoading"></ng-template>
           </div>
         </div>
-        <div class="exapnd-collapse-desktop">
+        <div *ngIf="assessmentType !== 'optionWeightage'" class="exapnd-collapse-desktop">
           <div class="expand-icon" (click)="toggleExpandforMobile()">
             <mat-icon class="mat-icon notranslate material-icons mat-icon-no-color" role="img" aria-hidden="true">
               <span *ngIf="expandFalse">arrow_forward</span>
@@ -1335,7 +1336,7 @@
             </mat-icon>
           </div>
         </div>
-        <div [ngClass]="expandFalse ? 'quiz-question-right-container': 'quiz-question-right-container-hide'">
+        <div *ngIf="assessmentType !== 'optionWeightage'"  [ngClass]="(expandFalse || assessmentType !== 'optionWeightage') ? 'quiz-question-right-container': 'quiz-question-right-container-hide'">
           <div class="question-list">
             <div class="ques_stats_container">
               <div class="flex flex-row justify-between ques_stats_container_box">
@@ -1484,8 +1485,8 @@
     </div>
     <div class="standalone-quiz-container-controls"
       *ngIf="fetchingQuestionsStatus === 'done' && viewState !== 'detail' && !(viewState === 'answer') && !isSubmitted">
-      <div class="flex flex-row justify-between mt-4">
-        <div class="flex">
+      <div class="flex flex-row mt-4" [ngClass]="assessmentType !== 'optionWeightage' ? 'justify-between' : 'justify-right'">
+        <div class="flex" *ngIf="assessmentType !== 'optionWeightage'">
           <div>
             <viewer-question #questionsReference [id]="'question' + (currentQuestionIndex + 1)"
               [markedQuestions]="markedQuestions" [artifactUrl]="artifactUrl"
@@ -1503,7 +1504,7 @@
           <div>
             <div class="flex flex-1 flex-row-reverse butto_box end">
               <ng-container
-                *ngIf="!allSecAttempted.full && allSecAttempted.next && ((currentQuestionIndex+1) === totalQCount)">
+                *ngIf="!allSecAttempted.full && allSecAttempted.next && ((currentQuestionIndex+1) === totalQCount) && assessmentType !== 'optionWeightage'">
                 <button class="text-white ws-mat-primary-background margin-xs quest_btn" mat-raised-button
                   (click)="nextSection(allSecAttempted.next)" i18n="button quiz submit">
                   {{ 'practiceoverview.nextSection' | translate }}
@@ -1826,7 +1827,7 @@
   </div>
   </div>
   <!-- Mobile -->
-  <div #quizContainer class="quiz-container standalone-assessment-mobile"
+  <div #quizContainer class="standalone-assessment-mobile" [ngClass]="assessmentType !== 'optionWeightage' ? 'quiz-container':'quiz-container-option-weightage'"
     *ngIf="viewState !== 'initial' && isMobile && fetchingQuestionsStatus === 'done'">
     <div class="flex flex-column overflow-hidden" *ngIf="!isSubmitted">
       <div>
@@ -1851,10 +1852,10 @@
           </div>
           
         </div>
-        <div class="flex flex-row justify-around question-section-container">
+        <div class="flex flex-row question-section-container" [ngClass]="assessmentType !== 'optionWeightage' ? 'justify-around':'justify-center'">
           <div class="section-dd-container">
             <div class="flex flex-row">
-              <div>
+              <div *ngIf="assessmentType !== 'optionWeightage'">
                 <mat-form-field appearance="none">
                   <select matNativeControl required class="section-dd" #choosedValue
                     (change)="changeSection($event.target.value)">
@@ -1867,7 +1868,7 @@
           </div>
 
           <div>
-            <a class="text-white ws-mat-primary-background margin-xs quest_btn" mat-button (click)="proceedToSubmit()">
+            <a class="text-white ws-mat-primary-background margin-xs" [ngClass]="assessmentType !== 'optionWeightage' ? 'quest_btn' : 'quest_btn_option_weightage'" mat-button (click)="proceedToSubmit()">
               <ng-container>{{ 'playerbrief.submitTheTest' | translate }}</ng-container>
             </a>
           </div>
@@ -1881,11 +1882,12 @@
               [primaryCategory]="primaryCategory" [ePrimaryCategory]="ePrimaryCategory" [totalQCount]="totalQCount"
               (itemSelected)="fillSelectedItems(current_Question, $event)" [showAnswer]="showAnswer"
               [currentQuestion]="current_Question" [coursePrimaryCategory]="coursePrimaryCategory"
-              [showOnlyQuestion]="true" [showMarkForReview]="false">
+              [showOnlyQuestion]="true" [showMarkForReview]="false"
+              [assessmentType]="assessmentType">
             </viewer-question>
           </ng-container>
         </div>
-        <div class="flex flex-column justify-between align-center">
+        <div class="flex flex-column justify-between align-center" *ngIf="assessmentType !== 'optionWeightage'">
           <div class="question-list-mweb my-2">
             <div class="ques_stats_container">
               <div class="flex flex-row justify-between">
@@ -2079,7 +2081,7 @@
       *ngIf="fetchingQuestionsStatus === 'done' && viewState !== 'detail' && !(viewState === 'answer') && !isSubmitted">
       <div class="flex flex-col justify-between mt-4">
         <div class="flex">
-          <div>
+          <div *ngIf="assessmentType !== 'optionWeightage'">
             <viewer-question #questionsReference [id]="'question' + (currentQuestionIndex + 1)"
               [markedQuestions]="markedQuestions" [artifactUrl]="artifactUrl"
               [questionNumber]="currentQuestionIndex + 1" [total]="secQuestions.length" [viewState]="viewState"
@@ -2092,11 +2094,11 @@
           </div>
 
         </div>
-        <div class="flex">
+        <div class="flex" [ngClass]="assessmentType !== 'optionWeightage'? '': 'justify-right'">
           <div>
             <div class="flex flex-1 flex-row-reverse end">
               <ng-container
-                *ngIf="!allSecAttempted.full && allSecAttempted.next && ((currentQuestionIndex+1) === totalQCount)">
+                *ngIf="!allSecAttempted.full && allSecAttempted.next && ((currentQuestionIndex+1) === totalQCount) && assessmentType !== 'optionWeightage'">
                 <button class="text-white ws-mat-primary-background margin-xs quest_btn" mat-raised-button
                   (click)="nextSection(allSecAttempted.next)" i18n="button quiz submit">
                   {{ 'practiceoverview.nextSection' | translate }}

@@ -131,6 +131,7 @@ export class PracticeComponent implements OnInit, OnChanges, OnDestroy {
   selectedSectionIdentifier:any;
   questionSectionTableData:any = []
   questionVisitedData:any = []
+  assessmentType = 'optionWeightage'
   constructor(
     private events: EventService,
     public dialog: MatDialog,
@@ -1392,6 +1393,7 @@ export class PracticeComponent implements OnInit, OnChanges, OnDestroy {
     }
     const popupData = {
       headerText: 'Final Assessment',
+      assessmentType: 'optionWeightage',
       tableDetails: {
         tableColumns: tableColumns,
         tableData: tableData,
@@ -1416,18 +1418,41 @@ export class PracticeComponent implements OnInit, OnChanges, OnDestroy {
       ]
     }
 
+    if(this.assessmentType === 'optionWeightage') {
+      this.showOverlay = true;
+      setTimeout(() => {
+        this.showOverlay = false
+        this.showAssessmentPopup(popupData);
+      }, 5000)
+      
+    } else {
+      this.showAssessmentPopup(popupData);
+    }
+
+    
+  }
+
+  showAssessmentPopup(popupData:any) {
     const dialogRef =  this.dialog.open(FinalAssessmentPopupComponent, {
       data: popupData,
-      width: '1000px',
+      width: popupData.assessmentType === 'optionWeightage' ? '300px' : '1000px',
       maxWidth: '90vw',
       height: 'auto',
       maxHeight: '90vh',
-      panelClass: 'final-assessment'
+      panelClass: 'final-assessment'      
     })
     // dialogRef.componentInstance.xyz = this.configSvc
     dialogRef.afterClosed().subscribe((result: any) => {
-      if (result && result === 'yes') {
-        this.submitQuiz()
+      if (result) {
+        switch(result) {
+          case 'yes':
+          this.submitQuiz()
+          break;
+          case 'retake':          
+          this.action('retake')
+          break;
+        }
+        
       }
     })
   }

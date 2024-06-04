@@ -59,6 +59,7 @@ export class QuestionComponent implements OnInit, OnChanges, AfterViewInit {
   @Input() coursePrimaryCategory:any
   @Input() showOnlyQuestion:any;
   @Input() showMarkForReview:any = false;
+  @Input() assessmentType= ''
   expandedQuestionSetSubscription: any
   
   constructor(

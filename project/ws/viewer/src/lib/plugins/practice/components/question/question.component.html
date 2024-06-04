@@ -212,8 +212,11 @@
          
         </div>
         <div>
-          <div class="question-marks">
+          <div class="question-marks" *ngIf="assessmentType !== 'optionWeightage'">
             <p>2 Marks</p>
+          </div>
+          <div class="question-marks" *ngIf="assessmentType === 'optionWeightage'">
+            <p>{{questionNumber}}/{{ total }}</p>
           </div>
         </div>
         <!-- <div class="flex flex-row align-center justify-around" *ngIf="!showQuestionOnly">
