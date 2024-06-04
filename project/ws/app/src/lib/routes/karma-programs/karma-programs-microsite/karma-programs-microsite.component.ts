@@ -10,6 +10,7 @@ import { KarmaProgramsService } from '../service/karma-programs.service'
 })
 export class KarmaProgramsMicrositeComponent implements OnInit {
   programName = ''
+  playListKey = ''
   orgId = ''
   sectionList: any = []
   contentDataList: any = []
@@ -27,6 +28,15 @@ export class KarmaProgramsMicrositeComponent implements OnInit {
               public commonSvc: CommonMethodsService) { }
 
   ngOnInit() {
+    this.route.params.subscribe(params => {
+      this.programName = params['programName']
+      this.playListKey = params['playListKey']
+      this.orgId = params['orgId']
+      this.titles.push({
+        title: this.programName, icon: '', url: 'none', disableTranslate: true,
+        textClass: '',
+      })
+    })
     if (this.route.snapshot.data && this.route.snapshot.data.formData
       && this.route.snapshot.data.formData.data
       && this.route.snapshot.data.formData.data.result
@@ -38,14 +48,7 @@ export class KarmaProgramsMicrositeComponent implements OnInit {
 
       this.getDataFromSearch()
     }
-    this.route.params.subscribe(params => {
-      this.programName = params['program']
-      this.orgId = params['orgId']
-      this.titles.push({
-        title: this.programName, icon: '', url: 'none', disableTranslate: true,
-        textClass: '',
-      })
-    })
+    
   }
 
   async getDataFromSearch(requestData?: any) {
@@ -72,7 +75,7 @@ export class KarmaProgramsMicrositeComponent implements OnInit {
   async fetchFromSearchV6(request: any) {
       return new Promise<any>((resolve, reject) => {
         if (request && request) {
-          this.contentSvc.searchV6(request).subscribe(results => {
+          this.contentSvc.fetchPlaylistSearchData(this.playListKey, this.orgId).subscribe(results => {
               resolve({ results })
             },                                        (error: any) => {
               reject(error)

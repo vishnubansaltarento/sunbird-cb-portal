@@ -4,6 +4,7 @@ import { MdoChannelsMicrositeComponent } from './mdo-channels-microsite/mdo-chan
 import { MdoChannelsComponent } from './mdo-channels/mdo-channels.component'
 import { MdoChannelFormService } from './service/mdo-channel-form.service'
 import { MdoChannelDataService } from './service/mdo-channel-data.service'
+import { MdoChannelsAllContentComponent } from './mdo-channels-all-content/mdo-channels-all-content.component'
 
 const routes: Routes = [
     {
@@ -33,6 +34,14 @@ const routes: Routes = [
             formData: MdoChannelFormService,
         },
     },
+    {
+        path: ':channel/:orgId/all-content',
+        component: MdoChannelsAllContentComponent,
+        data: {
+          pageId: 'all-content',
+          module: 'explore',
+        },
+      }
 ]
 
 @NgModule({

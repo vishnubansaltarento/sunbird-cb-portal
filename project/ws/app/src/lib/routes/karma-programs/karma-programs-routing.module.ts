@@ -19,10 +19,10 @@ const routes: Routes = [
         },
     },
     {
-        path: ':program/:orgId/micro-sites',
+        path: ':programName/:playListKey/:orgId/micro-sites',
         component: KarmaProgramsMicrositeComponent,
         data: {
-            pageId: ':program/:orgId/micro-sites',
+            pageId: ':programName/:playListKey/:orgId/micro-sites',
             module: 'Learn',
         },
         resolve: {
