@@ -14,7 +14,6 @@ import _ from 'lodash'
 import { Subscription } from 'rxjs'
 import { PracticeService } from '../../../practice.service'
 import { NsContent } from '@sunbird-cb/utils/src/public-api'
-import { DomSanitizer } from '@angular/platform-browser'
 @Component({
     selector: 'viewer-mcq-sca-question',
     templateUrl: './mcq-sca.component.html',
@@ -47,7 +46,6 @@ export class SingleChoiseQuesComponent implements OnInit, OnDestroy {
     showAns = false
     constructor(
         private practiceSvc: PracticeService,
-        private sanitizer: DomSanitizer
     ) {
 
     }
