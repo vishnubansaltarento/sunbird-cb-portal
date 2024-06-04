@@ -4,45 +4,51 @@ import { CommonMethodsService } from '@sunbird-cb/consumption'
 import { NsContentStripWithTabs } from '@sunbird-cb/consumption/lib/_common/content-strip-with-tabs-lib/content-strip-with-tabs-lib.model'
 
 import { AllContentService } from './../service/all-content.service'
-import { UtilityService } from '@sunbird-cb/utils-v2'
+import { MultilingualTranslationsService } from '@sunbird-cb/utils-v2'
+import { EventService, UtilityService, WsEvents } from '@sunbird-cb/utils'
 import { environment } from 'src/environments/environment'
-
+import { TranslateService } from '@ngx-translate/core'
 
 @Component({
   selector: 'ws-app-mdo-channels-all-content',
   templateUrl: './mdo-channels-all-content.component.html',
-  styleUrls: ['./mdo-channels-all-content.component.scss']
+  styleUrls: ['./mdo-channels-all-content.component.scss'],
 })
 export class MdoChannelsAllContentComponent implements OnInit {
 
-  
-  providerName = ''
-  providerId = ''
+  orgName = ''
+  orgId = ''
   seeAllPageConfig: any = {}
   keyData: any
   contentDataList: any = []
+  originalContentlist: any = []
   isMobile = false
   requestData: any
-  titles = [
-    {
-      title: `MDO channel`,
-      url: `/app/learn/mdo-channels/all-channels`,
-      textClass: 'ws-mat-black60-text',
-      icon: '', disableTranslate: true,
-    },
+  titles: any = [
+
   ]
   constructor(public commonSvc: CommonMethodsService,
               public activatedRoute: ActivatedRoute,
               public contentSvc: AllContentService,
-              public utilitySvc: UtilityService
+              private translate: TranslateService,
+              private langtranslations: MultilingualTranslationsService,
+              public utilitySvc: UtilityService,
+              public events: EventService,
   ) {
+    this.langtranslations.languageSelectedObservable.subscribe(() => {
+    if (localStorage.getItem('websiteLanguage')) {
+      this.translate.setDefaultLang('en')
+      const lang = localStorage.getItem('websiteLanguage')!
+      this.translate.use(lang)
+    }
+  })
 
    }
 
   ngOnInit( ) {
     this.activatedRoute.params.subscribe(params => {
-      this.providerName = params['channel']
-      this.providerId = params['orgId']
+      this.orgName = params['channel']
+      this.orgId = params['orgId']
       if (this.activatedRoute.snapshot.queryParams && this.activatedRoute.snapshot.queryParams.stripData) {
         const data  = JSON.parse(this.activatedRoute.snapshot.queryParams.stripData)
         this.isMobile = this.utilitySvc.isMobile || false
@@ -57,6 +63,15 @@ export class MdoChannelsAllContentComponent implements OnInit {
         this.contentDataList = this.commonSvc.transformSkeletonToWidgets(data)
       }
     })
+    this.titles = [
+      { title: 'Learn', url: '/page/learn', icon: 'school', disableTranslate: false },
+      { title: `MDO channel`, url: `/app/learn/mdo-channels/${this.orgName}/${this.orgId}/micro-sites`, icon: '', disableTranslate: true },
+      {
+        title: this.orgName,
+        url: `none`,
+        textClass: 'ws-mat-black60-text',
+      },
+    ]
     this.callApi()
   }
 
@@ -150,18 +165,18 @@ export class MdoChannelsAllContentComponent implements OnInit {
     })
   }
 
-  async fetchPlaylistReadData(strip: NsContentStripWithTabs.IContentStripUnit,_querydata?: any) {
+  async fetchPlaylistReadData(strip: NsContentStripWithTabs.IContentStripUnit, _querydata?: any) {
     if (strip.request && strip.request.playlistRead && Object.keys(strip.request.playlistRead).length) {
       if (strip.request &&
         strip.request.playlistRead &&
         strip.request.playlistRead.type) {
-        strip.request.apiUrl = this.getFullUrl(strip.request.apiUrl, strip.request.playlistRead.type);
+        strip.request.apiUrl = this.getFullUrl(strip.request.apiUrl, strip.request.playlistRead.type)
       }
       try {
-        const response = await this.getRequestMethod(strip, strip.request.playlistRead, strip.request.apiUrl);
-        console.log('calling  after - response, ', response)
-        if (response && response.results.result.content) {  
-          let content  = response.results.result.content
+        const response = await this.getRequestMethod(strip, strip.request.playlistRead, strip.request.apiUrl)
+        if (response && response.results.result.content) {
+          const content  = response.results.result.content
+          this.originalContentlist = content
           this.contentDataList = this.commonSvc.transformContentsToWidgets(content, strip)
           // this.processStrip(
           //   strip,
@@ -173,7 +188,7 @@ export class MdoChannelsAllContentComponent implements OnInit {
 
         } else {
           this.contentDataList = []
-          // this.processStrip(strip, [], 'error', calculateParentStatus, null);          
+          // this.processStrip(strip, [], 'error', calculateParentStatus, null);
           // this.emptyResponse.emit(true)
         }
       } catch (error) {
@@ -184,54 +199,78 @@ export class MdoChannelsAllContentComponent implements OnInit {
   }
 
   async getRequestMethod(strip: NsContentStripWithTabs.IContentStripUnit,
-    request: NsContentStripWithTabs.IContentStripUnit['request'],
-    apiUrl: string
+                         request: NsContentStripWithTabs.IContentStripUnit['request'],
+                         apiUrl: string
   ): Promise<any> {
     return new Promise<any>((resolve, reject) => {
       if (request && request) {
         this.contentSvc.getApiMethod(apiUrl).subscribe(results => {
-          console.log(results,'results=========')
         const showViewMore = Boolean(
         results.result.data && results.result.data.orgList.length > 5 && strip.stripConfig && strip.stripConfig.postCardForSearch,
-        );
+        )
         const viewMoreUrl = showViewMore
         ? {
         path: strip.viewMoreUrl && strip.viewMoreUrl.path || '',
         }
-        : null;
-        resolve({ results, viewMoreUrl });
-        },                                                   (error: any) => {
-        reject(error);
+        : null
+        resolve({ results, viewMoreUrl })
+        },                                             (error: any) => {
+        reject(error)
         },
-        );
+        )
       }
-    });
+    })
   }
 
   postMethodFilters(filters: any) {
     if (filters.organisation &&
       filters.organisation.indexOf('<orgID>') >= 0
     ) {
-      filters.organisation = this.providerId
+      filters.organisation = this.orgId
     }
     return filters
   }
 
   handleSearchQuery(e: any) {
     if (e.target.value || e.target.value === '') {
-      this.callApi(e.target.value)
+      this.contentDataList = this.commonSvc.transformSkeletonToWidgets(this.seeAllPageConfig)
+      // this.callApi(e.target.value)
+      this.filterContentList(e.target.value)
     }
   }
+  filterContentList(searchText: string) {
+    const data = [...this.originalContentlist]
+    const filterValue = searchText.toLowerCase()
+    const filteredData = data.filter((p: any) => p &&  p.name && p.name.toLowerCase().includes(filterValue))
+    this.contentDataList  = this.commonSvc.transformContentsToWidgets(filteredData, this.seeAllPageConfig)
+  }
 
-  getFullUrl(apiUrl: any, id:string){
+  getFullUrl(apiUrl: any, id: string) {
     let formedUrl: string = apiUrl
     if (apiUrl.indexOf('<bookmarkId>') >= 0) {
-      formedUrl = apiUrl.replace('<bookmarkId>', environment.mdoChannelsBookmarkId) 
+      formedUrl = apiUrl.replace('<bookmarkId>', environment.mdoChannelsBookmarkId)
     } else if (apiUrl.indexOf('<playlistKey>') >= 0 && apiUrl.indexOf('<orgID>') >= 0) {
-      formedUrl = apiUrl.replace('<playlistKey>', this.providerId + id) 
-      formedUrl = formedUrl.replace('<orgID>', this.providerId) 
+      formedUrl = apiUrl.replace('<playlistKey>', this.orgId + id)
+      formedUrl = formedUrl.replace('<orgID>', this.orgId)
     }
     return formedUrl
+  }
+
+  raiseTelemetryInteratEvent(event: any) {
+    this.events.raiseInteractTelemetry(
+      {
+        type: 'click',
+        subType: 'mdo-channel',
+        id: 'content-card',
+      },
+      {
+        id: event.identifier,
+        type: event.primaryCategory,
+      },
+      {
+        module: WsEvents.EnumTelemetrymodules.LEARN,
+      }
+    )
   }
 
 }

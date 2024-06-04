@@ -108,7 +108,7 @@ export class ProviderPageComponent implements OnInit  {
     if (event && event.viewMoreUrl) {
       this.raiseTelemetry(`${event.stripTitle} ${event.viewMoreUrl.viewMoreText}`)
     }
-    if (!this.isTelemetryRaised) {
+    if (!this.isTelemetryRaised && event && !event.viewMoreUrl) {
       this.events.raiseInteractTelemetry(
         {
           type: 'click',

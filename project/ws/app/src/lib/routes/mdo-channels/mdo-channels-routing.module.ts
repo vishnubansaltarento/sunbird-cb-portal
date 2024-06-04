@@ -41,7 +41,7 @@ const routes: Routes = [
           pageId: 'all-content',
           module: 'explore',
         },
-      }
+      },
 ]
 
 @NgModule({
