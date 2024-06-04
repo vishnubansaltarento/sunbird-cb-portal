@@ -347,7 +347,7 @@ export class AppNavBarComponent implements OnInit, OnChanges {
 
   viewKarmapoints() {
     this.raiseTelemetry()
-    this.router.navigate(['/app/person-profile/me'], { fragment: 'karmapoints' })
+    this.router.navigate(['/app/person-profile/karma-points'])
   }
 
   raiseTelemetry() {

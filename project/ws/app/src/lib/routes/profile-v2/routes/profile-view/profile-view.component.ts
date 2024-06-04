@@ -530,7 +530,7 @@ export class ProfileViewComponent implements OnInit, AfterViewInit, OnDestroy {
       domicileMedium: this.portalProfile.personalDetails.domicileMedium,
       mobile: this.portalProfile.personalDetails.mobile,
       countryCode: this.portalProfile.personalDetails.countryCode || '+91',
-      pincode: this.portalProfile.personalDetails.pincode,
+      pincode: _.get(this.portalProfile, 'employmentDetails.pinCode', ''),
       category: this.portalProfile.personalDetails.category && this.portalProfile.personalDetails.category.toUpperCase(),
     })
 
