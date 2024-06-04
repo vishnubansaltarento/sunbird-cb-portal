@@ -11,6 +11,7 @@ import _ from 'lodash'
 const API_END_POINTS = {
   SEARCH_V6: `/apis/proxies/v8/sunbirdigot/search`,
   TRENDING_CONTENT_SEARCH: `apis/proxies/v8/trending/content/search`,
+  PLAYLIST_SEARCH: `apis/proxies/v8/playList/read`
 }
 
 @Injectable({
@@ -32,6 +33,10 @@ export class KarmaProgramsService {
 
   fetchSearchData(request: any): Observable<any> {
     return this.http.post<any>(API_END_POINTS.SEARCH_V6, request)
+  }
+
+  fetchPlaylistSearchData(playListKey: any, orgId: any): Observable<any> {
+    return this.http.get<any>(`${API_END_POINTS.PLAYLIST_SEARCH}/${playListKey}/${orgId}`)
   }
 
   trendingContentSearch(req: any): Observable<any> {

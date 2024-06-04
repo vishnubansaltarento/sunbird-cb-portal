@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core'
 import { MatTabChangeEvent } from '@angular/material'
-import { ActivatedRoute } from '@angular/router'
+import { ActivatedRoute, Router } from '@angular/router'
 import { EventService, WsEvents } from '@sunbird-cb/utils'
 /* tslint:disable */
 import * as _ from 'lodash'
@@ -16,6 +16,7 @@ export class MdoChannelsMicrositeComponent implements OnInit {
   orgId = ''
   selectedIndex = 0
   sectionList: any = []
+  hideCompetencyBlock: boolean = false
   titles = [
     {
       title: `MDO channel`,
@@ -31,6 +32,7 @@ export class MdoChannelsMicrositeComponent implements OnInit {
 
   constructor(
     private route: ActivatedRoute,
+    private router: Router,
     private eventSvc: EventService,
   ) { 
     if (this.route.snapshot.data && this.route.snapshot.data.formData
@@ -124,6 +126,27 @@ export class MdoChannelsMicrositeComponent implements OnInit {
         module: WsEvents.EnumTelemetrymodules.LEARN,
       }
     )
+  }
+
+  hideCompetency(event: any) {
+    if (event) {
+      this.hideCompetencyBlock = true
+    }
+  }
+
+  showAllContent(_stripData: any, contentStrip: any) {
+    if (contentStrip && contentStrip.strips && contentStrip.strips.length) {
+      const stripData: any = contentStrip.strips[0]
+      if (stripData && stripData.request) {
+        delete(stripData['loaderWidgets'])
+        this.router.navigate(
+          [`/app/learn/mdo-channels/${this.channnelName}/${this.orgId}/all-content`],
+          { queryParams: { stripData: JSON.stringify(stripData) } })
+      }
+    } else {
+       this.router.navigate(
+        [`/app/learn/browse-by/provider/${this.channnelName}/${this.orgId}/all-CBP`])
+    }
   }
 
 }

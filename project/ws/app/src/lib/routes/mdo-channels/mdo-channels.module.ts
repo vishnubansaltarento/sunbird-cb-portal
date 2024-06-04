@@ -37,6 +37,7 @@ import { HttpLoaderFactory } from 'src/app/app.module'
 import {
   AnnouncementsModule,
   CardsModule,
+  CommonMethodsService,
   CommonStripModule,
   CompetencyPassbookModule,
   ContentStripWithTabsLibModule,
@@ -49,10 +50,12 @@ import { MdoChannelsRoutingModule } from './mdo-channels-routing.module'
 import { BtnPageBackModule } from '@sunbird-cb/collection/src/public-api'
 import { MdoChannelFormService } from './service/mdo-channel-form.service'
 import { FormsModule, ReactiveFormsModule } from '@angular/forms'
-import { MdoChannelDataService } from './service/mdo-channel-data.service'
+import { MdoChannelDataService } from './service/mdo-channel-data.service';
+import { MdoChannelsAllContentComponent } from './mdo-channels-all-content/mdo-channels-all-content.component'
+import { AllContentService } from './service/all-content.service'
 
 @NgModule({
-  declarations: [MdoChannelsComponent, MdoChannelsMicrositeComponent],
+  declarations: [MdoChannelsComponent, MdoChannelsMicrositeComponent, MdoChannelsAllContentComponent],
   imports: [
     CommonModule,
     FormsModule,
@@ -101,6 +104,6 @@ import { MdoChannelDataService } from './service/mdo-channel-data.service'
       },
     }),
   ],
-  providers: [MdoChannelFormService, MdoChannelDataService],
+  providers: [MdoChannelFormService,AllContentService,CommonMethodsService, MdoChannelDataService],
 })
 export class MDOChannelsModule { }

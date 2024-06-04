@@ -252,7 +252,7 @@
             <div class="w-full">
                 <sb-uic-content-strip-with-tabs
                     [emitViewAll]="true"
-                    (viewAllResponse)="showAllContent($event)"
+                    (viewAllResponse)="showAllContent($event, contentStrip)"
                     (telemtryResponse)="raiseTelemetryInteratEvent($event)"
                     (emptyResponse)="hideContentStrip($event, contentStrip)"
                     [providerId]="orgId"
