@@ -16,7 +16,7 @@
                     </div>
                     <ng-container *ngIf="contentDataList?.length ; else noData">
                         <div class="mr-2 mb-5" *ngFor="let c of contentDataList">
-                            <sb-uic-cards [widgetData]="c.widgetData"> </sb-uic-cards>
+                            <sb-uic-cards [widgetData]="c.widgetData" (triggerTelemetry)="raiseTelemetryInteratEvent($event)"> </sb-uic-cards>
                         </div> 
                     </ng-container>  
                     <ng-template #noData>
