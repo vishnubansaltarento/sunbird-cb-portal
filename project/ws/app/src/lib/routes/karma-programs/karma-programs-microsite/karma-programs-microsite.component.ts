@@ -48,7 +48,7 @@ export class KarmaProgramsMicrositeComponent implements OnInit {
 
       this.getDataFromSearch()
     }
-    
+
   }
 
   async getDataFromSearch(requestData?: any) {
@@ -77,7 +77,7 @@ export class KarmaProgramsMicrositeComponent implements OnInit {
         if (request && request) {
           this.contentSvc.fetchPlaylistSearchData(this.playListKey, this.orgId).subscribe(results => {
               resolve({ results })
-            },                                        (error: any) => {
+            },                                                                            (error: any) => {
               reject(error)
             },
           )

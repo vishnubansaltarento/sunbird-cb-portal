@@ -49,7 +49,7 @@ export class AllContentService {
 
   getApiMethod(apiUrl: any): Observable<NsContent.IContent> {
     // req.query = req.query || '';
-    return this.http.get<NsContent.IContent>(apiUrl);
+    return this.http.get<NsContent.IContent>(apiUrl)
   }
 
 }
