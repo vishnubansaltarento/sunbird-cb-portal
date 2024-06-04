@@ -209,6 +209,10 @@
 <ng-template #loadNewStrips>
     <ng-container *ngFor="let newStrip of newHomeStrips">
         <sb-uic-content-strip-with-tabs 
-        [providerId]="'01381906916850892825'" [widgetData]="newStrip"></sb-uic-content-strip-with-tabs>
+            [providerId]="'01381906916850892825'"
+            [emitViewAll]="true"
+            (telemtryResponse)="raiseTelemetryInteratEvent($event)"
+            [widgetData]="newStrip">
+        </sb-uic-content-strip-with-tabs>
     </ng-container>
 </ng-template>
