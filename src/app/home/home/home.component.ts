@@ -60,7 +60,7 @@ export class HomeComponent implements OnInit, AfterViewInit {
   newHomeStrips: any
   jan26Change: any
   pendingApprovalList: any
-  isTelemetryRaised: boolean = false
+  isTelemetryRaised = false
 
   configSuccess: MatSnackBarConfig = {
     panelClass: 'style-success',
@@ -372,7 +372,7 @@ export class HomeComponent implements OnInit, AfterViewInit {
     if (event && event.viewMoreUrl) {
       this.raiseTelemetry(`${event.stripTitle} ${event.viewMoreUrl.viewMoreText}`)
     }
-    if(!this.isTelemetryRaised && event && !event.viewMoreUrl) {
+    if (!this.isTelemetryRaised && event && !event.viewMoreUrl) {
       this.events.raiseInteractTelemetry(
         {
           type: 'click',
