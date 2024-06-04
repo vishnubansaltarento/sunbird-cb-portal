@@ -36,13 +36,13 @@ import { FillInTheBlankComponent } from './components/question/fitb/fitb.compone
 import { MultipleChoiseQuesComponent } from './components/question/mcq-mca/mcq-mca.component'
 import { SingleChoiseQuesComponent } from './components/question/mcq-sca/mcq-sca.component'
 import { MatchTheFollowingQuesComponent } from './components/question/mtf/mtf.component'
-import { TranslateModule } from '@ngx-translate/core';
-import { StandaloneAssessmentComponent } from './components/standalone-assessment/standalone-assessment.component';
-import { AssessmentHeaderComponent } from './components/assessment-header/assessment-header.component';
-import { AssessmentFooterComponent } from './components/assessment-footer/assessment-footer.component';
-import { AssessmentQuestionContainerComponent } from './components/assessment-question-container/assessment-question-container.component';
-import { AssessmentQuestionCountContainerComponent } from './components/assessment-question-count-container/assessment-question-count-container.component';
-import { AssessmentPerformanceSummaryComponent } from './components/assessment-performance-summary/assessment-performance-summary.component';
+import { TranslateModule } from '@ngx-translate/core'
+import { StandaloneAssessmentComponent } from './components/standalone-assessment/standalone-assessment.component'
+import { AssessmentHeaderComponent } from './components/assessment-header/assessment-header.component'
+import { AssessmentFooterComponent } from './components/assessment-footer/assessment-footer.component'
+import { AssessmentQuestionContainerComponent } from './components/assessment-question-container/assessment-question-container.component'
+import { AssessmentQuestionCountContainerComponent } from './components/assessment-question-count-container/assessment-question-count-container.component'
+import { AssessmentPerformanceSummaryComponent } from './components/assessment-performance-summary/assessment-performance-summary.component'
 import { AssessmentPerformanceInsightSummaryComponent } from './components/assessment-performance-insight-summary/assessment-performance-insight-summary.component'
 import { FinalAssessmentPopupComponent } from './components/final-assessment-popup/final-assessment-popup.component'
 
@@ -94,7 +94,7 @@ import { FinalAssessmentPopupComponent } from './components/final-assessment-pop
     SkeletonLoaderModule,
     TranslateModule,
     MatMenuModule,
-    MatSelectModule
+    MatSelectModule,
   ],
   exports: [
     PracticeComponent,
@@ -104,7 +104,7 @@ import { FinalAssessmentPopupComponent } from './components/final-assessment-pop
     AssessmentQuestionContainerComponent,
     AssessmentQuestionCountContainerComponent,
     AssessmentPerformanceSummaryComponent,
-    AssessmentPerformanceInsightSummaryComponent
+    AssessmentPerformanceInsightSummaryComponent,
   ],
 })
 export class PracticePlModule { }

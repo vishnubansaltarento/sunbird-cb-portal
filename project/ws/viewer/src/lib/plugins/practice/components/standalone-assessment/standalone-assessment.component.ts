@@ -18,7 +18,7 @@ import { SubmitQuizDialogComponent } from './../submit-quiz-dialog/submit-quiz-d
 import { OnConnectionBindInfo } from 'jsplumb'
 import { PracticeService } from './../../practice.service'
 import { EventService, NsContent, ValueService, WsEvents } from '@sunbird-cb/utils'
-import { WidgetContentService } from '@sunbird-cb/collection';
+import { WidgetContentService } from '@sunbird-cb/collection'
 import { ActivatedRoute, NavigationStart, Router } from '@angular/router'
 import { ViewerUtilService } from '../../../../viewer-util.service'
 // tslint:disable-next-line
@@ -121,7 +121,7 @@ export class StandaloneAssessmentComponent implements OnInit, OnChanges, OnDestr
   expandFalse = true
   showOverlay = false
   showToolTip = false
-  coursePrimaryCategory : any;
+  coursePrimaryCategory: any
   constructor(
     private events: EventService,
     public dialog: MatDialog,
@@ -241,12 +241,10 @@ export class StandaloneAssessmentComponent implements OnInit, OnChanges, OnDestr
     if (this.quizSvc.questionAnswerHash.value) {
       this.questionAnswerHash = this.quizSvc.questionAnswerHash.getValue()
     }
-    // console.log(this.vws.resource)    
-    console.log('contentData-->',this.widgetContentService.currentMetaData.primaryCategory);
-    this.coursePrimaryCategory = this.widgetContentService.currentMetaData.primaryCategory;
+    // console.log(this.vws.resource)
+    this.coursePrimaryCategory = this.widgetContentService.currentMetaData.primaryCategory
   }
 
-  
   get getTimeLimit(): number {
     let jsonTime = (this.quizJson.timeLimit || 0)
     if (this.retake && jsonTime === 0) {
@@ -337,7 +335,7 @@ export class StandaloneAssessmentComponent implements OnInit, OnChanges, OnDestr
       return []
     }
     const qq = _.filter(this.quizJson.questions, { section: this.selectedSection.identifier })
-    
+
     return qq
   }
   nextSection(section: NSPractice.IPaperSection) {
@@ -542,7 +540,6 @@ export class StandaloneAssessmentComponent implements OnInit, OnChanges, OnDestr
         }
       }
     }
-    console.log(this.quizJson);
     // this.current_Question = this.quizJson.questions[0];
   }
   getNextQuestion(idx: any) {

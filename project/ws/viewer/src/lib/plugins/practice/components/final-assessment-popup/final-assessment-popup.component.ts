@@ -22,7 +22,6 @@ export class FinalAssessmentPopupComponent implements OnInit {
     @Inject(MAT_DIALOG_DATA) public data: any,
   ) {
     this.assessmentData = data
-    console.log('assessmentData', this.assessmentData);
     this.setTableDataSource(data.tableDetails.tableData)
   }
 

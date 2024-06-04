@@ -16,7 +16,7 @@ const API_END_POINTS = {
   QUESTION_PAPER_QUESTIONS: `/apis/proxies/v8/question/v5/read`,
   SAVE_AND_NEXT_QUESTION: `apis/proxies/v8/assessment/save`,
   CAN_ATTEMPT: (assessmentId: any) => `/apis/proxies/v8/user/assessment/retake/${assessmentId}`,
-} 
+}
 @Injectable({
   providedIn: 'root',
 })

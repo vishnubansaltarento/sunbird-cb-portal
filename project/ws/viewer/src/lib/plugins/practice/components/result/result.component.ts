@@ -15,7 +15,7 @@ export class ResultComponent implements OnInit, OnChanges {
   @Input() isPassed = false
   @Input() quizCategory!: NsContent.EPrimaryCategory
   @Input() quizResponse!: NSPractice.IQuizSubmitResponseV2
-  @Input() coursePrimaryCategory:any;
+  @Input() coursePrimaryCategory: any
   @Output() userSelection = new EventEmitter<string>()
   @Output() fetchResult = new EventEmitter<string>()
   @ViewChild(MatAccordion, { static: true }) accordion: MatAccordion | undefined
@@ -29,11 +29,11 @@ export class ResultComponent implements OnInit, OnChanges {
   showText = 'Rating'
   isMobile = false
   showInsight = false
-  questionStatuTableData:any = [];
-  quizResponseClone:any;
-  selectedSectionId='';
-  selectedStatus= 'all';
-  summaryTableDataSource:any = new MatTableDataSource([
+  questionStatuTableData: any = []
+  quizResponseClone: any
+  selectedSectionId = ''
+  selectedStatus = 'all'
+  summaryTableDataSource: any = new MatTableDataSource([
     {
       subject: 'Section A',
       yourScore: '0.25 / 35',
@@ -139,7 +139,7 @@ export class ResultComponent implements OnInit, OnChanges {
     },
   ]
 
-  questionStatuTableDataSource:any = new MatTableDataSource([])
+  questionStatuTableDataSource: any = new MatTableDataSource([])
   questionStatuTableColumns = [
     { header: 'Questions', key: 'question' },
     { header: 'Status', key: 'status' },
@@ -147,7 +147,7 @@ export class ResultComponent implements OnInit, OnChanges {
     { header: 'Time Taken', key: 'timeTaken' },
   ]
 
-  sectionsList:any = []
+  sectionsList: any = []
 
   constructor(private langtranslations: MultilingualTranslationsService) {
 
@@ -161,25 +161,25 @@ export class ResultComponent implements OnInit, OnChanges {
     }
   }
 
-  ngOnChanges() {    
-    if(this.quizResponse) {
+  ngOnChanges() {
+    if (this.quizResponse) {
       this.quizResponseClone = _.clone(this.quizResponse)
-      let sectionTableData = [];
-      
-      for(let i=0; i< this.quizResponse.children.length;i++) {
-        if(this.quizResponse.children[i]) {
-          if(this.quizResponse.children[i]['correct']) {
-            let sectionObj = {subject: 'Section'+i, yourScore : ((this.quizResponse.children[i]['correct'])/(this.quizResponse.children[i]['total'])).toFixed(2)}
-            sectionTableData.push(sectionObj);
-          }          
-        }        
+      const sectionTableData = []
+        /* tslint:disable */
+      for (let i = 0; i < this.quizResponse.children.length; i++) {
+        if (this.quizResponse.children[i]) {
+          if (this.quizResponse.children[i]['correct']) {
+            const sectionObj = { subject: `Section${i}`, yourScore : ((this.quizResponse.children[i]['correct']) / (this.quizResponse.children[i]['total'])).toFixed(2) }
+            sectionTableData.push(sectionObj)
+          }
+        }
       }
       this.summaryTableDataSource = new MatTableDataSource(sectionTableData)
       this.summaryTableDisplayeColumns = [
         { header: 'Subject', key: 'subject' },
         { header: 'Your Score', key: 'yourScore' },
       ]
-    
+
       this.competitiveTableDataSource = new MatTableDataSource([
         {
           subject: 'Section A',
@@ -197,13 +197,13 @@ export class ResultComponent implements OnInit, OnChanges {
         { header: 'Your Score', key: 'yourScore' },
         { header: 'Topper Score', key: 'topperScore' },
       ]
-    
+
       this.overAllSummary = [
         {
           imgType: 'icon',
           imgPath: 'speed',
           class: 'icon-bg-blue',
-          summary: this.percentage.toFixed(2)+'/100',
+          summary: `${this.percentage.toFixed(2)}/100`,
           summaryType: 'Score',
         },
         {
@@ -217,25 +217,25 @@ export class ResultComponent implements OnInit, OnChanges {
           imgType: 'img',
           imgPath: '/assets/icons/final-assessment/assignment.svg',
           class: 'icon-bg-pink',
-          summary: (this.quizResponse.correct+this.quizResponse.incorrect)+'/'+this.quizResponse.total,
+          summary: `${(this.quizResponse.correct + this.quizResponse.incorrect)}/${this.quizResponse.total}`,
           summaryType: 'Attempted',
         },
         {
           imgType: 'icon',
           imgPath: 'check_circle_outline',
           class: 'icon-bg-yellow',
-          summary: this.quizResponse.correct+'/'+this.quizResponse.total,
+          summary: `${this.quizResponse.correct}/${this.quizResponse.total}`,
           summaryType: 'Correct',
         },
         {
           imgType: 'img',
           imgPath: '/assets/icons/final-assessment/target.svg',
           class: 'icon-bg-dark-green',
-          summary: ((this.quizResponse.correct/this.quizResponse.total)*100).toFixed(2)+'%',
+          summary: `${((this.quizResponse.correct / this.quizResponse.total) * 100).toFixed(2)}%`,
           summaryType: 'Accuracy',
         },
       ]
-    
+
       this.scoreSummary = [
         {
           imgType: 'img',
@@ -248,14 +248,14 @@ export class ResultComponent implements OnInit, OnChanges {
           imgType: 'img',
           imgPath: '/assets/icons/final-assessment/assignment.svg',
           class: 'icon-bg-pink',
-          summary: (this.quizResponse.correct+this.quizResponse.incorrect)+'/'+this.quizResponse.total,
+          summary: `${(this.quizResponse.correct + this.quizResponse.incorrect)}/${this.quizResponse.total}`,
           summaryType: 'Attempted',
         },
         {
           imgType: 'icon',
           imgPath: 'check_circle_outline',
           class: 'icon-bg-yellow',
-          summary: this.quizResponse.correct+'/'+this.quizResponse.total,
+          summary: `${this.quizResponse.correct}/${this.quizResponse.total}`,
           summaryType: 'Correct',
         },
         {
@@ -266,7 +266,7 @@ export class ResultComponent implements OnInit, OnChanges {
           summaryType: 'Wrong',
         },
       ]
-    
+
       this.questionStatuTableDataSource = new MatTableDataSource([
       ])
       this.questionStatuTableColumns = [
@@ -275,24 +275,25 @@ export class ResultComponent implements OnInit, OnChanges {
         { header: 'Question Tagging', key: 'questionTagg' },
         { header: 'Time Taken', key: 'timeTaken' },
       ]
-
-      for(let i=0; i<this.quizResponse.children.length;i++) {
-        let obj:any = {
-                  sectionName: 'Section '+i, 
-                  identifier: this.quizResponse.children[i]['identifier']
-        };
-        for(let j=0; j<this.quizResponse.children[i].children.length; j++) {
-          let obj:any = {
+        /* tslint:disable */
+      for (let i = 0; i < this.quizResponse.children.length; i++) {
+        const obj: any = {
+                  sectionName: `Section${i}`,
+                  identifier: this.quizResponse.children[i]['identifier'],
+        }
+          /* tslint:disable */
+        for (let j = 0; j < this.quizResponse.children[i].children.length; j++) {
+          const objChildren: any = {
             question: this.quizResponse.children[i].children[j]['question'],
             status: this.quizResponse.children[i].children[j]['result'],
             questionTagg: 'Easy',
             timeTaken: '00:00:09',
           }
-          this.questionStatuTableData.push(obj);
+          this.questionStatuTableData.push(objChildren)
         }
-        this.sectionsList.push(obj);  
+        this.sectionsList.push(obj)
       }
-    
+
       this.getSectionalData('all', 'all')
       // this.sectionsList = [
       //   {
@@ -308,122 +309,116 @@ export class ResultComponent implements OnInit, OnChanges {
     }
   }
 
-  getSectionalData(sectionId:string='all', resultType:string='all') {
-    let quizResponse:any = this.quizResponse;
-    this.selectedSectionId = sectionId;
-    this.questionStatuTableData = [];
-    if(this.selectedSectionId === 'all') {
-      for(let i=0; i<this.quizResponse.children.length;i++) {      
-        for(let j=0; j<this.quizResponse.children[i].children.length; j++) {
-          if(resultType === 'all') {
-            let obj:any = {
+  getSectionalData(sectionId: string= 'all', resultType: string= 'all') {
+    let quizResponse: any = this.quizResponse
+    this.selectedSectionId = sectionId
+    this.questionStatuTableData = []
+    if (this.selectedSectionId === 'all') {
+        /* tslint:disable */
+      for (let i = 0; i < this.quizResponse.children.length; i++) {
+          /* tslint:disable */
+        for (let j = 0; j < this.quizResponse.children[i].children.length; j++) {
+          if (resultType === 'all') {
+            const obj: any = {
               question: this.quizResponse.children[i].children[j]['question'],
               status: this.quizResponse.children[i].children[j]['result'],
               questionTagg: 'Easy',
               timeTaken: '00:00:09',
             }
-            console.log("obj", obj)
-            this.questionStatuTableData.push(obj);
+            this.questionStatuTableData.push(obj)
           } else if (resultType === 'correct') {
-            if(this.quizResponse.children[i].children[j]['result'] === 'correct') {
-              let obj:any = {
+            if (this.quizResponse.children[i].children[j]['result'] === 'correct') {
+              const obj: any = {
                 question: this.quizResponse.children[i].children[j]['question'],
                 status: this.quizResponse.children[i].children[j]['result'],
                 questionTagg: 'Easy',
                 timeTaken: '00:00:09',
               }
-              console.log("obj", obj)
-              this.questionStatuTableData.push(obj);
-            }           
+              this.questionStatuTableData.push(obj)
+            }
           } else if (resultType === 'wrong') {
-            if(this.quizResponse.children[i].children[j]['result'] === 'incorrect') {
-              let obj:any = {
+            if (this.quizResponse.children[i].children[j]['result'] === 'incorrect') {
+              const obj: any = {
                 question: this.quizResponse.children[i].children[j]['question'],
                 status: this.quizResponse.children[i].children[j]['result'],
                 questionTagg: 'Easy',
                 timeTaken: '00:00:09',
               }
-              console.log("obj", obj)
-              this.questionStatuTableData.push(obj);
-            }           
+              this.questionStatuTableData.push(obj)
+            }
           }  else if (resultType === 'notAnswered') {
-            if(this.quizResponse.children[i].children[j]['result'] === 'blank') {
-              let obj:any = {
+            if (this.quizResponse.children[i].children[j]['result'] === 'blank') {
+              const obj: any = {
                 question: this.quizResponse.children[i].children[j]['question'],
                 status: this.quizResponse.children[i].children[j]['result'],
                 questionTagg: 'Easy',
                 timeTaken: '00:00:09',
               }
-              console.log("obj", obj)
-              this.questionStatuTableData.push(obj);
-            }           
+              this.questionStatuTableData.push(obj)
+            }
           }
-          
+
         }
       }
-      this.questionStatuTableDataSource = this.questionStatuTableData;
+      this.questionStatuTableDataSource = this.questionStatuTableData
     } else {
-      for(let i=0; i<this.quizResponse.children.length;i++) {
-        console.log(this.quizResponse.children[i], this.quizResponse.children[i]['identifier'], this.selectedSectionId)
-        if(this.quizResponse.children[i]['identifier'] === this.selectedSectionId) {
-          quizResponse = this.quizResponse.children[i];
-          break;
+        /* tslint:disable */
+      for (let i = 0; i < this.quizResponse.children.length; i++) {
+        if (this.quizResponse.children[i]['identifier'] === this.selectedSectionId) {
+          quizResponse = this.quizResponse.children[i]
+          break
         }
-      }   
-      for(let j=0; j<quizResponse.children.length; j++) {
-        if(resultType === 'all') {
-          let obj:any = {
+      }
+        /* tslint:disable */
+      for (let j = 0; j < quizResponse.children.length; j++) {
+        if (resultType === 'all') {
+          const obj: any = {
             question: quizResponse.children[j]['question'],
             status: quizResponse.children[j]['result'],
             questionTagg: 'Easy',
             timeTaken: '00:00:09',
           }
-          console.log("obj", obj)
-          this.questionStatuTableData.push(obj);
+          this.questionStatuTableData.push(obj)
         } else if (resultType === 'correct') {
-          if(quizResponse.children[j]['result'] === 'correct') {
-            let obj:any = {
+          if (quizResponse.children[j]['result'] === 'correct') {
+            const obj: any = {
               question: quizResponse.children[j]['question'],
               status: quizResponse.children[j]['result'],
               questionTagg: 'Easy',
               timeTaken: '00:00:09',
             }
-            console.log("obj", obj)
-            this.questionStatuTableData.push(obj);
-          }           
+            this.questionStatuTableData.push(obj)
+          }
         } else if (resultType === 'wrong') {
-          if(quizResponse.children[j]['result'] === 'incorrect') {
-            let obj:any = {
+          if (quizResponse.children[j]['result'] === 'incorrect') {
+            const obj: any = {
               question: quizResponse.children[j]['question'],
               status: quizResponse.children[j]['result'],
               questionTagg: 'Easy',
               timeTaken: '00:00:09',
             }
-            console.log("obj", obj)
-            this.questionStatuTableData.push(obj);
-          }           
+            this.questionStatuTableData.push(obj)
+          }
         }  else if (resultType === 'notAnswered') {
-          if(quizResponse.children[j]['result'] === 'blank') {
-            let obj:any = {
+          if (quizResponse.children[j]['result'] === 'blank') {
+            const obj: any = {
               question: quizResponse.children[j]['question'],
               status: quizResponse.children[j]['result'],
               questionTagg: 'Easy',
               timeTaken: '00:00:09',
             }
-            console.log("obj", obj)
-            this.questionStatuTableData.push(obj);
-          }           
+            this.questionStatuTableData.push(obj)
+          }
         }
-      }      
-    this.questionStatuTableDataSource = this.questionStatuTableData;
+      }
+    this.questionStatuTableDataSource = this.questionStatuTableData
     }
-    
-   
+
   }
 
-  getQuestionByStatus(status:string) {
-    this.selectedStatus = status;
-    this.getSectionalData(this.selectedSectionId, status);
+  getQuestionByStatus(status: string) {
+    this.selectedStatus = status
+    this.getSectionalData(this.selectedSectionId, status)
   }
 
   action(event: NSPractice.TUserSelectionType) {

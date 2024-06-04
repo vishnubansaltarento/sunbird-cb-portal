@@ -1,9 +1,9 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit } from '@angular/core'
 
 @Component({
   selector: 'viewer-assessment-footer',
   templateUrl: './assessment-footer.component.html',
-  styleUrls: ['./assessment-footer.component.scss']
+  styleUrls: ['./assessment-footer.component.scss'],
 })
 export class AssessmentFooterComponent implements OnInit {
 
