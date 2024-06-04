@@ -14,6 +14,7 @@ import _ from 'lodash'
 import { Subscription } from 'rxjs'
 import { PracticeService } from '../../../practice.service'
 import { NsContent } from '@sunbird-cb/utils/src/public-api'
+import { DomSanitizer } from '@angular/platform-browser'
 @Component({
     selector: 'viewer-mcq-sca-question',
     templateUrl: './mcq-sca.component.html',
@@ -46,6 +47,7 @@ export class SingleChoiseQuesComponent implements OnInit, OnDestroy {
     showAns = false
     constructor(
         private practiceSvc: PracticeService,
+        private sanitizer: DomSanitizer
     ) {
 
     }
@@ -94,6 +96,19 @@ export class SingleChoiseQuesComponent implements OnInit, OnDestroy {
     //         // this.question.options = []
     //     }
     // }
+
+    getSanitizeString(res: any) {
+        if (res) {
+            const response = res.replaceAll('&lt;', '<').replaceAll('&gt;', '>')
+            return response
+        }
+
+    }
+    htmlDecode(input: any) {
+        const e = document.createElement('div')
+        e.innerHTML = input
+        return e.childNodes[0].nodeValue
+    }
     ngOnDestroy(): void {
         this.practiceSvc.shCorrectAnswer(false)
         if (this.shCorrectAnsSubscription) {
