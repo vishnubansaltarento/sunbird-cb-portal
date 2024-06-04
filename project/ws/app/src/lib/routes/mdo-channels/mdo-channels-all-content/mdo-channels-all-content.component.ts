@@ -4,8 +4,9 @@ import { CommonMethodsService } from '@sunbird-cb/consumption'
 import { NsContentStripWithTabs } from '@sunbird-cb/consumption/lib/_common/content-strip-with-tabs-lib/content-strip-with-tabs-lib.model'
 
 import { AllContentService } from './../service/all-content.service'
-import { UtilityService } from '@sunbird-cb/utils-v2'
+import { MultilingualTranslationsService, UtilityService } from '@sunbird-cb/utils-v2'
 import { environment } from 'src/environments/environment'
+import { TranslateService } from '@ngx-translate/core'
 
 
 @Component({
@@ -16,33 +17,38 @@ import { environment } from 'src/environments/environment'
 export class MdoChannelsAllContentComponent implements OnInit {
 
   
-  providerName = ''
-  providerId = ''
+  orgName = ''
+  orgId = ''
   seeAllPageConfig: any = {}
   keyData: any
   contentDataList: any = []
+  originalContentlist: any = []
   isMobile = false
   requestData: any
-  titles = [
-    {
-      title: `MDO channel`,
-      url: `/app/learn/mdo-channels/all-channels`,
-      textClass: 'ws-mat-black60-text',
-      icon: '', disableTranslate: true,
-    },
+  titles :any= [
+    
   ]
   constructor(public commonSvc: CommonMethodsService,
               public activatedRoute: ActivatedRoute,
               public contentSvc: AllContentService,
+              private translate: TranslateService,
+              private langtranslations: MultilingualTranslationsService,
               public utilitySvc: UtilityService
   ) {
+    this.langtranslations.languageSelectedObservable.subscribe(() => {
+    if (localStorage.getItem('websiteLanguage')) {
+      this.translate.setDefaultLang('en')
+      const lang = localStorage.getItem('websiteLanguage')!
+      this.translate.use(lang)
+    }
+  })
 
    }
 
   ngOnInit( ) {
     this.activatedRoute.params.subscribe(params => {
-      this.providerName = params['channel']
-      this.providerId = params['orgId']
+      this.orgName = params['channel']
+      this.orgId = params['orgId']
       if (this.activatedRoute.snapshot.queryParams && this.activatedRoute.snapshot.queryParams.stripData) {
         const data  = JSON.parse(this.activatedRoute.snapshot.queryParams.stripData)
         this.isMobile = this.utilitySvc.isMobile || false
@@ -57,6 +63,15 @@ export class MdoChannelsAllContentComponent implements OnInit {
         this.contentDataList = this.commonSvc.transformSkeletonToWidgets(data)
       }
     })
+    this.titles = [
+      { title: 'Learn', url: '/page/learn', icon: 'school', disableTranslate: false },
+      { title: `MDO channel`, url: `/app/learn/mdo-channels/${this.orgName}/${this.orgId}/micro-sites`, icon: '', disableTranslate: true },
+      {
+        title: this.orgName,
+        url: `none`,
+        textClass: 'ws-mat-black60-text'
+      }
+    ]
     this.callApi()
   }
 
@@ -162,6 +177,7 @@ export class MdoChannelsAllContentComponent implements OnInit {
         console.log('calling  after - response, ', response)
         if (response && response.results.result.content) {  
           let content  = response.results.result.content
+          this.originalContentlist = content
           this.contentDataList = this.commonSvc.transformContentsToWidgets(content, strip)
           // this.processStrip(
           //   strip,
@@ -212,15 +228,23 @@ export class MdoChannelsAllContentComponent implements OnInit {
     if (filters.organisation &&
       filters.organisation.indexOf('<orgID>') >= 0
     ) {
-      filters.organisation = this.providerId
+      filters.organisation = this.orgId
     }
     return filters
   }
 
   handleSearchQuery(e: any) {
     if (e.target.value || e.target.value === '') {
-      this.callApi(e.target.value)
+      this.contentDataList = this.commonSvc.transformSkeletonToWidgets(this.seeAllPageConfig)
+      // this.callApi(e.target.value)
+      this.filterContentList(e.target.value)
     }
+  }
+  filterContentList(searchText: string) {
+    let data = [...this.originalContentlist]
+    const filterValue = searchText.toLowerCase()
+    let filteredData = data.filter((p: any) => p &&  p.name && p.name.toLowerCase().includes(filterValue))
+    this.contentDataList  = this.commonSvc.transformContentsToWidgets(filteredData, this.seeAllPageConfig)
   }
 
   getFullUrl(apiUrl: any, id:string){
@@ -228,8 +252,8 @@ export class MdoChannelsAllContentComponent implements OnInit {
     if (apiUrl.indexOf('<bookmarkId>') >= 0) {
       formedUrl = apiUrl.replace('<bookmarkId>', environment.mdoChannelsBookmarkId) 
     } else if (apiUrl.indexOf('<playlistKey>') >= 0 && apiUrl.indexOf('<orgID>') >= 0) {
-      formedUrl = apiUrl.replace('<playlistKey>', this.providerId + id) 
-      formedUrl = formedUrl.replace('<orgID>', this.providerId) 
+      formedUrl = apiUrl.replace('<playlistKey>', this.orgId + id) 
+      formedUrl = formedUrl.replace('<orgID>', this.orgId) 
     }
     return formedUrl
   }
