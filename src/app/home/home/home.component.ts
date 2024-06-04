@@ -60,6 +60,7 @@ export class HomeComponent implements OnInit, AfterViewInit {
   newHomeStrips: any
   jan26Change: any
   pendingApprovalList: any
+  isTelemetryRaised: boolean = false
 
   configSuccess: MatSnackBarConfig = {
     panelClass: 'style-success',
@@ -368,16 +369,36 @@ export class HomeComponent implements OnInit, AfterViewInit {
   }
 
   raiseTelemetryInteratEvent(event: any) {
+    if (event && event.viewMoreUrl) {
+      this.raiseTelemetry(`${event.stripTitle} ${event.viewMoreUrl.viewMoreText}`)
+    }
+    if(!this.isTelemetryRaised && event && !event.viewMoreUrl) {
+      this.events.raiseInteractTelemetry(
+        {
+          type: 'click',
+          subType: 'mdo-channel',
+          id: 'content-card',
+        },
+        {
+          id: event.identifier,
+          type: event.orgName,
+        },
+        {
+          module: WsEvents.EnumTelemetrymodules.HOME,
+        }
+      )
+    }
+    this.isTelemetryRaised = true
+  }
+
+  raiseTelemetry(name: string) {
     this.events.raiseInteractTelemetry(
       {
         type: 'click',
         subType: 'mdo-channel',
-        id: 'content-card',
+        id: `${_.kebabCase(name).toLocaleLowerCase()}`,
       },
-      {
-        id: event.identifier,
-        type: event.orgName,
-      },
+      {},
       {
         module: WsEvents.EnumTelemetrymodules.HOME,
       }

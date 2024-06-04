@@ -4,7 +4,7 @@ import { CommonMethodsService } from '@sunbird-cb/consumption'
 import { NsContentStripWithTabs } from '@sunbird-cb/consumption/lib/_common/content-strip-with-tabs-lib/content-strip-with-tabs-lib.model'
 
 import { AllContentService } from './../service/all-content.service'
-import { UtilityService } from '@sunbird-cb/utils-v2'
+import { EventService, UtilityService, WsEvents } from '@sunbird-cb/utils'
 import { environment } from 'src/environments/environment'
 
 
@@ -34,7 +34,8 @@ export class MdoChannelsAllContentComponent implements OnInit {
   constructor(public commonSvc: CommonMethodsService,
               public activatedRoute: ActivatedRoute,
               public contentSvc: AllContentService,
-              public utilitySvc: UtilityService
+              public utilitySvc: UtilityService,
+              public events: EventService,
   ) {
 
    }
@@ -232,6 +233,23 @@ export class MdoChannelsAllContentComponent implements OnInit {
       formedUrl = formedUrl.replace('<orgID>', this.providerId) 
     }
     return formedUrl
+  }
+
+  raiseTelemetryInteratEvent(event: any) {
+    this.events.raiseInteractTelemetry(
+      {
+        type: 'click',
+        subType: 'mdo-channel',
+        id: 'content-card',
+      },
+      {
+        id: event.identifier,
+        type: event.primaryCategory,
+      },
+      {
+        module: WsEvents.EnumTelemetrymodules.LEARN,
+      }
+    )
   }
 
 }
