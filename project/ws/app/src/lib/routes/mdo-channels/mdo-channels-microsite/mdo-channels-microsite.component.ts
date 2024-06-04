@@ -72,14 +72,17 @@ export class MdoChannelsMicrositeComponent implements OnInit {
       this.showModal = true
       document.body.style.overflow = 'hidden'
     }
+    this.raiseTelemetry('btn open key annoucements')
   }
 
   onClose() {
     this.showModal = false
     document.body.style.overflow = 'auto'
+    this.raiseTelemetry('btn close key annoucements')
   }
 
   viewMoreOrLess() {
+    console.log("expanded ", this.expanded)
     this.expanded = !this.expanded
   }
 
@@ -87,31 +90,35 @@ export class MdoChannelsMicrositeComponent implements OnInit {
     if (event && event.viewMoreUrl) {
       this.raiseTelemetry(`${event.stripTitle} ${event.viewMoreUrl.viewMoreText}`)
     }
-    // if (!this.isTelemetryRaised) {
-    //   this.eventSvc.raiseInteractTelemetry(
-    //     {
-    //       type: 'click',
-    //       subType: 'MDO-channel',
-    //       id: `${_.kebabCase(event.typeOfTelemetry.toLocaleLowerCase())}-card`,
-    //     },
-    //     {
-    //       id: event.identifier,
-    //       type: event.primaryCategory,
-    //     },
-    //     {
-    //       pageIdExt: `${_.kebabCase(event.primaryCategory.toLocaleLowerCase())}-card`,
-    //       module: WsEvents.EnumTelemetrymodules.LEARN,
-    //     }
-    //   )
-    //   this.isTelemetryRaised = true
-    // }
+    if (!this.isTelemetryRaised) {
+      this.eventSvc.raiseInteractTelemetry(
+        {
+          type: 'click',
+          subType: 'mdo-channel',
+          id: `${_.kebabCase(event.typeOfTelemetry.toLocaleLowerCase())}-card`,
+        },
+        {
+          id: event.identifier,
+          type: event.primaryCategory,
+        },
+        {
+          pageIdExt: `${_.kebabCase(event.primaryCategory.toLocaleLowerCase())}-card`,
+          module: WsEvents.EnumTelemetrymodules.LEARN,
+        }
+      )
+      this.isTelemetryRaised = true
+    }
+  }
+
+  raiseCompetencyTelemetry(name: string) {
+    this.raiseTelemetry(`${name} core expertise`)
   }
 
   raiseTelemetry(name: string) {
     this.eventSvc.raiseInteractTelemetry(
       {
         type: 'click',
-        subType: 'MDO-channel',
+        subType: 'mdo-channel',
         id: `${_.kebabCase(name).toLocaleLowerCase()}`,
       },
       {},
