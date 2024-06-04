@@ -900,7 +900,7 @@ export class StandaloneAssessmentComponent implements OnInit, OnChanges, OnDestr
     } else {
       this.viewState = 'answer'
     }
-    const quizV4Res: any = await this.quizSvc.submitQuizV4(this.generateRequest).toPromise().catch(_error => {})
+    const quizV4Res: any = await this.quizSvc.submitQuizV5(this.generateRequest).toPromise().catch(_error => {})
     if (quizV4Res && quizV4Res.params && quizV4Res.params.status.toLowerCase() === 'success') {
       if (quizV4Res.result.primaryCategory === 'Course Assessment') {
         setTimeout(() => {

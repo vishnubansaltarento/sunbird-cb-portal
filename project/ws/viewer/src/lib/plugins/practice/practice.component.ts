@@ -131,7 +131,8 @@ export class PracticeComponent implements OnInit, OnChanges, OnDestroy {
   selectedSectionIdentifier:any;
   questionSectionTableData:any = []
   questionVisitedData:any = []
-  assessmentType = 'optionWeightage'
+  assessmentType = 'optionWeightage1'
+  compatibilityLevel = 2
   constructor(
     private events: EventService,
     public dialog: MatDialog,
@@ -283,13 +284,14 @@ export class PracticeComponent implements OnInit, OnChanges, OnDestroy {
       this.fetchingSectionsStatus = 'done'
       this.viewState = 'detail'
       this.startIfonlySection()
-      console.log('this.fetchingQuestionsStatus',this.fetchingQuestionsStatus)
+      console.log('this.fetchingQuestionsStatus',this.paperSections)
     } else {
       this.quizSvc.getSection(this.identifier).subscribe((section: NSPractice.ISectionResponse) => {
         // console.log(section)
         this.fetchingSectionsStatus = 'done'
-        console.log('this.fetchingQuestionsStatus',this.fetchingQuestionsStatus)
+        console.log('this.fetchingQuestionsStatus',this.paperSections)
         if (section.responseCode && section.responseCode === 'OK') {
+          this.compatibilityLevel = section.result.questionSet.compatibilityLevel
           /** this is to enable or disable Timer */
           const showTimer = _.toLower(_.get(section, 'result.questionSet.showTimer')) === 'yes'
           if (showTimer) {
@@ -317,9 +319,9 @@ export class PracticeComponent implements OnInit, OnChanges, OnDestroy {
           this.startIfonlySection()
         }
       })
-      console.log('this.fetchingQuestionsStatus',this.fetchingQuestionsStatus)
+      console.log('this.fetchingQuestionsStatus',this.paperSections)
     }
-    console.log('this.fetchingQuestionsStatus',this.fetchingQuestionsStatus)
+    console.log('this.quizSvc.paperSections',this.paperSections)
   }
   startIfonlySection() {
     // console.log('in start only section', this.isOnlySection)
@@ -610,6 +612,10 @@ export class PracticeComponent implements OnInit, OnChanges, OnDestroy {
     }, 10)
     this.showAnswer = false
     this.matchHintDisplay = []
+
+    if(this.compatibilityLevel <=6) {
+      console.log(this.generateRequest);
+    }
   }
   get current_Question(): NSPractice.IQuestionV2 {
     return this.currentQuestion
@@ -964,16 +970,30 @@ export class PracticeComponent implements OnInit, OnChanges, OnDestroy {
     } else {
       this.viewState = 'answer'
     }
-    const quizV4Res: any = await this.quizSvc.submitQuizV4(this.generateRequest).toPromise().catch(_error => {})
-    if (quizV4Res && quizV4Res.params && quizV4Res.params.status.toLowerCase() === 'success') {
-      if (quizV4Res.result.primaryCategory === 'Course Assessment') {
-        setTimeout(() => {
-          this.getQuizResult()
-        },         environment.quizResultTimeout)
-      } else if (quizV4Res.result.primaryCategory === 'Practice Question Set') {
-        this.assignQuizResult(quizV4Res.result)
+    if(this.compatibilityLevel <= 6) {
+      const quizV4Res: any = await this.quizSvc.submitQuizV4(this.generateRequest).toPromise().catch(_error => {})
+      if (quizV4Res && quizV4Res.params && quizV4Res.params.status.toLowerCase() === 'success') {
+        if (quizV4Res.result.primaryCategory === 'Course Assessment') {
+          setTimeout(() => {
+            this.getQuizResult()
+          },         environment.quizResultTimeout)
+        } else if (quizV4Res.result.primaryCategory === 'Practice Question Set') {
+          this.assignQuizResult(quizV4Res.result)
+        }
+      }
+    } else {
+      const quizV4Res: any = await this.quizSvc.submitQuizV5(this.generateRequest).toPromise().catch(_error => {})
+      if (quizV4Res && quizV4Res.params && quizV4Res.params.status.toLowerCase() === 'success') {
+        if (quizV4Res.result.primaryCategory === 'Course Assessment') {
+          setTimeout(() => {
+            this.getQuizResult()
+          },         environment.quizResultTimeout)
+        } else if (quizV4Res.result.primaryCategory === 'Practice Question Set') {
+          this.assignQuizResult(quizV4Res.result)
+        }
       }
     }
+    
     // this.quizSvc.submitQuizV3(this.generateRequest).subscribe(
     //   (res: NSPractice.IQuizSubmitResponseV2) => {
     //     // call content progress with status 2 i.e, completed
@@ -1393,7 +1413,7 @@ export class PracticeComponent implements OnInit, OnChanges, OnDestroy {
     }
     const popupData = {
       headerText: 'Final Assessment',
-      assessmentType: 'optionWeightage',
+      assessmentType: this.assessmentType,
       tableDetails: {
         tableColumns: tableColumns,
         tableData: tableData,

@@ -8,6 +8,15 @@ $nav-height: 40px;
 // }
 
 .quiz-container {
+  height: 100vh;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  background-color: #fff;
+  overflow-y: auto;
+}
+
+.quiz-container-standalone {
   height: calc(100vh - 125px);
   width: 100%;
   display: flex;
@@ -80,6 +89,16 @@ $nav-height: 40px;
 .ovel {
   position: relative;
   cursor: pointer;
+  width: 40px;
+  height: 26px;
+  width: 44px;
+  height: 32px;
+  text-align: center;
+}
+
+.ovel-standalone {
+  position: relative;
+  cursor: pointer;
   // width: 40px;
   // height: 26px;
   // width: 44px;
@@ -113,12 +132,17 @@ $nav-height: 40px;
 
 .marked-question {
   // border: solid orange 2px;
+  color: orange;
+}
+
+.marked-question-standalone {
+  // border: solid orange 2px;
   // color: orange;
   background-image: url('/assets/icons/final-assessment/marked.svg') !important;
   color: #FFFFFF !important;
 }
 
-.marked-question-background {
+.marked-question-standalone-background {
   background-image: url('/assets/icons/final-assessment/marked.svg') !important;
 }
 
@@ -201,9 +225,9 @@ $nav-height: 40px;
   border: solid white 2px;
 }
 
-// .dark-border {
-//   border: solid rgba(0, 0, 0, 0.4) 1px;
-// }
+.dark-border {
+  border: solid rgba(0, 0, 0, 0.4) 1px;
+}
 
 .card-section {
   width: 40%;
@@ -476,6 +500,13 @@ $nav-height: 40px;
 
 .orange-small {
   background-color: rgba(239, 149, 30, 0.08) !important;
+    border: 1px solid rgb(239, 149, 30);
+    align-items: center;
+    justify-content: center;
+}
+
+.orange-small-standalone {
+  background-color: rgba(239, 149, 30, 0.08) !important;
     // border: 1px solid rgb(239, 149, 30);
     align-items: center;
     justify-content: center;
@@ -512,6 +543,23 @@ $nav-height: 40px;
 }
 
 .seperate-text {
+  width: 100%;
+    text-align: center;
+    border-bottom: 1px solid #d8d8d8;
+    line-height: .1em;
+    margin: 10px 0 20px; 
+}
+
+.seperate-text  span { 
+  background: #fff;
+    padding: 0 10px;
+    font-size: 12px;
+    font-weight: 700;
+    font-family: Lato;
+    letter-spacing: .25px;
+}
+
+.seperate-text-standalone {
   width: 100%; 
    text-align: center; 
    border-bottom: 1px solid rgb(216,216,216); 
@@ -519,7 +567,7 @@ $nav-height: 40px;
    margin: 10px 0 20px; 
 }
 
-.seperate-text  span { 
+.seperate-text-standalone  span { 
   background:#EDF1F7; 
   padding:0 10px; 
   color: #000000e3;
@@ -720,9 +768,9 @@ $nav-height: 40px;
   margin: 0 8px;
 }
 
-// .current-question {
-//   border: 1px solid #1b4ca1;
-// }
+.current-question {
+  border: 1px solid #1b4ca1;
+}
 
 .mat-body-2-bold {
   color: #1b4ca1;

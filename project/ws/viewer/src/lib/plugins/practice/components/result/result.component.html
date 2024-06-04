@@ -387,7 +387,7 @@
         </div>
         <div class="separator"></div>
         <div class="flex justify-center items-center totalScore w-full">
-          {{percentage}}/100
+          {{(percentage || 0) | number: '1.2-2'}}/100
         </div>
       </div>
     

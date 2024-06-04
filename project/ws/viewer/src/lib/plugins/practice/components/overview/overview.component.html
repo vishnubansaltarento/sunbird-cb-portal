@@ -90,8 +90,14 @@
         </div>
       </div>
       </div>
-      <div class="start-assessment-cta hidden md:block">
+      <div class="start-assessment-cta hidden md:block" *ngIf="coursePrimaryCategory === 'Standalone Assessment'">
         <button [disabled]="!consentGiven" *ngIf="canAttempt?.attemptsMade < canAttempt?.attemptsAllowed" [class.spinner]="loading" [disabled]="loading" (click)="overviewed('start')" [ngClass]="consentGiven ? 'bg-blue-800 text-white' : 'secondary text-black'" class="text-sm font-semibold py-3 px-5 rounded-full border-none cursor-pointer tracking-wide">
+          <span class="padding-xs" i18n>{{'playerbrief.startAssessment' | translate}}</span>
+        </button>
+        <mat-hint class="mat-title" *ngIf="canAttempt?.attemptsMade >= canAttempt?.attemptsAllowed">{{'playerbrief.maxAllowedRetake' | translate}}</mat-hint>
+      </div>
+      <div class="start-assessment-cta hidden md:block" *ngIf="coursePrimaryCategory !== 'Standalone Assessment'">
+        <button *ngIf="canAttempt?.attemptsMade < canAttempt?.attemptsAllowed" [class.spinner]="loading" [disabled]="loading" (click)="overviewed('start')" class="bg-blue-800 text-white text-sm font-semibold py-3 px-5 rounded-full border-none cursor-pointer tracking-wide">
           <span class="padding-xs" i18n>{{'playerbrief.startAssessment' | translate}}</span>
         </button>
         <mat-hint class="mat-title" *ngIf="canAttempt?.attemptsMade >= canAttempt?.attemptsAllowed">{{'playerbrief.maxAllowedRetake' | translate}}</mat-hint>

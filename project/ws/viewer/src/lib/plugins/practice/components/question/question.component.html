@@ -405,12 +405,12 @@
 <ng-container *ngIf="coursePrimaryCategory == 'Standalone Assessment' && showMarkForReview" >
   <div>
     <a 
-                class="text-white margin-xs quest_btn_review" mat-button
+                class="text-black margin-xs quest_btn_review" mat-button
                 (click)="markQuestion()">
                 <ng-container *ngIf="!isXsmall">Mark for Review & next</ng-container>
               </a>
     <a 
-          class="text-white margin-xs quest_btn_review" mat-button
+          class="text-black margin-xs quest_btn_review" mat-button
           (click)="getNextQuestion(currentQuestionIndex + 1)">
           <ng-container *ngIf="!isXsmall">Clear Response</ng-container>
         </a>

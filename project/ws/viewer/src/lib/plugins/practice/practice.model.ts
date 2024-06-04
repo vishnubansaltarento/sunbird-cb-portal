@@ -79,7 +79,7 @@ export namespace NSPractice {
     passPercent: number
     inCorrect: number
     pass: boolean,
-    children:sectionQuestion[]
+    children: sectionQuestion[]
   }
 
   export interface sectionQuestion {
