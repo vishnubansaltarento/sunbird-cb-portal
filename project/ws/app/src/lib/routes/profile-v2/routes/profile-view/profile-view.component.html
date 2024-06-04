@@ -48,7 +48,15 @@
                     *ngIf="(portalProfile?.professionalDetails?.length && portalProfile?.professionalDetails[0]?.group)">
                     <div class="flex flex-row gap-2 items-center">
                       <div class="flex">{{ portalProfile?.professionalDetails[0]?.group }}</div>
-                      <mat-icon class="verified-check">check_circle</mat-icon>
+                      <ng-container *ngIf="portalProfile?.profileGroupStatus === 'VERIFIED'; else groupNotVerified">
+                        <mat-icon class="verified-check">check_circle</mat-icon>
+                      </ng-container>
+                      <ng-template #groupNotVerified>
+                        <div class="profile-not-verified">
+                          <div class="text">{{ 'profileInfo.notVerified' | translate }}</div>
+                          <mat-icon>info_outline</mat-icon>
+                        </div>
+                      </ng-template>
                     </div>
                   </ng-container>
                   <div class="flex gap-2 items-center info-value"
@@ -112,7 +120,15 @@
                     *ngIf="(portalProfile?.professionalDetails?.length && portalProfile?.professionalDetails[0]?.designation)">
                     <div class="flex flex-row gap-2 items-center">
                       <div class="flex">{{ portalProfile?.professionalDetails[0]?.designation }}</div>
-                      <mat-icon class="verified-check">check_circle</mat-icon>
+                      <ng-container *ngIf="portalProfile?.profileDesignationStatus === 'VERIFIED'; else designationNotVerified">
+                        <mat-icon class="verified-check">check_circle</mat-icon>
+                      </ng-container>
+                      <ng-template #designationNotVerified>
+                        <div class="profile-not-verified">
+                          <div class="text">{{ 'profileInfo.notVerified' | translate }}</div>
+                          <mat-icon>info_outline</mat-icon>
+                        </div>
+                      </ng-template>
                     </div>
                   </ng-container>
                   <ng-container *ngIf="(!portalProfile?.professionalDetails?.length || !portalProfile?.professionalDetails[0]?.designation)">
@@ -418,7 +434,7 @@
               </div>
               <div class="info-div">
                 <div class="label">{{ 'profileInfo.officePinCode' | translate }}</div>
-                <div class="info-value" *ngIf="!editDetails">{{ portalProfile?.personalDetails?.pincode || 'NA' }}</div>
+                <div class="info-value" *ngIf="!editDetails">{{ portalProfile?.employmentDetails?.pinCode || 'NA' }}</div>
                 <div class="flex flex-col" *ngIf="editDetails">
                   <mat-form-field class="profile-form-field">
                     <input type="email" class="input-text" matInput maxlength="6" formControlName="pincode" />
