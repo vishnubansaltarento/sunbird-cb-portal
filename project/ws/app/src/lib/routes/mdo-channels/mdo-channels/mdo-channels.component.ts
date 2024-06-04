@@ -220,7 +220,7 @@ export class MdoChannelsComponent implements OnInit {
       },
       {
         id: obj.identifier,
-        type: obj.name,
+        type: 'mdo-channel',
       },
       {
         module: WsEvents.EnumTelemetrymodules.LEARN,
