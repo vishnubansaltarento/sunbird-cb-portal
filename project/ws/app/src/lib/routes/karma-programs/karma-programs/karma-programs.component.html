@@ -69,7 +69,7 @@
                         <ng-container *ngFor="let p of clonesProviders">
                             <sb-uic-card-karma-programs-v2 [widgetData]="{
                                 content : p
-                            }"></sb-uic-card-karma-programs-v2>
+                            }" (raiseTemeletry)="raiseTelemetryInteratEvent($event)"></sb-uic-card-karma-programs-v2>
                         </ng-container>
                         <h4 *ngIf="clonesProviders?.length <=0 && ((displayLoader | async) === false)" class="w-full text-left ws-mat-black60-text ">
                             {{ 'allChannelsComponent.noProgramsFound' | translate }}

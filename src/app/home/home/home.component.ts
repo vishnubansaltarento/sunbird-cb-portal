@@ -370,7 +370,7 @@ export class HomeComponent implements OnInit, AfterViewInit {
 
   raiseTelemetryInteratEvent(event: any) {
     if (event && event.viewMoreUrl) {
-      this.raiseTelemetry(`${event.stripTitle} ${event.viewMoreUrl.viewMoreText}`)
+      this.raiseTelemetry(`${event.stripTitle} ${event.viewMoreUrl.viewMoreText}`, event.typeOfTelemetry)
     }
     if (!this.isTelemetryRaised && event && !event.viewMoreUrl) {
       const id = event.typeOfTelemetry === 'mdo-channel' ? event.identifier : event.orgId
@@ -393,11 +393,11 @@ export class HomeComponent implements OnInit, AfterViewInit {
     this.isTelemetryRaised = true
   }
 
-  raiseTelemetry(name: string) {
+  raiseTelemetry(name: string, subtype: string) {
     this.events.raiseInteractTelemetry(
       {
         type: 'click',
-        subType: 'mdo-channel',
+        subType: subtype,
         id: `${_.kebabCase(name).toLocaleLowerCase()}`,
       },
       {},
