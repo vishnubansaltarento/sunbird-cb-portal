@@ -31,7 +31,7 @@ export class KarmaProgramsMicrositeComponent implements OnInit {
               public contentSvc: KarmaProgramsService,
               private translate: TranslateService,
               private langtranslations: MultilingualTranslationsService,
-              public commonSvc: CommonMethodsService) { 
+              public commonSvc: CommonMethodsService) {
                 this.langtranslations.languageSelectedObservable.subscribe(() => {
                   if (localStorage.getItem('websiteLanguage')) {
                     this.translate.setDefaultLang('en')
