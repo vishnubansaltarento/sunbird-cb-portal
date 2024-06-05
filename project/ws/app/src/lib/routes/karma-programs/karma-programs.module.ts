@@ -42,6 +42,6 @@ import { KarmaProgramDataService } from './service/karma-program-data.service'
       },
     }),
   ],
-  providers: [KarmaProgramsService,KarmaProgramDataService, CommonMethodsService],
+  providers: [KarmaProgramsService, KarmaProgramDataService, CommonMethodsService],
 })
 export class KarmaProgramsModule { }

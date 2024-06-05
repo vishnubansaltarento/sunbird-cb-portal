@@ -19,15 +19,15 @@ resolve(
 ): Observable<IResolveResponse<any>> {
     const requestUrl: any = `/apis/proxies/v8/playList/v2/search`
     const requestData: any = {
-      "filterCriteriaMap":{
-        "type":"program"
+      'filterCriteriaMap': {
+        'type': 'program',
       },
-      "pageNumber":0,
-      "pageSize":100,
-      "orderBy":"createdOn",
-      "orderDirection":"ASC",
-      "facets":["category","orgId"],
-      "query":""
+      'pageNumber': 0,
+      'pageSize': 100,
+      'orderBy': 'createdOn',
+      'orderDirection': 'ASC',
+      'facets': ['category', 'orgId'],
+      'query': '',
     }
     return this.http.post(requestUrl, requestData).pipe(
       map((rData: any) => ({ data: rData, error: null })),
