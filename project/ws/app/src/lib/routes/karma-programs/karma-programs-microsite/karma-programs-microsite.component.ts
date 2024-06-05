@@ -2,6 +2,8 @@ import { Component, OnInit } from '@angular/core'
 import { ActivatedRoute } from '@angular/router'
 import { CommonMethodsService } from '@sunbird-cb/consumption'
 import { KarmaProgramsService } from '../service/karma-programs.service'
+import { TranslateService } from '@ngx-translate/core'
+import { MultilingualTranslationsService } from '@sunbird-cb/utils-v2'
 
 @Component({
   selector: 'ws-app-karma-programs-microsite',
@@ -14,6 +16,8 @@ export class KarmaProgramsMicrositeComponent implements OnInit {
   orgId = ''
   sectionList: any = []
   contentDataList: any = []
+  originalContentlist: any = []
+  seeAllPageConfig: any
   titles = [
     {
       title: `Karma programs`,
@@ -25,7 +29,17 @@ export class KarmaProgramsMicrositeComponent implements OnInit {
   loadContentSearch = false
   constructor(private route: ActivatedRoute,
               public contentSvc: KarmaProgramsService,
-              public commonSvc: CommonMethodsService) { }
+              private translate: TranslateService,
+              private langtranslations: MultilingualTranslationsService,
+              public commonSvc: CommonMethodsService) { 
+                this.langtranslations.languageSelectedObservable.subscribe(() => {
+                  if (localStorage.getItem('websiteLanguage')) {
+                    this.translate.setDefaultLang('en')
+                    const lang = localStorage.getItem('websiteLanguage')!
+                    this.translate.use(lang)
+                  }
+                })
+              }
 
   ngOnInit() {
     this.route.params.subscribe(params => {
@@ -55,13 +69,15 @@ export class KarmaProgramsMicrositeComponent implements OnInit {
     const request  = requestData || this.formRequest()
     const sectionData = this.sectionList.filter((ele: any) => ele.key === 'contentSearch')
     if (sectionData && sectionData.length) {
-    const strip: any = sectionData[0].column[0].data && sectionData[0].column[0].data.strips[0]
+    const strip: any = sectionData[0].column[0].data && sectionData[0].column[0].data.strips[0] || {}
+    this.seeAllPageConfig = strip
     try {
       this.loadContentSearch = true
       const response = await this.fetchFromSearchV6(request)
       if (response && response.results) {
         if (response.results.result.content) {
          this.contentDataList = this.commonSvc.transformContentsToWidgets(response.results.result.content, strip)
+         this.originalContentlist = response.results.result.content
         }
         this.loadContentSearch = false
       }
@@ -84,12 +100,27 @@ export class KarmaProgramsMicrositeComponent implements OnInit {
         }
       })
   }
+  // handleSearchQuery(e: any) {
+  //   if (e.target.value) {
+  //     const request = this.formRequest(e.target.value)
+  //     this.getDataFromSearch(request)
+  //   }
+  // }
+
   handleSearchQuery(e: any) {
-    if (e.target.value) {
-      const request = this.formRequest(e.target.value)
-      this.getDataFromSearch(request)
+    if (e.target.value || e.target.value === '') {
+      this.contentDataList = this.commonSvc.transformSkeletonToWidgets(this.seeAllPageConfig)
+      // this.callApi(e.target.value)
+      this.filterContentList(e.target.value)
     }
   }
+  filterContentList(searchText: string) {
+    const data = [...this.originalContentlist]
+    const filterValue = searchText.toLowerCase()
+    const filteredData = data.filter((p: any) => p &&  p.name && p.name.toLowerCase().includes(filterValue))
+    this.contentDataList  = this.commonSvc.transformContentsToWidgets(filteredData, this.seeAllPageConfig)
+  }
+
   formRequest(queryText?: any, addFilter?: any) {
     this.loadCardSkeletonLoader()
     const request: any = {
