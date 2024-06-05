@@ -61,7 +61,6 @@ export class MdoChannelsComponent implements OnInit {
       && this.route.snapshot.data.channelData.data.result.data.orgList.length
     ) {
       this.allProviders = this.route.snapshot.data.channelData.data.result.data.orgList
-      console.log(this.allProviders,';=-=-=-=-=-=-=-=-=')
       // .data.result.form.data.sectionList
     }
     this.langtranslations.languageSelectedObservable.subscribe(() => {
