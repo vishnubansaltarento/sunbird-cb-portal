@@ -2,6 +2,8 @@ import { Component, OnInit } from '@angular/core'
 import { ActivatedRoute } from '@angular/router'
 import { CommonMethodsService } from '@sunbird-cb/consumption'
 import { KarmaProgramsService } from '../service/karma-programs.service'
+import { EventService, WsEvents } from '@sunbird-cb/utils'
+import * as _ from 'lodash'
 
 @Component({
   selector: 'ws-app-karma-programs-microsite',
@@ -23,9 +25,12 @@ export class KarmaProgramsMicrositeComponent implements OnInit {
     },
   ]
   loadContentSearch = false
+  expanded = false
+  descriptionMaxLength = 750
   constructor(private route: ActivatedRoute,
               public contentSvc: KarmaProgramsService,
-              public commonSvc: CommonMethodsService) { }
+              public commonSvc: CommonMethodsService,
+              public eventSvc: EventService) { }
 
   ngOnInit() {
     this.route.params.subscribe(params => {
@@ -119,6 +124,27 @@ export class KarmaProgramsMicrositeComponent implements OnInit {
         const strip: any = sectionData[0].column[0].data && sectionData[0].column[0].data.strips[0]
       this.contentDataList = this.commonSvc.transformSkeletonToWidgets(strip)
     }
+  }
+
+  viewMoreOrLess() {
+    this.expanded = !this.expanded
+  }
+  
+  raiseTelemetryInteratEvent(event: any) {
+    this.eventSvc.raiseInteractTelemetry(
+      {
+        type: 'click',
+        subType: 'karma-programs',
+        id: `card-content`,
+      },
+      {
+        id: event.identifier,
+        type: event.primaryCategory,
+      },
+      {
+        module: WsEvents.EnumTelemetrymodules.LEARN,
+      }
+    )
   }
 
 }
