@@ -497,7 +497,6 @@ export class ProfileViewComponent implements OnInit, AfterViewInit, OnDestroy {
         this.matSnackBar.open(this.handleTranslateTo('unableFetchMasterLanguageData'))
       }
     })
-
   }
 
   handleTranslateTo(menuName: string): string {
@@ -506,14 +505,16 @@ export class ProfileViewComponent implements OnInit, AfterViewInit, OnDestroy {
 
   prefillForm(data ?: any): void {
     if (data) {
+      console.log(data, "this.data=====")
       this.portalProfile.personalDetails.gender = data.dataToSubmit.gender
       this.portalProfile.personalDetails.dob = data.dataToSubmit.dob
       this.portalProfile.personalDetails.domicileMedium = data.dataToSubmit.domicileMedium
       this.portalProfile.personalDetails.category = data.dataToSubmit.category
-      this.portalProfile.personalDetails.pincode = data.dataToSubmit.pincode
+      // this.portalProfile.personalDetails.pincode = data.dataToSubmit.pincode
       this.portalProfile.personalDetails.mobile = data.dataToSubmit.mobile
       if (this.portalProfile.employmentDetails) {
         this.portalProfile.employmentDetails.employeeCode = data.employeeCode
+        this.portalProfile.employmentDetails.pinCode = data.dataToSubmit.pincode
       }
     }
 
@@ -530,7 +531,7 @@ export class ProfileViewComponent implements OnInit, AfterViewInit, OnDestroy {
       domicileMedium: this.portalProfile.personalDetails.domicileMedium,
       mobile: this.portalProfile.personalDetails.mobile,
       countryCode: this.portalProfile.personalDetails.countryCode || '+91',
-      pincode: this.portalProfile.personalDetails.pincode,
+      pincode: this.portalProfile.employmentDetails && this.portalProfile.employmentDetails.pinCode,
       category: this.portalProfile.personalDetails.category && this.portalProfile.personalDetails.category.toUpperCase(),
     })
 

@@ -392,7 +392,7 @@
                 <div class="info-value flex" *ngIf="editDetails">
                   <mat-form-field class="profile-form-field">
                     <div class="flex flex-row auto-complete-row">
-                      <input type="text" class="input-text" aria-label="Domicile Medium (Mother Tongue)" matInput
+                      <input type="text" class="input-text" aria-label="Domicile Medium (Mother Tongue)" matInput 
                         formControlName="domicileMedium" [matAutocomplete]="languageAuto" />
                       <mat-icon>arrow_drop_down</mat-icon>
                     </div>
@@ -418,7 +418,8 @@
               </div>
               <div class="info-div">
                 <div class="label">{{ 'profileInfo.officePinCode' | translate }}</div>
-                <div class="info-value" *ngIf="!editDetails">{{ portalProfile?.personalDetails?.pincode || 'NA' }}</div>
+                <div class="info-value" *ngIf="!editDetails">{{ portalProfile?.employmentDetails?.pinCode || 'NA' }}</div> 
+                <!-- <div class="info-value" *ngIf="!editDetails">{{  portalProfile?.employmentDetails.pinCode || 'NA' }}</div>  -->
                 <div class="flex flex-col" *ngIf="editDetails">
                   <mat-form-field class="profile-form-field">
                     <input type="email" class="input-text" matInput maxlength="6" formControlName="pincode" />
@@ -429,6 +430,8 @@
                 </div>
               </div>
             </div>
+
+            <!-- {{ portalProfile | json }}  // -->
   
             <div class="grid-container">
               <div class="info-div">
