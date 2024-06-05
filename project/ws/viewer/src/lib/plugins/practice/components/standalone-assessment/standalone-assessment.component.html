@@ -42,9 +42,9 @@
   
         <div class="border-outline">
           <div class="flex flex-1">
-            <mat-progress-bar class="quiz-progress" [color]="secondary" [mode]="determinate"
+            <!-- <mat-progress-bar class="quiz-progress" [color]="primary" [mode]="determinate"
               [value]="((currentQuestionIndex + 1)/totalQCount)*100" [bufferValue]="100">
-            </mat-progress-bar>
+            </mat-progress-bar> -->
           </div>
           <ng-container *ngIf="current_Question && !process">
             <viewer-question #questionsReference [id]="'question' + (currentQuestionIndex + 1)"
