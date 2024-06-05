@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core'
 import { ActivatedRoute } from '@angular/router'
 import { CommonMethodsService } from '@sunbird-cb/consumption'
 import { KarmaProgramsService } from '../service/karma-programs.service'
+import { EventService, WsEvents } from '@sunbird-cb/utils'
 import { TranslateService } from '@ngx-translate/core'
 import { MultilingualTranslationsService } from '@sunbird-cb/utils-v2'
 
@@ -27,10 +28,13 @@ export class KarmaProgramsMicrositeComponent implements OnInit {
     },
   ]
   loadContentSearch = false
+  expanded = false
+  descriptionMaxLength = 750
   constructor(private route: ActivatedRoute,
               public contentSvc: KarmaProgramsService,
               private translate: TranslateService,
               private langtranslations: MultilingualTranslationsService,
+              public eventSvc: EventService,
               public commonSvc: CommonMethodsService) {
                 this.langtranslations.languageSelectedObservable.subscribe(() => {
                   if (localStorage.getItem('websiteLanguage')) {
@@ -150,6 +154,27 @@ export class KarmaProgramsMicrositeComponent implements OnInit {
         const strip: any = sectionData[0].column[0].data && sectionData[0].column[0].data.strips[0]
       this.contentDataList = this.commonSvc.transformSkeletonToWidgets(strip)
     }
+  }
+
+  viewMoreOrLess() {
+    this.expanded = !this.expanded
+  }
+
+  raiseTelemetryInteratEvent(event: any) {
+    this.eventSvc.raiseInteractTelemetry(
+      {
+        type: 'click',
+        subType: 'karma-programs',
+        id: `card-content`,
+      },
+      {
+        id: event.identifier,
+        type: event.primaryCategory,
+      },
+      {
+        module: WsEvents.EnumTelemetrymodules.LEARN,
+      }
+    )
   }
 
 }

@@ -4,6 +4,7 @@ import { Observable, Subject } from 'rxjs'
 import { BrowseProviderService } from '../../browse-by-provider/services/browse-provider.service'
 import { LocalDataService } from '../../browse-by-competency/services/localService'
 import { TranslateService } from '@ngx-translate/core'
+import { EventService, WsEvents } from '@sunbird-cb/utils'
 import { MultilingualTranslationsService } from '@sunbird-cb/utils-v2'
 import { debounceTime, switchMap, takeUntil } from 'rxjs/operators'
 // tslint:disable
@@ -52,6 +53,7 @@ export class KarmaProgramsComponent implements OnInit {
     private translate: TranslateService,
     private route: ActivatedRoute,
     private langtranslations: MultilingualTranslationsService,
+    private events: EventService
   ) {
     this.langtranslations.languageSelectedObservable.subscribe(() => {
       if (localStorage.getItem('websiteLanguage')) {
@@ -207,6 +209,23 @@ export class KarmaProgramsComponent implements OnInit {
       this.sortBy = sortType;
       this.allProviders = _.orderBy(this.allProviders.length ? this.allProviders : this.allProviders, ['content.name'], [this.sortBy])
     }
+  }
+
+  raiseTelemetryInteratEvent(event: any) {
+    this.events.raiseInteractTelemetry(
+      {
+        type: 'click',
+        subType: 'karma-programs',
+        id: 'card-content',
+      },
+      {
+        id: event.title,
+        type: event.orgId,
+      },
+      {
+        module: WsEvents.EnumTelemetrymodules.LEARN,
+      }
+    )
   }
 
 }
