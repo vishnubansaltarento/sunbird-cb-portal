@@ -79,12 +79,22 @@
                   </mat-form-field>
               </div>
         </div>
-       <ng-container *ngIf="contentDataList?.length">
+       <ng-container *ngIf="contentDataList?.length;else noData">
             <div class="flex flex-row flex-wrap content-container mt-5 mb-10 ng-star-inserted">
                 <div class="mr-2 mb-5 flex" *ngFor="let c of contentDataList">
                     <sb-uic-cards [widgetData]="c.widgetData" (triggerTelemetry)="raiseTelemetryInteratEvent($event)"> </sb-uic-cards>
                 </div>
             </div>
        </ng-container>
+
+       <ng-template #noData>
+        <div class="flex justify-center w-full">
+            <div class="margin-xl text-center" >
+                <img src="/assets/common/error-pages/empty_search.svg" wsUtilsImageResponsive alt="No results"
+                    class="margin-top-l margin-bottom-s">
+                <h2 class="mat-h2" i18n="search route no result">{{'learnsearch.noResults' | translate}}</h2>
+            </div>
+        </div>
+    </ng-template> 
     </div>
 </ng-template>

@@ -8,6 +8,7 @@ import { MultilingualTranslationsService } from '@sunbird-cb/utils-v2'
 import { debounceTime, switchMap, takeUntil } from 'rxjs/operators'
 // tslint:disable
 import _ from 'lodash'
+import { ActivatedRoute } from '@angular/router'
 
 @Component({
   selector: 'ws-app-karma-programs',
@@ -24,7 +25,7 @@ export class KarmaProgramsComponent implements OnInit {
   searchForm: FormGroup | undefined
   sortBy: any
   searchQuery = ''
-  allProviders: any
+  allProviders: any = []
   clonesProviders: any
   disableLoadMore = false
   totalCount = 0
@@ -49,6 +50,7 @@ export class KarmaProgramsComponent implements OnInit {
     private browseProviderSvc: BrowseProviderService,
     private localService: LocalDataService,
     private translate: TranslateService,
+    private route: ActivatedRoute,
     private langtranslations: MultilingualTranslationsService,
   ) {
     this.langtranslations.languageSelectedObservable.subscribe(() => {
@@ -58,63 +60,15 @@ export class KarmaProgramsComponent implements OnInit {
         this.translate.use(lang)
       }
     })
-    this.allProviders = [
-      {
-        content: {
-          // tslint:disable-next-line: max-line-length
-          posterImage: 'https://portal.karmayogi.nic.in/content-store/content/do_114051411119235072127/artifact/do_114051411119235072127_1715260168985_default-provider.svg',
-          appIcon: '',
-          name: 'Ministry of Consumer Affairs, Food and Public Distribution',
-          programCount: '10',
-        },
-      },
-      {
-        content: {
-          // tslint:disable-next-line: max-line-length
-            posterImage: 'https://portal.karmayogi.nic.in/content-store/content/do_114051411119235072127/artifact/do_114051411119235072127_1715260168985_default-provider.svg',
-            appIcon: '',
-            name: 'Ministry of Railways',
-            programCount: '10',
-        },
-      },
-      {
-        content: {
-          // tslint:disable-next-line: max-line-length
-            posterImage: 'https://portal.karmayogi.nic.in/content-store/content/do_114051411119235072127/artifact/do_114051411119235072127_1715260168985_default-provider.svg',
-            appIcon: '',
-            name: 'Department of Post',
-            programCount: '10',
-        },
-      },
-      {
-        content: {
-          // tslint:disable-next-line: max-line-length
-            posterImage: 'https://portal.karmayogi.nic.in/content-store/content/do_114051411119235072127/artifact/do_114051411119235072127_1715260168985_default-provider.svg',
-            appIcon: '',
-            name: 'NLC India Limited',
-            programCount: '30',
-        },
-      },
-      {
-        content: {
-          // tslint:disable-next-line: max-line-length
-            posterImage: 'https://portal.karmayogi.nic.in/content-store/content/do_114051411119235072127/artifact/do_114051411119235072127_1715260168985_default-provider.svg',
-            appIcon: '',
-            name: 'Mission Karmayogi',
-            programCount: '24',
-        },
-      },
-      {
-        content: {
-          // tslint:disable-next-line: max-line-length
-            posterImage: 'https://portal.karmayogi.nic.in/content-store/content/do_114051411119235072127/artifact/do_114051411119235072127_1715260168985_default-provider.svg',
-            appIcon: '',
-            name: 'Mission Karmayogi',
-            programCount: '50',
-        },
-      },
-
-    ]
+    if (this.route.snapshot.data && this.route.snapshot.data.programData
+      && this.route.snapshot.data.programData.data
+      && this.route.snapshot.data.programData.data.result
+      && this.route.snapshot.data.programData.data.result.data
+      && this.route.snapshot.data.programData.data.result.data.length
+    ) {
+      this.allProviders = this.route.snapshot.data.programData.data.result.data
+      // .data.result.form.data.sectionList
+    }
     this.clonesProviders = this.allProviders
    }
 
