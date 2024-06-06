@@ -505,7 +505,6 @@ export class ProfileViewComponent implements OnInit, AfterViewInit, OnDestroy {
 
   prefillForm(data ?: any): void {
     if (data) {
-      console.log(data, "this.data=====")
       this.portalProfile.personalDetails.gender = data.dataToSubmit.gender
       this.portalProfile.personalDetails.dob = data.dataToSubmit.dob
       this.portalProfile.personalDetails.domicileMedium = data.dataToSubmit.domicileMedium
