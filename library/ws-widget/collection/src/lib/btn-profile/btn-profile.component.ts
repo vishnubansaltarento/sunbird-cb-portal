@@ -226,6 +226,10 @@ export class BtnProfileComponent extends WidgetBaseComponent
       }
     )
   }
+  redirectToLearnersPage(){
+    this.raiseTelemetry('Tips For Learners')
+    this.router.navigate(['/public/learner-advisory'])
+  }
 
   // rasieProfileMenuTelemetry(tabname: string) {
   //   tabname = tabname.toLowerCase().split(' ').join('-')

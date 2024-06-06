@@ -84,7 +84,7 @@ export class ContentStripMultipleComponent extends WidgetBaseComponent
     private userSvc: WidgetUserService,
     private http: HttpClient,
     private searchApiService: SearchApiService,
-    private langtranslations: MultilingualTranslationsService
+    private langtranslations: MultilingualTranslationsService,
   ) {
     super()
   }
@@ -1175,6 +1175,7 @@ export class ContentStripMultipleComponent extends WidgetBaseComponent
           ...stripInfo,
           visibilityMode: stripInfo.visibilityMode === 'hidden' ? 'visible' : 'hidden',
         }
+        
       }
     }
   }
