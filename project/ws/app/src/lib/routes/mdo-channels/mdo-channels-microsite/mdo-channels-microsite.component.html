@@ -229,6 +229,7 @@
 <ng-template #competency let-competency="competency">
     <div class="padding-top-l padding-bottom-l relative"  [style.background]="competency?.background" *ngIf="!hideCompetencyBlock">
         <div class="w-full container-balanced">
+            <p class="mat-body-1">This section shows the list of top competencies users in this MDO are learning, based on the courses they've completed and enrolled in.</p>
             <div class="pl-4 pr-4 md:pl-0 md:pr-0">
                 <sb-uic-competency-passbook
                     [dynamicColor]="'#999999'"
