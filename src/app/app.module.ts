@@ -100,7 +100,7 @@ import { SurveyShikshaComponent } from './component/survey-shiksha/survey-shiksh
 import {
 WIDGET_REGISTERED_LIB_MODULES, WIDGET_REGISTRATION_LIB_CONFIG,
 } from '@sunbird-cb/consumption'
-import { PrivacyPolicyComponent } from './component/privacy-policy/privacy-policy.component';
+import { PrivacyPolicyComponent } from './component/privacy-policy/privacy-policy.component'
 import { LearnerAdvisoryComponent } from './learner-advisory/learner-advisory.component'
 
 @Injectable()

@@ -329,6 +329,6 @@ export class InsightSideBarComponent implements OnInit {
     })
   }
   showAllTips() {
-    this.router.navigate(['public/learner-advisory']);
+    this.router.navigate(['public/learner-advisory'])
   }
 }

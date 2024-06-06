@@ -226,7 +226,7 @@ export class BtnProfileComponent extends WidgetBaseComponent
       }
     )
   }
-  redirectToLearnersPage(){
+  redirectToLearnersPage() {
     this.raiseTelemetry('Tips For Learners')
     this.router.navigate(['/public/learner-advisory'])
   }

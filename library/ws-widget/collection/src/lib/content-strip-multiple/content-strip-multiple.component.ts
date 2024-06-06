@@ -1175,7 +1175,7 @@ export class ContentStripMultipleComponent extends WidgetBaseComponent
           ...stripInfo,
           visibilityMode: stripInfo.visibilityMode === 'hidden' ? 'visible' : 'hidden',
         }
-        
+
       }
     }
   }

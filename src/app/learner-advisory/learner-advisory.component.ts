@@ -1,9 +1,9 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit } from '@angular/core'
 
 @Component({
   selector: 'ws-learner-advisory',
   templateUrl: './learner-advisory.component.html',
-  styleUrls: ['./learner-advisory.component.scss']
+  styleUrls: ['./learner-advisory.component.scss'],
 })
 export class LearnerAdvisoryComponent implements OnInit {
 
