@@ -382,8 +382,8 @@ export class HomeComponent implements OnInit, AfterViewInit {
           id: 'content-card',
         },
         {
-          id: id,
-          type: type,
+          id,
+          type,
         },
         {
           module: WsEvents.EnumTelemetrymodules.HOME,
