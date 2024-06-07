@@ -341,10 +341,10 @@
               <div class="info-div">
                 <div class="label">{{ 'profileInfo.mobileNumber' | translate }}</div>
                 <div class="info-value" *ngIf="!editDetails">
-                  <span class="flex flex-row gap-2 items-center" *ngIf="portalProfile?.personalDetails?.mobile">
+                  <span class="flex flex-row gap-2 items-center" *ngIf="portalProfile?.personalDetails?.mobile && portalProfile?.personalDetails?.phoneVerified">
                     +91 {{ portalProfile?.personalDetails?.mobile }}
                   </span>
-                  <span *ngIf="!portalProfile?.personalDetails?.mobile">NA</span>
+                  <span *ngIf="!portalProfile?.personalDetails?.mobile || !portalProfile?.personalDetails?.phoneVerified">NA</span>
                 </div>
   
                 <div class="flex flex-row gap-2" *ngIf="editDetails">
