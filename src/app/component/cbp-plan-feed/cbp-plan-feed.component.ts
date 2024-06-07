@@ -80,4 +80,8 @@ export class CbpPlanFeedComponent implements OnInit {
   closeFilter(value: any, key: any) {
     this.closeFilterKey.emit({ value, key })
   }
+
+  translateLabel(label: string, type: any) {
+    return this.langtranslations.translateLabel(label, type, '')
+  }
 }

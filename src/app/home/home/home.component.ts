@@ -211,6 +211,12 @@ export class HomeComponent implements OnInit, AfterViewInit {
     this.enrollInterval = setInterval(() => {
       this.getEnrollmentData()
     },                                1000)
+
+    if (localStorage.getItem('websiteLanguage')) {
+      this.translate.setDefaultLang('en')
+      const lang = localStorage.getItem('websiteLanguage')!
+      this.translate.use(lang)
+    }
   }
 
   ngAfterViewInit() {

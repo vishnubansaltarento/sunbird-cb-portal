@@ -20,10 +20,10 @@
                 <ng-container  *ngFor="let item1 of item.value">
                     <div class="tag-wrap flex margin-right-xs margin-bottom-xs">
                         <ng-container *ngIf="item.key === 'status' || item.key === 'timeDuration' ;else allEle">
-                            <p>{{filterValuesBinding[item.key][item1]}}</p>
+                            <p>{{translateLabel(filterValuesBinding[item.key][item1], 'searchfilters')}}</p>
                         </ng-container>
                         <ng-template #allEle>
-                            <p>{{item1}}</p>
+                            <p>{{translateLabel(item1, 'searchfilters')}}</p>
                         </ng-template>
                         <mat-icon aria-hidden="true" (click)="closeFilter(item1,item.key)" class="ws-mat-default-text mat-icon notranslate material-icons mat-icon-no-color filter-acbp cursor-pointer" role="img"> close </mat-icon>
                     </div>

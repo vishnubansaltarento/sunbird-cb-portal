@@ -1,5 +1,9 @@
 <div class="mat-body-2 karmapoints-panel" *ngIf="isKPPanelenabled">
-    <p class="margin-remove">Earn <img src="/assets/icons/home/karma-badge.svg" alt="KarmaPoints"> <span class="font-bold"> 5 Karma Points </span> for your 1st course enrolment!</p>
+    <p class="margin-remove"> {{'appKarmapointsPanel.earn' |translate}}
+        <img src="/assets/icons/home/karma-badge.svg" alt="KarmaPoints">
+        <span class="font-bold"> {{'appKarmapointsPanel.fKarmaPoints' |translate}} </span> 
+        {{'appKarmapointsPanel.courseEnrollement' |translate}}
+    </p>
     <mat-icon (click)="closeKarmaPointsPanel()" class="cursor-pointer">close</mat-icon>
 </div>
 <div class="home-container m-auto flex flex-row gap-6"
