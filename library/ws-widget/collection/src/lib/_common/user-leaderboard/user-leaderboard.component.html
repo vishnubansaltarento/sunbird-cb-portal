@@ -39,7 +39,7 @@
                 [name]="rank2?.fullname" [photoUrl]="rank2?.profile_image" size="l-xs">
               </ws-widget-avatar-photo>
             </div>
-            <div class="rank-user-name">{{rank2?.fullname}}</div>
+            <div class="rank-user-name">{{rank2?.fullname | titlecase}}</div>
             <div class="rank-user-points flex">
               <img class="podium-karmapoints-icon" alt="karma points" src="/assets/icons/home/karma-badge.svg">
               {{rank2?.total_points ? rank2?.total_points : 0}}
@@ -71,7 +71,7 @@
                 [name]="rank1?.fullname" [photoUrl]="rank1?.profile_image" size="l-xs" class="first-rank">
               </ws-widget-avatar-photo>
             </div>
-          <div class="rank-user-name">{{rank1?.fullname}}</div>
+          <div class="rank-user-name">{{rank1?.fullname | titlecase }}</div>
           <div class="rank-user-points flex">
             <img class="podium-karmapoints-icon" alt="karma points" src="/assets/icons/home/karma-badge.svg">
             {{rank1?.total_points ? rank1?.total_points : 0}}
@@ -101,7 +101,7 @@
                 [name]="rank3?.fullname" [photoUrl]="rank3?.profile_image" size="l-xs">
               </ws-widget-avatar-photo>
             </div>
-          <div class="rank-user-name">{{rank3?.fullname}}</div>
+          <div class="rank-user-name">{{rank3?.fullname | titlecase}}</div>
           <div class="rank-user-points flex">
             <img class="podium-karmapoints-icon" alt="karma points" src="/assets/icons/home/karma-badge.svg">
             {{rank3?.total_points ? rank3?.total_points : 0}}
