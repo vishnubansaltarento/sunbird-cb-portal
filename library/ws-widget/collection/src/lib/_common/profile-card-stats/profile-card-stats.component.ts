@@ -52,7 +52,6 @@ export class ProfileCardStatsComponent implements OnInit {
       if (this.userFullName && this.userFullName.length > 18) {
         this.userFullName = `${this.userInfo.firstName.slice(0, 18)}...`
       }
-
     }
     this.enrollInterval = setInterval(() => {
       this.getCounts()
