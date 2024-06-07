@@ -7,7 +7,7 @@ import {
   WidgetContentService,
 } from '@sunbird-cb/collection'
 import { NsWidgetResolver } from '@sunbird-cb/resolver'
-import { ConfigurationsService, ValueService } from '@sunbird-cb/utils'
+import { ConfigurationsService, ValueService } from '@sunbird-cb/utils-v2'
 import { ActivatedRoute } from '@angular/router'
 import { Platform } from '@angular/cdk/platform'
 import { ViewerUtilService } from '../../viewer-util.service'

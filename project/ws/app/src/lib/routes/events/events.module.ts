@@ -24,12 +24,13 @@ import { LoaderService } from '@ws/author/src/public-api'
 import { InitResolver } from '@ws/author/src/lib/services/init-resolve.service'
 import { ReactiveFormsModule, FormsModule } from '@angular/forms'
 import { BtnPageBackModule, ContentStripWithTabsModule } from '@sunbird-cb/collection/src/public-api'
-import { PipeOrderByModule } from '@sunbird-cb/utils/src/lib/pipes/pipe-order-by/pipe-order-by.module'
 import { AvatarPhotoModule } from '@sunbird-cb/collection/src/lib/_common/avatar-photo/avatar-photo.module'
-import { PipeHtmlTagRemovalModule, PipeFilterV2Module, PipePublicURLModule, HorizontalScrollerV2Module } from '@sunbird-cb/utils'
-import { PipeRelativeTimeModule } from '@sunbird-cb/utils/src/lib/pipes/pipe-relative-time/pipe-relative-time.module'
-import { PipeFilterSearchModule } from '@sunbird-cb/utils/src/lib/pipes/pipe-filter-search/pipe-filter-search.module'
-import { PipeFilterModule } from '@sunbird-cb/utils/src/lib/pipes/pipe-filter/pipe-filter.module'
+import { PipeHtmlTagRemovalModule, PipeFilterV2Module, PipePublicURLModule, HorizontalScrollerV2Module,
+  PipeFilterModule,
+  PipeRelativeTimeModule,
+  PipeFilterSearchModule,
+  PipeOrderByModule,
+ } from '@sunbird-cb/utils-v2'
 import { EventsCardComponent } from './components/events-card/events-card.component'
 import { TodayEventCardComponent } from './components/today-event-card/today-event-card.component'
 import { EventDetailComponent } from './routes/event-detail/event-detail.component'

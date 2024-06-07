@@ -1,8 +1,7 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core'
 import { Router } from '@angular/router'
 import { ConfigurationsService, MultilingualTranslationsService,
-  EventService, WsEvents } from '@sunbird-cb/utils'
-import { PipeDurationTransformPipe } from '@sunbird-cb/utils/src/public-api'
+  EventService, WsEvents, PipeDurationTransformPipe } from '@sunbird-cb/utils-v2'
 import { InfoDialogComponent } from '../info-dialog/info-dialog.component'
 import { MatDialog } from '@angular/material'
 import { HomePageService } from 'src/app/services/home-page.service'

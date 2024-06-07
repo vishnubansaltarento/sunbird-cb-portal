@@ -21,7 +21,7 @@ import { NsWidgetResolver } from '@sunbird-cb/resolver'
 import { ConfigurationsService, EventService,
   LoggerService, MultilingualTranslationsService,
   NsPage, TFetchStatus, TelemetryService,
-  UtilityService, WsEvents } from '@sunbird-cb/utils'
+  UtilityService, WsEvents } from '@sunbird-cb/utils-v2'
 
 import { NsAppToc } from '../../models/app-toc.model'
 import { AppTocService } from '../../services/app-toc.service'

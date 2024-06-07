@@ -1,7 +1,7 @@
 import { Component, Input, OnInit, Renderer2, SimpleChanges } from '@angular/core'
 import { NsContent, viewerRouteGenerator } from '@sunbird-cb/collection'
 import { NsAppToc } from '../models/app-toc.model'
-import { EventService, WsEvents } from '@sunbird-cb/utils/src/public-api'
+import { EventService, WsEvents } from '@sunbird-cb/utils-v2'
 import { CertificateDialogComponent } from '@sunbird-cb/collection/src/lib/_common/certificate-dialog/certificate-dialog.component'
 import { MatDialog } from '@angular/material'
 import { animate, style, transition, trigger } from '@angular/animations'

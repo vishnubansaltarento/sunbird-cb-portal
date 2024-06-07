@@ -1,7 +1,7 @@
 import { Component, OnInit, Input } from '@angular/core'
 import { Router } from '@angular/router'
 import { TranslateService } from '@ngx-translate/core'
-import { EventService, WsEvents } from '@sunbird-cb/utils'
+import { EventService, WsEvents } from '@sunbird-cb/utils-v2'
 @Component({
   selector: 'ws-widget-discussions',
   templateUrl: './discussions.component.html',

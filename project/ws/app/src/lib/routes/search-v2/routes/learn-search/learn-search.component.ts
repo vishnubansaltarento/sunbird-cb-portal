@@ -1,6 +1,6 @@
 import { Component, OnInit, OnDestroy, Input, OnChanges, SimpleChanges } from '@angular/core'
 import { GbSearchService } from '../../services/gb-search.service'
-import { ConfigurationsService, EventService, MultilingualTranslationsService, ValueService } from '@sunbird-cb/utils'
+import { ConfigurationsService, EventService, MultilingualTranslationsService, ValueService } from '@sunbird-cb/utils-v2'
 import { ActivatedRoute, Router } from '@angular/router'
 // tslint:disable-next-line
 import _ from 'lodash'

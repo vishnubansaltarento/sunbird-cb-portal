@@ -3,7 +3,7 @@ import { CommonModule } from '@angular/common'
 import {
   PipeOrderByModule,
   PipeFilterV2Module,
-} from '@sunbird-cb/utils'
+} from '@sunbird-cb/utils-v2'
 import {
   MatToolbarModule,
   MatIconModule,

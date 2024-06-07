@@ -1,5 +1,5 @@
 import { Component, EventEmitter, Input, OnInit, OnChanges, Output, ViewChild } from '@angular/core'
-import { NsContent, MultilingualTranslationsService } from '@sunbird-cb/utils/src/public-api'
+import { NsContent, MultilingualTranslationsService } from '@sunbird-cb/utils-v2'
 import { NSPractice } from '../../practice.model'
 import { MatAccordion } from '@angular/material/expansion'
 import { MatTableDataSource } from '@angular/material/table'

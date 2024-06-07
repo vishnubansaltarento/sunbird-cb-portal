@@ -6,7 +6,7 @@ import {
 } from 'rxjs'
 import { debounceTime, throttleTime } from 'rxjs/operators'
 import { TFetchStatus } from '../../constants/misc.constants'
-import { EventService, WsEvents } from '@sunbird-cb/utils'
+import { EventService, WsEvents } from '@sunbird-cb/utils-v2'
 
 @Component({
   selector: 'ws-utils-horizontal-scroller-v2',

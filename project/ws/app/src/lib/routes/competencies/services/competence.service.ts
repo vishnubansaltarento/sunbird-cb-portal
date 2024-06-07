@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core'
 import { HttpClient } from '@angular/common/http'
-import { NsUser } from '@sunbird-cb/utils'
+import { NsUser } from '@sunbird-cb/utils-v2'
 import { Observable } from 'rxjs'
 import { ConfigurationsService } from 'library/ws-widget/utils/src/public-api'
 import { map } from 'rxjs/operators'

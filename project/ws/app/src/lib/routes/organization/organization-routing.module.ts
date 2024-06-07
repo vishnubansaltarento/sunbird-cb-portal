@@ -1,6 +1,6 @@
 import { NgModule } from '@angular/core'
 import { Routes, RouterModule } from '@angular/router'
-import { PageResolve } from '@sunbird-cb/utils/src/public-api'
+import { PageResolve } from '@sunbird-cb/utils-v2'
 import { OrganizationCourseDetailComponent } from './routes/organization-course-detail/organization-course-detail.component'
 import { OrganizationHomeComponent } from './routes/organization-home/organization-home.component'
 

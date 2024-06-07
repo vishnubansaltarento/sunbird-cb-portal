@@ -10,7 +10,7 @@ import { ProfileResolve } from './resolvers/profile-fetch'
 import { CompetencyTestComponent } from './routes/competence-test/competence-test.component'
 import { AssessmentResolverService } from './resolvers/assessment-resolver.service'
 // import { ProfileResolverService } from './resolvers/profile-resolver.service'
-// import { ConfigurationsService } from '@sunbird-cb/utils/src/public-api'
+// import { ConfigurationsService } from '@sunbird-cb/utils-v2'
 const routes: Routes = [
   {
     path: '',

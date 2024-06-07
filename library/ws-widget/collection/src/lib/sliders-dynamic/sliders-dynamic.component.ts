@@ -2,9 +2,8 @@ import { Component, HostBinding, Input, OnInit } from '@angular/core'
 import { NsWidgetResolver, WidgetBaseComponent } from '@sunbird-cb/resolver'
 import { ICarousel } from './sliders-dynamic.model'
 import { Subscription, interval } from 'rxjs'
-import { EventService, WsEvents } from '@sunbird-cb/utils'
 import { TranslateService } from '@ngx-translate/core'
-import { MultilingualTranslationsService } from '@sunbird-cb/utils/src/public-api'
+import { MultilingualTranslationsService, EventService, WsEvents  } from '@sunbird-cb/utils-v2'
 
 @Component({
   selector: 'ws-widget-sliders-dynamic',

@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core'
 import { ActivatedRoute } from '@angular/router'
 import { GyaanKarmayogiService } from '../../services/gyaan-karmayogi.service'
-import { NsContent } from '@sunbird-cb/utils/src/public-api'
+import { NsContent } from '@sunbird-cb/utils-v2'
 import * as _ from 'lodash'
 import { gyaanConstants } from '../../models/gyaan-contants.model'
 import { TitleCasePipe } from '@angular/common'

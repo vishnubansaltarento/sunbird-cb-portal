@@ -3,7 +3,7 @@ import { NsContent, NsDiscussionForum } from '@sunbird-cb/collection'
 import { NsWidgetResolver } from '@sunbird-cb/resolver'
 import { ActivatedRoute } from '@angular/router'
 import { SafeHtml, DomSanitizer } from '@angular/platform-browser'
-import { PipeLimitToPipe, ValueService, ConfigurationsService } from '@sunbird-cb/utils'
+import { PipeLimitToPipe, ValueService, ConfigurationsService } from '@sunbird-cb/utils-v2'
 @Component({
   selector: 'viewer-html-container',
   templateUrl: './html.component.html',

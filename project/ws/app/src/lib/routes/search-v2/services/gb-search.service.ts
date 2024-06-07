@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core'
 import { HttpClient } from '@angular/common/http'
 import { Observable, of, Subject } from 'rxjs'
-import { ConfigurationsService } from '@sunbird-cb/utils/src/public-api'
+import { ConfigurationsService } from '@sunbird-cb/utils-v2'
 import { ISearchAutoComplete, ISearchQuery } from '../../search/models/search.model'
 import { SearchApiService } from '../../search/apis/search-api.service'
 

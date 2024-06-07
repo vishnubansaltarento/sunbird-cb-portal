@@ -4,7 +4,7 @@ import { Observable, Subject } from 'rxjs'
 import { BrowseProviderService } from '../../browse-by-provider/services/browse-provider.service'
 import { LocalDataService } from '../../browse-by-competency/services/localService'
 import { TranslateService } from '@ngx-translate/core'
-import { EventService, MultilingualTranslationsService, WsEvents } from '@sunbird-cb/utils'
+import { EventService, MultilingualTranslationsService, WsEvents } from '@sunbird-cb/utils-v2'
 import { debounceTime, switchMap, takeUntil } from 'rxjs/operators'
 // tslint:disable
 import _ from 'lodash'

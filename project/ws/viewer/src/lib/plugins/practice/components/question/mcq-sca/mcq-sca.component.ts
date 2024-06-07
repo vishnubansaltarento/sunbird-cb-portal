@@ -13,7 +13,7 @@ import { NSPractice } from '../../../practice.model'
 import _ from 'lodash'
 import { Subscription } from 'rxjs'
 import { PracticeService } from '../../../practice.service'
-import { NsContent } from '@sunbird-cb/utils/src/public-api'
+import { NsContent } from '@sunbird-cb/utils-v2'
 @Component({
     selector: 'viewer-mcq-sca-question',
     templateUrl: './mcq-sca.component.html',

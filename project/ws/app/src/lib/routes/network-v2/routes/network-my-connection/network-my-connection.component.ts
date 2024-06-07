@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core'
 import { FormControl } from '@angular/forms'
 import { ActivatedRoute } from '@angular/router'
 // import { ConnectionHoverService } from '../../components/connection-name/connection-hover.servive'
-import { WsEvents, EventService, MultilingualTranslationsService } from '@sunbird-cb/utils/src/public-api'
+import { WsEvents, EventService, MultilingualTranslationsService } from '@sunbird-cb/utils-v2'
 import { TranslateService } from '@ngx-translate/core'
 import * as _ from 'lodash'
 

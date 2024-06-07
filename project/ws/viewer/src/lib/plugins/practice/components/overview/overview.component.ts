@@ -1,5 +1,5 @@
 import { Component, EventEmitter, Input, OnDestroy, OnInit, Output } from '@angular/core'
-import { MultilingualTranslationsService, NsContent } from '@sunbird-cb/utils/src/public-api'
+import { MultilingualTranslationsService, NsContent } from '@sunbird-cb/utils-v2'
 import { NSPractice } from '../../practice.model'
 import { ActivatedRoute } from '@angular/router'
 import { ViewerHeaderSideBarToggleService } from './../../../../viewer-header-side-bar-toggle.service'

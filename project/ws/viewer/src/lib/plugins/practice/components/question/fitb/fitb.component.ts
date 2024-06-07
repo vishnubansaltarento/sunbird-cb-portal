@@ -12,7 +12,7 @@ import { SafeHtml, DomSanitizer } from '@angular/platform-browser'
 import { NSPractice } from '../../../practice.model'
 import { PracticeService } from '../../../practice.service'
 import { Subscription } from 'rxjs'
-import { NsContent } from '@sunbird-cb/utils/src/public-api'
+import { NsContent } from '@sunbird-cb/utils-v2'
 
 @Component({
     selector: 'viewer-fitb-question',

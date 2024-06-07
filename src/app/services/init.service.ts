@@ -20,13 +20,13 @@ import {
   NsInstanceConfig,
   // NsUser,
   UserPreferenceService,
-} from '@sunbird-cb/utils'
+} from '@sunbird-cb/utils-v2'
 import { environment } from '../../environments/environment'
 /* tslint:disable */
 import _ from 'lodash'
 import { map } from 'rxjs/operators'
 import { v4 as uuid } from 'uuid'
-import { Subscription } from 'rxjs'
+// import { Subscription } from 'rxjs'
 import { NSProfileDataV3 } from '@ws/app/src/lib/routes/profile-v3/models/profile-v3.models'
 import { NPSGridService } from '@sunbird-cb/collection/src/lib/grid-layout/nps-grid.service'
 import moment from 'moment'
@@ -62,7 +62,7 @@ const endpoint = {
 })
 export class InitService {
   private baseUrl = this.configSvc.baseUrl
-  updateProfileSubscription: Subscription | null = null
+  updateProfileSubscription: any | null = null
 
   httpOptions = {
     headers: new HttpHeaders({

@@ -1,6 +1,6 @@
 import { Component, OnInit, Input, Output, EventEmitter, ElementRef, ViewChild, OnDestroy } from '@angular/core'
 import { TranslateService } from '@ngx-translate/core'
-import { EventService, WsEvents } from '@sunbird-cb/utils/src/public-api'
+import { EventService, WsEvents } from '@sunbird-cb/utils-v2'
 import { environment } from 'src/environments/environment'
 
 @Component({

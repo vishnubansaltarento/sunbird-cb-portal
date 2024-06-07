@@ -1,7 +1,6 @@
 import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core'
 import { TranslateService } from '@ngx-translate/core'
-import { ConfigurationsService } from '@sunbird-cb/utils/src/public-api'
-import { EventService, WsEvents } from '@sunbird-cb/utils'
+import { ConfigurationsService, EventService, WsEvents } from '@sunbird-cb/utils-v2'
 
 @Component({
   selector: 'ws-widget-recent-requests',

@@ -7,7 +7,7 @@ import { NSBrowseCompetency } from '../../models/competencies.model'
 import _ from 'lodash'
 // tslint:enable
 import { LocalDataService } from '../../services/localService'
-import { MultilingualTranslationsService } from '@sunbird-cb/utils/src/public-api'
+import { MultilingualTranslationsService } from '@sunbird-cb/utils-v2'
 
 @Component({
   selector: 'ws-app-competency-filters',
