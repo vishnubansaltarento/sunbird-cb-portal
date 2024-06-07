@@ -94,6 +94,19 @@ export class SingleChoiseQuesComponent implements OnInit, OnDestroy {
     //         // this.question.options = []
     //     }
     // }
+
+    getSanitizeString(res: any) {
+        if (res) {
+            const response = res.replaceAll('&lt;', '<').replaceAll('&gt;', '>')
+            return response
+        }
+
+    }
+    htmlDecode(input: any) {
+        const e = document.createElement('div')
+        e.innerHTML = input
+        return e.childNodes[0].nodeValue
+    }
     ngOnDestroy(): void {
         this.practiceSvc.shCorrectAnswer(false)
         if (this.shCorrectAnsSubscription) {

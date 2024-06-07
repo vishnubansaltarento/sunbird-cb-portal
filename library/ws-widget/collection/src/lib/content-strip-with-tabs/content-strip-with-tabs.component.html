@@ -83,7 +83,9 @@
                   <mat-tab label="{{tab?.label}}" *ngFor="let tab of stripsResultDataMap[key].tabs; let last = last;">
                     <ng-template mat-tab-label>
                       <span>{{ translateLabels(tab?.label, 'home') }} &nbsp;</span>
-                      <span *ngIf="tab?.showTabDataCount && tab?.widgets?.length">({{tab?.widgets?.length}})</span>
+                      <!-- <span *ngIf="tab?.showTabDataCount && tab?.widgets?.length">({{tab?.widgets?.length}})</span> -->
+                      <span *ngIf="tab?.showTabDataCount && tab?.widgets?.length && stripsResultDataMap[key].key !== 'cbpPlan'">({{tab?.widgets?.length}})</span> 
+                     <span *ngIf="tab?.showTabDataCount && stripsResultDataMap[key].key === 'cbpPlan'">({{tab?.widgets?.length || 0}})</span>
                     </ng-template>
                     <div>
                       <!-- <ng-container [ngTemplateOutlet]="loader" *ngIf="stripsResultDataMap[key]?.showOnLoader">
