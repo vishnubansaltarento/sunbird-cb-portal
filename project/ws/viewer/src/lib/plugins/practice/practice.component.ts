@@ -822,7 +822,7 @@ export class PracticeComponent implements OnInit, OnChanges, OnDestroy {
             responseQ.push(mcqSca)
             break
           case 'ftb':
-            const ftb: any = {
+            const ftb: NSPractice.IMCQ_FTB = {
               identifier: sq.questionId,
               mimeType: NsContent.EMimeTypes.QUESTION,
               objectType: 'Question',
@@ -830,12 +830,11 @@ export class PracticeComponent implements OnInit, OnChanges, OnDestroy {
               primaryCategory: NsContent.EPrimaryCategory.FTB_QUESTION,
               qType: 'FTB',
               editorState: {
-
-                options: _.compact(_.map(sqEditorstate.options, (_o: any, idx: number) => {
-                  if (_o.value) {
+                options: _.compact(_.map(sq.options, (_o: NSPractice.IOption, idx: number) => {
+                  if (_o.response) {
                     return {
                       index: (_o.optionId || idx).toString(),
-                      selectedAnswer: _o.value || '',
+                      selectedAnswer: _o.response || '',
                     } as NSPractice.IResponseOptions
                   } return null
                 })),

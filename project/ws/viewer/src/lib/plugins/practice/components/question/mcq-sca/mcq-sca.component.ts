@@ -96,11 +96,11 @@ export class SingleChoiseQuesComponent implements OnInit, OnDestroy {
     // }
 
     getSanitizeString(res: any) {
-        if (res) {
-            const response = res.replaceAll('&lt;', '<').replaceAll('&gt;', '>')
+        if (res && (typeof res === 'string')) {
+            const response = res.replace(/\&lt;/g, '<').replace(/\&gt;/g, '>')
             return response
         }
-
+        return res
     }
     htmlDecode(input: any) {
         const e = document.createElement('div')
