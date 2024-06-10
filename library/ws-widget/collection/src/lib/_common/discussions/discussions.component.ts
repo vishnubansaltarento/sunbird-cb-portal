@@ -32,7 +32,7 @@ export class DiscussionsComponent implements OnInit {
   handleSelectedDiscuss(discussData: any, context: string | boolean): void {
     const subType = context && context === 'my-discussions' ? 'my-discussions' : 'trending-discussions'
     let slug = (discussData && discussData.slug) ? discussData.slug : ""
-    if (!slug && discussData.topic) {
+    if (!slug && discussData && discussData.topic && discussData.topic.slug) {
       slug = discussData.topic.slug
     }
     this.router.navigateByUrl(`/app/discussion-forum/topic/${slug}?page=home`)
