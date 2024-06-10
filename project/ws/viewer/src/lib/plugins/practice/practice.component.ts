@@ -773,11 +773,7 @@ export class PracticeComponent implements OnInit, OnChanges, OnDestroy {
     const responseQ: NSPractice.IRScratch[] = []
     if (section && section.identifier) {
       const secQues = _.filter(req.questions, q => q.section === section.identifier)
-      let sqEditorstate: any
       _.each(secQues, sq => {
-        if (sq && sq.editorState) {
-          sqEditorstate = sq.editorState
-        }
         switch (_.toLower(sq.questionType || '')) {
           case 'mcq-mca':
             const mcqMca: NSPractice.IMCQ_MCA = {
