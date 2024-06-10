@@ -677,7 +677,7 @@ export class ProfileViewComponent implements OnInit, AfterViewInit, OnDestroy {
           'personalDetails': {},
           'employmentDetails': {
             'employeeCode': this.otherDetailsForm.value['employeeCode'],
-            'pincode': this.otherDetailsForm.value['pincode'],
+            'pinCode': this.otherDetailsForm.value['pincode'],
             'mobile': this.otherDetailsForm.value['mobile'],
           },
         },
