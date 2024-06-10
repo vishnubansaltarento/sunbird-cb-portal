@@ -117,6 +117,7 @@ export namespace NSProfileDataV2 {
     surname: string
     telephone: string
     userName: string
+    phoneVerified: boolean
   }
   export interface IProfessionalDetails {
     additionalAttributes: { osid: string }
