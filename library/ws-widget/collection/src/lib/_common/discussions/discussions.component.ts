@@ -31,7 +31,11 @@ export class DiscussionsComponent implements OnInit {
 
   handleSelectedDiscuss(discussData: any, context: string | boolean): void {
     const subType = context && context === 'my-discussions' ? 'my-discussions' : 'trending-discussions'
-    this.router.navigateByUrl(`/app/discussion-forum/topic/${discussData.slug}?page=home`)
+    let slug = discussData.slug
+    if (!slug && discussData.topic) {
+      slug = discussData.topic.slug
+    }
+    this.router.navigateByUrl(`/app/discussion-forum/topic/${slug}?page=home`)
     this.eventService.raiseInteractTelemetry(
       {
         subType,
