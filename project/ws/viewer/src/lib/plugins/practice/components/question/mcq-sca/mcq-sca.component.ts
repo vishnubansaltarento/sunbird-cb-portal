@@ -97,7 +97,7 @@ export class SingleChoiseQuesComponent implements OnInit, OnDestroy {
 
     getSanitizeString(res: any) {
         if (res && (typeof res === 'string')) {
-            const response = res.replace(/\&lt;/g,"<").replace(/\&gt;/g,">")
+            const response = res.replace(/\&lt;/g, '<').replace(/\&gt;/g, '>')
             return response
         }
         return res

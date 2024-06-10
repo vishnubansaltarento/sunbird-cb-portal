@@ -202,7 +202,7 @@ export class FillInTheBlankComponent implements OnInit, OnChanges, AfterViewInit
 
     getSanitizeString(res: any) {
         if (res && (typeof res === 'string')) {
-            const response = res.replace(/\&lt;/g,"&lt;").replace('&gt;', '>')
+            const response = res.replace(/\&lt;/g, '&lt;').replace('&gt;', '>')
             return response
         }
         return res
