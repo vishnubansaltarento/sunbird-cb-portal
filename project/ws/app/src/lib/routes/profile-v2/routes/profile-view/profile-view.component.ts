@@ -229,7 +229,7 @@ export class ProfileViewComponent implements OnInit, AfterViewInit, OnDestroy {
     if (this.otherDetailsForm.get('mobile')) {
       this.otherDetailsForm.get('mobile')!.valueChanges
       .subscribe(res => {
-        if (res && res !== this.portalProfile.personalDetails.mobile) {
+        if (res && res !== this.portalProfile.personalDetails.mobile ||  !this.portalProfile.personalDetails.phoneVerified) {
           if (MOBILE_PATTERN.test(res)) {
             this.verifyMobile = true
           } else {
