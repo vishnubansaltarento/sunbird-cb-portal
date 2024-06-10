@@ -2,8 +2,8 @@ import { Component, EventEmitter, Input, OnInit, OnChanges, Output, ViewChild } 
 import { NsContent, MultilingualTranslationsService } from '@sunbird-cb/utils/src/public-api'
 import { NSPractice } from '../../practice.model'
 import { MatAccordion } from '@angular/material/expansion'
-import { MatTableDataSource } from '@angular/material/table'
-import * as _ from 'lodash'
+import { MatTableDataSource } from '@angular/material'
+import * as _ from 'lodash';
 @Component({
   selector: 'viewer-result',
   templateUrl: './result.component.html',
@@ -454,10 +454,5 @@ export class ResultComponent implements OnInit, OnChanges {
 
   translateLabels(label: string, type: any) {
     return this.langtranslations.translateLabelWithoutspace(label, type, '')
-  }
-
-  getFinalColumns(displayedColumns: any): string[] {
-    const displayColumns = _.map(displayedColumns, c => c.key)
-    return displayColumns
   }
 }

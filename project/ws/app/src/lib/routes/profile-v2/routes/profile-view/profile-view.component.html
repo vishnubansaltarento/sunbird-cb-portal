@@ -48,7 +48,15 @@
                     *ngIf="(portalProfile?.professionalDetails?.length && portalProfile?.professionalDetails[0]?.group)">
                     <div class="flex flex-row gap-2 items-center">
                       <div class="flex">{{ portalProfile?.professionalDetails[0]?.group }}</div>
-                      <mat-icon class="verified-check">check_circle</mat-icon>
+                      <ng-container *ngIf="portalProfile?.profileGroupStatus === 'VERIFIED'; else groupNotVerified">
+                        <mat-icon class="verified-check">check_circle</mat-icon>
+                      </ng-container>
+                      <ng-template #groupNotVerified>
+                        <div class="profile-not-verified">
+                          <div class="text">{{ 'profileInfo.notVerified' | translate }}</div>
+                          <mat-icon>info_outline</mat-icon>
+                        </div>
+                      </ng-template>
                     </div>
                   </ng-container>
                   <div class="flex gap-2 items-center info-value"
@@ -112,7 +120,15 @@
                     *ngIf="(portalProfile?.professionalDetails?.length && portalProfile?.professionalDetails[0]?.designation)">
                     <div class="flex flex-row gap-2 items-center">
                       <div class="flex">{{ portalProfile?.professionalDetails[0]?.designation }}</div>
-                      <mat-icon class="verified-check">check_circle</mat-icon>
+                      <ng-container *ngIf="portalProfile?.profileDesignationStatus === 'VERIFIED'; else designationNotVerified">
+                        <mat-icon class="verified-check">check_circle</mat-icon>
+                      </ng-container>
+                      <ng-template #designationNotVerified>
+                        <div class="profile-not-verified">
+                          <div class="text">{{ 'profileInfo.notVerified' | translate }}</div>
+                          <mat-icon>info_outline</mat-icon>
+                        </div>
+                      </ng-template>
                     </div>
                   </ng-container>
                   <ng-container *ngIf="(!portalProfile?.professionalDetails?.length || !portalProfile?.professionalDetails[0]?.designation)">
@@ -325,10 +341,10 @@
               <div class="info-div">
                 <div class="label">{{ 'profileInfo.mobileNumber' | translate }}</div>
                 <div class="info-value" *ngIf="!editDetails">
-                  <span class="flex flex-row gap-2 items-center" *ngIf="portalProfile?.personalDetails?.mobile">
+                  <span class="flex flex-row gap-2 items-center" *ngIf="portalProfile?.personalDetails?.mobile && portalProfile?.personalDetails?.phoneVerified">
                     +91 {{ portalProfile?.personalDetails?.mobile }}
                   </span>
-                  <span *ngIf="!portalProfile?.personalDetails?.mobile">NA</span>
+                  <span *ngIf="!portalProfile?.personalDetails?.mobile || !portalProfile?.personalDetails?.phoneVerified">NA</span>
                 </div>
   
                 <div class="flex flex-row gap-2" *ngIf="editDetails">
@@ -392,7 +408,7 @@
                 <div class="info-value flex" *ngIf="editDetails">
                   <mat-form-field class="profile-form-field">
                     <div class="flex flex-row auto-complete-row">
-                      <input type="text" class="input-text" aria-label="Domicile Medium (Mother Tongue)" matInput
+                      <input type="text" class="input-text" aria-label="Domicile Medium (Mother Tongue)" matInput 
                         formControlName="domicileMedium" [matAutocomplete]="languageAuto" />
                       <mat-icon>arrow_drop_down</mat-icon>
                     </div>
@@ -418,7 +434,8 @@
               </div>
               <div class="info-div">
                 <div class="label">{{ 'profileInfo.officePinCode' | translate }}</div>
-                <div class="info-value" *ngIf="!editDetails">{{ portalProfile?.personalDetails?.pincode || 'NA' }}</div>
+                <div class="info-value" *ngIf="!editDetails">{{ portalProfile?.employmentDetails?.pinCode || 'NA' }}</div> 
+                <!-- <div class="info-value" *ngIf="!editDetails">{{  portalProfile?.employmentDetails.pinCode || 'NA' }}</div>  -->
                 <div class="flex flex-col" *ngIf="editDetails">
                   <mat-form-field class="profile-form-field">
                     <input type="email" class="input-text" matInput maxlength="6" formControlName="pincode" />
@@ -429,6 +446,8 @@
                 </div>
               </div>
             </div>
+
+            <!-- {{ portalProfile | json }}  // -->
   
             <div class="grid-container">
               <div class="info-div">
@@ -619,7 +638,7 @@
               </ng-container>
 
               <ng-container *ngIf="!skeletonLoader">
-                <ng-container *ngIf="!enableWTR">
+                <!-- <ng-container *ngIf="!enableWTR">
                   <div class="flex flex-row gap-2 items-center make-transfer-div">
                     <ng-container *ngIf="!enableWR">
                       <div class="text-sm make-transer" (click)="handleTransferRequest()">{{ 'profileInfo.makeTransferRequest' | translate }}</div>
@@ -631,15 +650,15 @@
                         #MTRTooltip="matTooltip" matTooltip="{{ 'profileInfo.withdrawPrimaryDetails' | translate }}" (click)="MTRTooltip.toggle()">{{ 'profileInfo.makeTransferRequest' | translate }}</div>
                     </ng-container>
                   </div>
-                </ng-container>
+                </ng-container> -->
   
-                <ng-container *ngIf="enableWTR">
+                <!-- <ng-container *ngIf="enableWTR">
                   <div class="flex flex-row gap-2 items-center make-transfer-div">
-                    <div class="text-sm make-transer" (click)="handleWithdrawTransferRequest()">{{ 'profileInfo.withdrawTransferRequest' | translate }}</div>
+                    <div class="text-sm make-transer" (click)="handleWithdrawTransferRequest()">{{ 'profileInfo.withdrawTransferRequest' | translate }}</div> -->
                     <!-- <mat-icon [matTooltipPosition]="'below'" #wTooltip="matTooltip" matTooltip="{{ 'profileInfo.withdrawTransferToolTip' | translate }}" (click)="wTooltip.toggle()">info_outline</mat-icon> -->
-                    <mat-icon [matTooltipPosition]="'below'" #wTooltip="matTooltip"  matTooltip="If you choose to withdraw your transfer request, your transfer request will get cancelled" (click)="wTooltip.toggle()">info_outline</mat-icon>
+                    <!-- <mat-icon [matTooltipPosition]="'below'" #wTooltip="matTooltip"  matTooltip="If you choose to withdraw your transfer request, your transfer request will get cancelled" (click)="wTooltip.toggle()">info_outline</mat-icon>
                   </div>
-                </ng-container>
+                </ng-container> -->
               </ng-container>
             </div>
           </div>

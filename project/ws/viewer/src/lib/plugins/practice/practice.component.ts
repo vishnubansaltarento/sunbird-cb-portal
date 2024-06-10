@@ -255,6 +255,7 @@ export class PracticeComponent implements OnInit, OnChanges, OnDestroy {
     }
     this.coursePrimaryCategory = this.widgetContentService.currentMetaData.primaryCategory
     this.instructionAssessment = this.widgetContentService.currentMetaData.instructions
+    console.log('this.widgetContentService.currentMetaData', this.widgetContentService)
   }
   get getTimeLimit(): number {
     let jsonTime = (this.quizJson.timeLimit || 0)
@@ -356,19 +357,7 @@ export class PracticeComponent implements OnInit, OnChanges, OnDestroy {
       return []
     }
     const qq = _.filter(this.quizJson.questions, { section: this.selectedSection.identifier })
-    this.totalQuestionsCount = qq ? qq.length : 0
-    const setStartIndex = this.noOfQuestionsPerSet * this.currentSetNumber
-    const setEndIndex = setStartIndex + this.noOfQuestionsPerSet
-    const secQuestions = qq.slice(setStartIndex, setEndIndex)
-    return secQuestions
-  }
-
-  getQuestionIndex(index: number): number {
-    return (this.noOfQuestionsPerSet * this.currentSetNumber) + index + 1
-  }
-
-  get hasNextSet(): boolean {
-    return this.totalQuestionsCount > this.noOfQuestionsPerSet * (this.currentSetNumber + 1)
+    return qq
   }
   nextSection(section: NSPractice.IPaperSection) {
     // this.quizSvc.currentSection.next(section)
@@ -841,7 +830,11 @@ export class PracticeComponent implements OnInit, OnChanges, OnDestroy {
     const responseQ: NSPractice.IRScratch[] = []
     if (section && section.identifier) {
       const secQues = _.filter(req.questions, q => q.section === section.identifier)
+      let sqEditorstate: any
       _.each(secQues, sq => {
+        if (sq && sq.editorState) {
+          sqEditorstate = sq.editorState
+        }
         switch (_.toLower(sq.questionType || '')) {
           case 'mcq-mca':
             const mcqMca: NSPractice.IMCQ_MCA = {
@@ -886,7 +879,7 @@ export class PracticeComponent implements OnInit, OnChanges, OnDestroy {
             responseQ.push(mcqSca)
             break
           case 'ftb':
-            const ftb: NSPractice.IMCQ_FTB = {
+            const ftb: any = {
               identifier: sq.questionId,
               mimeType: NsContent.EMimeTypes.QUESTION,
               objectType: 'Question',
@@ -894,11 +887,12 @@ export class PracticeComponent implements OnInit, OnChanges, OnDestroy {
               primaryCategory: NsContent.EPrimaryCategory.FTB_QUESTION,
               qType: 'FTB',
               editorState: {
-                options: _.compact(_.map(sq.options, (_o: NSPractice.IOption, idx: number) => {
-                  if (_o.response) {
+
+                options: _.compact(_.map(sqEditorstate.options, (_o: any, idx: number) => {
+                  if (_o.value) {
                     return {
                       index: (_o.optionId || idx).toString(),
-                      selectedAnswer: _o.response || '',
+                      selectedAnswer: _o.value || '',
                     } as NSPractice.IResponseOptions
                   } return null
                 })),
@@ -1219,8 +1213,7 @@ export class PracticeComponent implements OnInit, OnChanges, OnDestroy {
     }
   }
   checkAns(quesIdx: number) {
-    if (quesIdx > 0 && quesIdx <= this.totalQuestionsCount &&
-        this.current_Question.editorState && this.current_Question.editorState.options) {
+    if (quesIdx > 0 && quesIdx <= this.totalQCount && this.current_Question.editorState && this.current_Question.editorState.options) {
       this.showAnswer = true
       this.quizSvc.shCorrectAnswer(true)
     }

@@ -211,6 +211,12 @@ export class HomeComponent implements OnInit, AfterViewInit {
     this.enrollInterval = setInterval(() => {
       this.getEnrollmentData()
     },                                1000)
+
+    if (localStorage.getItem('websiteLanguage')) {
+      this.translate.setDefaultLang('en')
+      const lang = localStorage.getItem('websiteLanguage')!
+      this.translate.use(lang)
+    }
   }
 
   ngAfterViewInit() {
@@ -370,18 +376,20 @@ export class HomeComponent implements OnInit, AfterViewInit {
 
   raiseTelemetryInteratEvent(event: any) {
     if (event && event.viewMoreUrl) {
-      this.raiseTelemetry(`${event.stripTitle} ${event.viewMoreUrl.viewMoreText}`)
+      this.raiseTelemetry(`${event.stripTitle} ${event.viewMoreUrl.viewMoreText}`, event.typeOfTelemetry)
     }
     if (!this.isTelemetryRaised && event && !event.viewMoreUrl) {
+      const id = event.typeOfTelemetry === 'mdo-channel' ? event.identifier : event.orgId
+      const type = event.typeOfTelemetry === 'mdo-channel' ? event.orgName : event.title
       this.events.raiseInteractTelemetry(
         {
           type: 'click',
-          subType: 'mdo-channel',
+          subType: event.typeOfTelemetry,
           id: 'content-card',
         },
         {
-          id: event.identifier,
-          type: event.orgName,
+          id,
+          type,
         },
         {
           module: WsEvents.EnumTelemetrymodules.HOME,
@@ -391,11 +399,11 @@ export class HomeComponent implements OnInit, AfterViewInit {
     this.isTelemetryRaised = true
   }
 
-  raiseTelemetry(name: string) {
+  raiseTelemetry(name: string, subtype: string) {
     this.events.raiseInteractTelemetry(
       {
         type: 'click',
-        subType: 'mdo-channel',
+        subType: subtype,
         id: `${_.kebabCase(name).toLocaleLowerCase()}`,
       },
       {},
