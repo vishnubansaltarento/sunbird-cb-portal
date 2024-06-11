@@ -99,7 +99,7 @@ export class ContentStripMultipleComponent extends WidgetBaseComponent
     if (this.configSvc.unMappedUser && this.configSvc.unMappedUser.profileDetails) {
       this.veifiedKarmayogi = this.configSvc.unMappedUser.profileDetails.verifiedKarmayogi
     }
-    if (this.configSvc.unMappedUser && this.configSvc.unMappedUser.profileDetails &&  
+    if (this.configSvc.unMappedUser && this.configSvc.unMappedUser.profileDetails &&
       this.configSvc.unMappedUser.profileDetails.profileStatus === 'VERIFIED') {
       this.profileStatus = true
     }
