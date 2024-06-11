@@ -73,17 +73,16 @@ export class ProviderPageComponent implements OnInit  {
     }
   }
   hideCompetency(event: any, columnData: any) {
-    console.log(columnData,this.navList, 'columnData')
     if (event) {
       this.hideCompetencyBlock = true
       columnData['navigation'] = false
       columnData['enabled'] = false
       this.navList.forEach((navItem: any) => {
        navItem.column.forEach((colEle: any) => {
-          if(colEle.key === columnData.key) {
+          if (colEle.key === columnData.key) {
             navItem['navigation'] = false
           }
-       });
+       })
       })
     }
   }
