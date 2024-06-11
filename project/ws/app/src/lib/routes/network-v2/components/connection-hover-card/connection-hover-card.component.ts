@@ -19,7 +19,7 @@ export class ConnectionHoverCardComponent implements OnInit, AfterViewInit {
   @Input() hoverUser!: any
   // @Input() userId!: string
   me!: NsUser.IUserProfile
-  isProfileStatus: boolean = false
+  isProfileStatus = false
   // hoverUser!: NSProfileDataV2.IProfile
   constructor(
     private router: Router,
@@ -42,7 +42,7 @@ export class ConnectionHoverCardComponent implements OnInit, AfterViewInit {
   }
 
   ngOnInit() {
-    if (this.hoverUser && this.hoverUser.professionalDetails && this.hoverUser.professionalDetails[0].profileStatus=== "VERIFIED") {
+    if (this.hoverUser && this.hoverUser.professionalDetails && this.hoverUser.professionalDetails[0].profileStatus === 'VERIFIED') {
       this.isProfileStatus = true
   }
 

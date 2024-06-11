@@ -948,11 +948,11 @@ export class ProfileViewComponent implements OnInit, AfterViewInit, OnDestroy {
     return false
   }
 
-  get enableEditBtn():boolean {
+  get enableEditBtn(): boolean {
     if (this.portalProfile.professionalDetails && this.portalProfile.professionalDetails.length) {
-      if(!this.primaryDetailsForm.get('group')!.value || !this.primaryDetailsForm.get('designation')!.value) {
-        return false 
-      } 
+      if (!this.primaryDetailsForm.get('group')!.value || !this.primaryDetailsForm.get('designation')!.value) {
+        return false
+      }
       if (this.portalProfile.professionalDetails[0].group !== this.primaryDetailsForm.get('group')!.value ||
       this.portalProfile.professionalDetails[0].designation !== this.primaryDetailsForm.get('designation')!.value
       ) {
@@ -964,17 +964,17 @@ export class ProfileViewComponent implements OnInit, AfterViewInit, OnDestroy {
       this.GroupAndDesignationApproved)
       ) {
         return true
-      } 
+      }
       if ((this.portalProfile.professionalDetails[0].designation !== this.primaryDetailsForm.get('designation')!.value) &&
       ((this.groupApprovedTime <= (this.rejectedFields.designationRejectionTime + 100) &&
         this.rejectedFields.groupRejectionTime <= (this.rejectedFields.designationRejectionTime + 100)) ||
         this.GroupAndDesignationApproved)) {
         return true
       }
-      else {
-        return false 
-      }
-    }else if (this.primaryDetailsForm.get('group')!.value && this.primaryDetailsForm.get('designation')!.value) {
+
+        return false
+
+    } if (this.primaryDetailsForm.get('group')!.value && this.primaryDetailsForm.get('designation')!.value) {
       return true
     }
     return false
@@ -1094,10 +1094,10 @@ export class ProfileViewComponent implements OnInit, AfterViewInit, OnDestroy {
     .pipe(takeUntil(this.destroySubject$))
     .subscribe((_res: any) => {
       this.portalProfile.personalDetails.firstname = this.profileName
-      if( this.configService && this.configService.userProfile && this.configService.userProfile.firstName) {
+      if (this.configService && this.configService.userProfile && this.configService.userProfile.firstName) {
         this.configService.userProfile.firstName = this.profileName
       }
-      
+
       this.getInitials()
       this.matSnackBar.open(this.handleTranslateTo('userNameUpdated'))
       this.editName = !this.editName
