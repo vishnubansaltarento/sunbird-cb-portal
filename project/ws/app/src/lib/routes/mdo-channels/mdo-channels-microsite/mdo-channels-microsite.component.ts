@@ -18,10 +18,10 @@ export class MdoChannelsMicrositeComponent implements OnInit {
   sectionList: any = []
   hideCompetencyBlock: boolean = false
   titles = [
+    { title: 'Learn', url: '/page/learn', icon: 'school', disableTranslate: false },
     {
       title: `MDO channel`,
       url: `/app/learn/mdo-channels/all-channels`,
-      textClass: 'ws-mat-black60-text',
       icon: '', disableTranslate: true,
     },
   ]
@@ -53,7 +53,6 @@ export class MdoChannelsMicrositeComponent implements OnInit {
       this.orgId = params['orgId']
       this.titles.push({
         title: this.channnelName, icon: '', url: 'none', disableTranslate: true,
-        textClass: '',
       })
     })
   }
