@@ -32,6 +32,7 @@ export class KarmaProgramsComponent implements OnInit {
   totalCount = 0
   private unsubscribe = new Subject<void>()
   titles = [
+    { title: 'Learn', url: '/page/learn', icon: 'school', disableTranslate: false },
     { title: 'Karma Programs', url: 'none', icon: '' },
   ]
   getAllProvidersReq = {
@@ -110,13 +111,13 @@ export class KarmaProgramsComponent implements OnInit {
         //   }
         // }
         if (response) {
-          const res = _.toArray(_.pickBy(response, v => v !== null && v !== undefined && !!v.name))
+          const res = _.toArray(_.pickBy(response, v => v !== null && v !== undefined && !!v.title))
           const fData: any[] = []
           if (this.searchQuery) {
             _.each(res, (d: any) => {
               let found = false
-              found = _.includes(_.lowerCase(this.searchQuery), _.lowerCase(_.get(d, 'name')))
-                || _.includes(_.lowerCase(_.get(d, 'name')), _.lowerCase(this.searchQuery))
+              found = _.includes(_.lowerCase(this.searchQuery), _.lowerCase(_.get(d, 'title')))
+                || _.includes(_.lowerCase(_.get(d, 'title')), _.lowerCase(this.searchQuery))
               if (found) {
                 fData.push(d)
               }
@@ -124,7 +125,7 @@ export class KarmaProgramsComponent implements OnInit {
             this.allProviders = fData
           }
           if (this.sortBy) {
-            this.allProviders = _.orderBy(fData.length ? fData : res, ['name'], [this.sortBy])
+            this.allProviders = _.orderBy(fData.length ? fData : res, ['title'], [this.sortBy])
           } else {
             this.allProviders = fData.length ? fData : res
           }
@@ -141,12 +142,12 @@ export class KarmaProgramsComponent implements OnInit {
       })
     } else {
       const fData: any[] = []
-      data = _.toArray(_.pickBy(data, v => v !== null && v !== undefined && !!v.name))
+      data = _.toArray(_.pickBy(data, v => v !== null && v !== undefined && !!v.title))
       if (this.searchQuery) {
         _.each(data, (d: any) => {
           let found = false
-          found = _.includes(_.lowerCase(this.searchQuery), _.lowerCase(_.get(d, 'name')))
-            || _.includes(_.lowerCase(_.get(d, 'name')), _.lowerCase(this.searchQuery))
+          found = _.includes(_.lowerCase(this.searchQuery), _.lowerCase(_.get(d, 'title')))
+            || _.includes(_.lowerCase(_.get(d, 'title')), _.lowerCase(this.searchQuery))
           if (found) {
             fData.push(d)
           }
@@ -154,7 +155,7 @@ export class KarmaProgramsComponent implements OnInit {
         this.allProviders = fData
       }
       if (this.sortBy) {
-        this.allProviders = _.orderBy((fData.length ? fData : data), ['name'], [this.sortBy])
+        this.allProviders = _.orderBy((fData.length ? fData : data), ['title'], [this.sortBy])
       }
       if (!this.searchQuery && !this.sortBy) {
         this.allProviders = fData.length ? fData : data
@@ -182,7 +183,7 @@ export class KarmaProgramsComponent implements OnInit {
   filterChannles(value: string) {
     if (value) {
       const filterValue = value.toLowerCase()
-      this.clonesProviders = this.allProviders.filter((p: any) => p.content.name.toLowerCase().includes(filterValue))
+      this.clonesProviders = this.allProviders.filter((p: any) => p.title.toLowerCase().includes(filterValue))
     }
     if (!value) {
       this.clonesProviders = this.allProviders
@@ -207,7 +208,7 @@ export class KarmaProgramsComponent implements OnInit {
       // tslint:disable-next-line: no-non-null-assertion
       this.searchForm.get('sortByControl')!.setValue(sortType)
       this.sortBy = sortType;
-      this.allProviders = _.orderBy(this.allProviders.length ? this.allProviders : this.allProviders, ['content.name'], [this.sortBy])
+      this.allProviders = _.orderBy(this.allProviders.length ? this.allProviders : this.allProviders, ['title'], [this.sortBy])
     }
   }
 
