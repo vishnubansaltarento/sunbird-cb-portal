@@ -612,9 +612,9 @@
           </div>
         </div>
         <div class="flex flex-row gap-4 items-center" *ngIf="!editName"> 
-          <div class="name">{{ portalProfile?.personalDetails?.firstname }}</div>
+          <div class="name">{{ portalProfile?.personalDetails?.firstname | titlecase}}</div>
           <mat-icon class="profile-verified-check" *ngIf="portalProfile?.profileStatus === 'VERIFIED'">check_circle</mat-icon>
-          <mat-icon class="cursor-pointer" (click)="editName = !editName">edit</mat-icon>
+          <mat-icon class="cursor-pointer" *ngIf="isCurrentUser" (click)="editName = !editName">edit</mat-icon>
         </div>
         <div class="flex flex-row gap-4 items-center edit-name" *ngIf="editName">
           <!--  pattern="/^[a-z0-9._-]+$/i" -->
