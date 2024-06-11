@@ -20,10 +20,10 @@ export class KarmaProgramsMicrositeComponent implements OnInit {
   originalContentlist: any = []
   seeAllPageConfig: any
   titles = [
+    { title: 'Learn', url: '/page/learn', icon: 'school', disableTranslate: false },
     {
       title: `Karma programs`,
       url: `/app/learn/karma-programs/all-programs`,
-      textClass: 'ws-mat-black60-text',
       icon: '', disableTranslate: true,
     },
   ]
@@ -52,7 +52,6 @@ export class KarmaProgramsMicrositeComponent implements OnInit {
       this.orgId = params['orgId']
       this.titles.push({
         title: this.programName, icon: '', url: 'none', disableTranslate: true,
-        textClass: '',
       })
     })
     if (this.route.snapshot.data && this.route.snapshot.data.formData

@@ -31,7 +31,7 @@
                                     </button>
                                   </mat-menu>
                                   
-                                  <button mat-icon-button class="flex w-full sort-menu justify-end" [matMenuTriggerFor]="appMenu">
+                                  <button type="button" mat-icon-button class="flex w-full sort-menu justify-end" [matMenuTriggerFor]="appMenu">
                                    <div class="flex items-center">
                                         <span class="mr-1" *ngIf="searchForm?.value?.sortByControl === 'asc'">
                                             <span class="block md:hidden">A-Z</span>
