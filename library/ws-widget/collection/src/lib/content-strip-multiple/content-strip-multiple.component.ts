@@ -70,6 +70,7 @@ export class ContentStripMultipleComponent extends WidgetBaseComponent
   isFromAuthoring = false
   baseUrl = this.configSvc.sitePath || ''
   veifiedKarmayogi = false
+  profileStatus = false
 
   changeEventSubscription: Subscription | null = null
   environment!: any
@@ -97,6 +98,10 @@ export class ContentStripMultipleComponent extends WidgetBaseComponent
     })
     if (this.configSvc.unMappedUser && this.configSvc.unMappedUser.profileDetails) {
       this.veifiedKarmayogi = this.configSvc.unMappedUser.profileDetails.verifiedKarmayogi
+    }
+    if (this.configSvc.unMappedUser && this.configSvc.unMappedUser.profileDetails &&
+      this.configSvc.unMappedUser.profileDetails.profileStatus === 'VERIFIED') {
+      this.profileStatus = true
     }
     this.initData()
   }
@@ -288,7 +293,7 @@ export class ContentStripMultipleComponent extends WidgetBaseComponent
           limit : 20,
         },
       }
-      if (!this.veifiedKarmayogi) {
+      if (!this.profileStatus) {
         moderatedCoursesRequestBody.request.filters = {
           ...moderatedCoursesRequestBody.request.filters,
           'secureSettings.isVerifiedKarmayogi': 'No',
