@@ -154,6 +154,8 @@ export class AllProvidersComponent implements OnInit {
       } else {
         this.disableLoadMore = false
       }
+
+      this.clonesProviders = this.allProviders
     }
   }
 

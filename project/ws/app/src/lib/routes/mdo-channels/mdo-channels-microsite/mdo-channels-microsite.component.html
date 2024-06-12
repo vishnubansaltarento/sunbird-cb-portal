@@ -155,7 +155,16 @@
                             <ng-template mat-tab-label i18n>
                                 Content
                             </ng-template>
-                            <div>
+                            <ng-container *ngIf="data.tabSection.contentTab.length === contentTabEmptyResponseCount">
+                                <div class="flex justify-center w-full">
+                                    <div class="margin-xl text-center" >
+                                        <img src="/assets/common/error-pages/empty_search.svg" wsUtilsImageResponsive alt="No results"
+                                            class="margin-top-l margin-bottom-s">
+                                        <h2 class="mat-h2" i18n="search route no result">{{'learnsearch.noResults' | translate}}</h2>
+                                    </div>
+                                </div>
+                            </ng-container>
+                            <div class="padding-top-l ">
                                 <ng-container [ngTemplateOutlet]="columnSectionDisplay"
                                     [ngTemplateOutletContext]="{data: data.tabSection.contentTab}"></ng-container>
                             </div>

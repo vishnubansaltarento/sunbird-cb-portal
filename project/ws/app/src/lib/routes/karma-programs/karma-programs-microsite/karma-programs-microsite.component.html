@@ -78,7 +78,7 @@
 <!-- karma program data with search -->
 <ng-template #contentWithSearch let-data="data">
     <div class="container-balanced px-4 pt-8 pb-8 ">
-        <div class="flex-1 flex flex-col text-white">
+        <div class="flex-1 flex flex-col text-white" *ngIf="contentDataList?.length">
             <div class="w-full">
                   <mat-form-field appearance="outline"  class="w-full mat-form-search">
                     <input name="search"  (keyup.enter)="handleSearchQuery($event)"   matInput placeholder="Search">
