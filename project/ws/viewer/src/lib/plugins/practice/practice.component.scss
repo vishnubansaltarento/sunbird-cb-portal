@@ -23,6 +23,7 @@ $nav-height: 40px;
   flex-direction: column;
   background-color: #fff;
   overflow-y: auto;
+  overflow-x: hidden;
 }
 
 // Contents of SideNav Menu
@@ -116,6 +117,9 @@ $nav-height: 40px;
 
 .attempted-question-background {
   background-image: url('/assets/icons/final-assessment/answered.svg') !important;
+  height: 48px;
+  width: 48px;
+  background-repeat: no-repeat;
 }
 
 .marked-question {
@@ -132,10 +136,16 @@ $nav-height: 40px;
 
 .marked-question-standalone-background {
   background-image: url('/assets/icons/final-assessment/marked.svg') !important;
+  height: 48px;
+  width: 48px;
+  background-repeat: no-repeat;
 }
 
 .not-answered-background {
   background-image: url('/assets/icons/final-assessment/not-answered.svg') !important;
+  height: 48px;
+  width: 48px;
+  background-repeat: no-repeat;
 }
 
 .questions-navigate-enable {
@@ -179,6 +189,18 @@ $nav-height: 40px;
   color: #fff;
   font-family: 'Lato';
 
+}
+
+.not-visited-question {
+  width: 48px;
+  height: 48px;
+  color: #000000;
+  background-size: 100% 100%;
+  font-size: 16px;
+}
+
+.not-visited-background {
+  background-image: url('/assets/icons/final-assessment/not-visited.svg');
 }
 
 .question-guide-text-legend-not-visited {

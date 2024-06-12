@@ -1,4 +1,5 @@
 <ng-container *ngIf="coursePrimaryCategory !== 'Standalone Assessment'">
+  sdkjfhdkj
   <mat-card *ngIf="!(question?.questionType === 'mtf' || question?.questionType === 'ftb')"
     class="flex flex-1 respo margin-bottom-m no-shadow">
     <div class="flex flex-column width-100" [ngClass]="mobileQuestionSetExpand ? 'mobile-responsive-question-container-expand' : 'mobile-responsive-question-container'">
@@ -60,7 +61,7 @@
           </div>
           <div class="flex flex-1">
             <!-- {{log(question)}} -->
-            <ng-container *ngIf="question.questionType === 'mcq-mca'">
+            <ng-container *ngIf="question.questionType === 'mcq-mca' || question.questionType === 'mcq-mca-w'">
               <viewer-mcq-mca-question   [primaryCategory]="primaryCategory" class="flex-1" [question]="question" [itemSelectedList]="itemSelectedList1"
                 (update)="update($event)">
               </viewer-mcq-mca-question>
@@ -212,8 +213,8 @@
          
         </div>
         <div>
-          <div class="question-marks" *ngIf="assessmentType !== 'optionWeightage'">
-            <p>2 Marks</p>
+          <div class="question-marks" *ngIf="question?.marks">
+            <p>{{question?.marks}} Marks</p>
           </div>
           <div class="question-marks" *ngIf="assessmentType === 'optionWeightage'">
             <p>{{questionNumber}}/{{ total }}</p>
@@ -256,7 +257,9 @@
 
         </div> -->
       </div>
+      
       <div class="respo flex flex-column padding-top-m" *ngIf="!showOnlyQuestion" [ngClass]="mobileQuestionSetExpand ? 'mobile-responsive-question-container-expand' : 'mobile-responsive-question-container'">
+        
         <div class="flex flex-column respo_inner">
           <div class="flex flex-1">
             <h2 *ngIf="question.questionType !== 'ftb'" class="mat-h2" [innerHTML]="question?.question"
@@ -269,7 +272,7 @@
           </div>
           <div class="flex flex-1">
             <!-- {{log(question)}} -->
-            <ng-container *ngIf="question.questionType === 'mcq-mca'">
+            <ng-container *ngIf="question.questionType === 'mcq-mca' || question.questionType === 'mcq-mca-w'">
               <viewer-mcq-mca-question   [primaryCategory]="primaryCategory" class="flex-1" [question]="question" [itemSelectedList]="itemSelectedList1"
                 (update)="update($event)">
               </viewer-mcq-mca-question>

@@ -3,7 +3,8 @@
   [complexityLevel]="complexityLevel" [duration]="duration" [timeLimit]="getTimeLimit"
   [primaryCategory]="primaryCategory" [canAttempt]="canAttempt" [noOfQuestions]="noOfQuestions"
   (userSelection)="getSections($event)" [coursePrimaryCategory]="coursePrimaryCategory"
-  [instructionAssessment]="instructionAssessment">
+  [instructionAssessment]="instructionAssessment"
+  [selectedAssessmentCompatibilityLevel]="selectedAssessmentCompatibilityLevel">
 </viewer-overview>
 
 <!-- Overlay Loader -->
@@ -19,7 +20,7 @@
 
 </div>
 <!-- Course Assessment-->
-<ng-container *ngIf="coursePrimaryCategory !== 'Standalone Assessment'">
+<ng-container *ngIf="coursePrimaryCategory !== 'Standalone Assessment' && selectedAssessmentCompatibilityLevel < 6">
   <!-- Desktop Not Standalone Assessment -->
   <div #quizContainer class="quiz-container"
     *ngIf="viewState !== 'initial' && !isMobile && fetchingQuestionsStatus === 'done'">
@@ -1194,7 +1195,7 @@
             </a>
           </div>
         </div>
-        <div>
+        <!-- <div>
           <ng-container *ngIf="current_Question && !process">
             <viewer-question #questionsReference [id]="'question' + (currentQuestionIndex + 1)"
               [markedQuestions]="markedQuestions" [artifactUrl]="artifactUrl"
@@ -1207,7 +1208,7 @@
               [assessmentType]="assessmentType">
             </viewer-question>
           </ng-container>
-        </div>
+        </div> -->
 
       </div>
 
@@ -1246,7 +1247,7 @@
             </mat-icon>
           </div>
         </div>
-        <div *ngIf="assessmentType !== 'optionWeightage'"  [ngClass]="(expandFalse || assessmentType !== 'optionWeightage') ? 'quiz-question-right-container': 'quiz-question-right-container-hide'">
+        <div *ngIf="assessmentType !== 'optionWeightage'"  [ngClass]="(expandFalse && assessmentType !== 'optionWeightage') ? 'quiz-question-right-container': 'quiz-question-right-container-hide'">
           <div class="question-list">
             <div class="ques_stats_container">
               <div class="flex flex-row justify-between ques_stats_container_box">
@@ -1395,7 +1396,7 @@
     </div>
     <div class="standalone-quiz-container-controls"
       *ngIf="fetchingQuestionsStatus === 'done' && viewState !== 'detail' && !(viewState === 'answer') && !isSubmitted">
-      <div class="flex flex-row mt-4" [ngClass]="assessmentType !== 'optionWeightage' ? 'justify-between' : 'justify-right'">
+      <div class="flex flex-row mt-2" [ngClass]="assessmentType !== 'optionWeightage' ? 'justify-between' : 'justify-right'">
         <div class="flex" *ngIf="assessmentType !== 'optionWeightage'">
           <div>
             <viewer-question #questionsReference [id]="'question' + (currentQuestionIndex + 1)"

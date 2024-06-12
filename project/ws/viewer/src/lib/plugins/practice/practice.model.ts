@@ -109,6 +109,7 @@ export namespace NSPractice {
 
   export interface IQPaper {
     questionSet: {
+      assessmentType: string,
       lastStatusChangedOn: string
       children: IPaperSection[]
       name: string

@@ -54,6 +54,9 @@ export class MultipleChoiseQuesComponent implements OnInit, OnChanges, AfterView
             this.showAns = displayAns
         })
         this.localQuestion = this.question.question
+        // if(this.question && this.question.editorState && this.question.editorState.options) {
+        //     this.question.options = this.question.editorState.options
+        // }
     }
     ngOnChanges(changes: SimpleChanges): void {
         if (changes) {

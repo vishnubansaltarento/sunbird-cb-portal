@@ -346,7 +346,7 @@
           <span class="mt-1"></span>
         </div>
       
-        <div>
+        <!-- <div>
           <table
             mat-table
             [dataSource]="competitiveTableDataSource"
@@ -375,7 +375,37 @@
             
               <tr mat-row *matRowDef="let row; columns: getFinalColumns(competitiveTableDisplayedColumns)"></tr>
           </table>
-        </div>   
+        </div>    -->
+        <div>
+          <table
+            mat-table
+            [dataSource]="summaryTableDataSource"
+            class="w-full">
+              <ng-container
+                  *ngFor="let disCol of summaryTableDisplayeColumns; let colIndex = index">
+                  <ng-container matColumnDef="{{ disCol.key }}" >
+                      <th mat-header-cell *matHeaderCellDef>
+                          {{ disCol.header }}
+                      </th>
+      
+                      <td
+                          mat-cell
+                          *matCellDef="let element; let rowIndex = index;"
+                      >
+                          <span>{{ element[disCol.key] }}</span>
+                      </td>
+                  </ng-container>
+              </ng-container>
+      
+              <tr class="mat-row" *matNoDataRow>
+                  <span class="mat-cell" colspan="10">No data found</span>
+              </tr>
+            
+              <tr mat-header-row *matHeaderRowDef="getFinalColumns(summaryTableDisplayeColumns)"></tr>
+            
+              <tr mat-row *matRowDef="let row; columns: getFinalColumns(summaryTableDisplayeColumns)"></tr>
+          </table>
+        </div>
       
       </div>
     </ng-container>
@@ -451,7 +481,7 @@
                           mat-cell
                           *matCellDef="let element; let rowIndex = index;"
                       >
-                          <span [ngClass]="{'correct': element[disCol.key] === 'correct', 'wrong': element[disCol.key] === 'incorrect'}">{{ element[disCol.key] | titlecase }}</span>
+                          <span [ngClass]="{'correct': element[disCol.key] === 'correct', 'wrong': element[disCol.key] === 'incorrect'}"><span [innerHtml]="element[disCol.key] | titlecase"></span></span>
                       </td>
                   </ng-container>
               </ng-container>

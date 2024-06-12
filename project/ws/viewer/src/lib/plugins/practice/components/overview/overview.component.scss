@@ -242,6 +242,7 @@
 .summary-standalone {
     word-wrap: break-word;
     overflow-y: auto;
+    min-height: 100px;
     // height: calc(100vh - 220px);
 
 }
