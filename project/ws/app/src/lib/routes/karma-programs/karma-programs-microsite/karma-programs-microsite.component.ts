@@ -28,7 +28,6 @@ export class KarmaProgramsMicrositeComponent implements OnInit {
     },
   ]
   loadContentSearch = false
-  expanded = false
   descriptionMaxLength = 750
   constructor(private route: ActivatedRoute,
               public contentSvc: KarmaProgramsService,
@@ -153,10 +152,6 @@ export class KarmaProgramsMicrositeComponent implements OnInit {
         const strip: any = sectionData[0].column[0].data && sectionData[0].column[0].data.strips[0]
       this.contentDataList = this.commonSvc.transformSkeletonToWidgets(strip)
     }
-  }
-
-  viewMoreOrLess() {
-    this.expanded = !this.expanded
   }
 
   raiseTelemetryInteratEvent(event: any) {

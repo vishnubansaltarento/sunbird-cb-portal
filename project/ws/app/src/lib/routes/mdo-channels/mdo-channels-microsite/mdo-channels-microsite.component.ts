@@ -29,7 +29,6 @@ export class MdoChannelsMicrositeComponent implements OnInit {
   ]
   showModal: boolean = false
   descriptionMaxLength = 500
-  expanded = false
   isTelemetryRaised: boolean = false
 
   constructor(
@@ -89,11 +88,6 @@ export class MdoChannelsMicrositeComponent implements OnInit {
     this.showModal = false
     document.body.style.overflow = 'auto'
     this.raiseTelemetry('btn close key annoucements')
-  }
-
-  viewMoreOrLess() {
-    console.log("expanded ", this.expanded)
-    this.expanded = !this.expanded
   }
 
   raiseTelemetryInteratEvent(event: any) {
