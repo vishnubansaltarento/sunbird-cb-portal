@@ -25,8 +25,7 @@ export class ProviderPageComponent implements OnInit  {
     },
   ]
 
-  descriptionMaxLength = 1000
-  expanded = false
+  descriptionMaxLength = 500
   isTelemetryRaised = false
 
   constructor(private route: ActivatedRoute,
@@ -136,10 +135,7 @@ export class ProviderPageComponent implements OnInit  {
     }
   }
 
-  viewMoreOrLess() {
-    this.expanded = !this.expanded
-  }
-
+ 
   raiseCompetencyTelemetry(name: string) {
     this.raiseTelemetry(`${name} core expertise`)
   }
