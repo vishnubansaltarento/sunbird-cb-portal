@@ -1,5 +1,4 @@
 <ng-container *ngIf="coursePrimaryCategory !== 'Standalone Assessment'">
-  sdkjfhdkj
   <mat-card *ngIf="!(question?.questionType === 'mtf' || question?.questionType === 'ftb')"
     class="flex flex-1 respo margin-bottom-m no-shadow">
     <div class="flex flex-column width-100" [ngClass]="mobileQuestionSetExpand ? 'mobile-responsive-question-container-expand' : 'mobile-responsive-question-container'">
@@ -213,7 +212,7 @@
          
         </div>
         <div>
-          <div class="question-marks" *ngIf="question?.marks">
+          <div class="question-marks" *ngIf="assessmentType === 'questionWeightage'">
             <p>{{question?.marks}} Marks</p>
           </div>
           <div class="question-marks" *ngIf="assessmentType === 'optionWeightage'">
