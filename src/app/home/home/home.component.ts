@@ -14,6 +14,7 @@ import { MobileAppsService } from '../../services/mobile-apps.service'
 import { UserProfileService } from '@ws/app/src/lib/routes/user-profile/services/user-profile.service'
 import { IUserProfileDetailsFromRegistry } from '@ws/app/src/lib/routes/user-profile/models/user-profile.model'
 import { BtnSettingsService } from '@sunbird-cb/collection'
+import { EventService, WsEvents } from '@sunbird-cb/utils'
 
 // import { NotificationComponent } from './notification/notification.component'
 
@@ -36,7 +37,8 @@ export class HomeComponent implements OnInit, AfterViewInit {
     private router: Router,
     private translate: TranslateService,
     private userProfileService: UserProfileService,
-    private matSnackBar: MatSnackBar
+    private matSnackBar: MatSnackBar,
+    private events: EventService,
   ) { }
   private destroySubject$ = new Subject()
   widgetData = {}
@@ -55,8 +57,10 @@ export class HomeComponent implements OnInit, AfterViewInit {
   isKPPanelenabled = false
   enrollData: any
   enrollInterval: any
+  newHomeStrips: any
   jan26Change: any
   pendingApprovalList: any
+  isTelemetryRaised = false
 
   configSuccess: MatSnackBarConfig = {
     panelClass: 'style-success',
@@ -74,6 +78,9 @@ export class HomeComponent implements OnInit, AfterViewInit {
     })
     if (this.activatedRoute.snapshot.data.pageData) {
       this.homeConfig = this.activatedRoute.snapshot.data.pageData.data.homeConfig
+    }
+    if (this.activatedRoute.snapshot.data.pageData) {
+      this.newHomeStrips = this.activatedRoute.snapshot.data.pageData.data.newHomeStrip
     }
     if (this.activatedRoute.snapshot.data.pageData && this.activatedRoute.snapshot.data.pageData.data) {
       this.contentStripData = this.activatedRoute.snapshot.data.pageData.data || []
@@ -204,6 +211,12 @@ export class HomeComponent implements OnInit, AfterViewInit {
     this.enrollInterval = setInterval(() => {
       this.getEnrollmentData()
     },                                1000)
+
+    if (localStorage.getItem('websiteLanguage')) {
+      this.translate.setDefaultLang('en')
+      const lang = localStorage.getItem('websiteLanguage')!
+      this.translate.use(lang)
+    }
   }
 
   ngAfterViewInit() {
@@ -359,5 +372,44 @@ export class HomeComponent implements OnInit, AfterViewInit {
 
   closeKarmaPointsPanel() {
     this.isKPPanelenabled = false
+  }
+
+  raiseTelemetryInteratEvent(event: any) {
+    if (event && event.viewMoreUrl) {
+      this.raiseTelemetry(`${event.stripTitle} ${event.viewMoreUrl.viewMoreText}`, event.typeOfTelemetry)
+    }
+    if (!this.isTelemetryRaised && event && !event.viewMoreUrl) {
+      const id = event.typeOfTelemetry === 'mdo-channel' ? event.identifier : event.orgId
+      const type = event.typeOfTelemetry === 'mdo-channel' ? event.orgName : event.title
+      this.events.raiseInteractTelemetry(
+        {
+          type: 'click',
+          subType: event.typeOfTelemetry,
+          id: 'content-card',
+        },
+        {
+          id,
+          type,
+        },
+        {
+          module: WsEvents.EnumTelemetrymodules.HOME,
+        }
+      )
+    }
+    this.isTelemetryRaised = true
+  }
+
+  raiseTelemetry(name: string, subtype: string) {
+    this.events.raiseInteractTelemetry(
+      {
+        type: 'click',
+        subType: subtype,
+        id: `${_.kebabCase(name).toLocaleLowerCase()}`,
+      },
+      {},
+      {
+        module: WsEvents.EnumTelemetrymodules.HOME,
+      }
+    )
   }
 }

@@ -1,5 +1,9 @@
 <div class="mat-body-2 karmapoints-panel" *ngIf="isKPPanelenabled">
-    <p class="margin-remove">Earn <img src="/assets/icons/home/karma-badge.svg" alt="KarmaPoints"> <span class="font-bold"> 5 Karma Points </span> for your 1st course enrolment!</p>
+    <p class="margin-remove"> {{'appKarmapointsPanel.earn' |translate}}
+        <img src="/assets/icons/home/karma-badge.svg" alt="KarmaPoints">
+        <span class="font-bold"> {{'appKarmapointsPanel.fKarmaPoints' |translate}} </span> 
+        {{'appKarmapointsPanel.courseEnrollement' |translate}}
+    </p>
     <mat-icon (click)="closeKarmaPointsPanel()" class="cursor-pointer">close</mat-icon>
 </div>
 <div class="home-container m-auto flex flex-row gap-6"
@@ -43,6 +47,7 @@
                             </span>
                         </ng-container>
                     </ng-container>
+                    <ng-container  [ngTemplateOutlet]="loadNewStrips" ></ng-container>
 
                     <div class="slider" *ngIf="sliderData && sliderData[0]?.active">
                         <ng-container *ngFor="let vitem of sectionList">
@@ -204,3 +209,12 @@
         <button class="ui fluid-button update-now" (click)="fetchProfile()" role="button">{{ 'home.updateNow' | translate }}</button>
     </div>
 </div>
+
+<ng-template #loadNewStrips>
+    <ng-container *ngFor="let newStrip of newHomeStrips">
+        <sb-uic-content-strip-with-tabs 
+            (telemtryResponse)="raiseTelemetryInteratEvent($event)"
+            [widgetData]="newStrip">
+        </sb-uic-content-strip-with-tabs>
+    </ng-container>
+</ng-template>

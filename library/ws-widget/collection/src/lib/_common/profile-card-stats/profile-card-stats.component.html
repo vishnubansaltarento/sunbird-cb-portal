@@ -9,7 +9,7 @@
           <div *ngIf="republicDayData.backgroupImage"><img [src]="republicDayData.backgroupImage" class="backgroud-image"></div>
           <div class="flex flex-col aligncenter">
             <div class="greet-text" [ngStyle]="{color: republicDayData.textColor}">
-              {{translateLabels(republicDayData.greet, 'profileNudge')}}, {{userName}}!
+              {{translateLabels(republicDayData.greet, 'profileNudge')}}, {{userName | titlecase}}!
             </div>
             <div class="center-image">
               <img *ngIf="republicDayData.centerImage" [src]="republicDayData.centerImage">
@@ -27,7 +27,7 @@
             </div>
             <div class="mobile-info">
               <div class="mobile-greet" [ngStyle]="{color: republicDayData.textColor}">
-                {{translateLabels(republicDayData.greet, 'profileNudge')}}, {{userName}}!
+                {{translateLabels(republicDayData.greet, 'profileNudge')}}, {{userName | titlecase}}!
               </div>
               <div class="mobile-info-text" [ngStyle]="{color: republicDayData.textColor}">
                 {{translateLabels(republicDayData.info, 'profileNudge')}}
@@ -54,7 +54,7 @@
             </div>
             <div class="user-name flex margin-left-m">
                 <!-- <p class="margin-remove text-ellipses"  (click)="userInfo.profileUpdateCompletion < 100 && gotoUserProfile()">{{userInfo.firstName}} {{userInfo.lastName}}</p> -->
-                <p class="margin-remove text-ellipses"  (click)="userInfo.profileUpdateCompletion < 100 && gotoUserProfile()"> {{userFullName}} </p>
+                <p class="margin-remove text-ellipses"  (click)="userInfo.profileUpdateCompletion < 100 && gotoUserProfile()"> {{userFullName| titlecase}} </p>
                 <mat-icon *ngIf="userInfo.profileUpdateCompletion < 100" class="ws-mat-default-text mr-3" (click)="gotoUserProfile()">chevron_right</mat-icon>
             </div>
         </div>
@@ -189,7 +189,7 @@
           <div class="clap-qus-ans">
               <p class="clap-qus">{{ 'weeklyclaps.whatToDo' | translate }}</p>
               <p class="clap-ans">{{ 'weeklyclaps.spendAtLeast' | translate }}
-                  <span class="clap-highlight"><b>{{ 'weeklyclaps.60mins' | translate }}</b></span>,
+                  <span class="clap-highlight"><b>{{ 'weeklyclaps.60mins' | translate }}</b></span>
                   {{ 'weeklyclaps.engageWithPlatform' | translate }}</p>
           </div>
       </div>

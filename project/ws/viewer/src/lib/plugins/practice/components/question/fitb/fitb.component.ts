@@ -199,6 +199,15 @@ export class FillInTheBlankComponent implements OnInit, OnChanges, AfterViewInit
         return ''
 
     }
+
+    getSanitizeString(res: any) {
+        if (res && (typeof res === 'string')) {
+            const response = res.replace(/\&lt;/g, '&lt;').replace('&gt;', '>')
+            return response
+        }
+        return res
+    }
+
     ngOnDestroy(): void {
         this.practiceSvc.shCorrectAnswer(false)
         if (this.shCorrectAnsSubscription) {

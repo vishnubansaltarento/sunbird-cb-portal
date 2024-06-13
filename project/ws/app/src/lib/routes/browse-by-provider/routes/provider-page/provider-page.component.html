@@ -1,4 +1,4 @@
-<ws-widget-btn-page-back [widgetData]="{ url: 'home', titles: titles, textClass:'ws-mat-black60-text' }">
+<ws-widget-btn-page-back [widgetData]="{ url: 'home', titles: titles }">
 </ws-widget-btn-page-back>
 <div class="container-fluid" id="section-micro-sites">
     <div class="flex flex-col flex-1">
@@ -40,7 +40,9 @@
     <div class="flex sticky-navigator gap-4">
         <mat-icon class="nav-up-arrow cursor-pointer" (click)="scrollToSection('section-micro-sites')">arrow_upwards</mat-icon>
         <ng-container *ngFor="let section of navList">
-            <div class="nav-button" (click)="scrollToSection(section?.key); raiseNavTelemetry(section?.title)">{{section?.title}}</div>
+            <ng-container *ngIf="section.navigation">
+                <div class="nav-button" (click)="scrollToSection(section?.key); raiseNavTelemetry(section?.title)">{{section?.title}}</div>
+            </ng-container>
         </ng-container>
     </div>
 
@@ -70,11 +72,8 @@
                 </div>
                 <div class="w-full md:w-9/12 flex-1 flex flex-col">
                     <h1 class=" txt-ellipsis-2 break-words">{{data?.title || providerName}}</h1>
-                    <p>{{expanded ? data?.description : data?.description | slice:0:descriptionMaxLength}}
-                        <span (click)="viewMoreOrLess()"
-                            *ngIf="data?.description?.length > descriptionMaxLength"
-                            class="cursor-pointer ws-mat-default-text font-bold"> ...View {{expanded ? 'less' : 'more' }}
-                        </span>
+                    <p>{{data?.description | slice:0:descriptionMaxLength}}
+                        <span *ngIf="data?.description?.length > descriptionMaxLength">...</span>
                     </p>
                     <div class="block md:hidden overflow-y-auto mb-3">
                         <sb-uic-data-points [providerId]="providerId" [fetchDataFromApi]="true"  [objectData]="data?.metrics?.data" [layoutType]="'singleRow'"></sb-uic-data-points>
@@ -186,7 +185,7 @@
         <div class="w-full container-balanced">
             <div class="pl-4 pr-4 md:pl-0 md:pr-0">
                 <sb-uic-competency-passbook
-                    (emptyResponse)="hideCompetency($event)"
+                    (emptyResponse)="hideCompetency($event, competency)"
                     (temeletryResponse)="raiseCompetencyTelemetry($event)"
                     [objectData]="competency"
                     [providerId]="providerId">

@@ -12,6 +12,7 @@ import { BtnPageBackModule } from '@sunbird-cb/collection/src/public-api'
 import { TranslateLoader, TranslateModule } from '@ngx-translate/core'
 import { HttpClient } from '@angular/common/http'
 import { HttpLoaderFactory } from 'src/app/app.module'
+import { KarmaProgramDataService } from './service/karma-program-data.service'
 
 @NgModule({
   declarations: [KarmaProgramsComponent, KarmaProgramsMicrositeComponent],
@@ -41,6 +42,6 @@ import { HttpLoaderFactory } from 'src/app/app.module'
       },
     }),
   ],
-  providers: [KarmaProgramsService, CommonMethodsService],
+  providers: [KarmaProgramsService, KarmaProgramDataService, CommonMethodsService],
 })
 export class KarmaProgramsModule { }

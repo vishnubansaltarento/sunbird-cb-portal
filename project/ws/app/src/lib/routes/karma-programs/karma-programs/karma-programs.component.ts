@@ -4,10 +4,12 @@ import { Observable, Subject } from 'rxjs'
 import { BrowseProviderService } from '../../browse-by-provider/services/browse-provider.service'
 import { LocalDataService } from '../../browse-by-competency/services/localService'
 import { TranslateService } from '@ngx-translate/core'
+import { EventService, WsEvents } from '@sunbird-cb/utils'
 import { MultilingualTranslationsService } from '@sunbird-cb/utils-v2'
 import { debounceTime, switchMap, takeUntil } from 'rxjs/operators'
 // tslint:disable
 import _ from 'lodash'
+import { ActivatedRoute } from '@angular/router'
 
 @Component({
   selector: 'ws-app-karma-programs',
@@ -24,13 +26,14 @@ export class KarmaProgramsComponent implements OnInit {
   searchForm: FormGroup | undefined
   sortBy: any
   searchQuery = ''
-  allProviders: any
+  allProviders: any = []
   clonesProviders: any
   disableLoadMore = false
   totalCount = 0
   private unsubscribe = new Subject<void>()
   titles = [
-    { title: 'Channels', url: 'none', icon: '' },
+    { title: 'Learn', url: '/page/learn', icon: 'school', disableTranslate: false },
+    { title: 'Karma Programs', url: 'none', icon: '' },
   ]
   getAllProvidersReq = {
     request: {
@@ -49,7 +52,9 @@ export class KarmaProgramsComponent implements OnInit {
     private browseProviderSvc: BrowseProviderService,
     private localService: LocalDataService,
     private translate: TranslateService,
+    private route: ActivatedRoute,
     private langtranslations: MultilingualTranslationsService,
+    private events: EventService
   ) {
     this.langtranslations.languageSelectedObservable.subscribe(() => {
       if (localStorage.getItem('websiteLanguage')) {
@@ -58,71 +63,24 @@ export class KarmaProgramsComponent implements OnInit {
         this.translate.use(lang)
       }
     })
-    this.allProviders = [
-      {
-        content: {
-          // tslint:disable-next-line: max-line-length
-          posterImage: 'https://portal.karmayogi.nic.in/content-store/content/do_114051411119235072127/artifact/do_114051411119235072127_1715260168985_default-provider.svg',
-          appIcon: '',
-          name: 'Ministry of Consumer Affairs, Food and Public Distribution',
-          programCount: '10',
-        },
-      },
-      {
-        content: {
-          // tslint:disable-next-line: max-line-length
-            posterImage: 'https://portal.karmayogi.nic.in/content-store/content/do_114051411119235072127/artifact/do_114051411119235072127_1715260168985_default-provider.svg',
-            appIcon: '',
-            name: 'Ministry of Railways',
-            programCount: '10',
-        },
-      },
-      {
-        content: {
-          // tslint:disable-next-line: max-line-length
-            posterImage: 'https://portal.karmayogi.nic.in/content-store/content/do_114051411119235072127/artifact/do_114051411119235072127_1715260168985_default-provider.svg',
-            appIcon: '',
-            name: 'Department of Post',
-            programCount: '10',
-        },
-      },
-      {
-        content: {
-          // tslint:disable-next-line: max-line-length
-            posterImage: 'https://portal.karmayogi.nic.in/content-store/content/do_114051411119235072127/artifact/do_114051411119235072127_1715260168985_default-provider.svg',
-            appIcon: '',
-            name: 'NLC India Limited',
-            programCount: '30',
-        },
-      },
-      {
-        content: {
-          // tslint:disable-next-line: max-line-length
-            posterImage: 'https://portal.karmayogi.nic.in/content-store/content/do_114051411119235072127/artifact/do_114051411119235072127_1715260168985_default-provider.svg',
-            appIcon: '',
-            name: 'Mission Karmayogi',
-            programCount: '24',
-        },
-      },
-      {
-        content: {
-          // tslint:disable-next-line: max-line-length
-            posterImage: 'https://portal.karmayogi.nic.in/content-store/content/do_114051411119235072127/artifact/do_114051411119235072127_1715260168985_default-provider.svg',
-            appIcon: '',
-            name: 'Mission Karmayogi',
-            programCount: '50',
-        },
-      },
-
-    ]
+    if (this.route.snapshot.data && this.route.snapshot.data.programData
+      && this.route.snapshot.data.programData.data
+      && this.route.snapshot.data.programData.data.result
+      && this.route.snapshot.data.programData.data.result.data
+      && this.route.snapshot.data.programData.data.result.data.length
+    ) {
+      this.allProviders = this.route.snapshot.data.programData.data.result.data
+      // .data.result.form.data.sectionList
+    }
     this.clonesProviders = this.allProviders
    }
 
   ngOnInit() {
     this.searchForm = new FormGroup({
-      sortByControl: new FormControl('asc'),
+      sortByControl: new FormControl(''),
       searchKey: new FormControl(''),
     })
+    this.sortType('asc')
     this.displayLoader = this.browseProviderSvc.isLoading()
     this.searchForm.valueChanges
       .pipe(
@@ -153,13 +111,13 @@ export class KarmaProgramsComponent implements OnInit {
         //   }
         // }
         if (response) {
-          const res = _.toArray(_.pickBy(response, v => v !== null && v !== undefined && !!v.name))
+          const res = _.toArray(_.pickBy(response, v => v !== null && v !== undefined && !!v.title))
           const fData: any[] = []
           if (this.searchQuery) {
             _.each(res, (d: any) => {
               let found = false
-              found = _.includes(_.lowerCase(this.searchQuery), _.lowerCase(_.get(d, 'name')))
-                || _.includes(_.lowerCase(_.get(d, 'name')), _.lowerCase(this.searchQuery))
+              found = _.includes(_.lowerCase(this.searchQuery), _.lowerCase(_.get(d, 'title')))
+                || _.includes(_.lowerCase(_.get(d, 'title')), _.lowerCase(this.searchQuery))
               if (found) {
                 fData.push(d)
               }
@@ -167,7 +125,7 @@ export class KarmaProgramsComponent implements OnInit {
             this.allProviders = fData
           }
           if (this.sortBy) {
-            this.allProviders = _.orderBy(fData.length ? fData : res, ['name'], [this.sortBy])
+            this.allProviders = _.orderBy(fData.length ? fData : res, ['title'], [this.sortBy])
           } else {
             this.allProviders = fData.length ? fData : res
           }
@@ -184,12 +142,12 @@ export class KarmaProgramsComponent implements OnInit {
       })
     } else {
       const fData: any[] = []
-      data = _.toArray(_.pickBy(data, v => v !== null && v !== undefined && !!v.name))
+      data = _.toArray(_.pickBy(data, v => v !== null && v !== undefined && !!v.title))
       if (this.searchQuery) {
         _.each(data, (d: any) => {
           let found = false
-          found = _.includes(_.lowerCase(this.searchQuery), _.lowerCase(_.get(d, 'name')))
-            || _.includes(_.lowerCase(_.get(d, 'name')), _.lowerCase(this.searchQuery))
+          found = _.includes(_.lowerCase(this.searchQuery), _.lowerCase(_.get(d, 'title')))
+            || _.includes(_.lowerCase(_.get(d, 'title')), _.lowerCase(this.searchQuery))
           if (found) {
             fData.push(d)
           }
@@ -197,7 +155,7 @@ export class KarmaProgramsComponent implements OnInit {
         this.allProviders = fData
       }
       if (this.sortBy) {
-        this.allProviders = _.orderBy((fData.length ? fData : data), ['name'], [this.sortBy])
+        this.allProviders = _.orderBy((fData.length ? fData : data), ['title'], [this.sortBy])
       }
       if (!this.searchQuery && !this.sortBy) {
         this.allProviders = fData.length ? fData : data
@@ -225,7 +183,7 @@ export class KarmaProgramsComponent implements OnInit {
   filterChannles(value: string) {
     if (value) {
       const filterValue = value.toLowerCase()
-      this.clonesProviders = this.allProviders.filter((p: any) => p.content.name.toLowerCase().includes(filterValue))
+      this.clonesProviders = this.allProviders.filter((p: any) => p.title.toLowerCase().includes(filterValue))
     }
     if (!value) {
       this.clonesProviders = this.allProviders
@@ -243,6 +201,32 @@ export class KarmaProgramsComponent implements OnInit {
     } else {
       this.disableLoadMore = false
     }
+  }
+
+  sortType(sortType: any){
+    if(this.searchForm && this.searchForm.get('sortByControl')){
+      // tslint:disable-next-line: no-non-null-assertion
+      this.searchForm.get('sortByControl')!.setValue(sortType)
+      this.sortBy = sortType;
+      this.allProviders = _.orderBy(this.allProviders.length ? this.allProviders : this.allProviders, ['title'], [this.sortBy])
+    }
+  }
+
+  raiseTelemetryInteratEvent(event: any) {
+    this.events.raiseInteractTelemetry(
+      {
+        type: 'click',
+        subType: 'karma-programs',
+        id: 'card-content',
+      },
+      {
+        id: event.title,
+        type: event.orgId,
+      },
+      {
+        module: WsEvents.EnumTelemetrymodules.LEARN,
+      }
+    )
   }
 
 }

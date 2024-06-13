@@ -219,6 +219,7 @@ export namespace NSNetworkDataV2 {
         osUpdatedBy: string
         osid: string
         responsibilities: string
+        profileStatus: string
     }
     export interface ISkills {
         additionalSkills: string

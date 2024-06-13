@@ -229,7 +229,7 @@ export class ProfileViewComponent implements OnInit, AfterViewInit, OnDestroy {
     if (this.otherDetailsForm.get('mobile')) {
       this.otherDetailsForm.get('mobile')!.valueChanges
       .subscribe(res => {
-        if (res && res !== this.portalProfile.personalDetails.mobile) {
+        if (res && res !== this.portalProfile.personalDetails.mobile ||  !this.portalProfile.personalDetails.phoneVerified) {
           if (MOBILE_PATTERN.test(res)) {
             this.verifyMobile = true
           } else {
@@ -497,7 +497,6 @@ export class ProfileViewComponent implements OnInit, AfterViewInit, OnDestroy {
         this.matSnackBar.open(this.handleTranslateTo('unableFetchMasterLanguageData'))
       }
     })
-
   }
 
   handleTranslateTo(menuName: string): string {
@@ -510,10 +509,11 @@ export class ProfileViewComponent implements OnInit, AfterViewInit, OnDestroy {
       this.portalProfile.personalDetails.dob = data.dataToSubmit.dob
       this.portalProfile.personalDetails.domicileMedium = data.dataToSubmit.domicileMedium
       this.portalProfile.personalDetails.category = data.dataToSubmit.category
-      this.portalProfile.personalDetails.pincode = data.dataToSubmit.pincode
+      // this.portalProfile.personalDetails.pincode = data.dataToSubmit.pincode
       this.portalProfile.personalDetails.mobile = data.dataToSubmit.mobile
       if (this.portalProfile.employmentDetails) {
         this.portalProfile.employmentDetails.employeeCode = data.employeeCode
+        this.portalProfile.employmentDetails.pinCode = data.dataToSubmit.pincode
       }
     }
 
@@ -530,7 +530,7 @@ export class ProfileViewComponent implements OnInit, AfterViewInit, OnDestroy {
       domicileMedium: this.portalProfile.personalDetails.domicileMedium,
       mobile: this.portalProfile.personalDetails.mobile,
       countryCode: this.portalProfile.personalDetails.countryCode || '+91',
-      pincode: this.portalProfile.personalDetails.pincode,
+      pincode: this.portalProfile.employmentDetails && this.portalProfile.employmentDetails.pinCode,
       category: this.portalProfile.personalDetails.category && this.portalProfile.personalDetails.category.toUpperCase(),
     })
 
@@ -677,7 +677,7 @@ export class ProfileViewComponent implements OnInit, AfterViewInit, OnDestroy {
           'personalDetails': {},
           'employmentDetails': {
             'employeeCode': this.otherDetailsForm.value['employeeCode'],
-            'pincode': this.otherDetailsForm.value['pincode'],
+            'pinCode': this.otherDetailsForm.value['pincode'],
             'mobile': this.otherDetailsForm.value['mobile'],
           },
         },
@@ -950,33 +950,45 @@ export class ProfileViewComponent implements OnInit, AfterViewInit, OnDestroy {
 
   get enableEditBtn(): boolean {
     if (this.portalProfile.professionalDetails && this.portalProfile.professionalDetails.length) {
-      if (this.portalProfile.professionalDetails[0].group !== this.primaryDetailsForm.get('group')!.value &&
+      if (!this.primaryDetailsForm.get('group')!.value || !this.primaryDetailsForm.get('designation')!.value) {
+        return false
+      }
+      if (this.portalProfile.professionalDetails[0].group !== this.primaryDetailsForm.get('group')!.value ||
       this.portalProfile.professionalDetails[0].designation !== this.primaryDetailsForm.get('designation')!.value
       ) {
         return true
-
       }
-    }
-
-    if (this.portalProfile.professionalDetails && this.portalProfile.professionalDetails.length) {
-      if (this.portalProfile.professionalDetails[0].group !== this.primaryDetailsForm.get('group')!.value &&
-      ((this.designationApprovedTime + 100) <= this.rejectedFields.groupRejectionTime ||
-      // (this.designationApprovedTime - 100) <= this.rejectedFields.groupRejectionTime ||
-      this.designationApprovedTime === this.groupApprovedTime)) {
+      if ((this.portalProfile.professionalDetails[0].group !== this.primaryDetailsForm.get('group')!.value)  &&
+      ((this.designationApprovedTime <= (this.rejectedFields.groupRejectionTime + 100) &&
+        this.rejectedFields.designationRejectionTime <= (this.rejectedFields.groupRejectionTime + 100)) ||
+      this.GroupAndDesignationApproved)
+      ) {
         return true
       }
-    }
-
-    if (this.portalProfile.professionalDetails && this.portalProfile.professionalDetails.length) {
-      if (this.portalProfile.professionalDetails[0].designation !== this.primaryDetailsForm.get('designation')!.value &&
-      (
-        // (this.groupApprovedTime + 100) <= this.rejectedFields.designationRejectionTime ||
-        (this.groupApprovedTime - 100) <= this.rejectedFields.designationRejectionTime ||
-        this.designationApprovedTime === this.groupApprovedTime)) {
+      if ((this.portalProfile.professionalDetails[0].designation !== this.primaryDetailsForm.get('designation')!.value) &&
+      ((this.groupApprovedTime <= (this.rejectedFields.designationRejectionTime + 100) &&
+        this.rejectedFields.groupRejectionTime <= (this.rejectedFields.designationRejectionTime + 100)) ||
+        this.GroupAndDesignationApproved)) {
         return true
       }
-    }
 
+        return false
+
+    } if (this.primaryDetailsForm.get('group')!.value && this.primaryDetailsForm.get('designation')!.value) {
+      return true
+    }
+    return false
+  }
+
+  get GroupAndDesignationApproved(): Boolean {
+    if ((this.designationApprovedTime === this.groupApprovedTime) ||
+    (this.designationApprovedTime > this.rejectedFields.designationRejectionTime &&
+      this.groupApprovedTime > this.rejectedFields.groupRejectionTime) ||
+    (this.designationApprovedTime + 100 >= this.groupApprovedTime &&
+        this.groupApprovedTime + 100 >= this.designationApprovedTime)
+      ) {
+        return true
+      }
     return false
   }
 
@@ -993,22 +1005,26 @@ export class ProfileViewComponent implements OnInit, AfterViewInit, OnDestroy {
         data['group'] = this.primaryDetailsForm.get('group')!.value
       }
     } else {
-      data['designation'] = this.primaryDetailsForm.get('designation')!.value
-      data['group'] = this.primaryDetailsForm.get('group')!.value
+      if (this.primaryDetailsForm.get('designation')!.value) {
+        data['designation'] = this.primaryDetailsForm.get('designation')!.value
+      }
+      if (this.primaryDetailsForm.get('group')!.value) {
+        data['group'] = this.primaryDetailsForm.get('group')!.value
+      }
     }
 
     if (data.designation || data.group) {
-    const postData: any = {
-      'request': {
-        'userId': this.configService.unMappedUser.id,
-        'employmentDetails': {
-          'departmentName': this.primaryDetailsForm.value['designation'],
+      const postData: any = {
+        'request': {
+          'userId': this.configService.unMappedUser.id,
+          'employmentDetails': {
+            'departmentName': this.primaryDetailsForm.value['designation'],
+          },
+          'profileDetails': {
+            'professionalDetails': [],
+          },
         },
-        'profileDetails': {
-          'professionalDetails': [],
-        },
-      },
-    }
+      }
 
       postData.request.profileDetails.professionalDetails.push(data)
       this.userProfileService.editProfileDetails(postData)
@@ -1078,6 +1094,10 @@ export class ProfileViewComponent implements OnInit, AfterViewInit, OnDestroy {
     .pipe(takeUntil(this.destroySubject$))
     .subscribe((_res: any) => {
       this.portalProfile.personalDetails.firstname = this.profileName
+      if (this.configService && this.configService.userProfile && this.configService.userProfile.firstName) {
+        this.configService.userProfile.firstName = this.profileName
+      }
+
       this.getInitials()
       this.matSnackBar.open(this.handleTranslateTo('userNameUpdated'))
       this.editName = !this.editName

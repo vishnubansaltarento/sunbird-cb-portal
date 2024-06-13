@@ -3,26 +3,30 @@ import { Routes, RouterModule } from '@angular/router'
 import { KarmaProgramsFormService } from './service/karma-programs-form.service'
 import { KarmaProgramsComponent } from './karma-programs/karma-programs.component'
 import { KarmaProgramsMicrositeComponent } from './karma-programs-microsite/karma-programs-microsite.component'
+import { KarmaProgramDataService } from './service/karma-program-data.service'
 
 const routes: Routes = [
     {
         path: '',
         pathMatch: 'full',
-        redirectTo: 'all-channels',
+        redirectTo: 'all-programs',
     },
     {
-        path: 'all-channels',
+        path: 'all-programs',
         component: KarmaProgramsComponent,
         data: {
-            pageId: 'all-channels',
+            pageId: 'all-programs',
             module: 'Learn',
+        },
+        resolve: {
+            programData: KarmaProgramDataService,
         },
     },
     {
-        path: ':channel/:orgId/micro-sites',
+        path: ':programName/:playListKey/:orgId/micro-sites',
         component: KarmaProgramsMicrositeComponent,
         data: {
-            pageId: ':channel/:orgId/micro-sites',
+            pageId: ':programName/:playListKey/:orgId/micro-sites',
             module: 'Learn',
         },
         resolve: {

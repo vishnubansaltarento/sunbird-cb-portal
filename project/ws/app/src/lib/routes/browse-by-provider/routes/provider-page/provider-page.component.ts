@@ -18,15 +18,14 @@ export class ProviderPageComponent implements OnInit  {
   sectionList: any = []
   currentMonthAndYear: any
   titles = [
+    { title: 'Learn', url: '/page/learn', icon: 'school', disableTranslate: false },
     { title: `All Providers`,
       url: `/app/learn/browse-by/provider/all-providers`,
-      textClass: 'ws-mat-black60-text',
       icon: '', disableTranslate: true,
     },
   ]
 
-  descriptionMaxLength = 1000
-  expanded = false
+  descriptionMaxLength = 500
   isTelemetryRaised = false
 
   constructor(private route: ActivatedRoute,
@@ -49,7 +48,6 @@ export class ProviderPageComponent implements OnInit  {
       this.providerId = params['orgId']
       this.titles.push({
         title: this.providerName, icon: '', url: 'none', disableTranslate: true,
-        textClass: '',
       })
     })
     this.getNavitems()
@@ -73,9 +71,18 @@ export class ProviderPageComponent implements OnInit  {
       })
     }
   }
-  hideCompetency(event: any) {
+  hideCompetency(event: any, columnData: any) {
     if (event) {
       this.hideCompetencyBlock = true
+      columnData['navigation'] = false
+      columnData['enabled'] = false
+      this.navList.forEach((navItem: any) => {
+       navItem.column.forEach((colEle: any) => {
+          if (colEle.key === columnData.key) {
+            navItem['navigation'] = false
+          }
+       })
+      })
     }
   }
   hideContentStrip(event: any, contentStripData: any) {
@@ -108,7 +115,7 @@ export class ProviderPageComponent implements OnInit  {
     if (event && event.viewMoreUrl) {
       this.raiseTelemetry(`${event.stripTitle} ${event.viewMoreUrl.viewMoreText}`)
     }
-    if (!this.isTelemetryRaised) {
+    if (!this.isTelemetryRaised && event && !event.viewMoreUrl) {
       this.events.raiseInteractTelemetry(
         {
           type: 'click',
@@ -116,7 +123,7 @@ export class ProviderPageComponent implements OnInit  {
           id: `${_.kebabCase(event.typeOfTelemetry.toLocaleLowerCase())}-card`,
         },
         {
-          id: `${_.kebabCase(event.typeOfTelemetry.toLocaleLowerCase())}-card`,
+          id: event.identifier,
           type: event.primaryCategory,
         },
         {
@@ -128,10 +135,7 @@ export class ProviderPageComponent implements OnInit  {
     }
   }
 
-  viewMoreOrLess() {
-    this.expanded = !this.expanded
-  }
-
+ 
   raiseCompetencyTelemetry(name: string) {
     this.raiseTelemetry(`${name} core expertise`)
   }

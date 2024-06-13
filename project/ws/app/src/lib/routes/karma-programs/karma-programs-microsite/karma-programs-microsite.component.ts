@@ -2,6 +2,9 @@ import { Component, OnInit } from '@angular/core'
 import { ActivatedRoute } from '@angular/router'
 import { CommonMethodsService } from '@sunbird-cb/consumption'
 import { KarmaProgramsService } from '../service/karma-programs.service'
+import { EventService, WsEvents } from '@sunbird-cb/utils'
+import { TranslateService } from '@ngx-translate/core'
+import { MultilingualTranslationsService } from '@sunbird-cb/utils-v2'
 
 @Component({
   selector: 'ws-app-karma-programs-microsite',
@@ -9,15 +12,47 @@ import { KarmaProgramsService } from '../service/karma-programs.service'
   styleUrls: ['./karma-programs-microsite.component.scss'],
 })
 export class KarmaProgramsMicrositeComponent implements OnInit {
-
+  programName = ''
+  playListKey = ''
+  orgId = ''
   sectionList: any = []
   contentDataList: any = []
+  originalContentlist: any = []
+  seeAllPageConfig: any
+  titles = [
+    { title: 'Learn', url: '/page/learn', icon: 'school', disableTranslate: false },
+    {
+      title: `Karma programs`,
+      url: `/app/learn/karma-programs/all-programs`,
+      icon: '', disableTranslate: true,
+    },
+  ]
   loadContentSearch = false
+  descriptionMaxLength = 750
   constructor(private route: ActivatedRoute,
               public contentSvc: KarmaProgramsService,
-              public commonSvc: CommonMethodsService) { }
+              private translate: TranslateService,
+              private langtranslations: MultilingualTranslationsService,
+              public eventSvc: EventService,
+              public commonSvc: CommonMethodsService) {
+                this.langtranslations.languageSelectedObservable.subscribe(() => {
+                  if (localStorage.getItem('websiteLanguage')) {
+                    this.translate.setDefaultLang('en')
+                    const lang = localStorage.getItem('websiteLanguage')!
+                    this.translate.use(lang)
+                  }
+                })
+              }
 
   ngOnInit() {
+    this.route.params.subscribe(params => {
+      this.programName = params['programName']
+      this.playListKey = params['playListKey']
+      this.orgId = params['orgId']
+      this.titles.push({
+        title: this.programName, icon: '', url: 'none', disableTranslate: true,
+      })
+    })
     if (this.route.snapshot.data && this.route.snapshot.data.formData
       && this.route.snapshot.data.formData.data
       && this.route.snapshot.data.formData.data.result
@@ -29,19 +64,22 @@ export class KarmaProgramsMicrositeComponent implements OnInit {
 
       this.getDataFromSearch()
     }
+
   }
 
   async getDataFromSearch(requestData?: any) {
     const request  = requestData || this.formRequest()
     const sectionData = this.sectionList.filter((ele: any) => ele.key === 'contentSearch')
     if (sectionData && sectionData.length) {
-    const strip: any = sectionData[0].column[0].data && sectionData[0].column[0].data.strips[0]
+    const strip: any = sectionData[0].column[0].data && sectionData[0].column[0].data.strips[0] || {}
+    this.seeAllPageConfig = strip
     try {
       this.loadContentSearch = true
       const response = await this.fetchFromSearchV6(request)
       if (response && response.results) {
         if (response.results.result.content) {
          this.contentDataList = this.commonSvc.transformContentsToWidgets(response.results.result.content, strip)
+         this.originalContentlist = response.results.result.content
         }
         this.loadContentSearch = false
       }
@@ -55,21 +93,36 @@ export class KarmaProgramsMicrositeComponent implements OnInit {
   async fetchFromSearchV6(request: any) {
       return new Promise<any>((resolve, reject) => {
         if (request && request) {
-          this.contentSvc.searchV6(request).subscribe(results => {
+          this.contentSvc.fetchPlaylistSearchData(this.playListKey, this.orgId).subscribe(results => {
               resolve({ results })
-            },                                        (error: any) => {
+            },                                                                            (error: any) => {
               reject(error)
             },
           )
         }
       })
   }
+  // handleSearchQuery(e: any) {
+  //   if (e.target.value) {
+  //     const request = this.formRequest(e.target.value)
+  //     this.getDataFromSearch(request)
+  //   }
+  // }
+
   handleSearchQuery(e: any) {
-    if (e.target.value) {
-      const request = this.formRequest(e.target.value)
-      this.getDataFromSearch(request)
+    if (e.target.value || e.target.value === '') {
+      this.contentDataList = this.commonSvc.transformSkeletonToWidgets(this.seeAllPageConfig)
+      // this.callApi(e.target.value)
+      this.filterContentList(e.target.value)
     }
   }
+  filterContentList(searchText: string) {
+    const data = [...this.originalContentlist]
+    const filterValue = searchText.toLowerCase()
+    const filteredData = data.filter((p: any) => p &&  p.name && p.name.toLowerCase().includes(filterValue))
+    this.contentDataList  = this.commonSvc.transformContentsToWidgets(filteredData, this.seeAllPageConfig)
+  }
+
   formRequest(queryText?: any, addFilter?: any) {
     this.loadCardSkeletonLoader()
     const request: any = {
@@ -99,6 +152,23 @@ export class KarmaProgramsMicrositeComponent implements OnInit {
         const strip: any = sectionData[0].column[0].data && sectionData[0].column[0].data.strips[0]
       this.contentDataList = this.commonSvc.transformSkeletonToWidgets(strip)
     }
+  }
+
+  raiseTelemetryInteratEvent(event: any) {
+    this.eventSvc.raiseInteractTelemetry(
+      {
+        type: 'click',
+        subType: 'karma-programs',
+        id: `card-content`,
+      },
+      {
+        id: event.identifier,
+        type: event.primaryCategory,
+      },
+      {
+        module: WsEvents.EnumTelemetrymodules.LEARN,
+      }
+    )
   }
 
 }

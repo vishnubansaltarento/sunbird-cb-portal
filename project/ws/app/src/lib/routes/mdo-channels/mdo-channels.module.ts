@@ -28,6 +28,7 @@ import {
   MatButtonToggleModule,
   MatTabsModule,
   MatAutocompleteModule,
+  MatMenuModule,
 } from '@angular/material'
 import { CardContentV2Module } from '@sunbird-cb/collection/src/lib/card-content-v2/card-content-v2.module'
 import { HttpClient } from '@angular/common/http'
@@ -36,6 +37,7 @@ import { HttpLoaderFactory } from 'src/app/app.module'
 import {
   AnnouncementsModule,
   CardsModule,
+  CommonMethodsService,
   CommonStripModule,
   CompetencyPassbookModule,
   ContentStripWithTabsLibModule,
@@ -48,9 +50,12 @@ import { MdoChannelsRoutingModule } from './mdo-channels-routing.module'
 import { BtnPageBackModule } from '@sunbird-cb/collection/src/public-api'
 import { MdoChannelFormService } from './service/mdo-channel-form.service'
 import { FormsModule, ReactiveFormsModule } from '@angular/forms'
+import { MdoChannelDataService } from './service/mdo-channel-data.service'
+import { MdoChannelsAllContentComponent } from './mdo-channels-all-content/mdo-channels-all-content.component'
+import { AllContentService } from './service/all-content.service'
 
 @NgModule({
-  declarations: [MdoChannelsComponent, MdoChannelsMicrositeComponent],
+  declarations: [MdoChannelsComponent, MdoChannelsMicrositeComponent, MdoChannelsAllContentComponent],
   imports: [
     CommonModule,
     FormsModule,
@@ -90,6 +95,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms'
     CommonStripModule,
     CardsModule,
     AnnouncementsModule,
+    MatMenuModule,
     TranslateModule.forRoot({
       loader: {
         provide: TranslateLoader,
@@ -98,6 +104,6 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms'
       },
     }),
   ],
-  providers: [MdoChannelFormService],
+  providers: [MdoChannelFormService, AllContentService, CommonMethodsService, MdoChannelDataService],
 })
 export class MDOChannelsModule { }

@@ -13,6 +13,7 @@ import { NsUser } from '@sunbird-cb/utils'
 export class ConnectionNameComponent implements OnInit, AfterViewInit {
   @Input() hoverUser!: any
   me!: NsUser.IUserProfile
+  isProfileStatus = false
   // hoverUser!: NSProfileDataV2.IProfile
   constructor(
     // private router: Router,
@@ -30,6 +31,9 @@ export class ConnectionNameComponent implements OnInit, AfterViewInit {
     // this.connectionHoverService.fetchProfile(userId).subscribe((fp: NSProfileDataV2.IProfile) => {
     //   this.hoverUser = fp
     // })
+    if (this.hoverUser && this.hoverUser.professionalDetails && this.hoverUser.professionalDetails[0].profileStatus === 'VERIFIED') {
+        this.isProfileStatus = true
+    }
   }
   ngAfterViewInit() {
 
