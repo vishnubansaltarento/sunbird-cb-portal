@@ -198,7 +198,7 @@ const routes: Routes = [
   {
     path: 'app/jan-karmayogi',
     loadChildren: () =>
-    import('./routes/route-jan-karmayogi.module').then(u => u.RouteJanKarmayogiModule),
+      import('./routes/route-jan-karmayogi.module').then(u => u.RouteJanKarmayogiModule),
     canActivate: [GeneralGuard],
     data: {
       pageType: 'feature',
@@ -865,6 +865,14 @@ const routes: Routes = [
     canActivate: [GeneralGuard],
   },
   {
+    path: 'app/learner-advisory',
+    component: LearnerAdvisoryComponent,
+    data: {
+      module: 'learner-advisory',
+      pageId: 'app/learner-advisory',
+    },
+  },
+  {
     path: 'public/about',
     component: PublicAboutComponent,
     data: {
@@ -951,14 +959,6 @@ const routes: Routes = [
     data: {
       module: 'privacy-policy',
       pageId: 'public/privacy-policy',
-    },
-  },
-  {
-    path: 'public/learner-advisory',
-    component: LearnerAdvisoryComponent,
-    data: {
-      module: 'learner-advisory',
-      pageId: 'public/learner-advisory',
     },
   },
   {

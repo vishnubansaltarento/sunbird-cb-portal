@@ -413,7 +413,8 @@
     </div>
 
     <div class="right-container" >
-      <div class="right-content" #rightContainer>
+      <div class="right-box"  #rightContainer>
+        <div class="right-content" >
         <ng-container *ngIf="skeletonLoader">
           <ws-widget-skeleton-loader [width]="'384px'" [height]="'224px'"
             [bindingClass]="'rounded'"></ws-widget-skeleton-loader>
@@ -619,32 +620,30 @@
             </div>
           </ng-container>
         </div>
-      </div>
-
-      <div class="tips-container" >
+        </div>
+        <div class="tips-container" >
         <div class="circle-box">
             <div class="background-circle">
-                <!-- circle -->
+                
             </div>
         </div>
         <div class="tips-header">
-            <h3>Tips for Learners</h3>
-            <button (click)="showAllTips()">Show all ></button>
-        </div>
-        <div class="tip-content">
-            <div class =" background">
-            <img  class="book-icon" src="assets/icons/learner-advisory/use-gyaan-karmayogi.png"
-                alt="Use the new section Gyaan Karmayogi regularly, to go over case studies and other learning material.">
-            </div>    
-            <p>{{'learnerAdvisory.useGyaanKarmayogi' | translate}}</p>
+          <p>{{'learnerAdvisory.tip' | translate}}</p>
+          <button (click)="showAllTips()">{{'learnerAdvisory.showAll' | translate}} ></button>
+      </div>
+      <div class="tip-content">
+        <div class="background">
+          <img class="book-icon" [src]="tips[currentTipIndex].icon" alt="Tip Icon">
+        </div>    
+        <p>{{ tips[currentTipIndex].key | translate }}</p>
             <div class="tip-count">
                 1/13
             </div>
         </div>
+        </div>
+      </div>
+      </div>
     </div>
-
-  </div>
-</div>
 
   <div class="mobile-enroll-div" [ngClass]="{'bg-white': content?.primaryCategory === primaryCategory.BLENDED_PROGRAM }">
     <ng-container *ngIf="content && content?.primaryCategory === primaryCategory.BLENDED_PROGRAM ">
