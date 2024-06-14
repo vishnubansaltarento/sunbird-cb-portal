@@ -34,6 +34,8 @@ export class QuestionComponent implements OnInit, OnChanges, AfterViewInit {
     editorState: undefined,
     question: '',
     questionId: '',
+    questionLevel: '',
+    timeTaken: '',
     options: [
       {
         optionId: '',
@@ -45,7 +47,7 @@ export class QuestionComponent implements OnInit, OnChanges, AfterViewInit {
   @Input() itemSelectedList: string[] = []
   @Input() markedQuestions: Set<string> = new Set()
   @Output() itemSelected = new EventEmitter<string | Object>()
-
+  @Input() questionAnswerHash: any
   quizAnswerHash: { [questionId: string]: string[] } = {}
   title = 'match'
   itemSelectedList1: any
@@ -131,6 +133,11 @@ export class QuestionComponent implements OnInit, OnChanges, AfterViewInit {
     } else {
       this.markedQuestions.add(this.question.questionId)
     }
+  }
+
+  clearResponse() {
+    // console.log('this.question.questionId', this.question)
+    // console.log('questionAnswerHash,', this.questionAnswerHash)
   }
 
   setBorderColorById(id: string, color: string | null) {

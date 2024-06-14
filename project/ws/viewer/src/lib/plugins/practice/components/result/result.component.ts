@@ -162,6 +162,7 @@ export class ResultComponent implements OnInit, OnChanges {
   }
 
   ngOnChanges() {
+    // console.log(this.quizResponse, this.quizResponse)
     if (this.quizResponse) {
       this.quizResponseClone = _.clone(this.quizResponse)
       const sectionTableData = []
@@ -324,7 +325,7 @@ export class ResultComponent implements OnInit, OnChanges {
             const objChildren: any = {
               question: this.quizResponse.children[i].children[j]['question'],
               status: this.quizResponse.children[i].children[j]['result'],
-              // questionTagg: 'Easy',
+              questionTagg: this.quizResponse.children[i].children[j]['questionLevel'],
               timeTaken: '00:00:09',
             }
             this.questionStatuTableData.push(objChildren)
@@ -362,7 +363,7 @@ export class ResultComponent implements OnInit, OnChanges {
                 const obj: any = {
                   question: this.quizResponse.children[i].children[j]['question'],
                   status: this.quizResponse.children[i].children[j]['result'],
-                  questionTagg: 'Easy',
+                  questionTagg: this.quizResponse.children[i].children[j]['questionLevel'],
                   timeTaken: '00:00:09',
                 }
                 this.questionStatuTableData.push(obj)
@@ -371,7 +372,7 @@ export class ResultComponent implements OnInit, OnChanges {
                   const obj: any = {
                     question: this.quizResponse.children[i].children[j]['question'],
                     status: this.quizResponse.children[i].children[j]['result'],
-                    questionTagg: 'Easy',
+                    questionTagg: this.quizResponse.children[i].children[j]['questionLevel'],
                     timeTaken: '00:00:09',
                   }
                   this.questionStatuTableData.push(obj)
@@ -381,7 +382,7 @@ export class ResultComponent implements OnInit, OnChanges {
                   const obj: any = {
                     question: this.quizResponse.children[i].children[j]['question'],
                     status: this.quizResponse.children[i].children[j]['result'],
-                    questionTagg: 'Easy',
+                    questionTagg: this.quizResponse.children[i].children[j]['questionLevel'],
                     timeTaken: '00:00:09',
                   }
                   this.questionStatuTableData.push(obj)
@@ -391,7 +392,7 @@ export class ResultComponent implements OnInit, OnChanges {
                   const obj: any = {
                     question: this.quizResponse.children[i].children[j]['question'],
                     status: this.quizResponse.children[i].children[j]['result'],
-                    questionTagg: 'Easy',
+                    questionTagg: this.quizResponse.children[i].children[j]['questionLevel'],
                     timeTaken: '00:00:09',
                   }
                   this.questionStatuTableData.push(obj)
@@ -417,7 +418,7 @@ export class ResultComponent implements OnInit, OnChanges {
           const obj: any = {
             question: quizResponse.children[j]['question'],
             status: quizResponse.children[j]['result'],
-            questionTagg: 'Easy',
+            questionTagg: quizResponse.children[j]['questionLevel'],
             timeTaken: '00:00:09',
           }
           this.questionStatuTableData.push(obj)
@@ -426,7 +427,7 @@ export class ResultComponent implements OnInit, OnChanges {
             const obj: any = {
               question: quizResponse.children[j]['question'],
               status: quizResponse.children[j]['result'],
-              questionTagg: 'Easy',
+              questionTagg: quizResponse.children[j]['questionLevel'],
               timeTaken: '00:00:09',
             }
             this.questionStatuTableData.push(obj)
@@ -436,7 +437,7 @@ export class ResultComponent implements OnInit, OnChanges {
             const obj: any = {
               question: quizResponse.children[j]['question'],
               status: quizResponse.children[j]['result'],
-              questionTagg: 'Easy',
+              questionTagg: quizResponse.children[j]['questionLevel'],
               timeTaken: '00:00:09',
             }
             this.questionStatuTableData.push(obj)
@@ -446,7 +447,7 @@ export class ResultComponent implements OnInit, OnChanges {
             const obj: any = {
               question: quizResponse.children[j]['question'],
               status: quizResponse.children[j]['result'],
-              questionTagg: 'Easy',
+              questionTagg: quizResponse.children[j]['questionLevel'],
               timeTaken: '00:00:09',
             }
             this.questionStatuTableData.push(obj)
