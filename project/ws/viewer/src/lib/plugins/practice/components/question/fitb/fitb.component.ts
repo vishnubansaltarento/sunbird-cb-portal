@@ -132,13 +132,14 @@ export class FillInTheBlankComponent implements OnInit, OnChanges, AfterViewInit
                 // tslint:disable-next-line
                 this.localQuestion = this.localQuestion.replace('_______________', 'idMarkerForReplacement')
             }
-            if(iterationNumber === 0) {
+            if (iterationNumber === 0) {
                 // replacing input tag forom richtext. new courses
-                this.localQuestion = this.localQuestion.split('<input style="border-style:none none solid none" />').join('idMarkerForReplacement')
+                this.localQuestion = this.localQuestion.split('<input style="border-style:none none solid none" />')
+                    .join('idMarkerForReplacement')
                 iterationNumber = (this.localQuestion.match(/idMarkerForReplacement/g) || []).length
                 fromRichTextEditor = true
             }
-            
+
             // only if practice assessment
             if (this.primaryCategory === NsContent.EPrimaryCategory.PRACTICE_RESOURCE
                 && this.question.editorState && this.question.editorState.options) {
