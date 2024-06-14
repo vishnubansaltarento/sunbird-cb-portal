@@ -130,11 +130,17 @@ export class PracticeService {
           // this.mtfSrc['']
           // if (mtfSrc[question.questionId] && mtfSrc[question.questionId].source[i] && mtfSrc[question.questionId].target[i]) {
           //   for (let j = 0; j < question.options.length; j += 1) {
-              const opText = question.options[i].text.trim()
+              let  opText = question.options[i].text.trim()
+              opText = opText.replace(/\&lt;/g, '<').replace(/\&gt;/g, '>')
               if (mtfSrc[question.questionId] && mtfSrc[question.questionId].source.length
-                && mtfSrc[question.questionId].source.includes(opText)) {
-                const idxOfSource = _.indexOf(mtfSrc[question.questionId].source, question.options[i].text.trim())
-                question.options[i].response = mtfSrc[question.questionId].target[idxOfSource].trim()
+                && mtfSrc[question.questionId].source.includes(opText.replace(/<(.|\n)*?>/g, ''))) {
+                const stringRemoveSlashN =  question.options[i].text.replace(/\n/g, '').replace(/\&lt;/g, '<').replace(/\&gt;/g, '>')
+                const idxOfSource = _.indexOf(mtfSrc[question.questionId].source, stringRemoveSlashN.replace(/<(.|\n)*?>/g, ''))
+                const targetId = mtfSrc[question.questionId].target[idxOfSource]
+                const lastChar = targetId.slice(-1)
+                if (question) {
+                  question.options[i].response = question.rhsChoices && question.rhsChoices[Number(lastChar) - 1]
+                }
                 question.options[i].userSelected = true
               // }
             // }

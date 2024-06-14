@@ -370,6 +370,7 @@ export class PracticeComponent implements OnInit, OnChanges, OnDestroy {
                 instructions: null,
                 options: this.getOptions(q),
                 editorState: q.editorState,
+                rhsChoices: this.getRhsValue(q),
               })
             }
           })
@@ -403,6 +404,18 @@ export class PracticeComponent implements OnInit, OnChanges, OnDestroy {
   }
   getMultiQuestions(ids: string[]) {
     return this.quizSvc.getQuestions(ids, this.identifier).toPromise()
+  }
+  getRhsValue(question: NSPractice.IQuestionV2) {
+    if (question && question.qType) {
+      const qTyp = question.qType
+      switch (qTyp) {
+        case 'MTF':
+          return question.rhsChoices
+        default:
+          return []
+      }
+    }
+    return []
   }
   getOptions(question: NSPractice.IQuestionV2): NSPractice.IOption[] {
     const options: NSPractice.IOption[] = []
@@ -679,7 +692,8 @@ export class PracticeComponent implements OnInit, OnChanges, OnDestroy {
       mTfval[question.questionId] = {
         // [_.first(_.map(optionId, 'source.innerText'))]: {
         source: _.map(optionId, 'source.innerText'),
-        target: _.map(optionId, 'target.innerText'),
+        target: _.map(optionId, 'target.id'),
+        // target: [wrapper.firstChild.innerHTML]
         // sourceId: _.first(_.map(optionId, 'source.id')),
         // targetId: _.first(_.map(optionId, 'target.id')),
         // },

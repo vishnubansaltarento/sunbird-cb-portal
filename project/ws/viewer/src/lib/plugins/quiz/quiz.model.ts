@@ -21,6 +21,7 @@ export namespace NSQuiz {
     options: IOption[]
     editorState?: any[],
     questionType?: TQuizQuestionType
+    rhsChoices?: any[]
   }
 
   export interface IOption {
