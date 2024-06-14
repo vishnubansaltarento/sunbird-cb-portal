@@ -842,6 +842,15 @@ export class PracticeComponent implements OnInit, OnChanges, OnDestroy {
                 // ),
               },
             }
+            if(sq.options.length === 0 && this.questionAnswerHash[sq.questionId]) {
+              const ftbAns = this.questionAnswerHash[sq.questionId][0].split(',')
+              ftbAns.forEach((ans: string, index) => {
+                ftb.editorState.options.push({
+                  index: index.toString(),
+                  selectedAnswer: ans
+                })
+              })
+            }
             responseQ.push(ftb)
             break
           case 'mtf':

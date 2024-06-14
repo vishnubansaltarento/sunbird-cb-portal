@@ -126,11 +126,19 @@ export class FillInTheBlankComponent implements OnInit, OnChanges, AfterViewInit
             let value = (this.practiceSvc.questionAnswerHash.value[this.question.questionId] || '')
             value = value.toString().split(',')
             // tslint:disable-next-line
-            const iterationNumber = (this.localQuestion.match(/_______________/g) || []).length
+            let iterationNumber = (this.localQuestion.match(/_______________/g) || []).length
+            let fromRichTextEditor = false
             for (let i = 0; i < iterationNumber; i += 1) {
                 // tslint:disable-next-line
                 this.localQuestion = this.localQuestion.replace('_______________', 'idMarkerForReplacement')
             }
+            if(iterationNumber === 0) {
+                // replacing input tag forom richtext. new courses
+                this.localQuestion = this.localQuestion.split('<input style="border-style:none none solid none" />').join('idMarkerForReplacement')
+                iterationNumber = (this.localQuestion.match(/idMarkerForReplacement/g) || []).length
+                fromRichTextEditor = true
+            }
+            
             // only if practice assessment
             if (this.primaryCategory === NsContent.EPrimaryCategory.PRACTICE_RESOURCE
                 && this.question.editorState && this.question.editorState.options) {
@@ -140,7 +148,7 @@ export class FillInTheBlankComponent implements OnInit, OnChanges, AfterViewInit
                 }
             }
             for (let i = 0; i < iterationNumber; i += 1) {
-                if (this.question.options.length > 0) {
+                if (this.question.options.length > 0 || (fromRichTextEditor && iterationNumber > 0)) {
                     // console.log('============>', i, this.question.options[i].text)
                     if (value[i]) {
                         this.localQuestion = this.localQuestion.replace(
