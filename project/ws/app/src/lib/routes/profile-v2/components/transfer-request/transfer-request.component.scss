@@ -17,6 +17,7 @@
 .profile-form-field {
     .mat-select {
         background-color: #FFF;
+        position: relative;
     }
 
     .outline-button {
@@ -28,4 +29,22 @@ required::after {
     content: "*";
     color: red;
     font-size: 10px;
+}
+.search-box-span {
+    padding: 4px 0px 0px 0px;
+    position: fixed;
+    top: 0;
+    display: block;
+    width: 100%;
+    box-sizing: border-box;
+    background-color: #fff;
+    z-index: 9;
+}
+.dept-seach-input {
+    width: 90%;
+    margin: 8px auto;
+    display: block;
+    padding: 6px 12px;
+    border-radius: 3px;
+    box-sizing: border-box;
 }

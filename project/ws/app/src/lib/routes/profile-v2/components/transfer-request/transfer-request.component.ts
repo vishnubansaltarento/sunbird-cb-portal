@@ -61,6 +61,20 @@ export class TransferRequestComponent implements OnInit, OnDestroy {
     this.dialogRef.close()
   }
 
+  organizationSearch(value: string) { 
+      let filterVal = value.toLowerCase();
+    return this.departmentData.filter(option => option.toLowerCase().includes(filterVal));
+  }
+
+  searchOrg(value:any) { 
+    if(value && value.length) {
+      this.departmentData = this.organizationSearch(value);
+    }
+    else {
+      this. getAllDeptData()
+    } 
+  }
+
   handleSubmitRequest(): void {
     const data: any = {
       'name': this.transferRequestForm.value['organization'],
