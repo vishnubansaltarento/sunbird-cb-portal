@@ -132,9 +132,11 @@ export class PracticeService {
           //   for (let j = 0; j < question.options.length; j += 1) {
               let  opText = question.options[i].text.trim()
               opText = opText.replace(/\&lt;/g, '<').replace(/\&gt;/g, '>')
+              opText = this.extractContent(opText)
               if (mtfSrc[question.questionId] && mtfSrc[question.questionId].source.length
                 && mtfSrc[question.questionId].source.includes(opText.replace(/<(.|\n)*?>/g, ''))) {
-                const stringRemoveSlashN =  question.options[i].text.replace(/\n/g, '').replace(/\&lt;/g, '<').replace(/\&gt;/g, '>')
+                  // tslint:disable-next-line: max-line-length
+                const stringRemoveSlashN =  this.extractContent(question.options[i].text.replace(/\n/g, '').replace(/\&lt;/g, '<').replace(/\&gt;/g, '>'))
                 const idxOfSource = _.indexOf(mtfSrc[question.questionId].source, stringRemoveSlashN.replace(/<(.|\n)*?>/g, ''))
                 const targetId = mtfSrc[question.questionId].target[idxOfSource]
                 const lastChar = targetId.slice(-1)
@@ -163,6 +165,12 @@ export class PracticeService {
       return question
     })
     return quizWithAnswers
+  }
+
+  extractContent(htmlData: any) {
+    const spanData = document.createElement('span')
+    spanData.innerHTML = htmlData
+    return spanData.textContent || spanData.innerText
   }
 
   sanitizeAssessmentSubmitRequest(requestData: NSPractice.IQuizSubmitRequest): NSPractice.IQuizSubmitRequest {
