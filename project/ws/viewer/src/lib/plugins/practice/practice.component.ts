@@ -648,6 +648,7 @@ export class PracticeComponent implements OnInit, OnChanges, OnDestroy {
     }
   }
   getNextQuestion(idx: any) {
+    if(this.totalQCount > idx) {
     this.process = true
     if (idx !== this.currentQuestionIndex) {
       this.currentQuestionIndex = idx
@@ -668,6 +669,7 @@ export class PracticeComponent implements OnInit, OnChanges, OnDestroy {
     if (this.compatibilityLevel <= 6) {
       // console.log(this.generateRequest)
     }
+  }
   }
   get current_Question(): NSPractice.IQuestionV2 {
     return this.currentQuestion

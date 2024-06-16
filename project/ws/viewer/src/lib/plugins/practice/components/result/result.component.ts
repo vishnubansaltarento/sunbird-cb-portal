@@ -189,7 +189,7 @@ export class ResultComponent implements OnInit, OnChanges {
               }
             }
             
-            const sectionObj = { subject: `${sectionName}`, yourScore : ((this.quizResponse.children[i]['correct']) / (this.quizResponse.children[i]['total'])).toFixed(2) }
+            const sectionObj = { subject: `${sectionName}`, yourScore : ((this.quizResponse.children[i]['correct']) / Number(this.quizResponse.children[i]['total']))}
             sectionTableData.push(sectionObj)
           // }
         }
@@ -223,7 +223,7 @@ export class ResultComponent implements OnInit, OnChanges {
           imgType: 'icon',
           imgPath: 'speed',
           class: 'icon-bg-blue',
-          summary: `${this.percentage.toFixed(2)}/100`,
+          summary: `${Number(this.percentage)}/100`,
           summaryType: 'Score',
         },
         // {
@@ -251,7 +251,7 @@ export class ResultComponent implements OnInit, OnChanges {
           imgType: 'img',
           imgPath: '/assets/icons/final-assessment/target.svg',
           class: 'icon-bg-dark-green',
-          summary: `${((this.quizResponse.correct / this.quizResponse.total) * 100).toFixed(2)}%`,
+          summary: `${(Number(this.quizResponse.correct / this.quizResponse.total) * 100)}%`,
           summaryType: 'Accuracy',
         },
       ]

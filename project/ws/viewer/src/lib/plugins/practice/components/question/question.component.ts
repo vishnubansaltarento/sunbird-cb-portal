@@ -47,6 +47,7 @@ export class QuestionComponent implements OnInit, OnChanges, AfterViewInit {
   @Input() itemSelectedList: string[] = []
   @Input() markedQuestions: Set<string> = new Set()
   @Output() itemSelected = new EventEmitter<string | Object>()
+  @Output() getNextQuestion = new EventEmitter<Boolean>()
   @Input() questionAnswerHash: any
   quizAnswerHash: { [questionId: string]: string[] } = {}
   title = 'match'
@@ -132,6 +133,9 @@ export class QuestionComponent implements OnInit, OnChanges, AfterViewInit {
       this.markedQuestions.delete(this.question.questionId)
     } else {
       this.markedQuestions.add(this.question.questionId)
+      if(this.coursePrimaryCategory === 'Standalone Assessment') {
+        this.getNextQuestion.emit(true)
+      }      
     }
   }
 

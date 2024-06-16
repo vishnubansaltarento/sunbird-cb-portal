@@ -1329,7 +1329,7 @@
                       {{ getQuestionIndex(i) }}
                     </div>
                     <div *ngIf="isQuestionMarked(question?.questionId) && !(!isQuestionMarked(question?.questionId) &&
-                      isQuestionAttempted(question?.questionId))">
+                      isQuestionAttempted(question?.questionId))">{{ getQuestionIndex(i)}}
                       <ng-container *ngIf="!isQuestionAttempted(question?.questionId)">{{ getQuestionIndex(i)
                         }}</ng-container>
 
@@ -1408,7 +1408,8 @@
               (itemSelected)="fillSelectedItems(current_Question, $event)" [showAnswer]="showAnswer"
               [currentQuestion]="current_Question" [coursePrimaryCategory]="coursePrimaryCategory"
               [showOnlyQuestion]="false" [showMarkForReview]="true"
-              [questionAnswerHash]="questionAnswerHash">
+              [questionAnswerHash]="questionAnswerHash"
+              (getNextQuestion)="getNextQuestion(currentQuestionIndex + 1)">
             </viewer-question>
           </div>
 
@@ -1885,7 +1886,8 @@
                         {{ getQuestionIndex(i) }}
                       </div>
                       <div *ngIf="isQuestionMarked(question?.questionId) && !(!isQuestionMarked(question?.questionId) &&
-                       isQuestionAttempted(question?.questionId))">
+                       isQuestionAttempted(question?.questionId))">{{ getQuestionIndex(i)
+                       }}
                         <ng-container *ngIf="!isQuestionAttempted(question?.questionId)">{{ getQuestionIndex(i)
                           }}</ng-container>
                       </div>
@@ -2004,7 +2006,8 @@
               [primaryCategory]="primaryCategory" [ePrimaryCategory]="ePrimaryCategory" [totalQCount]="totalQCount"
               (itemSelected)="fillSelectedItems(current_Question, $event)" [showAnswer]="showAnswer"
               [currentQuestion]="current_Question" [coursePrimaryCategory]="coursePrimaryCategory"
-              [showOnlyQuestion]="false" [showMarkForReview]="true">
+              [showOnlyQuestion]="false" [showMarkForReview]="true"
+              (getNextQuestion)="getNextQuestion(currentQuestionIndex + 1)">
             </viewer-question>
           </div>
 
