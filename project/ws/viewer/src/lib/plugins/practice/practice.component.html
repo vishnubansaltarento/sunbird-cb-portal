@@ -1775,7 +1775,7 @@
                   <select matNativeControl required class="section-dd" #choosedValue
                     (change)="changeSection($event.target.value)">
                     <option [value]="section.identifier" [selected]="section.identifier === selectedSectionIdentifier"
-                      *ngFor="let section of paperSections">{{section?.name}} 1778</option>
+                      *ngFor="let section of paperSections">{{section?.name}}</option>
                   </select>
                 </mat-form-field>
               </div>              
