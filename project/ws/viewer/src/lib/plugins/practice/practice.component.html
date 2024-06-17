@@ -581,7 +581,7 @@
                         isQuestionAttempted(question?.questionId))">
                         <!-- <mat-chip-list class="question-flag">
                           <mat-chip class="orange-small"> -->
-                        <ng-container *ngIf="!isQuestionAttempted(question?.questionId)">{{ getQuestionIndex(i)
+                        <ng-container *ngIf="!isQuestionAttempted(question?.questionId) && !isQuestionMarked(question?.questionId)">{{ getQuestionIndex(i)
                           }}</ng-container>
                         <!-- <ng-container *ngIf="isQuestionAttempted(question?.questionId)"><img class="margin-center" src="assets/icons/final-assessment/correct_arrow.svg"/></ng-container>
                           </mat-chip>
@@ -1172,7 +1172,7 @@
         </div>
         <div class="flex flex-row question-section-container" [ngClass]="assessmentType !== 'optionWeightage' ? 'justify-between': 'justify-right'">
           <div class="section-dd-container" *ngIf="assessmentType !== 'optionWeightage'">
-            <div class="flex flex-row">
+            <div class="flex flex-row"  [ngClass]="{'hide-section': paperSections.length < 2}">
               <div>
                 <mat-form-field appearance="none">
                   <select matNativeControl required class="section-dd" #choosedValue
@@ -1330,7 +1330,7 @@
                     </div>
                     <div *ngIf="isQuestionMarked(question?.questionId) && !(!isQuestionMarked(question?.questionId) &&
                       isQuestionAttempted(question?.questionId))">{{ getQuestionIndex(i)}}
-                      <ng-container *ngIf="!isQuestionAttempted(question?.questionId)">{{ getQuestionIndex(i)
+                      <ng-container *ngIf="!isQuestionAttempted(question?.questionId) && !isQuestionMarked(question?.questionId)">{{ getQuestionIndex(i)
                         }}</ng-container>
 
                     </div>
@@ -1409,7 +1409,8 @@
               [currentQuestion]="current_Question" [coursePrimaryCategory]="coursePrimaryCategory"
               [showOnlyQuestion]="false" [showMarkForReview]="true"
               [questionAnswerHash]="questionAnswerHash"
-              (getNextQuestion)="getNextQuestion(currentQuestionIndex + 1)">
+              (getNextQuestion)="getNextQuestion(currentQuestionIndex + 1)"
+              (clearQuestion)="clearQuestion(current_Question)">
             </viewer-question>
           </div>
 
@@ -1877,7 +1878,11 @@
                      'marked-question-standalone marked-question-standalone-background': isQuestionMarked(question?.questionId),
                      'attempted-question attempted-question-background':
                        !isQuestionMarked(question?.questionId) &&
-                       isQuestionAttempted(question?.questionId)               
+                       isQuestionAttempted(question?.questionId),
+                       'not-attempted-question not-answered-background':
+                       !isQuestionAttempted(question?.questionId) && 
+                       !isQuestionMarked(question?.questionId) && 
+                       isQuestionVisited(question.questionId)            
                    }"
                       class="margin-side-8 not-visited-question not-visited-background flex justify-center items-center">
                       <div *ngIf="!isQuestionMarked(question?.questionId) &&
@@ -1888,7 +1893,7 @@
                       <div *ngIf="isQuestionMarked(question?.questionId) && !(!isQuestionMarked(question?.questionId) &&
                        isQuestionAttempted(question?.questionId))">{{ getQuestionIndex(i)
                        }}
-                        <ng-container *ngIf="!isQuestionAttempted(question?.questionId)">{{ getQuestionIndex(i)
+                        <ng-container *ngIf="!isQuestionAttempted(question?.questionId) && !isQuestionMarked(question?.questionId)">{{ getQuestionIndex(i)
                           }}</ng-container>
                       </div>
                       <div *ngIf="!(!isQuestionMarked(question?.questionId) &&
@@ -2007,7 +2012,8 @@
               (itemSelected)="fillSelectedItems(current_Question, $event)" [showAnswer]="showAnswer"
               [currentQuestion]="current_Question" [coursePrimaryCategory]="coursePrimaryCategory"
               [showOnlyQuestion]="false" [showMarkForReview]="true"
-              (getNextQuestion)="getNextQuestion(currentQuestionIndex + 1)">
+              (getNextQuestion)="getNextQuestion(currentQuestionIndex + 1)"
+              (clearQuestion)="clearQuestion(current_Question)">
             </viewer-question>
           </div>
 
