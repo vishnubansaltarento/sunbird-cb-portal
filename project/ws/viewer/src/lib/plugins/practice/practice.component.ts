@@ -29,7 +29,6 @@ import { DomSanitizer, SafeHtml } from '@angular/platform-browser'
 import { ViewerDataService } from '../../viewer-data.service'
 import { ViewerHeaderSideBarToggleService } from './../../viewer-header-side-bar-toggle.service'
 import { FinalAssessmentPopupComponent } from './components/final-assessment-popup/final-assessment-popup.component'
-// import { FinalAssessmentPopupComponent } from './components/final-assessment-popup/final-assessment-popup.component'
 // import { ViewerDataService } from '../../viewer-data.service'
 export type FetchStatus = 'hasMore' | 'fetching' | 'done' | 'error' | 'none'
 @Component({
@@ -648,14 +647,14 @@ export class PracticeComponent implements OnInit, OnChanges, OnDestroy {
     }
   }
   getNextQuestion(idx: any) {
-    if(this.totalQCount > idx) {
+    if (this.totalQCount > idx) {
     this.process = true
     if (idx !== this.currentQuestionIndex) {
       this.currentQuestionIndex = idx
     }
     const questions = this.secQuestions
     this.currentQuestion = questions && questions[idx] ? questions[idx] : null
-    if (questions[idx] && questions[idx]['questionId']) {
+    if (questions[idx] && questions[idx]['questionId'] && !(this.questionVisitedData.indexOf(questions[idx]['questionId']) > -1)) {
       this.questionVisitedData.push(questions[idx]['questionId'])
     }
 
@@ -671,6 +670,14 @@ export class PracticeComponent implements OnInit, OnChanges, OnDestroy {
     }
   }
   }
+
+  clearQuestion(question: any) {
+    if (this.questionAnswerHash[question.questionId]) {
+      delete this.questionAnswerHash[question.questionId]
+      this.quizSvc.questionAnswerHash.next(this.questionAnswerHash)
+    }
+  }
+
   get current_Question(): NSPractice.IQuestionV2 {
     return this.currentQuestion
   }
@@ -690,6 +697,7 @@ export class PracticeComponent implements OnInit, OnChanges, OnDestroy {
     }
     return 0
   }
+
   backToSections() {
     this.viewState = 'detail'
   }
@@ -730,6 +738,7 @@ export class PracticeComponent implements OnInit, OnChanges, OnDestroy {
     this.viewState = 'attempt'
     this.getNextQuestion(this.currentQuestionIndex)
   }
+
   updateTimer() {
     this.startTime = Date.now()
     this.timeLeft = this.getTimeLimit
@@ -770,6 +779,7 @@ export class PracticeComponent implements OnInit, OnChanges, OnDestroy {
         })
     }
   }
+
   get allSecAttempted(): { full: boolean, next: NSPractice.IPaperSection | null } {
     const sections = this.quizSvc.secAttempted.getValue()
     let fullAttempted = false
@@ -789,6 +799,7 @@ export class PracticeComponent implements OnInit, OnChanges, OnDestroy {
 
     return { next, full: fullAttempted }
   }
+
   fillSelectedItems(question: NSPractice.IQuestion, optionId: string) {
     if (typeof (optionId) === 'string') {
       this.raiseTelemetry('mark', optionId, 'click')
@@ -1496,6 +1507,7 @@ export class PracticeComponent implements OnInit, OnChanges, OnDestroy {
         const tableObj = {
           section: this.questionSectionTableData[i]['name'],
           NoOfQuestions: this.questionSectionTableData[i]['maxQuestions'],
+          // NoOfQuestions: this.questionSectionTableData[i]['childNodes'].length,
           answered: sectionChildNodes.answeredCount,
           notAnswered: sectionChildNodes.notAnsweredCount,
           markedForReview: sectionChildNodes.markedForReviewCount,
@@ -1508,6 +1520,7 @@ export class PracticeComponent implements OnInit, OnChanges, OnDestroy {
           const tableObj = {
             section: this.questionSectionTableData[i]['name'],
             NoOfQuestions: this.questionSectionTableData[i]['maxQuestions'],
+            // NoOfQuestions: this.questionSectionTableData[i]['childNodes'].length,
             answered: sectionChildNodes.answeredCount,
             notAnswered: sectionChildNodes.notAnsweredCount,
             markedForReview: sectionChildNodes.markedForReviewCount,
@@ -1636,7 +1649,9 @@ export class PracticeComponent implements OnInit, OnChanges, OnDestroy {
       }
     }
     obj['notVisitedCount'] = quesArray.length - obj['notVisitedCount']
-    obj['notAnsweredCount'] = (quesArray.length - obj['answeredCount'] - obj['markedForReviewCount'] - obj['notVisitedCount'])
+    // obj['notAnsweredCount'] = (quesArray.length - obj['answeredCount'] - obj['markedForReviewCount'] - obj['notVisitedCount'])
+    obj['notAnsweredCount'] = (quesArray.length - obj['answeredCount'])
+
     return obj
   }
 
