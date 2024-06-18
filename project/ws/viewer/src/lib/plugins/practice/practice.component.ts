@@ -58,6 +58,7 @@ export class PracticeComponent implements OnInit, OnChanges, OnDestroy {
         instructions: '',
         questionType: undefined,
         questionLevel: '',
+        marks: 0,
         options: [
           {
             optionId: '',
@@ -205,7 +206,7 @@ export class PracticeComponent implements OnInit, OnChanges, OnDestroy {
       }
       // console.log(val)
     })
-    this.valueSvc.isXSmall$.subscribe(isXSmall => {
+    this.valueSvc.isXSmall$.subscribe((isXSmall: any) => {
       this.isXsmall = isXSmall
     })
 
@@ -479,6 +480,7 @@ export class PracticeComponent implements OnInit, OnChanges, OnDestroy {
                 options: this.getOptions(q),
                 editorState: q.editorState,
                 questionLevel: q.questionLevel,
+                marks: q.totalMarks
               })
             }
           })
