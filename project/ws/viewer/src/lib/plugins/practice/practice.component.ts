@@ -877,7 +877,8 @@ export class PracticeComponent implements OnInit, OnChanges, OnDestroy {
   proceedToSubmit() {
     // if (this.timeLeft || this.primaryCategory === this.ePrimaryCategory.PRACTICE_RESOURCE) {
       if (this.coursePrimaryCategory === 'Standalone Assessment') {
-        this.openSectionPopup()
+        const submitAssessment = true
+        this.openSectionPopup(submitAssessment)
       } else {
         if (
           Object.keys(this.questionAnswerHash).length !==
@@ -1513,7 +1514,7 @@ export class PracticeComponent implements OnInit, OnChanges, OnDestroy {
     this.events.dispatchEvent(event)
   }
 
-  openSectionPopup() {
+  openSectionPopup(submitAssessment = false) {
     const tableColumns: any[] = [
       { header: 'Section', key: 'section' },
       { header: 'No of Questions', key: 'NoOfQuestions' },
@@ -1525,12 +1526,12 @@ export class PracticeComponent implements OnInit, OnChanges, OnDestroy {
     const tableData: any = []
     /* tslint:disable */
     for (let i = 0; i < this.questionSectionTableData.length; i++) {
-      if(this.allSecAttempted.full) {
+      if(submitAssessment) {
         const sectionChildNodes = this.getSectionTableDataCounts(this.questionSectionTableData[i]['childNodes'])
         const tableObj = {
           section: this.questionSectionTableData[i]['name'],
-          NoOfQuestions: this.questionSectionTableData[i]['maxQuestions'],
-          // NoOfQuestions: this.questionSectionTableData[i]['childNodes'].length,
+          // NoOfQuestions: this.questionSectionTableData[i]['maxQuestions'],
+          NoOfQuestions: this.questionSectionTableData[i]['childNodes'].length,
           answered: sectionChildNodes.answeredCount,
           notAnswered: sectionChildNodes.notAnsweredCount,
           markedForReview: sectionChildNodes.markedForReviewCount,
@@ -1542,8 +1543,8 @@ export class PracticeComponent implements OnInit, OnChanges, OnDestroy {
           const sectionChildNodes = this.getSectionTableDataCounts(this.questionSectionTableData[i]['childNodes'])
           const tableObj = {
             section: this.questionSectionTableData[i]['name'],
-            NoOfQuestions: this.questionSectionTableData[i]['maxQuestions'],
-            // NoOfQuestions: this.questionSectionTableData[i]['childNodes'].length,
+            // NoOfQuestions: this.questionSectionTableData[i]['maxQuestions'],
+            NoOfQuestions: this.questionSectionTableData[i]['childNodes'].length,
             answered: sectionChildNodes.answeredCount,
             notAnswered: sectionChildNodes.notAnsweredCount,
             markedForReview: sectionChildNodes.markedForReviewCount,
@@ -1564,7 +1565,7 @@ export class PracticeComponent implements OnInit, OnChanges, OnDestroy {
      
     }
 
-    if(this.allSecAttempted.full) {
+    if(submitAssessment) {
       popupData['warningNote']= 'Do you want to submit your test finally. After submitting test, you will have to start the test from beginning.',
       popupData['buttonsList'] =[
         {
@@ -1583,7 +1584,21 @@ export class PracticeComponent implements OnInit, OnChanges, OnDestroy {
         //   classes: 'gray-full'
         // },
       ]
-    } else if(this.allSecAttempted.next) {
+    } else if(this.allSecAttempted.full) {
+      popupData['buttonsList'] =[
+        {
+          response: 'back',
+          text: 'Back',
+          classes: 'gray-full',
+        },
+        {
+          response: 'submitAssessment',
+          text: 'Submit Test',
+          classes: 'blue-full',
+        }
+      ]
+    }
+     else if(this.allSecAttempted.next) {
       popupData['buttonsList'] =[
         {
           response: 'next-section',
@@ -1636,7 +1651,11 @@ export class PracticeComponent implements OnInit, OnChanges, OnDestroy {
           break;
           case 'retake':
           this.action('retake')
-          break
+          break;
+          case 'submitAssessment':
+            const submitAssessment = true
+            this.openSectionPopup(submitAssessment)
+            break;
         }
 
       }
