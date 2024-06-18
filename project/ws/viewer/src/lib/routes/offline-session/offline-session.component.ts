@@ -5,7 +5,7 @@ import { NsContent, NsDiscussionForum, WidgetContentService } from '@sunbird-cb/
 import { AccessControlService } from '@ws/author'
 import { NsWidgetResolver } from '@sunbird-cb/resolver/src/public-api'
 import { environment } from 'src/environments/environment'
-import { WsEvents, EventService, ConfigurationsService } from '@sunbird-cb/utils'
+import { WsEvents, EventService, ConfigurationsService } from '@sunbird-cb/utils-v2'
 import { ViewerUtilService } from '../../viewer-util.service'
 
 @Component({

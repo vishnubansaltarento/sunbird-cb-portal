@@ -40,7 +40,7 @@ import { WidgetResolverModule } from '@sunbird-cb/resolver'
 import {
   DefaultThumbnailModule,
   HorizontalScrollerModule, PipeDurationTransformModule, PipeLimitToModule, PipePartialContentModule, PipePublicURLModule,
-} from '@sunbird-cb/utils'
+} from '@sunbird-cb/utils-v2'
 import { InfiniteScrollModule } from 'ngx-infinite-scroll'
 import { SeeAllRoutingModule } from './seeAll-routing.module'
 import { SeeAllHomeComponent } from './components/see-all-home/see-all-home.component'

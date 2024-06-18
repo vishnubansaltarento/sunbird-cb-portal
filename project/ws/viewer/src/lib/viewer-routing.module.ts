@@ -23,7 +23,7 @@ import { HtmlMobileComponent } from './routes/html-mobile/html-mobile.component'
 import { HtmlMobileModule } from './routes/html-mobile/html-mobile.module'
 // import { ConfigurationsService } from './resolvers/config-resolver.service'
 // import { ProfileResolverService } from './resolvers/profile-resolver.service'
-import { PageResolve } from '@sunbird-cb/utils'
+import { PageResolve } from '@sunbird-cb/utils-v2'
 import { OfflineSessionComponent } from './routes/offline-session/offline-session.component'
 import { OfflineSessionModule } from './routes/offline-session/offline-session.module'
 

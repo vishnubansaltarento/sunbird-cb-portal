@@ -5,7 +5,7 @@ import { MatIconModule, MatMenuModule, MatTabsModule } from '@angular/material'
 import { CbpFiltersModule } from '@sunbird-cb/collection/src/lib/_common/cbp-filters/cbp-filters.module'
 
 import { SkeletonLoaderModule } from '@sunbird-cb/collection/src/lib/_common/skeleton-loader/skeleton-loader.module'
-import { PipeSafeSanitizerModule } from '@sunbird-cb/utils/src/public-api'
+import { PipeSafeSanitizerModule } from '@sunbird-cb/utils-v2'
 import { CompetencyPassbookRoutingModule } from './competency-passbook-routing.module'
 
 import { CompetencyPassbookComponent } from './competency-passbook/competency-passbook.component'

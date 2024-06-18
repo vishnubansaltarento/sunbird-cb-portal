@@ -1,6 +1,6 @@
 import { NgModule } from '@angular/core'
 import { CommonModule } from '@angular/common'
-import { PipeFilterModule, PipeHtmlTagRemovalModule, PipeOrderByModule, PipeRelativeTimeModule, PipeListFilterModule } from '@sunbird-cb/utils'
+import { PipeFilterModule, PipeHtmlTagRemovalModule, PipeOrderByModule, PipeRelativeTimeModule, PipeListFilterModule } from '@sunbird-cb/utils-v2'
 import { TaxonomyHomeComponent } from './routes/taxonomy-home/taxonomy.component'
 import { TaxonomyRoutingModule } from './taxonomy.rounting.module'
 import { TaxonomyLevelCardComponent } from './components/taxonomy-level-card/taxonomy-level-card.component'

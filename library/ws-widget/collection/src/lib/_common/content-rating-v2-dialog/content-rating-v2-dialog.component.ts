@@ -1,6 +1,6 @@
 import { Component, OnInit, Inject, Input } from '@angular/core'
 import { FormGroup, FormControl, Validators } from '@angular/forms'
-import { EventService, WsEvents, LoggerService, NsContent } from '@sunbird-cb/utils/src/public-api'
+import { EventService, WsEvents, LoggerService, NsContent } from '@sunbird-cb/utils-v2'
 import { MatDialogRef, MAT_DIALOG_DATA, MatSnackBar } from '@angular/material'
 import { RatingService } from '@sunbird-cb/collection/src/lib/_services/rating.service'
 import { switchMap, takeUntil } from 'rxjs/operators'

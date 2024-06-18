@@ -40,7 +40,7 @@ import { WidgetResolverModule } from '@sunbird-cb/resolver'
 import {
   DefaultThumbnailModule,
   HorizontalScrollerModule, PipeDurationTransformModule, PipeLimitToModule, PipePartialContentModule, PipePublicURLModule,
-} from '@sunbird-cb/utils'
+} from '@sunbird-cb/utils-v2'
 import { Searchv2RoutingModule } from './searchv2-routing.module'
 import { GlobalSearchComponent } from './routes/global-search/global-search.component'
 import { LearnSearchComponent } from './routes/learn-search/learn-search.component'

@@ -9,12 +9,11 @@ import _ from 'lodash'
 import { Observable, Subject } from 'rxjs'
 import { map, takeUntil } from 'rxjs/operators'
 
-import { ConfigurationsService } from '@sunbird-cb/utils/src/lib/services/configurations.service'
+import { ConfigurationsService, EventService, WsEvents  } from '@sunbird-cb/utils-v2'
 import { MobileAppsService } from '../../services/mobile-apps.service'
 import { UserProfileService } from '@ws/app/src/lib/routes/user-profile/services/user-profile.service'
 import { IUserProfileDetailsFromRegistry } from '@ws/app/src/lib/routes/user-profile/models/user-profile.model'
 import { BtnSettingsService } from '@sunbird-cb/collection'
-import { EventService, WsEvents } from '@sunbird-cb/utils'
 
 // import { NotificationComponent } from './notification/notification.component'
 

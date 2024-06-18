@@ -1,6 +1,6 @@
 import { Component, OnInit, OnDestroy, Input } from '@angular/core'
 import { NSNetworkDataV2 } from '../../models/network-v2.model'
-import { EventService, MultilingualTranslationsService, WsEvents } from '@sunbird-cb/utils/src/public-api'
+import { EventService, MultilingualTranslationsService, WsEvents } from '@sunbird-cb/utils-v2'
 /* tslint:disable*/
 import _ from 'lodash'
 import { TranslateService } from '@ngx-translate/core'

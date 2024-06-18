@@ -31,7 +31,7 @@ import { RouterModule } from '@angular/router'
 import { WelcomeUsersService } from './public-welcome.service'
 import { RECAPTCHA_V3_SITE_KEY, RecaptchaV3Module } from 'ng-recaptcha'
 import { environment } from 'src/environments/environment'
-import { PipeDurationTransformModule } from '@sunbird-cb/utils/src/public-api'
+import { PipeDurationTransformModule } from '@sunbird-cb/utils-v2'
 
 @NgModule({
   declarations: [PublicWelcomeComponent],

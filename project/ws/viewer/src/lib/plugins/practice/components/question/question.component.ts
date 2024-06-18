@@ -8,7 +8,7 @@ import { SafeHtml } from '@angular/platform-browser'
 import { PracticeService } from '../../practice.service'
 // tslint:disable-next-line
 import _ from 'lodash'
-import { NsContent } from '@sunbird-cb/utils/src/public-api'
+import { NsContent } from '@sunbird-cb/utils-v2'
 import { MatSnackBar, MatSnackBarConfig } from '@angular/material'
 @Component({
   selector: 'viewer-question',

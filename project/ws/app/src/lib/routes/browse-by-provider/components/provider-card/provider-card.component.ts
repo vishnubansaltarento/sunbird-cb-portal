@@ -1,5 +1,5 @@
 import { Component, OnInit, Input } from '@angular/core'
-import { EventService, WsEvents } from '@sunbird-cb/utils'
+import { EventService, WsEvents } from '@sunbird-cb/utils-v2'
 
 @Component({
   selector: 'ws-app-provider-card',

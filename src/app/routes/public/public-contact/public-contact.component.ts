@@ -1,5 +1,5 @@
 import { Component, OnInit, OnDestroy, ViewChild, ElementRef, HostListener, AfterViewInit } from '@angular/core'
-import { ConfigurationsService, MultilingualTranslationsService, NsPage } from '@sunbird-cb/utils'
+import { ConfigurationsService, MultilingualTranslationsService, NsPage } from '@sunbird-cb/utils-v2'
 import { Subscription } from 'rxjs'
 import { ActivatedRoute } from '@angular/router'
 // tslint:disable-next-line: import-name

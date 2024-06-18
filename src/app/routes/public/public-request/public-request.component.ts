@@ -13,7 +13,7 @@ import { RequestSuccessDialogComponent } from './request-success-dialog/request-
 import { v4 as uuid } from 'uuid'
 import { Location } from '@angular/common'
 import { TranslateService } from '@ngx-translate/core'
-import { ConfigurationsService, MultilingualTranslationsService } from '@sunbird-cb/utils/src/public-api'
+import { ConfigurationsService, MultilingualTranslationsService } from '@sunbird-cb/utils-v2'
 
 export function forbiddenNamesValidatorPosition(optionsArray: any): ValidatorFn {
   return (control: AbstractControl): { [key: string]: any } | null => {

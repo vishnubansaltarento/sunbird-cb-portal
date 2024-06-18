@@ -8,7 +8,7 @@ import { MatTabChangeEvent, MatSnackBar } from '@angular/material'
 import { Subject } from 'rxjs'
 import { takeUntil } from 'rxjs/operators'
 // Project files and components
-import { ConfigurationsService, MultilingualTranslationsService } from '@sunbird-cb/utils/src/public-api'
+import { ConfigurationsService, MultilingualTranslationsService } from '@sunbird-cb/utils-v2'
 import { WidgetUserService } from '@sunbird-cb/collection/src/public-api'
 import { TranslateService } from '@ngx-translate/core'
 
