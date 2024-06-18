@@ -3,7 +3,7 @@ import { HttpClient } from '@angular/common/http'
 import { Component, Input, OnInit, ViewEncapsulation } from '@angular/core'
 import { NavigationEnd, Router } from '@angular/router'
 import { TranslateService } from '@ngx-translate/core'
-import { ConfigurationsService, NsInstanceConfig, ValueService } from '@sunbird-cb/utils'
+import { ConfigurationsService, NsInstanceConfig, ValueService } from '@sunbird-cb/utils-v2'
 import 'rxjs/add/operator/toPromise'
 
 // tslint:disable-next-line

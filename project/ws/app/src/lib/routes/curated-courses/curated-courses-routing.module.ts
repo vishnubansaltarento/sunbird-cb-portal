@@ -1,7 +1,7 @@
 import { NgModule } from '@angular/core'
 import { Routes, RouterModule } from '@angular/router'
 import { CuratedHomeComponent } from './routes/curated-home/curated-home.component'
-import { PageResolve } from '@sunbird-cb/utils'
+import { PageResolve } from '@sunbird-cb/utils-v2'
 import { CuratedexplorerComponent } from './routes/curatedexplorer/curatedexplorer.component'
 
 const routes: Routes = [

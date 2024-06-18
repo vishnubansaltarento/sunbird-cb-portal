@@ -2,7 +2,7 @@ import { Component, Input, OnInit } from '@angular/core'
 import { MatDialog } from '@angular/material'
 // import { ActivatedRoute } from '@angular/router'
 import { AttendanceHelperComponent } from '@sunbird-cb/collection/src/public-api'
-import { NsContent } from '@sunbird-cb/utils'
+import { NsContent } from '@sunbird-cb/utils-v2'
 // tslint:disable
 import _ from 'lodash'
 

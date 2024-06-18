@@ -14,7 +14,7 @@ import {
   UserPreferenceService,
   UtilityService,
   MultilingualTranslationsService,
-} from '@sunbird-cb/utils'
+} from '@sunbird-cb/utils-v2'
 import { debounceTime, distinctUntilChanged } from 'rxjs/operators'
 import { BtnSettingsService } from '@sunbird-cb/collection'
 import { FormControl } from '@angular/forms'

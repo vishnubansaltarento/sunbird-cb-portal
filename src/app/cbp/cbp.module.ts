@@ -19,7 +19,7 @@ import {
 } from '@sunbird-cb/collection'
 import { SkeletonLoaderModule } from '@sunbird-cb/collection/src/lib/_common/skeleton-loader/skeleton-loader.module'
 import { ProfileCardStatsModule } from '@sunbird-cb/collection/src/lib/_common/profile-card-stats/profile-card-stats.module'
-import { PipeRelativeTimeModule } from '@sunbird-cb/utils'
+import { PipeRelativeTimeModule } from '@sunbird-cb/utils-v2'
 import { SharedModule } from '../shared/shared.module'
 
 import { CbpPlanComponent } from './cbp-plan/cbp-plan.component'

@@ -1,7 +1,7 @@
 
 import { Component, OnInit, OnDestroy } from '@angular/core'
 import { Router, Event, NavigationEnd, ActivatedRoute } from '@angular/router'
-import { ValueService, ConfigurationsService } from '@sunbird-cb/utils'
+import { ValueService, ConfigurationsService } from '@sunbird-cb/utils-v2'
 import { map } from 'rxjs/operators'
 import { NsWidgetResolver } from '@sunbird-cb/resolver'
 

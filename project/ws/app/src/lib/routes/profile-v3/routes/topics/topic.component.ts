@@ -1,7 +1,7 @@
 import { Component, OnDestroy, OnInit } from '@angular/core'
 import { MatDialog, MatSnackBar } from '@angular/material'
 import { ActivatedRoute } from '@angular/router'
-import { ConfigurationsService } from '@sunbird-cb/utils/src/public-api'
+import { ConfigurationsService } from '@sunbird-cb/utils-v2'
 // tslint:disable-next-line
 import _ from 'lodash'
 import { Subscription } from 'rxjs'

@@ -140,15 +140,18 @@ export class PracticeService {
           // this.mtfSrc['']
           // if (mtfSrc[question.questionId] && mtfSrc[question.questionId].source[i] && mtfSrc[question.questionId].target[i]) {
           //   for (let j = 0; j < question.options.length; j += 1) {
-              let opText = question.options[i].text.trim()
-              if (opText) {
-                opText = opText.replace(/(<([^>]+)>)/ig, '')
-              }
+              let  opText = question.options[i].text.trim()
+              opText = opText.replace(/\&lt;/g, '<').replace(/\&gt;/g, '>')
+              opText = this.extractContent(opText)
               if (mtfSrc[question.questionId] && mtfSrc[question.questionId].source.length
-                && mtfSrc[question.questionId].source.includes(opText)) {
-                const idxOfSource = _.indexOf(mtfSrc[question.questionId].source, opText)
-                if (mtfSrc[question.questionId].target[idxOfSource]) {
-                  question.options[i].response = mtfSrc[question.questionId].target[idxOfSource].trim()
+                && mtfSrc[question.questionId].source.includes(opText.replace(/<(.|\n)*?>/g, ''))) {
+                  // tslint:disable-next-line: max-line-length
+                const stringRemoveSlashN =  this.extractContent(question.options[i].text.replace(/\n/g, '').replace(/\&lt;/g, '<').replace(/\&gt;/g, '>'))
+                const idxOfSource = _.indexOf(mtfSrc[question.questionId].source, stringRemoveSlashN.replace(/<(.|\n)*?>/g, ''))
+                const targetId = mtfSrc[question.questionId].target[idxOfSource]
+                const lastChar = targetId.slice(-1)
+                if (question) {
+                  question.options[i].response = question.rhsChoices && question.rhsChoices[Number(lastChar) - 1]
                 }
                 question.options[i].userSelected = true
               // }
@@ -172,6 +175,12 @@ export class PracticeService {
       return question
     })
     return quizWithAnswers
+  }
+
+  extractContent(htmlData: any) {
+    const spanData = document.createElement('span')
+    spanData.innerHTML = htmlData
+    return spanData.textContent || spanData.innerText
   }
 
   sanitizeAssessmentSubmitRequest(requestData: NSPractice.IQuizSubmitRequest): NSPractice.IQuizSubmitRequest {

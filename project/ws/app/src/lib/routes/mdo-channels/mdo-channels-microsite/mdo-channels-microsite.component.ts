@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core'
 import { MatTabChangeEvent } from '@angular/material'
 import { ActivatedRoute, Router } from '@angular/router'
-import { EventService, WsEvents } from '@sunbird-cb/utils'
+import { EventService, WsEvents } from '@sunbird-cb/utils-v2'
 /* tslint:disable */
 import * as _ from 'lodash'
 import { TranslateService } from '@ngx-translate/core'

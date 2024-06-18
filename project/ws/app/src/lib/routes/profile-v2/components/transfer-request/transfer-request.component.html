@@ -6,6 +6,10 @@
             <div class="text-sm font-bold required">{{ 'profileInfo.organization' | translate }}</div>
             <mat-form-field class="profile-form-field">
                 <mat-select formControlName="organization">
+                    <span class="search-box-span">
+                        <input (keyup)="searchOrg($event.target.value)" class="dept-seach-input" placeholder="Search organization">
+                    </span>
+                    
                     <mat-option value="" disabled>{{ 'profileInfo.chooseOrganization' | translate }}</mat-option>
                     <mat-option *ngFor="let dept of departmentData" value="{{ dept }}">{{ dept }}</mat-option>
                 </mat-select>

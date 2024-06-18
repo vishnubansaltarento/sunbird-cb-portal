@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core'
 import { ActivatedRoute } from '@angular/router'
 import { JanKarmayogiService } from '../../service/jan-karmayogi.service'
-import { MultilingualTranslationsService, NsContent } from '@sunbird-cb/utils'
+import { MultilingualTranslationsService, NsContent } from '@sunbird-cb/utils-v2'
 import { TranslateService } from '@ngx-translate/core'
 
 @Component({

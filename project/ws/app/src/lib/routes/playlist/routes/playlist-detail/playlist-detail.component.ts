@@ -13,7 +13,7 @@ import {
   WidgetContentService,
 } from '@sunbird-cb/collection'
 import { NsWidgetResolver } from '@sunbird-cb/resolver'
-import { ConfigurationsService, NsPage, TFetchStatus, ValueService } from '@sunbird-cb/utils'
+import { ConfigurationsService, NsPage, TFetchStatus, ValueService } from '@sunbird-cb/utils-v2'
 import { Subscription } from 'rxjs'
 // tslint:disable-next-line:max-line-length
 import { PlaylistContentDeleteDialogComponent } from '../../components/playlist-content-delete-dialog/playlist-content-delete-dialog.component'

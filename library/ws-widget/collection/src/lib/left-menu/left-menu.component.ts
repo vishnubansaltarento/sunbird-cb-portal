@@ -2,7 +2,7 @@ import { Component, OnInit, OnDestroy, Input } from '@angular/core'
 import { ActivatedRoute, Router } from '@angular/router'
 import { NsWidgetResolver, WidgetBaseComponent } from '@sunbird-cb/resolver'
 import { ILeftMenu, IMenu } from './left-menu.model'
-import { MultilingualTranslationsService } from '@sunbird-cb/utils/src/public-api'
+import { MultilingualTranslationsService } from '@sunbird-cb/utils-v2'
 import { TranslateService } from '@ngx-translate/core'
 // tslint:disable-next-line: import-spacing
 // import  defaultImg  from './base64.json'

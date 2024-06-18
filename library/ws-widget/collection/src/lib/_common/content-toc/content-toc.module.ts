@@ -18,10 +18,9 @@ import { InfiniteScrollModule } from 'ngx-infinite-scroll'
 import { NgCircleProgressModule } from 'ng-circle-progress'
 import { TranslateModule, TranslateLoader } from '@ngx-translate/core'
 import { HttpLoaderFactory } from 'src/app/app.module'
-
-import { PipeRelativeTimeModule } from '@sunbird-cb/utils'
 import { WidgetResolverModule } from '@sunbird-cb/resolver/src/public-api'
-import { PipeDurationTransformModule, HorizontalScrollerV2Module, PipeSafeSanitizerModule } from '@sunbird-cb/utils/src/public-api'
+import { PipeDurationTransformModule, HorizontalScrollerV2Module,
+  PipeRelativeTimeModule, PipeSafeSanitizerModule } from '@sunbird-cb/utils-v2'
 import { AvatarPhotoModule } from '../avatar-photo/avatar-photo.module'
 import { SkeletonLoaderModule } from '../skeleton-loader/skeleton-loader.module'
 import { RatingSummaryModule } from '../rating-summary/rating-summary.module'

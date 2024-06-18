@@ -3,7 +3,7 @@ import { NSDiscussData } from '../../../discuss/models/discuss.model'
 import { ActivatedRoute, Router } from '@angular/router'
 import { FormControl } from '@angular/forms'
 import { DiscussService } from '../../../discuss/services/discuss.service'
-import { WsEvents, EventService, MultilingualTranslationsService } from '@sunbird-cb/utils/src/public-api'
+import { WsEvents, EventService, MultilingualTranslationsService } from '@sunbird-cb/utils-v2'
 import { TranslateService } from '@ngx-translate/core'
 import * as _ from 'lodash'
 

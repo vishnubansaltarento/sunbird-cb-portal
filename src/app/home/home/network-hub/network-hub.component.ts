@@ -1,6 +1,6 @@
 import { Component, OnInit, Input } from '@angular/core'
 import { HttpErrorResponse } from '@angular/common/http'
-import { ConfigurationsService, EventService, WsEvents } from '@sunbird-cb/utils'
+import { ConfigurationsService, EventService, WsEvents } from '@sunbird-cb/utils-v2'
 import { MatSnackBar } from '@angular/material'
 import { HomePageService } from 'src/app/services/home-page.service'
 import { TranslateService } from '@ngx-translate/core'
