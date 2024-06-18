@@ -388,7 +388,7 @@
                 <div class="label">{{ 'profileInfo.dob' | translate }}</div>
                 <div class="info-value" *ngIf="!editDetails">
                   <span *ngIf="portalProfile?.personalDetails?.dob">{{
-                    handleDateFormat(portalProfile?.personalDetails?.dob) }}</span>
+                    getDateFromText(this.portalProfile?.personalDetails?.dob) | date: 'd MMM yyyy' }}</span>
                   <span *ngIf="!portalProfile?.personalDetails?.dob">NA</span>
                 </div>
                 <div class="info-value" *ngIf="editDetails">
@@ -664,9 +664,9 @@
             </div>
           </div>
         </ng-container>
-        <div class="divider hide-for-mobile"></div>
+        <div class="divider hide-for-mobile" *ngIf="isCurrentUser"></div>
       </div>
-      <div class="flex flex-col sm:flex-row sm:items-center gap-5 hide-for-mobile">
+      <div class="flex flex-col sm:flex-row sm:items-center gap-5 hide-for-mobile" *ngIf="isCurrentUser">
         <button class="flex flex-row gap-2 items-center karma-points justify-center" [routerLink]="['/app/person-profile/karma-points']">
           <img src="/assets/icons/home/karma-badge.svg" alt="badge icon" />
           {{ 'profileInfo.myKarmaPoints' | translate }}

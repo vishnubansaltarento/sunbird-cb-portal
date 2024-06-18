@@ -16,6 +16,7 @@ export namespace NSPractice {
     questionId: string
     options: IOption[]
     questionType?: TQuizQuestionType
+    rhsChoices?: string[]
   }
 
   export interface IOption {
@@ -235,6 +236,7 @@ export namespace NSPractice {
     variants: object
     index: number
     pkgVersion: number
+
   }
   export interface IEditor {
     // answer?: string
@@ -315,7 +317,8 @@ export namespace NSPractice {
     question: String,
     editorState: {
       options: IResponseOptions[]
-    }
+      rhsChoices?: String[]
+    },
   }
   // tslint:disable-next-line
   export interface IMCQ_FTB extends IRScratch {
