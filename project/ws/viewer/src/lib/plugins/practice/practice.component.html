@@ -1421,7 +1421,7 @@
               <ng-container
                 *ngIf="!allSecAttempted.full && allSecAttempted.next && ((currentQuestionIndex+1) === totalQCount) && assessmentType !== 'optionWeightage'">
                 <button class="text-white ws-mat-primary-background margin-xs quest_btn" mat-raised-button
-                  (click)="nextSection(allSecAttempted.next)" i18n="button quiz submit">
+                  (click)="openSectionPopup(false)" i18n="button quiz submit">
                   {{ 'practiceoverview.nextSection' | translate }}
                 </button>
               </ng-container>
@@ -2024,7 +2024,7 @@
               <ng-container
                 *ngIf="!allSecAttempted.full && allSecAttempted.next && ((currentQuestionIndex+1) === totalQCount) && assessmentType !== 'optionWeightage'">
                 <button class="text-white ws-mat-primary-background margin-xs quest_btn" mat-raised-button
-                  (click)="nextSection(allSecAttempted.next)" i18n="button quiz submit">
+                  (click)="openSectionPopup(false)" i18n="button quiz submit">
                   {{ 'practiceoverview.nextSection' | translate }}
                 </button>
               </ng-container>
