@@ -3,7 +3,7 @@ import { FormControl } from '@angular/forms'
 import { AppCbpPlansService } from 'src/app/services/app-cbp-plans.service'
 // tslint:disable
 import _ from 'lodash'
-import { MultilingualTranslationsService } from '@sunbird-cb/utils/src/public-api'
+import { MultilingualTranslationsService } from '@sunbird-cb/utils-v2'
 import { TranslateService } from '@ngx-translate/core'
 // tslint:enable
 

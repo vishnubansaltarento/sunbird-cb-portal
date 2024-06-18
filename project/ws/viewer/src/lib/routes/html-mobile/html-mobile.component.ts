@@ -8,7 +8,7 @@ import {
   SubapplicationRespondService,
   WsEvents,
   ConfigurationsService,
-} from '@sunbird-cb/utils'
+} from '@sunbird-cb/utils-v2'
 import { fromEvent, Subscription } from 'rxjs'
 import { filter } from 'rxjs/operators'
 // import { ViewerUtilService } from '../../viewer-util.service'

@@ -1,7 +1,7 @@
 import { Injectable, LOCALE_ID, Inject } from '@angular/core'
 import { HttpInterceptor, HttpRequest, HttpHandler, HttpEvent, HttpErrorResponse } from '@angular/common/http'
 import { Observable, throwError } from 'rxjs'
-import { ConfigurationsService, AuthKeycloakService } from '@sunbird-cb/utils'
+import { ConfigurationsService, AuthKeycloakService } from '@sunbird-cb/utils-v2'
 import { catchError } from 'rxjs/operators'
 import { MatSnackBar } from '@angular/material/snack-bar'
 import { NOTIFICATION_TIME } from '@sunbird-cb/collection/src/lib/_common/ck-editor/constants/constant'

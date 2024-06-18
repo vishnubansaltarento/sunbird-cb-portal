@@ -1,6 +1,6 @@
 import { Component, OnDestroy, OnInit } from '@angular/core'
 import { map } from 'rxjs/operators'
-import { MultilingualTranslationsService, ValueService } from '@sunbird-cb/utils'
+import { MultilingualTranslationsService, ValueService } from '@sunbird-cb/utils-v2'
 import { KnowledgeResourceService } from '../../services/knowledge-resource.service'
 import { NSKnowledgeResource } from '../../models/knowledge-resource.models'
 import { ActivatedRoute } from '@angular/router'

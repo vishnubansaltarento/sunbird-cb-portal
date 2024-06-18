@@ -141,6 +141,9 @@
 .infra-box {
     width: 256px;
 }
+.infra-box-review {
+    width: 100%;
+}
 .infra-title {
     font-family: Montserrat;
     font-size: 24px;
@@ -235,7 +238,15 @@
 .img-right {
     right: 0;
 }
-
+.learner-title {
+    //styleName: Heading 1;
+    font-family: Montserrat;
+    font-size: 24px;
+    font-weight: 600;
+    line-height: 29.26px;
+    text-align: left;
+    color: #000;
+}
 
 @media screen and (max-width: 1201px) { 
     .img-left {
@@ -252,6 +263,10 @@
         padding: 0;
     }
     .infra-box {
+        width: 99%;
+        height: auto;
+    }
+    .infra-box-review{
         width: 99%;
         height: auto;
     }
@@ -295,6 +310,9 @@
             top: -50px
         }
     }
+    .learner-title {
+        font-size: 16px;
+    }
     
 }
 
@@ -327,13 +345,5 @@
     font-weight: 600;
 }
 
-.learner-title {
-    //styleName: Heading 1;
-    font-family: Montserrat;
-    font-size: 24px;
-    font-weight: 600;
-    line-height: 29.26px;
-    text-align: left;
-    color: #000;
-}
+
 

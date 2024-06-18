@@ -4,8 +4,7 @@ import { CommonMethodsService } from '@sunbird-cb/consumption'
 import { NsContentStripWithTabs } from '@sunbird-cb/consumption/lib/_common/content-strip-with-tabs-lib/content-strip-with-tabs-lib.model'
 
 import { AllContentService } from './../service/all-content.service'
-import { MultilingualTranslationsService } from '@sunbird-cb/utils-v2'
-import { EventService, UtilityService, WsEvents } from '@sunbird-cb/utils'
+import { EventService, UtilityService, WsEvents, MultilingualTranslationsService } from '@sunbird-cb/utils-v2'
 import { environment } from 'src/environments/environment'
 import { TranslateService } from '@ngx-translate/core'
 

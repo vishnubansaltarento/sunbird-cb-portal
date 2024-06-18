@@ -10,7 +10,7 @@
                 matTooltip="{{ 'profileInfo.pdTooltipMsg' | translate }}"
                 (click)="pTooltip.toggle()">info_outline</mat-icon>
             </div>
-            <ng-container *ngIf="!enableWTR && !enableWR">
+            <ng-container *ngIf="!enableWTR && !enableWR && isCurrentUser">
               <div class="flex flex-row">
                 <div class="flex flex-row gap-2 items-center edit-button" *ngIf="!editProfile"
                   (click)="editProfile = !editProfile">
@@ -30,7 +30,7 @@
               </div>
             </ng-container>
   
-            <div class="withdraw-text edit-button" *ngIf="enableWR" (click)="showWithdrawRequestPopup()">{{
+            <div class="withdraw-text edit-button" *ngIf="enableWR && isCurrentUser" (click)="showWithdrawRequestPopup()">{{
               'profileInfo.withdrawRequest' | translate }}</div>
           </div>
   
@@ -186,7 +186,7 @@
             </div>
           </div>
 
-          <ng-container *ngIf="showApprovalStatus">
+          <ng-container *ngIf="showApprovalStatus && isCurrentUser">
             <div class="profile-approval-status">
               <mat-accordion>
                 <mat-expansion-panel hideToggle (opened)="panelOpenState = true" (closed)="panelOpenState = false">
@@ -285,7 +285,7 @@
       </div>
     </form>
   
-    <div class="common-card-css">
+    <div class="common-card-css" *ngIf="isCurrentUser">
       <div class="flex flex-col gap-5">
         <div class="flex flex-row gap-4 items-center justify-between">
           <div class="flex flex-row gap-2 title-div items-center">
@@ -388,7 +388,7 @@
                 <div class="label">{{ 'profileInfo.dob' | translate }}</div>
                 <div class="info-value" *ngIf="!editDetails">
                   <span *ngIf="portalProfile?.personalDetails?.dob">{{
-                    handleDateFormat(portalProfile?.personalDetails?.dob) }}</span>
+                    getDateFromText(this.portalProfile?.personalDetails?.dob) | date: 'd MMM yyyy' }}</span>
                   <span *ngIf="!portalProfile?.personalDetails?.dob">NA</span>
                 </div>
                 <div class="info-value" *ngIf="editDetails">
@@ -470,7 +470,7 @@
       </div>
     </div>
   
-    <div class="common-card-css">
+    <div class="common-card-css" *ngIf="isCurrentUser">
       <div class="flex flex-col gap-5">
         <div class="flex flex-row gap-4 items-center justify-between">
           <div class="flex flex-row gap-2 title-div items-center">
@@ -638,7 +638,8 @@
               </ng-container>
 
               <ng-container *ngIf="!skeletonLoader">
-                <!-- <ng-container *ngIf="!enableWTR">
+              
+                <ng-container *ngIf="!enableWTR && isCurrentUser">
                   <div class="flex flex-row gap-2 items-center make-transfer-div">
                     <ng-container *ngIf="!enableWR">
                       <div class="text-sm make-transer" (click)="handleTransferRequest()">{{ 'profileInfo.makeTransferRequest' | translate }}</div>
@@ -650,22 +651,22 @@
                         #MTRTooltip="matTooltip" matTooltip="{{ 'profileInfo.withdrawPrimaryDetails' | translate }}" (click)="MTRTooltip.toggle()">{{ 'profileInfo.makeTransferRequest' | translate }}</div>
                     </ng-container>
                   </div>
-                </ng-container> -->
+                </ng-container>
   
-                <!-- <ng-container *ngIf="enableWTR">
+             <ng-container *ngIf="enableWTR">
                   <div class="flex flex-row gap-2 items-center make-transfer-div">
-                    <div class="text-sm make-transer" (click)="handleWithdrawTransferRequest()">{{ 'profileInfo.withdrawTransferRequest' | translate }}</div> -->
+                    <div class="text-sm make-transer" (click)="handleWithdrawTransferRequest()">{{ 'profileInfo.withdrawTransferRequest' | translate }}</div> 
                     <!-- <mat-icon [matTooltipPosition]="'below'" #wTooltip="matTooltip" matTooltip="{{ 'profileInfo.withdrawTransferToolTip' | translate }}" (click)="wTooltip.toggle()">info_outline</mat-icon> -->
-                    <!-- <mat-icon [matTooltipPosition]="'below'" #wTooltip="matTooltip"  matTooltip="If you choose to withdraw your transfer request, your transfer request will get cancelled" (click)="wTooltip.toggle()">info_outline</mat-icon>
+                    <!-- <mat-icon [matTooltipPosition]="'below'" #wTooltip="matTooltip"  matTooltip="If you choose to withdraw your transfer request, your transfer request will get cancelled" (click)="wTooltip.toggle()">info_outline</mat-icon> -->
                   </div>
-                </ng-container> -->
+                </ng-container>
               </ng-container>
             </div>
           </div>
         </ng-container>
-        <div class="divider hide-for-mobile"></div>
+        <div class="divider hide-for-mobile" *ngIf="isCurrentUser"></div>
       </div>
-      <div class="flex flex-col sm:flex-row sm:items-center gap-5 hide-for-mobile">
+      <div class="flex flex-col sm:flex-row sm:items-center gap-5 hide-for-mobile" *ngIf="isCurrentUser">
         <button class="flex flex-row gap-2 items-center karma-points justify-center" [routerLink]="['/app/person-profile/karma-points']">
           <img src="/assets/icons/home/karma-badge.svg" alt="badge icon" />
           {{ 'profileInfo.myKarmaPoints' | translate }}

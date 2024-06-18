@@ -2,7 +2,7 @@ import { Component, OnInit, Input } from '@angular/core'
 import { NSDiscussData } from '../../../discuss/models/discuss.model'
 import { Router } from '@angular/router'
 import { TranslateService } from '@ngx-translate/core'
-import { MultilingualTranslationsService } from '@sunbird-cb/utils/src/public-api'
+import { MultilingualTranslationsService } from '@sunbird-cb/utils-v2'
 
 @Component({
   selector: 'ws-app-careers-card',

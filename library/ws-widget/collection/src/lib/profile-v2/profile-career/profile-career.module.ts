@@ -5,7 +5,7 @@ import {
   MatExpansionModule, MatIconModule, MatProgressSpinnerModule,
 } from '@angular/material'
 import { BrowserModule } from '@angular/platform-browser'
-import { PipeRelativeTimeModule } from '@sunbird-cb/utils'
+import { PipeRelativeTimeModule } from '@sunbird-cb/utils-v2'
 import { TranslateModule } from '@ngx-translate/core'
 
 @NgModule({

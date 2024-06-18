@@ -18,6 +18,7 @@ export class ProviderContentAllComponent implements OnInit {
   seeAllPageConfig: any = {}
   keyData: any
   contentDataList: any = []
+  originalContentlist: any = []
   isMobile = false
   requestData: any
   constructor(public commonSvc: CommonMethodsService,
@@ -73,6 +74,7 @@ export class ProviderContentAllComponent implements OnInit {
         if (response && response.results) {
           // console.log('calling  after-- ')
           if (response.results.result.content && response.results.result.content.length) {
+            this.originalContentlist = response.results.result.content
             this.contentDataList = this.commonSvc.transformContentsToWidgets(response.results.result.content, strip)
           } else {
             this.contentDataList = []
@@ -103,6 +105,7 @@ export class ProviderContentAllComponent implements OnInit {
         if (response && response.results) {
           // console.log('calling  after-- ')
           if (response.results.result.content && response.results.result.content.length) {
+            this.originalContentlist = response.results.result.content
             this.contentDataList = this.commonSvc.transformContentsToWidgets(response.results.result.content, strip)
 
           } else {
@@ -148,8 +151,16 @@ export class ProviderContentAllComponent implements OnInit {
 
   handleSearchQuery(e: any) {
     if (e.target.value || e.target.value === '') {
-      this.callApi(e.target.value)
+      // this.callApi(e.target.value)
+      this.filterContentList(e.target.value)
     }
+  }
+
+  filterContentList(searchText: string) {
+    const data = [...this.originalContentlist]
+    const filterValue = searchText.toLowerCase()
+    const filteredData = data.filter((p: any) => p &&  p.name && p.name.toLowerCase().includes(filterValue))
+    this.contentDataList  = this.commonSvc.transformContentsToWidgets(filteredData, this.seeAllPageConfig)
   }
 
 }

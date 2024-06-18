@@ -1,6 +1,5 @@
 import { Component, OnInit, OnDestroy, Input } from '@angular/core'
-import { WsEvents, EventService } from '@sunbird-cb/utils/src/public-api'
-import { ConfigurationsService } from '@sunbird-cb/utils'
+import { ConfigurationsService , EventService, WsEvents } from '@sunbird-cb/utils-v2'
 import { ActivatedRoute, Router } from '@angular/router'
 /* tslint:disable*/
 import _ from 'lodash'

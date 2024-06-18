@@ -1,5 +1,5 @@
 import { Component, OnInit, OnDestroy } from '@angular/core'
-import { AuthKeycloakService, ConfigurationsService, NsPage } from '@sunbird-cb/utils'
+import { AuthKeycloakService, ConfigurationsService, NsPage } from '@sunbird-cb/utils-v2'
 import { Subscription } from 'rxjs'
 import { ActivatedRoute } from '@angular/router'
 // tslint:disable-next-line

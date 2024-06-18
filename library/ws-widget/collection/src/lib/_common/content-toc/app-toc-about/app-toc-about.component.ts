@@ -18,10 +18,9 @@ import { NsContentStripWithTabs } from '../../../content-strip-with-tabs/content
 
 import { AppTocService } from '@ws/app/src/lib/routes/app-toc/services/app-toc.service'
 import { NsContent, RatingService } from '@sunbird-cb/collection/src/public-api'
-import { LoggerService } from '@sunbird-cb/utils/src/public-api'
+import { LoggerService, ConfigurationsService } from '@sunbird-cb/utils-v2'
 import { TimerService } from '@ws/app/src/lib/routes/app-toc/services/timer.service'
 import { HandleClaimService } from '../content-services/handle-claim.service'
-import { ConfigurationsService } from '@sunbird-cb/utils'
 import { LoadCheckService } from '@ws/app/src/lib/routes/app-toc/services/load-check.service'
 import { ReviewComponentDataService } from '../content-services/review-component-data.service'
 import { DiscussUtilsService } from '@ws/app/src/lib/routes/discuss/services/discuss-utils.service'

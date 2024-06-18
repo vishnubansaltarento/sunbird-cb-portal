@@ -2,7 +2,7 @@ import { Component, HostBinding, Input, OnInit } from '@angular/core'
 import { Router } from '@angular/router'
 import { TranslateService } from '@ngx-translate/core'
 import { WidgetBaseComponent, NsWidgetResolver } from '@sunbird-cb/resolver'
-import { EventService, MultilingualTranslationsService, WsEvents } from '@sunbird-cb/utils'
+import { EventService, MultilingualTranslationsService, WsEvents } from '@sunbird-cb/utils-v2'
 /* tslint:disable */
 import _ from 'lodash'
 /* tslint:enable */

@@ -7,7 +7,7 @@ import { Subject, Observable } from 'rxjs'
 import _ from 'lodash'
 import { LocalDataService } from '../../../browse-by-competency/services/localService';
 import { TranslateService } from '@ngx-translate/core'
-import { MultilingualTranslationsService } from '@sunbird-cb/utils/src/public-api'
+import { MultilingualTranslationsService } from '@sunbird-cb/utils-v2'
 // tslint:enable
 
 @Component({

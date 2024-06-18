@@ -3,7 +3,7 @@ import { CommonModule } from '@angular/common'
 import { RouterModule } from '@angular/router'
 import { MatButtonModule, MatCardModule, MatIconModule } from '@angular/material'
 import { BtnPageBackComponent } from './btn-page-back.component'
-import { PipeOrderByModule } from '@sunbird-cb/utils/src/public-api'
+import { PipeOrderByModule } from '@sunbird-cb/utils-v2'
 import { TranslateModule } from '@ngx-translate/core'
 
 @NgModule({

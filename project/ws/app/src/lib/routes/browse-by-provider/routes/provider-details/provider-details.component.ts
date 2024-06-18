@@ -1,6 +1,6 @@
 import { Component, OnInit, OnDestroy, ViewChild, ElementRef, HostListener } from '@angular/core'
 import { Router, Event, NavigationEnd, NavigationError, ActivatedRoute } from '@angular/router'
-import { ValueService } from '@sunbird-cb/utils'
+import { ValueService } from '@sunbird-cb/utils-v2'
 import { map } from 'rxjs/operators'
 // tslint:disable
 import _ from 'lodash'

@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core'
-import { ConfigurationsService, NsPage } from '@sunbird-cb/utils'
+import { ConfigurationsService, NsPage } from '@sunbird-cb/utils-v2'
 import { environment } from 'src/environments/environment'
 // import { DOCUMENT } from '@angular/common'
 import { TranslateService } from '@ngx-translate/core'

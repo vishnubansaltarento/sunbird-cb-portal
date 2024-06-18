@@ -4,7 +4,7 @@ import { MatButtonModule, MatIconModule, MatMenuModule, MatTooltipModule, MatSli
 import { BtnProfileComponent } from './btn-profile.component'
 import { WidgetResolverModule } from '@sunbird-cb/resolver'
 import { RouterModule } from '@angular/router'
-import { LogoutModule } from '@sunbird-cb/utils'
+import { LogoutModule } from '@sunbird-cb/utils-v2'
 import { AvatarPhotoModule } from '../_common/avatar-photo/avatar-photo.module'
 import { WidgetUrlResolverDirective } from './widget-url-resolver.directive'
 import { TranslateModule } from '@ngx-translate/core'

@@ -1,7 +1,7 @@
 import { NgModule } from '@angular/core'
 import { CommonModule } from '@angular/common'
 import { RouterModule } from '@angular/router'
-import { HorizontalScrollerV2Module } from '@sunbird-cb/utils'
+import { HorizontalScrollerV2Module } from '@sunbird-cb/utils-v2'
 import { WidgetResolverModule } from '@sunbird-cb/resolver'
 import {
   MatToolbarModule,

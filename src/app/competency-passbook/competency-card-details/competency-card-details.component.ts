@@ -9,9 +9,8 @@ import { takeUntil } from 'rxjs/operators'
 // Project files and components
 import { CompetencyPassbookService } from '../competency-passbook.service'
 import { TranslateService } from '@ngx-translate/core'
-import { MultilingualTranslationsService } from '@sunbird-cb/utils/src/public-api'
+import { MultilingualTranslationsService, EventService, WsEvents  } from '@sunbird-cb/utils-v2'
 import { environment } from 'src/environments/environment'
-import { EventService, WsEvents } from '@sunbird-cb/utils'
 
 @Component({
   selector: 'ws-competency-card-details',
