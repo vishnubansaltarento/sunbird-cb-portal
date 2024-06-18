@@ -4,7 +4,7 @@ import { IWidgetElementHtml } from './element-html.model'
 import { SafeHtml, DomSanitizer } from '@angular/platform-browser'
 import mustache from 'mustache'
 import { HttpClient, HttpHeaders } from '@angular/common/http'
-import { MultilingualTranslationsService } from '@sunbird-cb/utils'
+import { MultilingualTranslationsService } from '@sunbird-cb/utils-v2'
 import { TranslateService } from '@ngx-translate/core'
 @Component({
   selector: 'ws-widget-element-html',

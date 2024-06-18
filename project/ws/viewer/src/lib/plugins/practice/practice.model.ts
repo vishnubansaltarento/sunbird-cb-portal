@@ -17,8 +17,7 @@ export namespace NSPractice {
     options: IOption[]
     questionType?: TQuizQuestionType,
     questionLevel: String,
-    timeTaken: String
-    questionType?: TQuizQuestionType
+    timeTaken: String,
     rhsChoices?: string[]
   }
 

@@ -17,7 +17,7 @@ import { QuestionComponent } from './components/question/question.component'
 import { SubmitQuizDialogComponent } from './components/submit-quiz-dialog/submit-quiz-dialog.component'
 import { OnConnectionBindInfo } from 'jsplumb'
 import { PracticeService } from './practice.service'
-import { EventService, NsContent, ValueService, WsEvents } from '@sunbird-cb/utils'
+import { EventService, NsContent, ValueService, WsEvents } from '@sunbird-cb/utils-v2'
 import { WidgetContentService } from '@sunbird-cb/collection'
 import { ActivatedRoute, NavigationStart, Router } from '@angular/router'
 import { ViewerUtilService } from '../../viewer-util.service'
@@ -205,7 +205,7 @@ export class PracticeComponent implements OnInit, OnChanges, OnDestroy {
       }
       // console.log(val)
     })
-    this.valueSvc.isXSmall$.subscribe(isXSmall => {
+    this.valueSvc.isXSmall$.subscribe((isXSmall: any) => {
       this.isXsmall = isXSmall
     })
 
