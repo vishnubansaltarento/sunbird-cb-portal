@@ -275,9 +275,6 @@ export class PracticeComponent implements OnInit, OnChanges, OnDestroy {
       this.questionAnswerHash = this.quizSvc.questionAnswerHash.getValue()
     }
     this.coursePrimaryCategory = this.widgetContentService.currentMetaData.primaryCategory
-
-    console.log('this.widgetContentService.currentMetaData.children', this.widgetContentService.currentMetaData.children)
-
     if (this.widgetContentService.currentMetaData.children && this.widgetContentService.currentMetaData.children.length) {
       this.widgetContentService.currentMetaData.children.map((item: any) => {
           this.selectedAssessmentCompatibilityLevel = item.compatibilityLevel
@@ -713,7 +710,8 @@ export class PracticeComponent implements OnInit, OnChanges, OnDestroy {
               }
 
               this.currentQuestion = questions && questions[idx] ? questions[idx] : null
-              if (questions[idx] && questions[idx]['questionId'] && !(this.questionVisitedData.indexOf(questions[idx]['questionId']) > -1)) {
+              if (questions[idx] && questions[idx]['questionId'] &&
+              !(this.questionVisitedData.indexOf(questions[idx]['questionId']) > -1)) {
                 this.questionVisitedData.push(questions[idx]['questionId'])
               }
 
