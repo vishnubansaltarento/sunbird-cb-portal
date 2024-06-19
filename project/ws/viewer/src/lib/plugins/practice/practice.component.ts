@@ -236,17 +236,32 @@ export class PracticeComponent implements OnInit, OnChanges, OnDestroy {
       this.init()
       this.updateVisivility()
     } else {
-      this.quizSvc.canAttend(this.identifier).subscribe(response => {
-        if (response) {
-           this.canAttempt = response
-          //  this.canAttempt = {
-          //   attemptsAllowed: 1,
-          //   attemptsMade: 0,
-          // }
-        }
-        this.init()
-        this.updateVisivility()
-      })
+      if(this.selectedAssessmentCompatibilityLevel < 6) {
+        this.quizSvc.canAttend(this.identifier).subscribe(response => {
+          if (response) {
+             this.canAttempt = response
+            //  this.canAttempt = {
+            //   attemptsAllowed: 1,
+            //   attemptsMade: 0,
+            // }
+          }
+          this.init()
+          this.updateVisivility()
+        })
+      } else {
+        this.quizSvc.canAttendV5(this.identifier).subscribe(response => {
+          if (response) {
+             this.canAttempt = response
+            //  this.canAttempt = {
+            //   attemptsAllowed: 1,
+            //   attemptsMade: 0,
+            // }
+          }
+          this.init()
+          this.updateVisivility()
+        })
+      }
+      
     }
   }
   ngOnInit() {
@@ -258,11 +273,14 @@ export class PracticeComponent implements OnInit, OnChanges, OnDestroy {
       this.questionAnswerHash = this.quizSvc.questionAnswerHash.getValue()
     }
     this.coursePrimaryCategory = this.widgetContentService.currentMetaData.primaryCategory
-    this.instructionAssessment = this.widgetContentService.currentMetaData.instructions
+    
 
     if (this.widgetContentService.currentMetaData.children && this.widgetContentService.currentMetaData.children.length) {
       this.widgetContentService.currentMetaData.children.map((item: any) => {
           this.selectedAssessmentCompatibilityLevel = item.compatibilityLevel
+          if(this.identifier === item.identifier) {
+            this.instructionAssessment = item.description
+          }
       })
     }
 
