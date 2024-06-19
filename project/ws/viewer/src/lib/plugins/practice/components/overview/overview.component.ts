@@ -95,7 +95,7 @@ export class OverviewComponent implements OnInit, OnChanges, OnDestroy {
       if (result) {
         switch (result) {
           case 'yes':
-            this.maxAttempPopup = false;
+            this.maxAttempPopup = false
           // this.submitQuiz()
           break
         }
