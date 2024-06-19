@@ -16,6 +16,7 @@ export class ResultComponent implements OnInit, OnChanges {
   @Input() quizCategory!: NsContent.EPrimaryCategory
   @Input() quizResponse!: NSPractice.IQuizSubmitResponseV2
   @Input() coursePrimaryCategory: any
+  @Input() selectedAssessmentCompatibilityLevel: number = 2
   @Output() userSelection = new EventEmitter<string>()
   @Output() fetchResult = new EventEmitter<string>()
   @ViewChild(MatAccordion, { static: true }) accordion: MatAccordion | undefined
@@ -346,6 +347,10 @@ export class ResultComponent implements OnInit, OnChanges {
       //     sectionName: 'Section C',
       //   },
       // ]
+    }
+
+    if(this.quizCategory) {
+      this.showInsight = this.questionTYP.PRACTICE_RESOURCE === this.quizCategory
     }
   }
 

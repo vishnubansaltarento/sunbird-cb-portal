@@ -1,4 +1,4 @@
-<ng-container *ngIf="coursePrimaryCategory !== 'Standalone Assessment'">
+<ng-container *ngIf="selectedAssessmentCompatibilityLevel < 6">
   <mat-card *ngIf="!(question?.questionType === 'mtf' || question?.questionType === 'ftb')"
     class="flex flex-1 respo margin-bottom-m no-shadow">
     <div class="flex flex-column width-100" [ngClass]="mobileQuestionSetExpand ? 'mobile-responsive-question-container-expand' : 'mobile-responsive-question-container'">
@@ -193,7 +193,7 @@
 </ng-container>
 
 <!-- Standalone Assessment-->
-<ng-container *ngIf="coursePrimaryCategory == 'Standalone Assessment' && !showMarkForReview">
+<ng-container *ngIf="selectedAssessmentCompatibilityLevel >= 6 && !showMarkForReview">
   <mat-card *ngIf="!(question?.questionType === 'mtf' || question?.questionType === 'ftb')"
     class="flex flex-1 respo margin-bottom-m no-shadow standalone-assessment" [ngClass]="showOnlyQuestion ? 'show-only-question': 'show-only-answer'">
     <!-- [ngClass]="mobileQuestionSetExpand ? 'mobile-responsive-question-container-expand' : 'mobile-responsive-question-container'" -->
@@ -326,7 +326,7 @@
   </mat-card>
 </ng-container>
 
-<ng-container *ngIf="coursePrimaryCategory == 'Standalone Assessment' && showMarkForReview" >
+<ng-container *ngIf="selectedAssessmentCompatibilityLevel >= 6 && showMarkForReview" >
   <div class="Mweb-btns">
     <a 
                 class="text-black margin-xs quest_btn_review" mat-button

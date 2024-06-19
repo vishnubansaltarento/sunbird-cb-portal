@@ -137,6 +137,7 @@ export class PracticeComponent implements OnInit, OnChanges, OnDestroy {
   selectedAssessmentCompatibilityLevel = 2
   sectionalInstruction: any = ''
   allSectionTimeLimit = 0
+  totalAssessemntQuestionsCount = 0
   constructor(
     private events: EventService,
     public dialog: MatDialog,
@@ -179,9 +180,9 @@ export class PracticeComponent implements OnInit, OnChanges, OnDestroy {
     } else {
       this.isMobile = false
     }
-    if (this.coursePrimaryCategory === 'Standalone Assessment') {
-      // this.getSections()
-    }
+    // if (this.coursePrimaryCategory === 'Standalone Assessment') {
+    //   // this.getSections()
+    // }
     this.isSubmitted = false
     this.markedQuestions = new Set([])
     this.questionAnswerHash = {}
@@ -337,12 +338,17 @@ export class PracticeComponent implements OnInit, OnChanges, OnDestroy {
             this.updataDB(tempObj)
             this.paperSections = []
             this.questionSectionTableData = []
+            let totalQuestions = 0
             _.each(tempObj, o => {
               if (this.paperSections) {
                 this.paperSections.push(o)
                 this.questionSectionTableData.push(o)
+                if (o.childNodes) {
+                  totalQuestions = totalQuestions + o.childNodes.length
+                }
               }
             })
+            this.totalAssessemntQuestionsCount = totalQuestions
             // this.paperSections = _.get(section, 'result.questionSet.children')
             this.viewState = 'detail'
             // this.updateTimer()
@@ -370,12 +376,17 @@ export class PracticeComponent implements OnInit, OnChanges, OnDestroy {
             this.updataDB(tempObj)
             this.paperSections = []
             this.questionSectionTableData = []
+            let totalQuestions = 0
             _.each(tempObj, o => {
               if (this.paperSections) {
                 this.paperSections.push(o)
                 this.questionSectionTableData.push(o)
+                if (o.childNodes) {
+                  totalQuestions = totalQuestions + o.childNodes.length
+                }
               }
             })
+            this.totalAssessemntQuestionsCount = totalQuestions
             // this.paperSections = _.get(section, 'result.questionSet.children')
             this.viewState = 'detail'
             // this.updateTimer()
@@ -722,8 +733,8 @@ export class PracticeComponent implements OnInit, OnChanges, OnDestroy {
     return questions.length
   }
   get noOfQuestions(): number {
-    if (this.quizJson.maxQuestions) {
-      return this.quizJson.maxQuestions
+    if (this.totalAssessemntQuestionsCount) {
+      return this.totalAssessemntQuestionsCount
     }
     if (this.retake) {
       return _.get(this.activatedRoute, 'snapshot.data.content.data.maxQuestions') || 0
@@ -896,7 +907,8 @@ export class PracticeComponent implements OnInit, OnChanges, OnDestroy {
   }
   proceedToSubmit() {
     // if (this.timeLeft || this.primaryCategory === this.ePrimaryCategory.PRACTICE_RESOURCE) {
-      if (this.coursePrimaryCategory === 'Standalone Assessment') {
+      // if (this.coursePrimaryCategory === 'Standalone Assessment') {
+        if (this.selectedAssessmentCompatibilityLevel >= 6) {
         const submitAssessment = true
         this.openSectionPopup(submitAssessment)
       } else {
@@ -1698,10 +1710,12 @@ export class PracticeComponent implements OnInit, OnChanges, OnDestroy {
       markedForReviewCount: 0,
       notVisitedCount: 0,
     }
-    const markedQuestionArray = [...this.markedQuestions]
+    const markedQuestionArray:any = [...this.markedQuestions]
     /* tslint:disable */
-    for (let i = 0; i < Object.keys(this.questionAnswerHash).length; i++) {
-      if (quesArray.indexOf(Object.keys(this.questionAnswerHash)[i]) > -1) {
+    const questionAnswerHashKeys:string[] = Object.keys(this.questionAnswerHash)
+    for (let i = 0; i < questionAnswerHashKeys.length; i++) {
+      if (quesArray.indexOf(questionAnswerHashKeys[i]) > -1
+        && markedQuestionArray.indexOf(questionAnswerHashKeys[i]) < 0) {
         obj['answeredCount'] = obj['answeredCount'] + 1
       }
 
@@ -1720,8 +1734,7 @@ export class PracticeComponent implements OnInit, OnChanges, OnDestroy {
       }
     }
     obj['notVisitedCount'] = quesArray.length - obj['notVisitedCount']
-    // obj['notAnsweredCount'] = (quesArray.length - obj['answeredCount'] - obj['markedForReviewCount'] - obj['notVisitedCount'])
-    obj['notAnsweredCount'] = (quesArray.length - obj['answeredCount'])
+    obj['notAnsweredCount'] = (quesArray.length - obj['answeredCount'] - obj['markedForReviewCount'] - obj['notVisitedCount'])
 
     return obj
   }
