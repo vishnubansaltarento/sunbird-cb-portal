@@ -347,6 +347,10 @@ export class ResultComponent implements OnInit, OnChanges {
       //   },
       // ]
     }
+
+    if(this.quizCategory) {
+      this.showInsight = this.questionTYP.PRACTICE_RESOURCE === this.quizCategory
+    }
   }
 
   getSectionalData(sectionId: string= 'all', resultType: string= 'all') {
