@@ -27,6 +27,7 @@ export class QuestionComponent implements OnInit, OnChanges, AfterViewInit {
   @Input() totalQCount: any
   @Input() showAnswer: any
   @Input() currentQuestion: any
+  @Input() selectedAssessmentCompatibilityLevel: number = 2
   @Input() question: NSPractice.IQuestion = {
     multiSelection: false,
     section: '',
@@ -134,7 +135,7 @@ export class QuestionComponent implements OnInit, OnChanges, AfterViewInit {
       this.markedQuestions.delete(this.question.questionId)
     } else {
       this.markedQuestions.add(this.question.questionId)
-      if (this.coursePrimaryCategory === 'Standalone Assessment') {
+      if (this.selectedAssessmentCompatibilityLevel >= 6) {
         this.getNextQuestion.emit(true)
       }
     }

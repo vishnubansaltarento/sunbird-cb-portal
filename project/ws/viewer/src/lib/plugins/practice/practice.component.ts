@@ -180,9 +180,9 @@ export class PracticeComponent implements OnInit, OnChanges, OnDestroy {
     } else {
       this.isMobile = false
     }
-    if (this.coursePrimaryCategory === 'Standalone Assessment') {
-      // this.getSections()
-    }
+    // if (this.coursePrimaryCategory === 'Standalone Assessment') {
+    //   // this.getSections()
+    // }
     this.isSubmitted = false
     this.markedQuestions = new Set([])
     this.questionAnswerHash = {}
@@ -889,7 +889,8 @@ export class PracticeComponent implements OnInit, OnChanges, OnDestroy {
   }
   proceedToSubmit() {
     // if (this.timeLeft || this.primaryCategory === this.ePrimaryCategory.PRACTICE_RESOURCE) {
-      if (this.coursePrimaryCategory === 'Standalone Assessment') {
+      // if (this.coursePrimaryCategory === 'Standalone Assessment') {
+        if (this.selectedAssessmentCompatibilityLevel >= 6) {
         const submitAssessment = true
         this.openSectionPopup(submitAssessment)
       } else {
