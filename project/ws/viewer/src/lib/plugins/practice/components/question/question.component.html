@@ -210,7 +210,7 @@
           <div class="question-marks" *ngIf="assessmentType === 'questionWeightage'">
             <p *ngIf="question?.marks">{{question?.marks}} Marks</p>
           </div>
-          <div class="question-marks" *ngIf="assessmentType === 'optionWeightage'">
+          <div class="question-marks" *ngIf="assessmentType === 'optionalWeightage'">
             <p>{{questionNumber}}/{{ total }}</p>
           </div>
         </div>
@@ -285,9 +285,9 @@
           </div>
           <div>
             <div class="question-marks" *ngIf="assessmentType === 'questionWeightage'">
-              <p>{{question?.marks}} Marks</p>
+              <p *ngIf="question?.marks">{{question?.marks}} Marks</p>
             </div>
-            <div class="question-marks" *ngIf="assessmentType === 'optionWeightage'">
+            <div class="question-marks" *ngIf="assessmentType === 'optionalWeightage'">
               <p>{{questionNumber}}/{{ total }}</p>
             </div>
           </div>

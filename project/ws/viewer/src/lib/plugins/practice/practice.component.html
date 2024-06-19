@@ -1174,12 +1174,12 @@
             </div>
           </div>
         </div>
-        <div class="flex flex-row question-section-container" [ngClass]="assessmentType !== 'optionWeightage' ? 'justify-between': 'justify-right'">
-          <div class="section-dd-container" *ngIf="assessmentType !== 'optionWeightage'">
+        <div class="flex flex-row question-section-container" [ngClass]="assessmentType !== 'optionalWeightage' ? 'justify-between': 'justify-right'">
+          <div class="section-dd-container" *ngIf="assessmentType !== 'optionalWeightage'">
             <div class="flex flex-row"  [ngClass]="{'hide-section': paperSections.length < 2}">
               <div>
                 <mat-form-field appearance="none">
-                  <select matNativeControl required class="section-dd" #choosedValue
+                  <select [disabled]="sectionalTimer ? 'disabled': ''" matNativeControl required class="section-dd" #choosedValue
                     (change)="changeSection($event.target.value)">
                     <option [value]="section.identifier" [selected]="section.identifier === selectedSectionIdentifier"
                       *ngFor="let section of paperSections">{{section?.name}}</option>
@@ -1218,7 +1218,7 @@
 
       <div class="standalone-quiz-container flex flex-row">
         <div 
-          [ngClass]="expandFalse ? ( assessmentType !== 'optionWeightage' ? 'quiz-question-left-container' : 'quiz-question-left-container-full') : 'quiz-question-left-container-full'">
+          [ngClass]="expandFalse ? ( assessmentType !== 'optionalWeightage' ? 'quiz-question-left-container' : 'quiz-question-left-container-full') : 'quiz-question-left-container-full'">
 
           <div class="border-outline">
 
@@ -1244,7 +1244,7 @@
             <ng-template *ngIf="!(current_Question && !process)" [ngTemplateOutlet]="showLoading"></ng-template>
           </div>
         </div>
-        <div *ngIf="assessmentType !== 'optionWeightage'" class="exapnd-collapse-desktop">
+        <div *ngIf="assessmentType !== 'optionalWeightage'" class="exapnd-collapse-desktop">
           <div class="expand-icon" (click)="toggleExpandforMobile()">
             <mat-icon class="mat-icon notranslate material-icons mat-icon-no-color" role="img" aria-hidden="true">
               <span *ngIf="expandFalse">arrow_forward</span>
@@ -1252,7 +1252,7 @@
             </mat-icon>
           </div>
         </div>
-        <div *ngIf="assessmentType !== 'optionWeightage'"  [ngClass]="(expandFalse && assessmentType !== 'optionWeightage') ? 'quiz-question-right-container': 'quiz-question-right-container-hide'">
+        <div *ngIf="assessmentType !== 'optionalWeightage'"  [ngClass]="(expandFalse && assessmentType !== 'optionalWeightage') ? 'quiz-question-right-container': 'quiz-question-right-container-hide'">
           <div class="question-list">
             <div class="ques_stats_container">
               <div class="flex flex-row justify-between ques_stats_container_box">
@@ -1401,8 +1401,8 @@
     </div>
     <div class="standalone-quiz-container-controls"
       *ngIf="fetchingQuestionsStatus === 'done' && viewState !== 'detail' && !(viewState === 'answer') && !isSubmitted">
-      <div class="flex flex-row mt-2" [ngClass]="assessmentType !== 'optionWeightage' ? 'justify-between' : 'justify-right'">
-        <div class="flex" *ngIf="assessmentType !== 'optionWeightage'">
+      <div class="flex flex-row mt-2" [ngClass]="assessmentType !== 'optionalWeightage' ? 'justify-between' : 'justify-right'">
+        <div class="flex" *ngIf="assessmentType !== 'optionalWeightage'">
           <div>
             <viewer-question #questionsReference [id]="'question' + (currentQuestionIndex + 1)"
               [markedQuestions]="markedQuestions" [artifactUrl]="artifactUrl"
@@ -1424,7 +1424,7 @@
           <div>
             <div class="flex flex-1 flex-row-reverse butto_box end">
               <ng-container
-                *ngIf="((currentQuestionIndex+1) === totalQCount) && assessmentType !== 'optionWeightage'">
+                *ngIf="((currentQuestionIndex+1) === totalQCount) && assessmentType !== 'optionalWeightage'">
                 <button class="text-white ws-mat-primary-background margin-xs quest_btn" mat-raised-button
                   (click)="openSectionPopup(false)" i18n="button quiz submit">
                   {{ 'practiceoverview.nextSection' | translate }}
@@ -1747,7 +1747,7 @@
   </div>
   </div>
   <!-- Mobile -->
-  <div #quizContainer class="standalone-assessment-mobile" [ngClass]="assessmentType !== 'optionWeightage' ? 'quiz-container-standalone':'quiz-container-option-weightage'"
+  <div #quizContainer class="standalone-assessment-mobile" [ngClass]="assessmentType !== 'optionalWeightage' ? 'quiz-container-standalone':'quiz-container-option-weightage'"
     *ngIf="viewState !== 'initial' && isMobile && fetchingQuestionsStatus === 'done'">
     <div class="flex flex-column overflow-hidden" *ngIf="!isSubmitted">
       <div>
@@ -1772,12 +1772,12 @@
           </div>
           
         </div>
-        <div class="flex flex-row question-section-container" [ngClass]="assessmentType !== 'optionWeightage' ? 'justify-around':'justify-center'">
+        <div class="flex flex-row question-section-container" [ngClass]="assessmentType !== 'optionalWeightage' ? 'justify-around':'justify-center'">
           <div class="section-dd-container">
             <div class="flex flex-row">
-              <div *ngIf="assessmentType !== 'optionWeightage'">
+              <div *ngIf="assessmentType !== 'optionalWeightage'">
                 <mat-form-field appearance="none">
-                  <select matNativeControl required class="section-dd" #choosedValue
+                  <select [disabled]="sectionalTimer ? 'disabled': ''" matNativeControl required class="section-dd" #choosedValue
                     (change)="changeSection($event.target.value)">
                     <option [value]="section.identifier" [selected]="section.identifier === selectedSectionIdentifier"
                       *ngFor="let section of paperSections">{{section?.name}}</option>
@@ -1788,7 +1788,7 @@
           </div>
 
           <div>
-            <a class="text-white ws-mat-primary-background margin-xs" [ngClass]="assessmentType !== 'optionWeightage' ? 'quest_btn' : 'quest_btn_option_weightage'" mat-button (click)="proceedToSubmit()">
+            <a class="text-white ws-mat-primary-background margin-xs" [ngClass]="assessmentType !== 'optionalWeightage' ? 'quest_btn' : 'quest_btn_option_weightage'" mat-button (click)="proceedToSubmit()">
               <ng-container>{{ 'playerbrief.submitTheTest' | translate }}</ng-container>
             </a>
           </div>
@@ -1809,7 +1809,7 @@
             </viewer-question>
           </ng-container>
         </div>
-        <div class="flex flex-column justify-between align-center" *ngIf="assessmentType !== 'optionWeightage'">
+        <div class="flex flex-column justify-between align-center" *ngIf="assessmentType !== 'optionalWeightage'">
           <div class="question-list-mweb my-2">
             <div class="ques_stats_container">
               <div class="flex flex-row justify-between">
@@ -2010,7 +2010,7 @@
       *ngIf="fetchingQuestionsStatus === 'done' && viewState !== 'detail' && !(viewState === 'answer') && !isSubmitted">
       <div class="flex flex-col justify-between mt-4">
         <div>
-          <div *ngIf="assessmentType !== 'optionWeightage'">
+          <div *ngIf="assessmentType !== 'optionalWeightage'">
             <viewer-question #questionsReference [id]="'question' + (currentQuestionIndex + 1)"
               [markedQuestions]="markedQuestions" [artifactUrl]="artifactUrl"
               [questionNumber]="currentQuestionIndex + 1" [total]="secQuestions.length" [viewState]="viewState"
@@ -2026,11 +2026,11 @@
           </div>
 
         </div>
-        <div class="flex" [ngClass]="assessmentType !== 'optionWeightage'? 'justify-center': 'justify-right'">
+        <div class="flex" [ngClass]="assessmentType !== 'optionalWeightage'? 'justify-center': 'justify-right'">
           <div>
             <div class="flex flex-1 flex-row-reverse end">
               <ng-container
-                *ngIf="!allSecAttempted.full && allSecAttempted.next && ((currentQuestionIndex+1) === totalQCount) && assessmentType !== 'optionWeightage'">
+                *ngIf="!allSecAttempted.full && allSecAttempted.next && ((currentQuestionIndex+1) === totalQCount) && assessmentType !== 'optionalWeightage'">
                 <button class="text-white ws-mat-primary-background margin-xs quest_btn" mat-raised-button
                   (click)="openSectionPopup(false)" i18n="button quiz submit">
                   {{ 'practiceoverview.nextSection' | translate }}

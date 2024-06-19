@@ -12,13 +12,14 @@ const API_END_POINTS = {
   ASSESSMENT_SUBMIT_V4: `/apis/protected/v8/user/evaluate/assessment/submit/v4`,
   ASSESSMENT_SUBMIT_V5: `/apis/protected/v8/user/evaluate/assessment/submit/v5`,
   ASSESSMENT_RESULT_V4: `/apis/proxies/v8/user/assessment/v4/result`,
+  ASSESSMENT_RESULT_V5: `/apis/proxies/v8/user/assessment/v5/result`,
   QUESTION_PAPER_SECTIONS_V4: `/apis/proxies/v8/assessment/read`,
   QUESTION_PAPER_QUESTIONS_V4: `/apis/proxies/v8/question/read`,
   QUESTION_PAPER_SECTIONS: `/apis/proxies/v8/assessment/v5/read`,
   QUESTION_PAPER_QUESTIONS: `/apis/proxies/v8/question/v5/read`,
   SAVE_AND_NEXT_QUESTION: `apis/proxies/v8/assessment/save`,
   CAN_ATTEMPT: (assessmentId: any) => `/apis/proxies/v8/user/assessment/retake/${assessmentId}`,
-  CAN_ATTEMPT_V5: (assessmentId: any) => `/apis/proxies/v8/user/assessment/v5/retake/${assessmentId}`
+  CAN_ATTEMPT_V5: (assessmentId: any) => `/apis/proxies/v8/user/assessment/v5/retake/${assessmentId}`,
 }
 @Injectable({
   providedIn: 'root',
@@ -95,6 +96,12 @@ export class PracticeService {
 
   quizResult(req: any) {
     return this.http.post<{ result: NSPractice.IQuizSubmitResponseV2 }>(API_END_POINTS.ASSESSMENT_RESULT_V4, req).pipe(map(response => {
+      return response
+    }))
+  }
+
+  quizResultV5(req: any) {
+    return this.http.post<{ result: NSPractice.IQuizSubmitResponseV2 }>(API_END_POINTS.ASSESSMENT_RESULT_V5, req).pipe(map(response => {
       return response
     }))
   }
