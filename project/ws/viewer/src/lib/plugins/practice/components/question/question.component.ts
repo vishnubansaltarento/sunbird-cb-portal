@@ -27,7 +27,7 @@ export class QuestionComponent implements OnInit, OnChanges, AfterViewInit {
   @Input() totalQCount: any
   @Input() showAnswer: any
   @Input() currentQuestion: any
-  @Input() selectedAssessmentCompatibilityLevel: number = 2
+  @Input() selectedAssessmentCompatibilityLevel = 2
   @Input() question: NSPractice.IQuestion = {
     multiSelection: false,
     section: '',
@@ -64,7 +64,7 @@ export class QuestionComponent implements OnInit, OnChanges, AfterViewInit {
   @Input() coursePrimaryCategory: any
   @Input() showOnlyQuestion: any
   @Input() showMarkForReview: any = false
-  @Input() assessmentType = 'optionWeightage'
+  @Input() assessmentType = 'optionalWeightage'
   expandedQuestionSetSubscription: any
 
   constructor(

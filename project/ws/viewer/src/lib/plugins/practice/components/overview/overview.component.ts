@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, OnDestroy, OnInit, Output } from '@angular/core'
+import { Component, EventEmitter, Input, OnChanges, OnDestroy, OnInit, Output } from '@angular/core'
 import { MultilingualTranslationsService, NsContent } from '@sunbird-cb/utils-v2'
 import { NSPractice } from '../../practice.model'
 import { ActivatedRoute } from '@angular/router'
@@ -11,7 +11,7 @@ import { MatDialog } from '@angular/material'
   templateUrl: './overview.component.html',
   styleUrls: ['./overview.component.scss'],
 })
-export class OverviewComponent implements OnInit, OnDestroy {
+export class OverviewComponent implements OnInit, OnChanges, OnDestroy {
   @Input() learningObjective = ''
   @Input() complexityLevel = ''
   @Input() primaryCategory = NsContent.EPrimaryCategory.PRACTICE_RESOURCE
@@ -35,6 +35,7 @@ export class OverviewComponent implements OnInit, OnDestroy {
   isretakeAllowed = false
   dataSubscription: any
   consentGiven = false
+  maxAttempPopup = false
   constructor(
     public dialog: MatDialog,
     private route: ActivatedRoute,
@@ -44,10 +45,6 @@ export class OverviewComponent implements OnInit, OnDestroy {
   ) { }
 
   ngOnInit() {
-    if (this.canAttempt && (this.canAttempt.attemptsMade >= this.canAttempt.attemptsAllowed)) {
-      this.showAssessmentPopup()
-    }
-
     this.dataSubscription = this.route.data.subscribe(data => {
       if (data && data.pageData) {
         if (data && data.content && data.content.data && data.content.data.identifier) {
@@ -61,7 +58,17 @@ export class OverviewComponent implements OnInit, OnDestroy {
     })
   }
 
+  ngOnChanges() {
+    if (this.canAttempt && (this.canAttempt.attemptsMade >= this.canAttempt.attemptsAllowed)) {
+      if (!this.maxAttempPopup) {
+        this.showAssessmentPopup()
+      }
+
+    }
+  }
+
   showAssessmentPopup() {
+    this.maxAttempPopup = true
     const popupData = {
       headerText: 'this.resourceName',
       assessmentType: 'maxAttemptReached',
@@ -88,6 +95,7 @@ export class OverviewComponent implements OnInit, OnDestroy {
       if (result) {
         switch (result) {
           case 'yes':
+            this.maxAttempPopup = false;
           // this.submitQuiz()
           break
         }

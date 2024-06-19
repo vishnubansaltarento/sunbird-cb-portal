@@ -2,7 +2,7 @@
     <button *ngIf="assessmentData?.assessmentType !== 'maxAttemptReached'" mat-icon-button class="close-button" [mat-dialog-close]="true">
         <mat-icon class="close-icon">close</mat-icon>
     </button>
-    <ng-container *ngIf="assessmentData?.assessmentType !== 'optionWeightage' && assessmentData?.assessmentType !== 'maxAttemptReached'">
+    <ng-container *ngIf="assessmentData?.assessmentType !== 'optionalWeightage' && assessmentData?.assessmentType !== 'maxAttemptReached'">
         <div class="assessment-results">
             <ng-container *ngIf="assessmentData?.headerText">
                 <div class="header p-3">{{assessmentData.headerText}}</div>
@@ -55,7 +55,7 @@
             </div>
         </div>
     </ng-container>
-    <ng-container *ngIf="assessmentData?.assessmentType === 'optionWeightage'">
+    <ng-container *ngIf="assessmentData?.assessmentType === 'optionalWeightage'">
         <div>
             <div class="flex flex-col align-center justify-center">
                 <img src="assets/icons/final-assessment/exam.svg">

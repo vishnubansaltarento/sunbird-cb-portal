@@ -72,6 +72,7 @@ export class ViewerComponent implements OnInit, OnDestroy, AfterViewChecked {
   isAssessmentScreen = false
   pageScrollSubscription: Subscription | null = null
   coursePrimaryCategory: any = ''
+  compatibilityLevel = 0
   constructor(
     private activatedRoute: ActivatedRoute,
     private router: Router,
@@ -159,6 +160,9 @@ export class ViewerComponent implements OnInit, OnDestroy, AfterViewChecked {
 
     if (contentData && contentData.result && contentData.result.content) {
       this.coursePrimaryCategory = contentData.result.content.courseCategory
+      if (contentData.result.content.children && contentData.result.content.children.length) {
+        this.compatibilityLevel = contentData.result.content.children[0]['compatibilityLevel']
+      }
       this.hierarchyData = contentData.result.content
       this.manipulateHierarchyData()
       this.resetAndFetchTocStructure()

@@ -306,12 +306,12 @@
           </ng-container>
         </div>
       
-        <div class="header-text flex flex-col">
+        <div class="header-text flex flex-col" *ngIf="quizResponse.children.length > 1">
           My Sectionwise summary
           <span class="mt-1"></span>
         </div>
       
-        <div>
+        <div *ngIf="quizResponse.children.length > 1">
           <table
             mat-table
             [dataSource]="summaryTableDataSource"
@@ -341,7 +341,7 @@
               <tr mat-row *matRowDef="let row; columns: getFinalColumns(summaryTableDisplayeColumns)"></tr>
           </table>
         </div>
-        <div class="header-text flex flex-col">
+        <div class="header-text flex flex-col" *ngIf="quizResponse.children.length > 1">
           Competitive Analysis
           <span class="mt-1"></span>
         </div>
@@ -376,7 +376,7 @@
               <tr mat-row *matRowDef="let row; columns: getFinalColumns(competitiveTableDisplayedColumns)"></tr>
           </table>
         </div>    -->
-        <div>
+        <div *ngIf="quizResponse.children.length > 1">
           <table
             mat-table
             [dataSource]="summaryTableDataSource"
