@@ -228,6 +228,7 @@ color: rgb(27, 76, 161)
   width: auto;
   border-radius: 63px;
   color: #000 !important;
+  border: 1px solid #1B4CA1;
 
 }
 
@@ -264,6 +265,11 @@ color: rgb(27, 76, 161)
         height: calc(100vh - 500px);
         overflow-y: auto
       }
+
+    .Mweb-btns {
+      display: flex;
+      justify-content: center;
+    }
 
       
 }

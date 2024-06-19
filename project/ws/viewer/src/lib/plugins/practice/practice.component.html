@@ -1419,7 +1419,7 @@
           <div>
             <div class="flex flex-1 flex-row-reverse butto_box end">
               <ng-container
-                *ngIf="!allSecAttempted.full && allSecAttempted.next && ((currentQuestionIndex+1) === totalQCount) && assessmentType !== 'optionWeightage'">
+                *ngIf="((currentQuestionIndex+1) === totalQCount) && assessmentType !== 'optionWeightage'">
                 <button class="text-white ws-mat-primary-background margin-xs quest_btn" mat-raised-button
                   (click)="openSectionPopup(false)" i18n="button quiz submit">
                   {{ 'practiceoverview.nextSection' | translate }}
@@ -2002,7 +2002,7 @@
     <div class="standalone-quiz-container-controls-mobile"
       *ngIf="fetchingQuestionsStatus === 'done' && viewState !== 'detail' && !(viewState === 'answer') && !isSubmitted">
       <div class="flex flex-col justify-between mt-4">
-        <div class="flex">
+        <div>
           <div *ngIf="assessmentType !== 'optionWeightage'">
             <viewer-question #questionsReference [id]="'question' + (currentQuestionIndex + 1)"
               [markedQuestions]="markedQuestions" [artifactUrl]="artifactUrl"
@@ -2018,7 +2018,7 @@
           </div>
 
         </div>
-        <div class="flex" [ngClass]="assessmentType !== 'optionWeightage'? '': 'justify-right'">
+        <div class="flex" [ngClass]="assessmentType !== 'optionWeightage'? 'justify-center': 'justify-right'">
           <div>
             <div class="flex flex-1 flex-row-reverse end">
               <ng-container
