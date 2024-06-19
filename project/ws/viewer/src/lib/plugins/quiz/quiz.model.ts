@@ -19,9 +19,10 @@ export namespace NSQuiz {
     question: string
     questionId: string
     options: IOption[]
-    editorState?: any[],
-    questionType?: TQuizQuestionType,
-    questionLevel: string,
+    editorState?: any[]
+    questionLevel: string
+    questionType?: TQuizQuestionType
+    rhsChoices?: any[],
     marks: number
   }
 

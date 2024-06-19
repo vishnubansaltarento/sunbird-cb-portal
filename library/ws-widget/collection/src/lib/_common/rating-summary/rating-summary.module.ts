@@ -1,7 +1,7 @@
 import { NgModule } from '@angular/core'
 import { CommonModule } from '@angular/common'
 import { RatingSummaryComponent } from './rating-summary.component'
-import { PipeCountTransformModule } from '@sunbird-cb/utils/src/public-api'
+import { PipeCountTransformModule } from '@sunbird-cb/utils-v2'
 import { MatProgressBarModule, MatIconModule, MatTooltipModule } from '@angular/material'
 import { HttpClient } from '@angular/common/http'
 import { TranslateModule, TranslateLoader } from '@ngx-translate/core'

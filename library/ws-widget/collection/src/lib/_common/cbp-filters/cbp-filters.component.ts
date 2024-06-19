@@ -5,7 +5,7 @@ import { MAT_BOTTOM_SHEET_DATA, MAT_BOTTOM_SHEET_DEFAULT_OPTIONS, MatBottomSheet
 import { AppCbpPlansService } from 'src/app/services/app-cbp-plans.service'
 // tslint:disable
 import _ from 'lodash'
-import { MultilingualTranslationsService } from '@sunbird-cb/utils/src/public-api'
+import { MultilingualTranslationsService } from '@sunbird-cb/utils-v2'
 
 @Component({
 	selector: 'ws-widget-cbp-filters',

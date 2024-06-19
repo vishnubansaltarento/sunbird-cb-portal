@@ -1,7 +1,7 @@
 import { AfterViewInit, Component, HostListener, Input, OnChanges, OnInit, SimpleChanges, ViewChild } from '@angular/core'
 import { MatTabChangeEvent, MatTabGroup } from '@angular/material'
 import { ActivatedRoute } from '@angular/router'
-import { NsContent, UtilityService } from '@sunbird-cb/utils/src/public-api'
+import { NsContent, UtilityService } from '@sunbird-cb/utils-v2'
 import { Subscription } from 'rxjs'
 
 import { LoadCheckService } from '@ws/app/src/lib/routes/app-toc/services/load-check.service'

@@ -4,7 +4,7 @@ import { HAMMER_GESTURE_CONFIG, HammerGestureConfig } from '@angular/platform-br
 import { RouterModule } from '@angular/router'
 import { MatIconModule, MatTooltipModule } from '@angular/material'
 
-import { NavigationModule, ImageResponsiveModule } from '@sunbird-cb/utils'
+import { NavigationModule, ImageResponsiveModule } from '@sunbird-cb/utils-v2'
 import { SlidersDynamicComponent } from './sliders-dynamic.component'
 // tslint:disable-next-line
 import  Hammer from 'hammerjs'

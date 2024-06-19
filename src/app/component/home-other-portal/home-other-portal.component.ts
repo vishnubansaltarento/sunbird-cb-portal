@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core'
-import { NsPage, NsAppsConfig, ConfigurationsService, WsEvents, EventService, MultilingualTranslationsService } from '@sunbird-cb/utils'
+import { NsPage, NsAppsConfig, ConfigurationsService, WsEvents, EventService, MultilingualTranslationsService } from '@sunbird-cb/utils-v2'
 import { NsWidgetResolver } from '@sunbird-cb/resolver'
 import { AccessControlService } from '@ws/author/src/public-api'
 import { ROOT_WIDGET_CONFIG } from '@sunbird-cb/collection/src/lib/collection.config'

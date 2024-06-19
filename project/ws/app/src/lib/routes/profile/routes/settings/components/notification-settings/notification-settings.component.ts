@@ -1,6 +1,6 @@
 import { Component, OnInit, ViewChild, ElementRef } from '@angular/core'
 import { NsSettings } from '../../settings.model'
-import { TFetchStatus } from '@sunbird-cb/utils'
+import { TFetchStatus } from '@sunbird-cb/utils-v2'
 import { SettingsService } from '../../settings.service'
 import { MatSnackBar } from '@angular/material'
 import { TranslateService } from '@ngx-translate/core'

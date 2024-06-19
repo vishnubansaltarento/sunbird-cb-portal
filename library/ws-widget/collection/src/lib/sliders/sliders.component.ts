@@ -2,7 +2,7 @@ import { Component, HostBinding, Input, OnInit } from '@angular/core'
 import { NsWidgetResolver, WidgetBaseComponent } from '@sunbird-cb/resolver'
 import { ICarousel } from './sliders.model'
 import { Subscription, interval } from 'rxjs'
-import { EventService, WsEvents } from '@sunbird-cb/utils'
+import { EventService, WsEvents } from '@sunbird-cb/utils-v2'
 
 @Component({
   selector: 'ws-widget-sliders',

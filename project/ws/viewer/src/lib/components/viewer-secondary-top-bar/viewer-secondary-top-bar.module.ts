@@ -9,7 +9,7 @@ import {
 } from '@angular/material'
 import { BtnFullscreenModule, BtnPageBackNavModule, ContentProgressModule } from '@sunbird-cb/collection'
 import { RouterModule } from '@angular/router'
-import { ValueService } from '@sunbird-cb/utils'
+import { ValueService } from '@sunbird-cb/utils-v2'
 import { CourseCompletionDialogModule } from '../course-completion-dialog/course-completion-dialog.module'
 import { ViewerSecondaryTopBarComponent } from './viewer-secondary-top-bar.component'
 import { TranslateModule } from '@ngx-translate/core'

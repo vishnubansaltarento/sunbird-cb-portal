@@ -48,7 +48,7 @@ import {
   PipeRelativeTimeModule,
   PipePublicURLModule,
   MultilingualTranslationsService,
-} from '@sunbird-cb/utils'
+} from '@sunbird-cb/utils-v2'
 import {
   BtnCallModule,
   BtnContentDownloadModule,

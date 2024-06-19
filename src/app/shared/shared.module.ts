@@ -4,7 +4,7 @@ import { DownloadAppComponent } from '../component/download-app/download-app.com
 import { TranslateModule, TranslateService } from '@ngx-translate/core'
 import { HttpClient } from '@angular/common/http'
 import { TranslateHttpLoader } from '@ngx-translate/http-loader'
-import { MultilingualTranslationsService } from '@sunbird-cb/utils/src/lib/services/multilingual-translations.service'
+import { MultilingualTranslationsService } from '@sunbird-cb/utils-v2'
 
 // tslint:disable-next-line:function-name
 export function HttpLoaderFactory(http: HttpClient) {

@@ -2,7 +2,7 @@ import { Component, ElementRef, Input, OnInit, ViewChild, EventEmitter, Output }
 import { FormControl, FormGroup, Validators } from '@angular/forms'
 import { ENTER } from '@angular/cdk/keycodes'
 import { debounceTime, distinctUntilChanged } from 'rxjs/operators'
-import { MultilingualTranslationsService, EventService, WsEvents, ConfigurationsService } from '@sunbird-cb/utils'
+import { MultilingualTranslationsService, EventService, WsEvents, ConfigurationsService } from '@sunbird-cb/utils-v2'
 import { TranslateService } from '@ngx-translate/core'
 import { MatAutocomplete, MatAutocompleteSelectedEvent, MatChipInputEvent, MatSnackBar } from '@angular/material'
 import { AppTocService } from '../../services/app-toc.service'

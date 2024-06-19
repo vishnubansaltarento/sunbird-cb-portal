@@ -14,7 +14,7 @@ import { jsPlumb, OnConnectionBindInfo } from 'jsplumb'
 // tslint:disable-next-line
 import _ from 'lodash'
 import { Subscription } from 'rxjs'
-import { NsContent } from '@sunbird-cb/utils/src/public-api'
+import { NsContent } from '@sunbird-cb/utils-v2'
 
 @Component({
     selector: 'viewer-mtf-question',

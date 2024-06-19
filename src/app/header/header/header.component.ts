@@ -4,7 +4,7 @@ import { HeaderService } from './header.service'
 import { MobileAppsService } from '../../services/mobile-apps.service'
 import {
   ValueService,
-} from '@sunbird-cb/utils'
+} from '@sunbird-cb/utils-v2'
 @Component({
   selector: 'ws-header',
   templateUrl: './header.component.html',

@@ -2,9 +2,8 @@ import { Component, OnInit } from '@angular/core'
 import { ActivatedRoute } from '@angular/router'
 import { CommonMethodsService } from '@sunbird-cb/consumption'
 import { KarmaProgramsService } from '../service/karma-programs.service'
-import { EventService, WsEvents } from '@sunbird-cb/utils'
+import { EventService, WsEvents, MultilingualTranslationsService } from '@sunbird-cb/utils-v2'
 import { TranslateService } from '@ngx-translate/core'
-import { MultilingualTranslationsService } from '@sunbird-cb/utils-v2'
 
 @Component({
   selector: 'ws-app-karma-programs-microsite',
@@ -22,7 +21,7 @@ export class KarmaProgramsMicrositeComponent implements OnInit {
   titles = [
     { title: 'Learn', url: '/page/learn', icon: 'school', disableTranslate: false },
     {
-      title: `Karma programs`,
+      title: `Karma Programs`,
       url: `/app/learn/karma-programs/all-programs`,
       icon: '', disableTranslate: true,
     },

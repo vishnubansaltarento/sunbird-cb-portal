@@ -6,7 +6,7 @@ import _ from 'lodash'
 import { Router } from '@angular/router'
 import { CompetenceAssessmentService } from '../../services/comp-assessment.service'
 import { TranslateService } from '@ngx-translate/core'
-import { MultilingualTranslationsService } from '@sunbird-cb/utils/src/public-api'
+import { MultilingualTranslationsService } from '@sunbird-cb/utils-v2'
 // import { Router } from '@angular/router'
 
 export interface IDialogData {

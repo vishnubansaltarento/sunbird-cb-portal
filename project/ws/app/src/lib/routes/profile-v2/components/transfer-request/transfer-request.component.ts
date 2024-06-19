@@ -8,7 +8,7 @@ import { Subject } from 'rxjs'
 import { takeUntil } from 'rxjs/operators'
 
 import { UserProfileService } from '../../../user-profile/services/user-profile.service'
-import { ConfigurationsService } from '@sunbird-cb/utils/src/public-api'
+import { ConfigurationsService } from '@sunbird-cb/utils-v2'
 
 @Component({
   selector: 'ws-transfer-request',
@@ -59,6 +59,19 @@ export class TransferRequestComponent implements OnInit, OnDestroy {
 
   handleCloseModal(): void {
     this.dialogRef.close()
+  }
+
+  organizationSearch(value: string) {
+      const filterVal = value.toLowerCase()
+    return this.departmentData.filter(option => option.toLowerCase().includes(filterVal))
+  }
+
+  searchOrg(value: any) {
+    if (value && value.length) {
+      this.departmentData = this.organizationSearch(value)
+    } else {
+      this.getAllDeptData()
+    }
   }
 
   handleSubmitRequest(): void {

@@ -15,7 +15,7 @@ import {
   // LoggerService,
   ConfigurationsService,
   UtilityService,
-} from '@sunbird-cb/utils'
+} from '@sunbird-cb/utils-v2'
 // tslint:disable-next-line
 import _ from 'lodash'
 import { of, Subscription } from 'rxjs'
