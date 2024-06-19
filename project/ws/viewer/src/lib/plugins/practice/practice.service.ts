@@ -18,6 +18,7 @@ const API_END_POINTS = {
   QUESTION_PAPER_QUESTIONS: `/apis/proxies/v8/question/v5/read`,
   SAVE_AND_NEXT_QUESTION: `apis/proxies/v8/assessment/save`,
   CAN_ATTEMPT: (assessmentId: any) => `/apis/proxies/v8/user/assessment/retake/${assessmentId}`,
+  CAN_ATTEMPT_V5: (assessmentId: any) => `/apis/proxies/v8/user/assessment/v5/retake/${assessmentId}`
 }
 @Injectable({
   providedIn: 'root',
@@ -245,6 +246,16 @@ export class PracticeService {
   canAttend(identifier: string): Observable<NSPractice.IRetakeAssessment> {
     if (identifier) {
       return this.http.get<any>(API_END_POINTS.CAN_ATTEMPT(identifier)).pipe(map(r => r.result))
+    }
+    return of({
+      attemptsMade: 0,
+      attemptsAllowed: 1,
+    })
+  }
+
+  canAttendV5(identifier: string): Observable<NSPractice.IRetakeAssessment> {
+    if (identifier) {
+      return this.http.get<any>(API_END_POINTS.CAN_ATTEMPT_V5(identifier)).pipe(map(r => r.result))
     }
     return of({
       attemptsMade: 0,
