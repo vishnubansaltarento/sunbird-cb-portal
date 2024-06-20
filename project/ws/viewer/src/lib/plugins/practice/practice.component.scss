@@ -952,6 +952,18 @@ $nav-height: 40px;
   visibility: visible;
 }
 
+.pointers-event-none {
+  pointer-events: none;
+}
+
+.secondary-standalone {
+  background-color: #999999 !important;
+}
+
+.text-standalone-black {
+  color: #666666 !important
+}
+
 /** Media Query **/
 @media only screen and (max-width: 600px) {
   .overflow-hidden {

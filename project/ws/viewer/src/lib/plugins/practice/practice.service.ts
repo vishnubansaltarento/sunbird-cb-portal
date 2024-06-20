@@ -127,7 +127,9 @@ export class PracticeService {
       if (
         question.questionType === undefined ||
         question.questionType === 'mcq-mca' ||
-        question.questionType === 'mcq-sca'
+        question.questionType === 'mcq-sca' ||
+        question.questionType === 'mcq-mca-w' ||
+        question.questionType === 'mcq-sca-tf'
       ) {
         return question.options.map(option => {
           if (questionAnswerHash[question.questionId]) {

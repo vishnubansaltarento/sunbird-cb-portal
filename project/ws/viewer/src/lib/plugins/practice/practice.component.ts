@@ -1071,6 +1071,29 @@ export class PracticeComponent implements OnInit, OnChanges, OnDestroy {
             }
             responseQ.push(mcqMca)
             break
+          case 'mcq-mca-w':
+            const mcqMcaW: NSPractice.IMCQ_MCA_W = {
+              identifier: sq.questionId,
+              question: sq.question,
+              mimeType: NsContent.EMimeTypes.QUESTION,
+              objectType: 'Question',
+              primaryCategory: NsContent.EPrimaryCategory.MULTIPLE_CHOICE_QUESTION,
+              qType: 'MCQ-MCA-W',
+              questionLevel: sq.questionLevel,
+              timeTaken: '',
+              editorState: {
+                options: _.compact(_.map(sq.options, (_o: NSPractice.IOption) => {
+                  if (_o.userSelected) {
+                    return {
+                      index: (_o.optionId).toString(),
+                      selectedAnswer: !!_o.userSelected,
+                    } as NSPractice.IResponseOptions
+                  } return null
+                })),
+              },
+            }
+            responseQ.push(mcqMcaW)
+            break
           case 'mcq-sca':
             const mcqSca: NSPractice.IMCQ_SCA = {
               identifier: sq.questionId,
@@ -1733,6 +1756,7 @@ export class PracticeComponent implements OnInit, OnChanges, OnDestroy {
     }
 
     if (this.assessmentType === 'optionalWeightage') {
+      console.log('this.generateRequest,', this.generateRequest)
       if(this.secQuestions.length !== Object.keys(this.questionAnswerHash).length) {        
           this.openSnackbar('Please attempt the current question to move on next question.')        
       } else {
@@ -1869,6 +1893,25 @@ export class PracticeComponent implements OnInit, OnChanges, OnDestroy {
       config.duration = duration
       this.snackbar.open(primaryMsg, '', config)
     }
+  }
+
+  getAllQuestionAnswer() {
+    // let count = 0;
+    // if(this.generateRequest.children && this.generateRequest.children.length) {
+    //   for(let i=0; i<this.generateRequest.children[0].children.length;i++) {
+    //     if(this.generateRequest.children[0].children[i] &&
+    //       this.generateRequest.children[0].children[i]['editorState'] && 
+    //       this.generateRequest.children[0].children[i]['editorState']['options'] 
+    //       ) {
+    //         let optionLength:any = this.generateRequest.children[0].children[i]['editorState']['options'];
+    //         if(optionLength.length) {
+    //           count++;
+    //         }            
+    //       }        
+    //   }
+    // }
+    // return count
+    return Object.keys(this.questionAnswerHash).length
   }
 
 }
