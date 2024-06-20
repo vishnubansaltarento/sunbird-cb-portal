@@ -4,6 +4,7 @@ import { IResolveResponse } from '@sunbird-cb/utils'
 import { Observable, of } from 'rxjs'
 import { catchError, map, tap } from 'rxjs/operators'
 import { WidgetContentService } from '@sunbird-cb/collection/src/lib/_services/widget-content.service'
+import { environment } from 'src/environments/environment'
 
 @Injectable({
   providedIn: 'root',
@@ -18,11 +19,14 @@ export class ContentReadResolverService implements
       _route: ActivatedRouteSnapshot,
       _state: RouterStateSnapshot,
   ): Observable<IResolveResponse<any>> {
-      const collectionId: any = 'do_1140809851011317761688' || ''
+    if(environment && environment.providerDataKey){
+      const collectionId: any = environment.providerDataKey || ''
       return this.contentSvc.fetchProgramContent(collectionId).pipe(
-      map((rData: any) => ({ data: rData, error: null })), //  (rData.responseData || []).map((p: any) => p.name)
-      tap((resolveData: any) => of({ error: null, data: resolveData })),
-      catchError((error: any) => of({ error, data: null })),
-      )
+        map((rData: any) => ({ data: rData, error: null })), //  (rData.responseData || []).map((p: any) => p.name)
+        tap((resolveData: any) => of({ error: null, data: resolveData })),
+        catchError((error: any) => of({ error, data: null })),
+        )
+    }
+    return of({data:'',error: 'No Provider Data Key' })
   }
 }
