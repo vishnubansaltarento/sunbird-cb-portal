@@ -42,6 +42,7 @@ export const environment: IEnvironment = {
   helpEmail: (window as { [key: string]: any })['env']['helpEmail'] || '',
   supportEmail: (window as { [key: string]: any })['env']['supportEmail'] || '',
   spvorgID: (window as { [key: string]: any })['env']['spvorgID'] || '',
+  providerDataKey: (window as { [key: string]: any })['env']['providerDataKey'] || '',
 }
 interface IEnvironment {
   name: string,
@@ -78,7 +79,8 @@ interface IEnvironment {
   cdnContentBucket: string,
   supportEmail: string,
   apiCache: number,
-  spvorgID: number
+  spvorgID: number,
+  providerDataKey: string,
 }
 
 // import { AnyCnameRecord } from 'dns'
