@@ -1,4 +1,4 @@
-<ws-widget-btn-page-back [widgetData]="{ url: 'home', titles: titles, textClass:'ws-mat-black60-text' }">
+<ws-widget-btn-page-back [widgetData]="{ url: 'home', titles: titles }">
 </ws-widget-btn-page-back>
 <div class="container-fluid" id="section-micro-sites">
     <div class="flex flex-col flex-1">
@@ -81,7 +81,8 @@
                     </div>
                     <button
                         (click)="raiseTelemetry(data?.contentButton?.title)"
-                        [routerLink]="[data?.contentButton?.redirectUrl, providerName, providerId, 'all-CBP']" mat-button type="button"
+                        [routerLink]="[data?.contentButton?.redirectUrl, providerName, providerId, 'all-CBP']"
+                        [queryParams]="{pageDetails: true}" mat-button type="button"
                         class="view-btn margin-left-xs margin-right-xs small-button blue-border flex-auto-display">
                         <span class="mat-heading-1 bold ws-mat-default-text" i18n>
                             {{data?.contentButton?.title}}

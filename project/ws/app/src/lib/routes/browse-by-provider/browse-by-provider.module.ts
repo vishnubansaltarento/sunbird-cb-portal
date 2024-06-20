@@ -1,7 +1,7 @@
 import { NgModule, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core'
 import { CommonModule, DatePipe } from '@angular/common'
 import { BrowseByProviderRoutingModule } from './browse-by-provider-routing.module'
-import { BtnPageBackModule, CardContentModule, ContentStripWithTabsModule, SlidersModule } from '@sunbird-cb/collection'
+import { AvatarPhotoModule, BtnPageBackModule, CardContentModule, ContentStripWithTabsModule, SlidersModule } from '@sunbird-cb/collection'
 import {
   PipeFilterModule,
   PipeHtmlTagRemovalModule,
@@ -110,6 +110,7 @@ import { ProviderContentAllComponent } from './routes/provider-content-all/provi
     CardsModule,
     MatCheckboxModule,
     MatTooltipModule,
+    AvatarPhotoModule,
     TranslateModule.forRoot({
       loader: {
         provide: TranslateLoader,

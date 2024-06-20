@@ -18,9 +18,9 @@ export class ProviderPageComponent implements OnInit  {
   sectionList: any = []
   currentMonthAndYear: any
   titles = [
+    { title: 'Learn', url: '/page/learn', icon: 'school', disableTranslate: false },
     { title: `All Providers`,
       url: `/app/learn/browse-by/provider/all-providers`,
-      textClass: 'ws-mat-black60-text',
       icon: '', disableTranslate: true,
     },
   ]
@@ -49,7 +49,6 @@ export class ProviderPageComponent implements OnInit  {
       this.providerId = params['orgId']
       this.titles.push({
         title: this.providerName, icon: '', url: 'none', disableTranslate: true,
-        textClass: '',
       })
     })
     this.getNavitems()
@@ -96,11 +95,12 @@ export class ProviderPageComponent implements OnInit  {
         delete(stripData['loaderWidgets'])
         this.router.navigate(
           [`/app/learn/browse-by/provider/${this.providerName}/${this.providerId}/all-content`],
-          { queryParams: { stripData: JSON.stringify(stripData) } })
+          { queryParams: { stripData: JSON.stringify(stripData), pageDetails: true } })
       }
     } else {
        this.router.navigate(
-        [`/app/learn/browse-by/provider/${this.providerName}/${this.providerId}/all-CBP`])
+        [`/app/learn/browse-by/provider/${this.providerName}/${this.providerId}/all-CBP`],
+        { queryParams: { pageDetails: true } })
     }
   }
 
