@@ -29,10 +29,10 @@
             
             <div class="flex items-center justify-center">
                 <ng-container *ngIf="provider?.logoUrl;else noLogo">
-                    <img [src]="provider.logoUrl" class="p-logo"  onerror="'/assets/images/micro-sites/default-provider.svg'">
+                    <img [src]="provider?.logoUrl" class="p-logo"  onerror="'/assets/images/micro-sites/default-provider.svg'">
                 </ng-container>
                 <ng-template #noLogo>
-                    <ws-widget-avatar-photo [name]="provider?.name" [photoUrl]="provider.logoUrl" size="round-m">
+                    <ws-widget-avatar-photo [name]="provider?.name" [photoUrl]="provider?.logoUrl" size="round-m">
                     </ws-widget-avatar-photo>
                 </ng-template>
             </div>
