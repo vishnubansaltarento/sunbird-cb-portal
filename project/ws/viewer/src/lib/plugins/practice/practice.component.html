@@ -1194,7 +1194,7 @@
           </div>
 
           <div>
-            <a class="text-white ws-mat-primary-background margin-xs quest_btn justify-right" mat-button (click)="proceedToSubmit()">
+            <a [ngClass]="(totalQCount != getAllQuestionAnswer() && assessmentType === 'optionalWeightage') ? 'pointer-events-none secondary-standalone text-standalone-black margin-xs quest_btn justify-right': 'text-white ws-mat-primary-background margin-xs quest_btn justify-right' "  mat-button (click)="proceedToSubmit()">
               <ng-container *ngIf="!isXsmall">{{ 'playerbrief.submitTheTest' | translate }}</ng-container>
             </a>
           </div>
@@ -1788,7 +1788,8 @@
           </div>
 
           <div>
-            <a class="text-white ws-mat-primary-background margin-xs" [ngClass]="assessmentType !== 'optionalWeightage' ? 'quest_btn' : 'quest_btn_option_weightage'" mat-button (click)="proceedToSubmit()">
+            
+            <a [ngClass]="(totalQCount != getAllQuestionAnswer() && assessmentType === 'optionalWeightage') ? 'pointer-events-none secondary-standalone text-standalone-black margin-xs quest_btn_option_weightage': 'text-white ws-mat-primary-background margin-xs' ">
               <ng-container>{{ 'playerbrief.submitTheTest' | translate }}</ng-container>
             </a>
           </div>

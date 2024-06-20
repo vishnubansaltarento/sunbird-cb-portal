@@ -329,6 +329,17 @@ export namespace NSPractice {
     }
   }
   // tslint:disable-next-line
+  export interface IMCQ_MCA_W extends IRScratch {
+    primaryCategory: NsContent.EPrimaryCategory.MULTIPLE_CHOICE_QUESTION
+    mimeType: NsContent.EMimeTypes.QUESTION
+    qType: 'MCQ-MCA-W',
+    question: String,
+    questionLevel: String,
+    editorState: {
+      options: IResponseOptions[]
+    }
+  }
+  // tslint:disable-next-line
   export interface IMCQ_MTF extends IRScratch {
     primaryCategory: NsContent.EPrimaryCategory.MTF_QUESTION
     mimeType: NsContent.EMimeTypes.QUESTION
