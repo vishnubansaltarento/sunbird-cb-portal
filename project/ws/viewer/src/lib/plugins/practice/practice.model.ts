@@ -94,6 +94,7 @@ export namespace NSPractice {
     question: string
     result: string,
     questionLevel: string
+    timeSpent: string
   }
   export interface IQuizSubmitResponseV2 {
     identifier: string
@@ -301,6 +302,7 @@ export namespace NSPractice {
     objectType: 'Question'
     qType: string,
     timeTaken: string,
+    timeSpent: string,
     editorState: {
       options?: any[]
       selectedAnswer?: string | null
