@@ -82,6 +82,8 @@ export namespace NSPractice {
     passPercent: number
     inCorrect: number
     pass: boolean,
+    totalMarks: number,
+    sectionMarks: number,
     children: ISectionQuestion[]
   }
 

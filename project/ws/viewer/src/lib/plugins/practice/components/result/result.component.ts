@@ -138,6 +138,13 @@ export class ResultComponent implements OnInit, OnChanges {
       summary: '69',
       summaryType: 'Worning',
     },
+    {
+      imgType: 'img',
+      imgPath: '/assets/icons/final-assessment/target.svg',
+      class: 'icon-bg-dark-green',
+      summary: '',
+      summaryType: 'Accuracy',
+    },
   ]
 
   questionStatuTableDataSource: any = new MatTableDataSource([])
@@ -193,8 +200,8 @@ export class ResultComponent implements OnInit, OnChanges {
                 sectionName = 'Section F'
               }
             }
-            
-            const sectionObj = { subject: `${sectionName}`, yourScore : ((this.quizResponse.children[i]['correct']) / Number(sectionTotalQuestions))}
+
+            const sectionObj = { subject: `${sectionName}`, yourScore : `${this.quizResponse.children[i]['sectionMarks']} / ${this.quizResponse.children[i]['totalMarks']}`}
             sectionTableData.push(sectionObj)
           // }
         }
@@ -239,7 +246,7 @@ export class ResultComponent implements OnInit, OnChanges {
           imgType: 'icon',
           imgPath: 'speed',
           class: 'icon-bg-blue',
-          summary: `${Number(this.percentage)}/100`,
+          summary: `${Math.round(Number(this.percentage))}/100`,
           summaryType: 'Score',
         },
         {
@@ -267,7 +274,7 @@ export class ResultComponent implements OnInit, OnChanges {
           imgType: 'img',
           imgPath: '/assets/icons/final-assessment/target.svg',
           class: 'icon-bg-dark-green',
-          summary: `${(Number(this.quizResponse.correct / totalQuestions) * 100)}%`,
+          summary: `${Math.round(Number(this.quizResponse.overallResult))}%`,
           summaryType: 'Accuracy',
         },
       ]
@@ -300,6 +307,13 @@ export class ResultComponent implements OnInit, OnChanges {
           class: 'icon-bg-red',
           summary: this.quizResponse.incorrect ? this.quizResponse.incorrect.toString() : '0',
           summaryType: 'Wrong',
+        },
+        {
+          imgType: 'img',
+          imgPath: '/assets/icons/final-assessment/target.svg',
+          class: 'icon-bg-dark-green',
+          summary: `${Math.round(Number(this.quizResponse.overallResult))}%`,
+          summaryType: 'Accuracy',
         },
       ]
 

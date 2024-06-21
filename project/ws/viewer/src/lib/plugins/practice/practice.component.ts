@@ -1067,7 +1067,7 @@ export class PracticeComponent implements OnInit, OnChanges, OnDestroy {
               primaryCategory: NsContent.EPrimaryCategory.MULTIPLE_CHOICE_QUESTION,
               qType: 'MCQ-MCA',
               questionLevel: sq.questionLevel ? sq.questionLevel : '',
-              timeTaken: '',
+              timeTaken: timeSpent.toString(),
               timeSpent: timeSpent.toString(),
               editorState: {
                 options: _.compact(_.map(sq.options, (_o: NSPractice.IOption) => {
@@ -1091,7 +1091,7 @@ export class PracticeComponent implements OnInit, OnChanges, OnDestroy {
               primaryCategory: NsContent.EPrimaryCategory.MULTIPLE_CHOICE_QUESTION,
               qType: 'MCQ-MCA-W',
               questionLevel: sq.questionLevel,
-              timeTaken: '',
+              timeTaken: timeSpent.toString(),
               timeSpent: timeSpent.toString(),
               editorState: {
                 options: _.compact(_.map(sq.options, (_o: NSPractice.IOption) => {
@@ -1115,7 +1115,7 @@ export class PracticeComponent implements OnInit, OnChanges, OnDestroy {
               primaryCategory: NsContent.EPrimaryCategory.SINGLE_CHOICE_QUESTION,
               qType: 'MCQ-SCA',
               questionLevel: sq.questionLevel ? sq.questionLevel : '',
-              timeTaken: '',
+              timeTaken: timeSpent.toString(),
               timeSpent: timeSpent.toString(),
               editorState: {
                 options: _.compact(_.map(sq.options, (_o: NSPractice.IOption) => {
@@ -1171,7 +1171,7 @@ export class PracticeComponent implements OnInit, OnChanges, OnDestroy {
               primaryCategory: NsContent.EPrimaryCategory.FTB_QUESTION,
               qType: 'FTB',
               questionLevel: sq.questionLevel,
-              timeTaken: '',
+              timeTaken: timeSpent.toString(),
               timeSpent: timeSpent.toString(),
               editorState: { options: optionsAll },
             }
@@ -1204,7 +1204,7 @@ export class PracticeComponent implements OnInit, OnChanges, OnDestroy {
               primaryCategory: NsContent.EPrimaryCategory.MTF_QUESTION,
               qType: 'MTF',
               questionLevel: sq.questionLevel,
-              timeTaken: '',
+              timeTaken: timeSpent.toString(),
               timeSpent: timeSpent.toString(),
               editorState: {
                 options: _.compact(_.map(sq.options, (_o: NSPractice.IOption) => {
