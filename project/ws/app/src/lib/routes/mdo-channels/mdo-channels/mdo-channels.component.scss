@@ -138,7 +138,7 @@
 
         @media (max-width:1024px) {
             // justify-content: flex-start;
-            grid-template-columns: unset;
+            grid-template-columns: repeat(auto-fill, 100%);
         }
 
     }

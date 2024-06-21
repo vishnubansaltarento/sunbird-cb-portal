@@ -54,14 +54,6 @@ const routes: Routes = [
           module: 'explore',
         },
       },
-      {
-        path: 'all-content',
-        component: ProviderContentAllComponent,
-        data: {
-          pageId: 'all-content',
-          module: 'explore',
-        },
-      },
       // {
       //   path: 'insights',
       //   component: InsightsComponent,
@@ -71,6 +63,14 @@ const routes: Routes = [
       //   },
       // },
     ],
+  },
+  {
+    path: ':provider/:orgId/all-content',
+    component: ProviderContentAllComponent,
+    data: {
+      pageId: 'all-content',
+      module: 'explore',
+    },
   },
   {
     path: ':provider/:orgId/micro-sites',
