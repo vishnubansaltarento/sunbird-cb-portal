@@ -20,7 +20,7 @@ const videoJsOptions: videoJs.PlayerOptions = {
   autoplay: true,
   preload: 'auto',
   fluid: false,
-  muted: true,
+  muted: false,
   techOrder: ['html5'],
   playbackRates: [1, 1.5],
   poster: '',
@@ -125,10 +125,10 @@ export class PlayerVideoComponent extends WidgetBaseComponent
         }
         let counter = 1
         this.timerInterval =   setInterval(() => {
-            if (counter <= 30) {
+            if (counter <= 5) {
                 this.updateProgress(counter)
             }
-            if (counter > 30) {
+            if (counter > 5) {
               if (videoTag) {
                 videoTag.style.filter = 'blur(0px)'
               }
@@ -152,7 +152,7 @@ export class PlayerVideoComponent extends WidgetBaseComponent
 
   updateProgress(value: any) {
     const progress: any = document.querySelector('.circular-progress')
-    progress.style.setProperty('--percentage', `${value * 12}deg`)
+    progress.style.setProperty('--percentage', `${value * 72}deg`)
     // progress.innerText = `${value}%`
   }
 
