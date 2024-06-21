@@ -1,4 +1,8 @@
-<p class="mat-subheading-1">All Contents <span *ngIf="contentDataList.length">({{contentDataList.length}})</span></p>
+<div class="container-balanced">
+
+    <ws-widget-btn-page-back [widgetData]="{ url: 'home', titles: titles }">
+    </ws-widget-btn-page-back>
+    <p class="mat-subheading-1">All {{seeAllPageConfig?.title}} <span *ngIf="contentDataList.length">({{contentDataList.length}})</span></p>
 
 <div class="">
     <div class="container">
@@ -26,4 +30,5 @@
             </div>
         </div>
     </div>
+</div>
 </div>
