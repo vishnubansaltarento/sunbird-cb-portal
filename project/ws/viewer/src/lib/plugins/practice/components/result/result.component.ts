@@ -79,13 +79,13 @@ export class ResultComponent implements OnInit, OnChanges {
       summary: '',
       summaryType: 'Score',
     },
-    // {
-    //   imgType: 'img',
-    //   imgPath: '/assets/icons/final-assessment/nest_clock_farsight_analog.svg',
-    //   class: 'icon-bg-lite-green',
-    //   summary: '0:9:8',
-    //   summaryType: 'Time Taken',
-    // },
+    {
+      imgType: 'img',
+      imgPath: '/assets/icons/final-assessment/nest_clock_farsight_analog.svg',
+      class: 'icon-bg-lite-green',
+      summary: '0:9:8',
+      summaryType: 'Time Taken',
+    },
     {
       imgType: 'img',
       imgPath: '/assets/icons/final-assessment/assignment.svg',
@@ -137,6 +137,13 @@ export class ResultComponent implements OnInit, OnChanges {
       class: 'icon-bg-red',
       summary: '69',
       summaryType: 'Worning',
+    },
+    {
+      imgType: 'img',
+      imgPath: '/assets/icons/final-assessment/target.svg',
+      class: 'icon-bg-dark-green',
+      summary: '',
+      summaryType: 'Accuracy',
     },
   ]
 
@@ -193,8 +200,8 @@ export class ResultComponent implements OnInit, OnChanges {
                 sectionName = 'Section F'
               }
             }
-            
-            const sectionObj = { subject: `${sectionName}`, yourScore : ((this.quizResponse.children[i]['correct']) / Number(sectionTotalQuestions))}
+
+            const sectionObj = { subject: `${sectionName}`, yourScore : `${this.quizResponse.children[i]['sectionMarks']} / ${this.quizResponse.children[i]['totalMarks']}`}
             sectionTableData.push(sectionObj)
           // }
         }
@@ -239,16 +246,16 @@ export class ResultComponent implements OnInit, OnChanges {
           imgType: 'icon',
           imgPath: 'speed',
           class: 'icon-bg-blue',
-          summary: `${Number(this.percentage)}/100`,
+          summary: `${Math.round(Number(this.percentage))}/100`,
           summaryType: 'Score',
         },
-        // {
-        //   imgType: 'img',
-        //   imgPath: '/assets/icons/final-assessment/nest_clock_farsight_analog.svg',
-        //   class: 'icon-bg-lite-green',
-        //   summary: '0:9:8',
-        //   summaryType: 'Time Taken',
-        // },
+        {
+          imgType: 'img',
+          imgPath: '/assets/icons/final-assessment/nest_clock_farsight_analog.svg',
+          class: 'icon-bg-lite-green',
+          summary: this.millisecondsToHMS(this.quizResponse['timeTakenForAssessment']),
+          summaryType: 'Time Taken',
+        },
         {
           imgType: 'img',
           imgPath: '/assets/icons/final-assessment/assignment.svg',
@@ -267,19 +274,19 @@ export class ResultComponent implements OnInit, OnChanges {
           imgType: 'img',
           imgPath: '/assets/icons/final-assessment/target.svg',
           class: 'icon-bg-dark-green',
-          summary: `${(Number(this.quizResponse.correct / totalQuestions) * 100)}%`,
+          summary: `${Math.round(Number(this.quizResponse.overallResult))}%`,
           summaryType: 'Accuracy',
         },
       ]
 
       this.scoreSummary = [
-        // {
-        //   imgType: 'img',
-        //   imgPath: '/assets/icons/final-assessment/nest_clock_farsight_analog.svg',
-        //   class: 'icon-bg-lite-green',
-        //   summary: '0:9:8',
-        //   summaryType: 'Time Taken',
-        // },
+        {
+          imgType: 'img',
+          imgPath: '/assets/icons/final-assessment/nest_clock_farsight_analog.svg',
+          class: 'icon-bg-lite-green',
+          summary: this.millisecondsToHMS(this.quizResponse['timeTakenForAssessment']),
+          summaryType: 'Time Taken',
+        },
         {
           imgType: 'img',
           imgPath: '/assets/icons/final-assessment/assignment.svg',
@@ -300,6 +307,13 @@ export class ResultComponent implements OnInit, OnChanges {
           class: 'icon-bg-red',
           summary: this.quizResponse.incorrect ? this.quizResponse.incorrect.toString() : '0',
           summaryType: 'Wrong',
+        },
+        {
+          imgType: 'img',
+          imgPath: '/assets/icons/final-assessment/target.svg',
+          class: 'icon-bg-dark-green',
+          summary: `${Math.round(Number(this.quizResponse.overallResult))}%`,
+          summaryType: 'Accuracy',
         },
       ]
 
@@ -524,7 +538,7 @@ export class ResultComponent implements OnInit, OnChanges {
     return displayColumns
   }
 
-  millisecondsToHMS(milleSeconds: string): string {
+  millisecondsToHMS(milleSeconds: any): string {
     const ms = Number(milleSeconds)
     const seconds: number = Math.floor((ms / 1000) % 60);
     const minutes: number = Math.floor((ms / (1000 * 60)) % 60);

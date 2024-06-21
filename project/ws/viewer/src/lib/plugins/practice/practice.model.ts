@@ -82,6 +82,8 @@ export namespace NSPractice {
     passPercent: number
     inCorrect: number
     pass: boolean,
+    totalMarks: number,
+    sectionMarks: number,
     children: ISectionQuestion[]
   }
 
@@ -110,6 +112,7 @@ export namespace NSPractice {
     incorrect: number
     pass: boolean
     isInProgress?: boolean
+    timeTakenForAssessment: string
   }
 
   export interface IQPaper {
