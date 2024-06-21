@@ -110,6 +110,7 @@ export namespace NSPractice {
     incorrect: number
     pass: boolean
     isInProgress?: boolean
+    timeTakenForAssessment: string
   }
 
   export interface IQPaper {

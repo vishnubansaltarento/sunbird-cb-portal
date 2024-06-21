@@ -79,13 +79,13 @@ export class ResultComponent implements OnInit, OnChanges {
       summary: '',
       summaryType: 'Score',
     },
-    // {
-    //   imgType: 'img',
-    //   imgPath: '/assets/icons/final-assessment/nest_clock_farsight_analog.svg',
-    //   class: 'icon-bg-lite-green',
-    //   summary: '0:9:8',
-    //   summaryType: 'Time Taken',
-    // },
+    {
+      imgType: 'img',
+      imgPath: '/assets/icons/final-assessment/nest_clock_farsight_analog.svg',
+      class: 'icon-bg-lite-green',
+      summary: '0:9:8',
+      summaryType: 'Time Taken',
+    },
     {
       imgType: 'img',
       imgPath: '/assets/icons/final-assessment/assignment.svg',
@@ -242,13 +242,13 @@ export class ResultComponent implements OnInit, OnChanges {
           summary: `${Number(this.percentage)}/100`,
           summaryType: 'Score',
         },
-        // {
-        //   imgType: 'img',
-        //   imgPath: '/assets/icons/final-assessment/nest_clock_farsight_analog.svg',
-        //   class: 'icon-bg-lite-green',
-        //   summary: '0:9:8',
-        //   summaryType: 'Time Taken',
-        // },
+        {
+          imgType: 'img',
+          imgPath: '/assets/icons/final-assessment/nest_clock_farsight_analog.svg',
+          class: 'icon-bg-lite-green',
+          summary: this.millisecondsToHMS(this.quizResponse['timeTakenForAssessment']),
+          summaryType: 'Time Taken',
+        },
         {
           imgType: 'img',
           imgPath: '/assets/icons/final-assessment/assignment.svg',
@@ -273,13 +273,13 @@ export class ResultComponent implements OnInit, OnChanges {
       ]
 
       this.scoreSummary = [
-        // {
-        //   imgType: 'img',
-        //   imgPath: '/assets/icons/final-assessment/nest_clock_farsight_analog.svg',
-        //   class: 'icon-bg-lite-green',
-        //   summary: '0:9:8',
-        //   summaryType: 'Time Taken',
-        // },
+        {
+          imgType: 'img',
+          imgPath: '/assets/icons/final-assessment/nest_clock_farsight_analog.svg',
+          class: 'icon-bg-lite-green',
+          summary: this.millisecondsToHMS(this.quizResponse['timeTakenForAssessment']),
+          summaryType: 'Time Taken',
+        },
         {
           imgType: 'img',
           imgPath: '/assets/icons/final-assessment/assignment.svg',
@@ -524,7 +524,7 @@ export class ResultComponent implements OnInit, OnChanges {
     return displayColumns
   }
 
-  millisecondsToHMS(milleSeconds: string): string {
+  millisecondsToHMS(milleSeconds: any): string {
     const ms = Number(milleSeconds)
     const seconds: number = Math.floor((ms / 1000) % 60);
     const minutes: number = Math.floor((ms / (1000 * 60)) % 60);

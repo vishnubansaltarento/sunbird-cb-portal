@@ -526,6 +526,42 @@
         text-align: center;
         margin-top: -40px;
     }
+
+    // .colapseOverAllPerformance {
+    //     height: 315px;
+    //     overflow: hidden;
+    //     animation-name: OverAllPerformanceCollapse;
+    //     animation-iteration-count: 1;
+    //     animation-timing-function: ease-in;
+    //     animation-duration: 1s;
+    // }
+
+    // @keyframes OverAllPerformanceCollapse {
+    //     0% {
+    //         height: auto;
+    //     }
+    //     100% {
+    //         height: 315px;
+    //     }
+    // }
+
+    // .viewOverAllPerformance {
+    //     height: auto;
+    //     overflow: hidden;
+    //     animation-name: expandOverAllPerformance;
+    //     animation-iteration-count: 1;
+    //     animation-timing-function: ease-in;
+    //     animation-duration: 1s;
+    // }
+
+    // @keyframes expandOverAllPerformance {
+    //     0% {
+    //         height: 315px;
+    //     }
+    //     100% {
+    //         height: auto;
+    //     }
+    // }
 }
 
 @media only screen and (max-width: 768px) {
