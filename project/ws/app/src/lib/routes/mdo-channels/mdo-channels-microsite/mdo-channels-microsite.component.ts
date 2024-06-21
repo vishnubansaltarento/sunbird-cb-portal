@@ -22,7 +22,7 @@ export class MdoChannelsMicrositeComponent implements OnInit {
   titles = [
     { title: 'Learn', url: '/page/learn', icon: 'school', disableTranslate: false },
     {
-      title: `MDO channel`,
+      title: `MDO Channel`,
       url: `/app/learn/mdo-channels/all-channels`,
       icon: '', disableTranslate: true,
     },
