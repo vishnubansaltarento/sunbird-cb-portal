@@ -411,15 +411,23 @@
     </ng-container>
     <ng-container *ngIf="selectedAssessmentCompatibilityLevel >= 6 && quizResponse && showInsight">
       <div class="results flex flex-col gap-6 px-5 py-4">
-      <div class="flex overAllScore justify-center items-center">
-        <div class="flex justify-center items-center totalScore w-full">
-          Your SCORE
-        </div>
-        <div class="separator"></div>
-        <div class="flex justify-center items-center totalScore w-full">
-          {{(percentage || 0) | number: '1.2-2'}}/100
-        </div>
-      </div>
+        <ng-container *ngIf="questionTYP.PRACTICE_RESOURCE !== quizCategory; else overAllPerformance">
+          <div class="flex overAllScore justify-center items-center">
+            <div class="flex justify-center items-center totalScore w-full">
+              Your SCORE
+            </div>
+            <div class="separator"></div>
+            <div class="flex justify-center items-center totalScore w-full">
+              {{(percentage || 0) | number: '1.2-2'}}/100
+            </div>
+          </div>
+        </ng-container>
+        <ng-template #overAllPerformance>
+          <div class="header-text flex flex-col">
+            My Overall performance summary
+            <span class="mt-1"></span>
+          </div>
+        </ng-template>
     
       <div class="flex wrap-mweb gap-4 mt-6 mb-6">
         <ng-container *ngFor="let summary of scoreSummary">
@@ -447,12 +455,12 @@
       </div>
     
       <div>
-        <button mat-button [matMenuTriggerFor]="sectionsMenu" class="btn-outline flex justify-center items-center px-4"><span>All</span>
+        <button mat-button [matMenuTriggerFor]="sectionsMenu" class="btn-outline flex justify-center items-center px-4"><span>{{selectedSection}}</span>
           <mat-icon class="arrow-down">arrow_drop_down</mat-icon>
         </button>
         <mat-menu #sectionsMenu="matMenu" yPosition="below">
           <ng-container *ngFor="let section of sectionsList">
-            <button mat-menu-item class="questionType-btn" (click)="getSectionalData(section.identifier)">{{section.sectionName}} </button>
+            <button mat-menu-item class="questionType-btn" (click)="getSectionalData(section.identifier); selectedSection = section.sectionName">{{section.sectionName}} </button>
           </ng-container>
         </mat-menu>
       </div>

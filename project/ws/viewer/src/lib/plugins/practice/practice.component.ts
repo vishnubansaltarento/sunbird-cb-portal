@@ -139,6 +139,9 @@ export class PracticeComponent implements OnInit, OnChanges, OnDestroy {
   allSectionTimeLimit = 0
   totalAssessemntQuestionsCount = 0
   sectionalTimer = false
+  questionStartTime: number = Date.now()
+  timeSpentOnQuestions: any = {}
+
   constructor(
     private events: EventService,
     public dialog: MatDialog,
@@ -695,6 +698,12 @@ export class PracticeComponent implements OnInit, OnChanges, OnDestroy {
     }
   }
   getNextQuestion(idx: any) {
+    const currentQuestionId = this.currentQuestion ? this.currentQuestion.questionId : ''
+    if (currentQuestionId && this.secQuestions && this.currentQuestion.section === this.secQuestions[0]['section']) {
+      this.calculateTimeSpentOnQuestion(currentQuestionId)
+    } else {
+      this.setQuestionStartTime()
+    }
     const questions = this.secQuestions
     if (this.assessmentType === 'optionalWeightage') {
       if (idx > 0) {
@@ -973,7 +982,7 @@ export class PracticeComponent implements OnInit, OnChanges, OnDestroy {
   proceedToSubmit() {
     // if (this.timeLeft || this.primaryCategory === this.ePrimaryCategory.PRACTICE_RESOURCE) {
       // if (this.coursePrimaryCategory === 'Standalone Assessment') {
-        if (this.selectedAssessmentCompatibilityLevel >= 6) {
+      if (this.selectedAssessmentCompatibilityLevel >= 6) {
         const submitAssessment = true
         this.openSectionPopup(submitAssessment)
       } else {
@@ -1047,6 +1056,7 @@ export class PracticeComponent implements OnInit, OnChanges, OnDestroy {
     if (section && section.identifier) {
       const secQues = _.filter(req.questions, q => q.section === section.identifier)
       _.each(secQues, sq => {
+        const timeSpent = this.timeSpentOnQuestions[sq.questionId] ? this.timeSpentOnQuestions[sq.questionId] : ''
         switch (_.toLower(sq.questionType || '')) {
           case 'mcq-mca':
             const mcqMca: NSPractice.IMCQ_MCA = {
@@ -1056,8 +1066,9 @@ export class PracticeComponent implements OnInit, OnChanges, OnDestroy {
               objectType: 'Question',
               primaryCategory: NsContent.EPrimaryCategory.MULTIPLE_CHOICE_QUESTION,
               qType: 'MCQ-MCA',
-              questionLevel: sq.questionLevel,
+              questionLevel: sq.questionLevel ? sq.questionLevel : '',
               timeTaken: '',
+              timeSpent: timeSpent.toString(),
               editorState: {
                 options: _.compact(_.map(sq.options, (_o: NSPractice.IOption) => {
                   if (_o.userSelected) {
@@ -1081,6 +1092,7 @@ export class PracticeComponent implements OnInit, OnChanges, OnDestroy {
               qType: 'MCQ-MCA-W',
               questionLevel: sq.questionLevel,
               timeTaken: '',
+              timeSpent: timeSpent.toString(),
               editorState: {
                 options: _.compact(_.map(sq.options, (_o: NSPractice.IOption) => {
                   if (_o.userSelected) {
@@ -1102,8 +1114,9 @@ export class PracticeComponent implements OnInit, OnChanges, OnDestroy {
               question: sq.question,
               primaryCategory: NsContent.EPrimaryCategory.SINGLE_CHOICE_QUESTION,
               qType: 'MCQ-SCA',
-              questionLevel: sq.questionLevel,
+              questionLevel: sq.questionLevel ? sq.questionLevel : '',
               timeTaken: '',
+              timeSpent: timeSpent.toString(),
               editorState: {
                 options: _.compact(_.map(sq.options, (_o: NSPractice.IOption) => {
                   if (_o.userSelected) {
@@ -1159,6 +1172,7 @@ export class PracticeComponent implements OnInit, OnChanges, OnDestroy {
               qType: 'FTB',
               questionLevel: sq.questionLevel,
               timeTaken: '',
+              timeSpent: timeSpent.toString(),
               editorState: { options: optionsAll },
             }
             if (sq.options.length === 0 && this.questionAnswerHash[sq.questionId]) {
@@ -1191,6 +1205,7 @@ export class PracticeComponent implements OnInit, OnChanges, OnDestroy {
               qType: 'MTF',
               questionLevel: sq.questionLevel,
               timeTaken: '',
+              timeSpent: timeSpent.toString(),
               editorState: {
                 options: _.compact(_.map(sq.options, (_o: NSPractice.IOption) => {
                   if (_o.userSelected) {
@@ -1605,7 +1620,7 @@ export class PracticeComponent implements OnInit, OnChanges, OnDestroy {
     this.numIncorrectAnswers = res.incorrect
     this.numUnanswered = res.blank
     this.passPercentage = res.passPercentage
-    this.result = res.overallResult
+    this.result = typeof res.overallResult === 'number' ? res.overallResult : 0
     if (this.result >= this.passPercentage) {
       this.isCompleted = true
     }
@@ -1656,7 +1671,13 @@ export class PracticeComponent implements OnInit, OnChanges, OnDestroy {
     this.events.dispatchEvent(event)
   }
 
-  openSectionPopup(submitAssessment = false) {
+  openSectionPopup(submitAssessment = false, getTime = true) {
+    const currentQuestionId = this.currentQuestion ? this.currentQuestion.questionId : ''
+    if(currentQuestionId && this.secQuestions && this.currentQuestion.section === this.secQuestions[0]['section'] && getTime) {
+      this.calculateTimeSpentOnQuestion(currentQuestionId)
+    } else {
+      this.setQuestionStartTime()
+    }
     const tableColumns: any[] = [
       { header: 'Section', key: 'section' },
       { header: 'No of Questions', key: 'NoOfQuestions' },
@@ -1810,8 +1831,11 @@ export class PracticeComponent implements OnInit, OnChanges, OnDestroy {
           break;
           case 'submitAssessment':
             const submitAssessment = true
-            this.openSectionPopup(submitAssessment)
+            const getTime = false
+            this.openSectionPopup(submitAssessment, getTime)
             break;
+          default :
+            this.setQuestionStartTime()
         }
 
       }
@@ -1912,6 +1936,26 @@ export class PracticeComponent implements OnInit, OnChanges, OnDestroy {
     // }
     // return count
     return Object.keys(this.questionAnswerHash).length
+  }
+
+  calculateTimeSpentOnQuestion(currentQuestionId: string) {
+    if(currentQuestionId) {
+      if(this.timeSpentOnQuestions && this.timeSpentOnQuestions[currentQuestionId]) {
+        this.timeSpentOnQuestions[currentQuestionId] = this.timeSpentOnQuestions[currentQuestionId] + this.timeSpent
+      } else {
+        this.timeSpentOnQuestions[currentQuestionId] = this.timeSpent
+      }
+    }
+    this.setQuestionStartTime()
+  }
+
+  get timeSpent(): number {
+    const timeSpentNow = Date.now() - this.questionStartTime;
+    return timeSpentNow
+  }
+
+  setQuestionStartTime() {
+    this.questionStartTime = Date.now()
   }
 
 }
