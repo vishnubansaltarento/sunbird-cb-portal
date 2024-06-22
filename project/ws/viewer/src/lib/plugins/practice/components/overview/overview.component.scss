@@ -235,9 +235,9 @@
     background-color: rgb(26,76,161);
 }
 
-.summary-list-label {
-    // margin-left: 16px;
-}
+// .summary-list-label {
+//     // margin-left: 16px;
+// }
 
 .summary-standalone {
     word-wrap: break-word;
@@ -457,6 +457,22 @@
 
     .start-assessment-cta button {
         width: 100%;
+    }
+}
+
+.blue-outline {
+    height: 30px;
+    padding: 0px 16px;
+    border-radius: 20px;
+    font-size: 14px;
+    font-weight: 700;
+    border: 1px solid #1B4CA1;
+    color: #1B4CA1 !important;
+
+    .navigation-icons {
+        height: 20px;
+        font-size: 20px;
+        width: 15px;
     }
 }
 

@@ -36,6 +36,7 @@ export class OverviewComponent implements OnInit, OnChanges, OnDestroy {
   dataSubscription: any
   consentGiven = false
   maxAttempPopup = false
+  currentPage = 0
   constructor(
     public dialog: MatDialog,
     private route: ActivatedRoute,
@@ -132,5 +133,17 @@ export class OverviewComponent implements OnInit, OnChanges, OnDestroy {
     // tslint:disable-next-line
     console.log('event', event)
     this.consentGiven = !this.consentGiven
+  }
+
+  nextPage(): void {
+    if (this.currentPage < this.instructionAssessment.length - 1) {
+      this.currentPage = this.currentPage + 1
+    }
+  }
+
+  previousPage(): void {
+    if (this.currentPage > 0) {
+      this.currentPage = this.currentPage - 1
+    }
   }
 }

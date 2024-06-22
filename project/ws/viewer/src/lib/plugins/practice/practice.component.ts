@@ -128,7 +128,7 @@ export class PracticeComponent implements OnInit, OnChanges, OnDestroy {
   currentSetNumber = 0
   noOfQuestionsPerSet = 20
   totalQuestionsCount = 0
-  instructionAssessment = ''
+  instructionAssessment: any = ''
   selectedSectionIdentifier: any
   questionSectionTableData: any = []
   questionVisitedData: any = []
@@ -141,6 +141,7 @@ export class PracticeComponent implements OnInit, OnChanges, OnDestroy {
   sectionalTimer = false
   questionStartTime: number = Date.now()
   timeSpentOnQuestions: any = {}
+  charactersPerPage = 1500
 
   constructor(
     private events: EventService,
@@ -283,7 +284,10 @@ export class PracticeComponent implements OnInit, OnChanges, OnDestroy {
           this.selectedAssessmentCompatibilityLevel = item.compatibilityLevel
           this.canAttend()
           if (this.identifier === item.identifier) {
-            this.instructionAssessment = item.description
+            // this.instructionAssessment = item.description
+            if (item.identifier) {
+              this.getInstructionAssessmentPagination(item.description)
+            }
             this.totalAssessemntQuestionsCount = item.maxQuestions
           }
       })
@@ -292,6 +296,19 @@ export class PracticeComponent implements OnInit, OnChanges, OnDestroy {
     // console.log('this.widgetContentService.currentMetaData', this.widgetContentService)
     // console.log('this.identifier', this.identifier)
   }
+
+  getInstructionAssessmentPagination(htmlData: any) {
+    const totalCharacters = htmlData.length
+    const totalPages = Math.ceil(totalCharacters / this.charactersPerPage)
+    this.instructionAssessment = []
+
+    for (let i = 0; i < totalPages; i += 1) {
+      const start = i * this.charactersPerPage
+      const pageContent = htmlData.substr(start, this.charactersPerPage)
+      this.instructionAssessment.push(pageContent)
+    }
+  }
+
   get getTimeLimit(): number {
     let jsonTime = (this.quizJson.timeLimit || 0)
     if (this.retake && jsonTime === 0) {

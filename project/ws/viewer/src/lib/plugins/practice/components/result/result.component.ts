@@ -177,33 +177,35 @@ export class ResultComponent implements OnInit, OnChanges {
       const sectionTableData = []
       let totalQuestions = 0
         /* tslint:disable */
-      for (let i = 0; i < this.quizResponse.children.length; i++) {
-        if (this.quizResponse.children[i] && this.quizResponse.children[i].children) {
-          const sectionTotalQuestions = this.quizResponse.children[i].children.length
-          totalQuestions = sectionTotalQuestions + totalQuestions
-          // if (this.quizResponse.children[i]['correct']) {
-            let sectionName = '';
-            if(this.quizResponse.children.length === 1) {
-              sectionName = 'Default Section'
-            } else {
-              if(i==0) {
-                sectionName = 'Section A'
-              } else if(i==1) {
-                sectionName = 'Section B'
-              } else if(i==2) {
-                sectionName = 'Section C'
-              } else if(i==3) {
-                sectionName = 'Section D'
-              } else if(i==4) {
-                sectionName = 'Section E'
-              } else if(i==5) {
-                sectionName = 'Section F'
+      if(this.quizResponse.children) {
+        for (let i = 0; i < this.quizResponse.children.length; i++) {
+          if (this.quizResponse.children[i] && this.quizResponse.children[i].children) {
+            const sectionTotalQuestions = this.quizResponse.children[i].children.length
+            totalQuestions = sectionTotalQuestions + totalQuestions
+            // if (this.quizResponse.children[i]['correct']) {
+              let sectionName = '';
+              if(this.quizResponse.children.length === 1) {
+                sectionName = 'Default Section'
+              } else {
+                if(i==0) {
+                  sectionName = 'Section A'
+                } else if(i==1) {
+                  sectionName = 'Section B'
+                } else if(i==2) {
+                  sectionName = 'Section C'
+                } else if(i==3) {
+                  sectionName = 'Section D'
+                } else if(i==4) {
+                  sectionName = 'Section E'
+                } else if(i==5) {
+                  sectionName = 'Section F'
+                }
               }
-            }
 
-            const sectionObj = { subject: `${sectionName}`, yourScore : `${this.quizResponse.children[i]['sectionMarks']} / ${this.quizResponse.children[i]['totalMarks']}`}
-            sectionTableData.push(sectionObj)
-          // }
+              const sectionObj = { subject: `${sectionName}`, yourScore : `${this.quizResponse.children[i]['sectionMarks']} / ${this.quizResponse.children[i]['totalMarks']}`}
+              sectionTableData.push(sectionObj)
+            // }
+          }
         }
       }
       this.summaryTableDataSource = new MatTableDataSource(sectionTableData)
