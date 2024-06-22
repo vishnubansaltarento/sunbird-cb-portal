@@ -76,7 +76,8 @@
         </div>
       </div>
       <div>
-        <div class="flex flex-col stats-label ml-2" *ngIf="questionTYP.FINAL_ASSESSMENT === primaryCategory" [ngClass]="selectedAssessmentCompatibilityLevel >= 6 ? 'ml-5':''">
+        <div class="flex flex-col stats-label ml-2" *ngIf="questionTYP.FINAL_ASSESSMENT === primaryCategory || questionTYP.PRACTICE_RESOURCE === primaryCategory" 
+         [ngClass]="selectedAssessmentCompatibilityLevel >= 6 ? 'ml-5':''">
           <div><img src="assets/icons/final-assessment/timer.svg"></div>
           <div>{{( timeLimit | pipeDurationTransform: 'hms')}}</div>
         </div>

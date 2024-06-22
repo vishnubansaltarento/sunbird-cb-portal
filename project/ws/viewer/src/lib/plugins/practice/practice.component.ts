@@ -1799,7 +1799,6 @@ export class PracticeComponent implements OnInit, OnChanges, OnDestroy {
 
   }
 
-
   showAssessmentPopup(popupData: any) {    
     const dialogRef =  this.dialog.open(FinalAssessmentPopupComponent, {
       data: popupData,
@@ -1959,6 +1958,23 @@ export class PracticeComponent implements OnInit, OnChanges, OnDestroy {
 
   setQuestionStartTime() {
     this.questionStartTime = Date.now()
+  }
+
+  get getTimeZone(): string {
+    if (this.selectedSection) {
+      if (this.timeLeft < (this.selectedSection!.expectedDuration * 0.2)) {
+        return 'countDownTimerReg'
+      } else if (this.timeLeft < (this.selectedSection!.expectedDuration * 0.5)) {
+        return 'countDownTimerOrange'
+      }
+    } else if (this.quizJson.timeLimit) {
+      if (this.timeLeft < (this.quizJson.timeLimit * 0.2)) {
+        return 'countDownTimerReg'
+      } else if (this.timeLeft < (this.quizJson.timeLimit * 0.5)) {
+        return 'countDownTimerOrange'
+      }
+    }
+    return 'countDownTimerGreen' 
   }
 
 }
