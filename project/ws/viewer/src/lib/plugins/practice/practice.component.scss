@@ -492,6 +492,28 @@ $nav-height: 40px;
    
 }
 
+.countDownTimer {
+  width: 102px;
+  align-items: center;
+  justify-content: center;
+}
+
+.timerText {
+  color: #ffffff !important;
+}
+
+.countDownTimerGreen {
+  background-color: #1D8923 !important;
+}
+
+.countDownTimerOrange {
+  background-color: #F3962F !important;
+}
+
+.countDownTimerReg {
+  background-color: #D13924 !important;
+}
+
 .light-blue-small {
   background-color: #eff3f9 !important;
   border: 2px solid #1b4ca1;
