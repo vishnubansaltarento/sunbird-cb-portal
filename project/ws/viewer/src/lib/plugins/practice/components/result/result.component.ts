@@ -206,7 +206,7 @@ export class ResultComponent implements OnInit, OnChanges {
               sectionTableData.push(sectionObj)
             // }
           }
-        } 
+        }
       }
       this.summaryTableDataSource = new MatTableDataSource(sectionTableData)
       this.summaryTableDisplayeColumns = [

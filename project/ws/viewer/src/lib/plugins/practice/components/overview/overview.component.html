@@ -133,8 +133,25 @@
     <!-- <div>
       <h2 class="summary-label">{{ 'practiceoverview.summary' | translate }}</h2>
     </div> -->
+    <div class="flex justify-end gap-4 mt-3">
+      <ng-container *ngIf="currentPage !== 0">
+        <button (click)="previousPage()" mat-button class="flex gap-2 justify-center items-center blue-outline">
+          <mat-icon class="navigation-icons">navigate_before</mat-icon>
+          <span class="ml-1">Previous</span>
+        </button>
+      </ng-container>
+      <ng-container *ngIf="currentPage + 1 < instructionAssessment?.length">
+        <button (click)="nextPage()" mat-button class="flex gap-2 justify-center items-center blue-outline">
+          <span>Next</span>
+          <mat-icon class="navigation-icons">navigate_next</mat-icon>
+        </button>
+      </ng-container>
+    </div>
     <div class="summary-detail mt-5">
-      <p [innerHtml]="instructionAssessment"></p>
+      <!-- <p [innerHtml]="instructionAssessment"></p> -->
+      <ng-container *ngIf="instructionAssessment && instructionAssessment[currentPage]">
+        <div [innerHTML]="instructionAssessment[currentPage]"></div>
+      </ng-container>
     </div>
     <div class="consent-checkbox">
       <mat-checkbox [disableRipple]="true" (change)="startTestEnable($event)">I have read and understood all the instructions. I understand that using unfair means of any sort for any advantage will lead to immediate disqualification. The decision of <b>iGOTkarmayogi.gov.in</b>  will be final in these matters.</mat-checkbox>
