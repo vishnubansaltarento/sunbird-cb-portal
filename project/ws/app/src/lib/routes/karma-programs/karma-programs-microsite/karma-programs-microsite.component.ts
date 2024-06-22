@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core'
 import { ActivatedRoute } from '@angular/router'
 import { CommonMethodsService } from '@sunbird-cb/consumption'
 import { KarmaProgramsService } from '../service/karma-programs.service'
-import { EventService, WsEvents, MultilingualTranslationsService } from '@sunbird-cb/utils-v2'
+import { EventService, WsEvents, MultilingualTranslationsService, ConfigurationsService } from '@sunbird-cb/utils-v2'
 import { TranslateService } from '@ngx-translate/core'
 
 @Component({
@@ -33,6 +33,7 @@ export class KarmaProgramsMicrositeComponent implements OnInit {
               private translate: TranslateService,
               private langtranslations: MultilingualTranslationsService,
               public eventSvc: EventService,
+              private configSvc: ConfigurationsService,
               public commonSvc: CommonMethodsService) {
                 this.langtranslations.languageSelectedObservable.subscribe(() => {
                   if (localStorage.getItem('websiteLanguage')) {
@@ -77,8 +78,21 @@ export class KarmaProgramsMicrositeComponent implements OnInit {
       const response = await this.fetchFromSearchV6(request)
       if (response && response.results) {
         if (response.results.result.content) {
-         this.contentDataList = this.commonSvc.transformContentsToWidgets(response.results.result.content, strip)
-         this.originalContentlist = response.results.result.content
+          let contentList = []
+          if (this.configSvc && this.configSvc.unMappedUser &&
+               this.configSvc.unMappedUser.profileDetails &&
+               this.configSvc.unMappedUser.profileDetails.verifiedKarmayogi) {
+          contentList = response.results.result.content
+        } else {
+          contentList = response.results.result.content.filter((ele: any) => {
+            if (ele.secureSettings) {
+              return ele.secureSettings && ele.secureSettings.isVerifiedKarmayogi === 'No'
+            }
+            return ele
+          })
+        }
+         this.contentDataList = this.commonSvc.transformContentsToWidgets(contentList, strip)
+         this.originalContentlist = contentList
         }
         this.loadContentSearch = false
       }
