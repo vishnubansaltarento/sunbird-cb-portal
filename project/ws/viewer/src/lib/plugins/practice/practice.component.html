@@ -1205,37 +1205,22 @@
                     </p>
                   </div>
                 </div>
-                <div class="timer" *ngIf="timeLeft">
-                  <mat-chip-list><mat-chip class="light-blue"><span class="chip-text">
+                <div *ngIf="timeLeft">
+                  <mat-chip-list>
+                    <mat-chip [ngClass]="getTimeZone" class="countDownTimer">
+                      <span class="chip-text">
                         <div *ngIf="timeLeft" class="flex flex-1 flex-center">
-                          <img src="assets/icons/final-assessment/timer.svg">
+                          <img class="timerText" src="assets/icons/final-assessment/timer_white.svg">
                           &nbsp;&nbsp;
-                          <ng-container *ngIf="quizJson.timeLimit >= 3600">
-                            <div *ngIf="timeLeft > 120">
-                              <span class="time-title ws-mat-default-text"> {{ timeLeft | pipeDurationTransform: 'hms2H'
-                                }}</span>
-                            </div>
-                            <div *ngIf="timeLeft <= 120" class="ws-mat-red-text">
-                              <span class="time-title ws-mat-red-text"> {{ timeLeft | pipeDurationTransform: 'hms2H'
-                                }}</span>
-                            </div>
-                          </ng-container>
-                          <ng-container *ngIf="quizJson.timeLimit < 3600">
-                            <div *ngIf="timeLeft > 120">
-                              <span class="time-title ws-mat-default-text"> {{ timeLeft | pipeDurationTransform: 'hms2M'
-                                }}</span>
-                            </div>
-                            <div *ngIf="timeLeft <= 120" class="ws-mat-red-text">
-                              <span class="time-title ws-mat-red-text"> {{ timeLeft | pipeDurationTransform: 'hms2M'
-                                }}</span>
-                            </div>
-                          </ng-container>
+                            <span class="timerText time-title flex align-center"> {{ timeLeft | pipeDurationTransform: 'hms2H'
+                              }}</span>
                           <div *ngIf="isSubmitted" class="margin-left-xs mat-body-strong" i18n>
-                            <span class="time-title ws-mat-default-text"> (Submitted)</span>
+                            <span class="timerText time-title flex align-center"> (Submitted)</span>
                           </div>
                         </div>
                       </span>
-                    </mat-chip></mat-chip-list>
+                    </mat-chip>
+                  </mat-chip-list>
                 </div>
               </div>
               <div class="mb-24 mt-4">
@@ -1765,40 +1750,22 @@
                   </div>
                 </div>
 
-                <div class="timer" *ngIf="timeLeft">
-                  <mat-chip-list><mat-chip class="light-blue"><span class="chip-text">
+                <div *ngIf="timeLeft">
+                  <mat-chip-list>
+                    <mat-chip [ngClass]="getTimeZone" class="countDownTimer">
+                      <span class="chip-text">
                         <div *ngIf="timeLeft" class="flex flex-1 flex-center">
-                          <img src="assets/icons/final-assessment/timer.svg">
+                          <img class="timerText" src="assets/icons/final-assessment/timer_white.svg">
                           &nbsp;&nbsp;
-
-                          <ng-container *ngIf="quizJson.timeLimit >= 3600">
-
-                            <div *ngIf="timeLeft > 120">
-                              <span class="time-title ws-mat-default-text"> {{ timeLeft | pipeDurationTransform: 'hms2H'
-                                }}</span>
-                            </div>
-                            <div *ngIf="timeLeft <= 120" class="ws-mat-red-text">
-                              <span class="time-title ws-mat-red-text"> {{ timeLeft | pipeDurationTransform: 'hms2H'
-                                }}</span>
-                            </div>
-                          </ng-container>
-                          <ng-container *ngIf="quizJson.timeLimit < 3600">
-                            <div *ngIf="timeLeft > 120">
-                              <span class="time-title ws-mat-default-text"> {{ timeLeft | pipeDurationTransform: 'hms2M'
-                                }}</span>
-                            </div>
-                            <div *ngIf="timeLeft <= 120" class="ws-mat-red-text">
-                              <span class="time-title ws-mat-red-text"> {{ timeLeft | pipeDurationTransform: 'hms2M'
-                                }}</span>
-                            </div>
-                          </ng-container>
-
+                            <span class="timerText time-title flex align-center"> {{ timeLeft | pipeDurationTransform: 'hms2H'
+                              }}</span>
                           <div *ngIf="isSubmitted" class="margin-left-xs mat-body-strong" i18n>
-                            <span class="time-title ws-mat-default-text"> (Submitted)</span>
+                            <span class="timerText time-title flex align-center"> (Submitted)</span>
                           </div>
                         </div>
                       </span>
-                    </mat-chip></mat-chip-list>
+                    </mat-chip>
+                  </mat-chip-list>
                 </div>
               </div>
               <div class="mb-24 mt-4">
