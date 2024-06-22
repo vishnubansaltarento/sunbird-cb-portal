@@ -332,14 +332,17 @@
                   </ng-container>
               </ng-container>
       
-              <tr class="mat-row" *matNoDataRow>
-                  <span class="mat-cell" colspan="10">No data found</span>
-              </tr>
-            
               <tr mat-header-row *matHeaderRowDef="getFinalColumns(summaryTableDisplayeColumns)"></tr>
             
               <tr mat-row *matRowDef="let row; columns: getFinalColumns(summaryTableDisplayeColumns)"></tr>
           </table>
+          <ng-container *ngIf="summaryTableDataSource.length === 0">
+            <table class="w-full">
+              <tr>
+                <td class="flex justify-center mt-2">No record found</td>
+              </tr>
+            </table>
+          </ng-container>
         </div>
         <div class="header-text flex flex-col" *ngIf="quizResponse.children.length > 1">
           Competitive Analysis
@@ -397,14 +400,17 @@
                   </ng-container>
               </ng-container>
       
-              <tr class="mat-row" *matNoDataRow>
-                  <span class="mat-cell" colspan="10">No data found</span>
-              </tr>
-            
               <tr mat-header-row *matHeaderRowDef="getFinalColumns(summaryTableDisplayeColumns)"></tr>
             
               <tr mat-row *matRowDef="let row; columns: getFinalColumns(summaryTableDisplayeColumns)"></tr>
           </table>
+          <ng-container *ngIf="summaryTableDataSource.length === 0">
+            <table class="w-full">
+              <tr>
+                <td class="flex justify-center mt-2">No record found</td>
+              </tr>
+            </table>
+          </ng-container>
         </div>
       
       </div>
@@ -493,15 +499,18 @@
                       </td>
                   </ng-container>
               </ng-container>
-    
-              <tr class="mat-row" *matNoDataRow>
-                  <span class="mat-cell" colspan="10">No data found</span>
-              </tr>
             
               <tr mat-header-row *matHeaderRowDef="getFinalColumns(questionStatuTableColumns)"></tr>
             
               <tr mat-row *matRowDef="let row; columns: getFinalColumns(questionStatuTableColumns)"></tr>
           </table>
+          <ng-container *ngIf="questionStatuTableDataSource.length === 0">
+            <table class="w-full">
+              <tr>
+                <td class="flex justify-center mt-2">No record found</td>
+              </tr>
+            </table>
+          </ng-container>
         </div>
       </div>      
       </div>

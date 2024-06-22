@@ -447,17 +447,9 @@ export class ResultComponent implements OnInit, OnChanges {
         }
       }
         /* tslint:disable */
-      for (let j = 0; j < quizResponse.children.length; j++) {
-        if (resultType === 'all') {
-          const obj: any = {
-            question: quizResponse.children[j]['question'],
-            status: quizResponse.children[j]['result'],
-            questionTagg: quizResponse.children[j]['questionLevel'],
-            timeSpent: this.millisecondsToHMS(quizResponse.children[j]['timeSpent']),
-          }
-          this.questionStatuTableData.push(obj)
-        } else if (resultType === 'correct') {
-          if (quizResponse.children[j]['result'] === 'correct') {
+      if(quizResponse && quizResponse.children) {
+        for (let j = 0; j < quizResponse.children.length; j++) {
+          if (resultType === 'all') {
             const obj: any = {
               question: quizResponse.children[j]['question'],
               status: quizResponse.children[j]['result'],
@@ -465,26 +457,36 @@ export class ResultComponent implements OnInit, OnChanges {
               timeSpent: this.millisecondsToHMS(quizResponse.children[j]['timeSpent']),
             }
             this.questionStatuTableData.push(obj)
-          }
-        } else if (resultType === 'wrong') {
-          if (quizResponse.children[j]['result'] === 'incorrect') {
-            const obj: any = {
-              question: quizResponse.children[j]['question'],
-              status: quizResponse.children[j]['result'],
-              questionTagg: quizResponse.children[j]['questionLevel'],
-              timeSpent: this.millisecondsToHMS(quizResponse.children[j]['timeSpent']),
+          } else if (resultType === 'correct') {
+            if (quizResponse.children[j]['result'] === 'correct') {
+              const obj: any = {
+                question: quizResponse.children[j]['question'],
+                status: quizResponse.children[j]['result'],
+                questionTagg: quizResponse.children[j]['questionLevel'],
+                timeSpent: this.millisecondsToHMS(quizResponse.children[j]['timeSpent']),
+              }
+              this.questionStatuTableData.push(obj)
             }
-            this.questionStatuTableData.push(obj)
-          }
-        }  else if (resultType === 'notAnswered') {
-          if (quizResponse.children[j]['result'] === 'blank') {
-            const obj: any = {
-              question: quizResponse.children[j]['question'],
-              status: quizResponse.children[j]['result'],
-              questionTagg: quizResponse.children[j]['questionLevel'],
-              timeSpent: this.millisecondsToHMS(quizResponse.children[j]['timeSpent']),
+          } else if (resultType === 'wrong') {
+            if (quizResponse.children[j]['result'] === 'incorrect') {
+              const obj: any = {
+                question: quizResponse.children[j]['question'],
+                status: quizResponse.children[j]['result'],
+                questionTagg: quizResponse.children[j]['questionLevel'],
+                timeSpent: this.millisecondsToHMS(quizResponse.children[j]['timeSpent']),
+              }
+              this.questionStatuTableData.push(obj)
             }
-            this.questionStatuTableData.push(obj)
+          }  else if (resultType === 'notAnswered') {
+            if (quizResponse.children[j]['result'] === 'blank') {
+              const obj: any = {
+                question: quizResponse.children[j]['question'],
+                status: quizResponse.children[j]['result'],
+                questionTagg: quizResponse.children[j]['questionLevel'],
+                timeSpent: this.millisecondsToHMS(quizResponse.children[j]['timeSpent']),
+              }
+              this.questionStatuTableData.push(obj)
+            }
           }
         }
       }
