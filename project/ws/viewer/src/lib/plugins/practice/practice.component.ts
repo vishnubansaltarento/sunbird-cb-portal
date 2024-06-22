@@ -190,7 +190,7 @@ export class PracticeComponent implements OnInit, OnChanges, OnDestroy {
     this.isSubmitted = false
     this.markedQuestions = new Set([])
     this.questionAnswerHash = {}
-    this.quizSvc.mtfSrc.next({})
+    // this.quizSvc.mtfSrc.next({})
     // quizSvc.questionAnswerHash.subscribe(qaHash => {
     //   this.questionAnswerHash = qaHash
     // })
@@ -303,6 +303,9 @@ export class PracticeComponent implements OnInit, OnChanges, OnDestroy {
   getSections() {
     // this.identifier
     this.questionSectionTableData = []
+    this.markedQuestions = new Set([])
+    this.questionAnswerHash = {}
+    this.questionVisitedData = []
     this.fetchingSectionsStatus = 'fetching'
     if (this.quizSvc.paperSections && this.quizSvc.paperSections.value
       && _.get(this.quizSvc.paperSections, 'value.questionSet.children')) {
@@ -918,7 +921,16 @@ export class PracticeComponent implements OnInit, OnChanges, OnDestroy {
     return { next, full: fullAttempted }
   }
 
-  fillSelectedItems(question: NSPractice.IQuestion, optionId: string) {
+  fillSelectedItems(question: NSPractice.IQuestion, response: any) {
+    let optionId: any
+    let checked: any
+    if (this.assessmentType === 'optionalWeightage')  {
+      optionId = response['index']
+      checked = response['status']
+    } else {
+       optionId = response
+    }
+
     if (typeof (optionId) === 'string') {
       this.raiseTelemetry('mark', optionId, 'click')
     } if (this.viewState === 'answer') {
@@ -943,7 +955,20 @@ export class PracticeComponent implements OnInit, OnChanges, OnDestroy {
         delete this.questionAnswerHash[question.questionId]
       }
     } else {
-      this.questionAnswerHash[question.questionId] = [optionId]
+      if (this.assessmentType === 'optionalWeightage') {
+        if (!checked) {
+          if (this.questionAnswerHash[question.questionId]) {
+            // const questionIndex = this.questionAnswerHash[question.questionId].indexOf(optionId)
+            // this.questionAnswerHash[question.questionId].splice(questionIndex, 1)
+            delete this.questionAnswerHash[question.questionId]
+          }
+        } else {
+          this.questionAnswerHash[question.questionId] = [optionId]
+        }
+      } else {
+        this.questionAnswerHash[question.questionId] = [optionId]
+      }
+
     }
     // tslint:disable-next-line
     if (question.questionType && question.questionType === 'mtf') {
@@ -1777,7 +1802,6 @@ export class PracticeComponent implements OnInit, OnChanges, OnDestroy {
     }
 
     if (this.assessmentType === 'optionalWeightage') {
-      console.log('this.generateRequest,', this.generateRequest)
       if(this.secQuestions.length !== Object.keys(this.questionAnswerHash).length) {        
           this.openSnackbar('Please attempt the current question to move on next question.')        
       } else {

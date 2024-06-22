@@ -1148,7 +1148,7 @@
               [questionNumber]="currentQuestionIndex + 1" [total]="secQuestions.length" [viewState]="viewState"
               [question]="current_Question" [itemSelectedList]="questionAnswerHash[(current_Question?.questionId)]"
               [primaryCategory]="primaryCategory" [ePrimaryCategory]="ePrimaryCategory" [totalQCount]="totalQCount"
-              (itemSelected)="fillSelectedItems(current_Question, $event)" [showAnswer]="showAnswer"
+              (itemSelected)="fillSelectedItems(current_Question, $event)" [showAnswer]="showAnswer"              
               [currentQuestion]="current_Question" [coursePrimaryCategory]="coursePrimaryCategory"
               [showOnlyQuestion]="true" [showMarkForReview]="false"
               [assessmentType]="assessmentType" [selectedAssessmentCompatibilityLevel]="selectedAssessmentCompatibilityLevel">
@@ -1178,7 +1178,8 @@
                 (itemSelected)="fillSelectedItems(current_Question, $event)" [showAnswer]="showAnswer"
                 [currentQuestion]="current_Question" [coursePrimaryCategory]="coursePrimaryCategory"
                 [showOnlyQuestion]="false" [selectedAssessmentCompatibilityLevel]="selectedAssessmentCompatibilityLevel"
-                [questionAnswerHash]="questionAnswerHash">
+                [questionAnswerHash]="questionAnswerHash"
+                [assessmentType]="assessmentType">
               </viewer-question>
             </ng-container>
             <div class="flex flex-1">
@@ -1342,6 +1343,7 @@
               [questionAnswerHash]="questionAnswerHash"
               (getNextQuestion)="getNextQuestion(currentQuestionIndex + 1)"
               (clearQuestion)="clearQuestion(current_Question)"
+              [assessmentType]="assessmentType" 
               [selectedAssessmentCompatibilityLevel]="selectedAssessmentCompatibilityLevel">
             </viewer-question>
           </div>
@@ -1898,6 +1900,7 @@
               [coursePrimaryCategory]="coursePrimaryCategory"
               [mobileQuestionSetExpand]="!expandFalse"
               [questionAnswerHash]="questionAnswerHash"
+              [assessmentType]="assessmentType" 
               [selectedAssessmentCompatibilityLevel]="selectedAssessmentCompatibilityLevel">
             </viewer-question>
           </ng-container>
@@ -1932,6 +1935,7 @@
               [showOnlyQuestion]="false" [showMarkForReview]="true"
               (getNextQuestion)="getNextQuestion(currentQuestionIndex + 1)"
               (clearQuestion)="clearQuestion(current_Question)"
+              [assessmentType]="assessmentType" 
               [selectedAssessmentCompatibilityLevel]="selectedAssessmentCompatibilityLevel">
             </viewer-question>
           </div>
