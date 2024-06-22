@@ -82,6 +82,8 @@ export namespace NSPractice {
     passPercent: number
     inCorrect: number
     pass: boolean,
+    totalMarks: number,
+    sectionMarks: number,
     children: ISectionQuestion[]
   }
 
@@ -94,6 +96,7 @@ export namespace NSPractice {
     question: string
     result: string,
     questionLevel: string
+    timeSpent: string
   }
   export interface IQuizSubmitResponseV2 {
     identifier: string
@@ -109,6 +112,7 @@ export namespace NSPractice {
     incorrect: number
     pass: boolean
     isInProgress?: boolean
+    timeTakenForAssessment: string
   }
 
   export interface IQPaper {
@@ -301,6 +305,7 @@ export namespace NSPractice {
     objectType: 'Question'
     qType: string,
     timeTaken: string,
+    timeSpent: string,
     editorState: {
       options?: any[]
       selectedAnswer?: string | null

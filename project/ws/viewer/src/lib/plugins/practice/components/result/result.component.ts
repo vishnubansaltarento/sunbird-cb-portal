@@ -79,13 +79,13 @@ export class ResultComponent implements OnInit, OnChanges {
       summary: '',
       summaryType: 'Score',
     },
-    // {
-    //   imgType: 'img',
-    //   imgPath: '/assets/icons/final-assessment/nest_clock_farsight_analog.svg',
-    //   class: 'icon-bg-lite-green',
-    //   summary: '0:9:8',
-    //   summaryType: 'Time Taken',
-    // },
+    {
+      imgType: 'img',
+      imgPath: '/assets/icons/final-assessment/nest_clock_farsight_analog.svg',
+      class: 'icon-bg-lite-green',
+      summary: '0:9:8',
+      summaryType: 'Time Taken',
+    },
     {
       imgType: 'img',
       imgPath: '/assets/icons/final-assessment/assignment.svg',
@@ -138,6 +138,13 @@ export class ResultComponent implements OnInit, OnChanges {
       summary: '69',
       summaryType: 'Worning',
     },
+    {
+      imgType: 'img',
+      imgPath: '/assets/icons/final-assessment/target.svg',
+      class: 'icon-bg-dark-green',
+      summary: '',
+      summaryType: 'Accuracy',
+    },
   ]
 
   questionStatuTableDataSource: any = new MatTableDataSource([])
@@ -145,10 +152,11 @@ export class ResultComponent implements OnInit, OnChanges {
     { header: 'Questions', key: 'question' },
     { header: 'Status', key: 'status' },
     { header: 'Question Tagging', key: 'questionTagg' },
-    { header: 'Time Taken', key: 'timeTaken' },
+    { header: 'Time Taken', key: 'timeSpent' },
   ]
 
   sectionsList: any = []
+  selectedSection = 'All'
 
   constructor(private langtranslations: MultilingualTranslationsService) {
 
@@ -167,9 +175,12 @@ export class ResultComponent implements OnInit, OnChanges {
     if (this.quizResponse) {
       this.quizResponseClone = _.clone(this.quizResponse)
       const sectionTableData = []
+      let totalQuestions = 0
         /* tslint:disable */
       for (let i = 0; i < this.quizResponse.children.length; i++) {
         if (this.quizResponse.children[i]) {
+          const sectionTotalQuestions = this.quizResponse.children[i].children.length
+          totalQuestions = sectionTotalQuestions + totalQuestions
           // if (this.quizResponse.children[i]['correct']) {
             let sectionName = '';
             if(this.quizResponse.children.length === 1) {
@@ -189,8 +200,8 @@ export class ResultComponent implements OnInit, OnChanges {
                 sectionName = 'Section F'
               }
             }
-            
-            const sectionObj = { subject: `${sectionName}`, yourScore : ((this.quizResponse.children[i]['correct']) / Number(this.quizResponse.children[i]['total']))}
+
+            const sectionObj = { subject: `${sectionName}`, yourScore : `${this.quizResponse.children[i]['sectionMarks']} / ${this.quizResponse.children[i]['totalMarks']}`}
             sectionTableData.push(sectionObj)
           // }
         }
@@ -219,72 +230,90 @@ export class ResultComponent implements OnInit, OnChanges {
         // { header: 'Topper Score', key: 'topperScore' },
       ]
 
+      if(this.questionTYP.PRACTICE_RESOURCE === this.quizCategory) {
+        if(this.quizResponse.correct === undefined) {
+          this.quizResponse.correct = 0
+          this.quizResponse.incorrect = 0
+          this.quizResponse.children.forEach((section: any) => {
+            this.quizResponse.correct = section.correct + this.quizResponse.correct
+            this.quizResponse.incorrect = section.incorrect + this.quizResponse.incorrect
+          })
+        }
+      }
+
       this.overAllSummary = [
         {
           imgType: 'icon',
           imgPath: 'speed',
           class: 'icon-bg-blue',
-          summary: `${Number(this.percentage)}/100`,
+          summary: `${Math.round(Number(this.percentage))}/100`,
           summaryType: 'Score',
         },
-        // {
-        //   imgType: 'img',
-        //   imgPath: '/assets/icons/final-assessment/nest_clock_farsight_analog.svg',
-        //   class: 'icon-bg-lite-green',
-        //   summary: '0:9:8',
-        //   summaryType: 'Time Taken',
-        // },
+        {
+          imgType: 'img',
+          imgPath: '/assets/icons/final-assessment/nest_clock_farsight_analog.svg',
+          class: 'icon-bg-lite-green',
+          summary: this.millisecondsToHMS(this.quizResponse['timeTakenForAssessment']),
+          summaryType: 'Time Taken',
+        },
         {
           imgType: 'img',
           imgPath: '/assets/icons/final-assessment/assignment.svg',
           class: 'icon-bg-pink',
-          summary: `${(this.quizResponse.correct + this.quizResponse.incorrect)}/${this.quizResponse.total}`,
+          summary: `${(this.quizResponse.correct + this.quizResponse.incorrect)}/${totalQuestions}`,
           summaryType: 'Attempted',
         },
         {
           imgType: 'icon',
           imgPath: 'check_circle_outline',
           class: 'icon-bg-yellow',
-          summary: `${this.quizResponse.correct}/${this.quizResponse.total}`,
+          summary: `${this.quizResponse.correct}/${totalQuestions}`,
           summaryType: 'Correct',
         },
         {
           imgType: 'img',
           imgPath: '/assets/icons/final-assessment/target.svg',
           class: 'icon-bg-dark-green',
-          summary: `${(Number(this.quizResponse.correct / this.quizResponse.total) * 100)}%`,
+          summary: `${Math.round(Number(this.quizResponse.overallResult))}%`,
           summaryType: 'Accuracy',
         },
       ]
 
       this.scoreSummary = [
-        // {
-        //   imgType: 'img',
-        //   imgPath: '/assets/icons/final-assessment/nest_clock_farsight_analog.svg',
-        //   class: 'icon-bg-lite-green',
-        //   summary: '0:9:8',
-        //   summaryType: 'Time Taken',
-        // },
+        {
+          imgType: 'img',
+          imgPath: '/assets/icons/final-assessment/nest_clock_farsight_analog.svg',
+          class: 'icon-bg-lite-green',
+          summary: this.millisecondsToHMS(this.quizResponse['timeTakenForAssessment']),
+          summaryType: 'Time Taken',
+        },
         {
           imgType: 'img',
           imgPath: '/assets/icons/final-assessment/assignment.svg',
           class: 'icon-bg-pink',
-          summary: `${(this.quizResponse.correct + this.quizResponse.incorrect)}/${this.quizResponse.total}`,
+          summary: `${(this.quizResponse.correct + this.quizResponse.incorrect)}/${totalQuestions}`,
           summaryType: 'Attempted',
         },
         {
           imgType: 'icon',
           imgPath: 'check_circle_outline',
           class: 'icon-bg-yellow',
-          summary: `${this.quizResponse.correct}/${this.quizResponse.total}`,
+          summary: `${this.quizResponse.correct}/${totalQuestions}`,
           summaryType: 'Correct',
         },
         {
           imgType: 'icon',
           imgPath: 'cancel',
           class: 'icon-bg-red',
-          summary: this.quizResponse.incorrect.toString(),
+          summary: this.quizResponse.incorrect ? this.quizResponse.incorrect.toString() : '0',
           summaryType: 'Wrong',
+        },
+        {
+          imgType: 'img',
+          imgPath: '/assets/icons/final-assessment/target.svg',
+          class: 'icon-bg-dark-green',
+          summary: `${Math.round(Number(this.quizResponse.overallResult))}%`,
+          summaryType: 'Accuracy',
         },
       ]
 
@@ -293,8 +322,8 @@ export class ResultComponent implements OnInit, OnChanges {
       this.questionStatuTableColumns = [
         { header: 'Questions', key: 'question' },
         { header: 'Status', key: 'status' },
-        // { header: 'Question Tagging', key: 'questionTagg' },
-        // { header: 'Time Taken', key: 'timeTaken' },
+        { header: 'Question Tagging', key: 'questionTagg' },
+        { header: 'Time Taken', key: 'timeSpent' },
       ]
         /* tslint:disable */
       for (let i = 0; i < this.quizResponse.children.length; i++) {
@@ -327,7 +356,7 @@ export class ResultComponent implements OnInit, OnChanges {
               question: this.quizResponse.children[i].children[j]['question'],
               status: this.quizResponse.children[i].children[j]['result'],
               questionTagg: this.quizResponse.children[i].children[j]['questionLevel'],
-              timeTaken: '00:00:09',
+              timeSpent: this.millisecondsToHMS(this.quizResponse.children[i].children[j]['timeSpent']),
             }
             this.questionStatuTableData.push(objChildren)
           }
@@ -369,7 +398,7 @@ export class ResultComponent implements OnInit, OnChanges {
                   question: this.quizResponse.children[i].children[j]['question'],
                   status: this.quizResponse.children[i].children[j]['result'],
                   questionTagg: this.quizResponse.children[i].children[j]['questionLevel'],
-                  timeTaken: '00:00:09',
+                  timeSpent: this.millisecondsToHMS(this.quizResponse.children[i].children[j]['timeSpent']),
                 }
                 this.questionStatuTableData.push(obj)
               } else if (resultType === 'correct') {
@@ -378,7 +407,7 @@ export class ResultComponent implements OnInit, OnChanges {
                     question: this.quizResponse.children[i].children[j]['question'],
                     status: this.quizResponse.children[i].children[j]['result'],
                     questionTagg: this.quizResponse.children[i].children[j]['questionLevel'],
-                    timeTaken: '00:00:09',
+                    timeSpent: this.millisecondsToHMS(this.quizResponse.children[i].children[j]['timeSpent']),
                   }
                   this.questionStatuTableData.push(obj)
                 }
@@ -388,7 +417,7 @@ export class ResultComponent implements OnInit, OnChanges {
                     question: this.quizResponse.children[i].children[j]['question'],
                     status: this.quizResponse.children[i].children[j]['result'],
                     questionTagg: this.quizResponse.children[i].children[j]['questionLevel'],
-                    timeTaken: '00:00:09',
+                    timeSpent: this.millisecondsToHMS(this.quizResponse.children[i].children[j]['timeSpent']),
                   }
                   this.questionStatuTableData.push(obj)
                 }
@@ -398,7 +427,7 @@ export class ResultComponent implements OnInit, OnChanges {
                     question: this.quizResponse.children[i].children[j]['question'],
                     status: this.quizResponse.children[i].children[j]['result'],
                     questionTagg: this.quizResponse.children[i].children[j]['questionLevel'],
-                    timeTaken: '00:00:09',
+                    timeSpent: this.millisecondsToHMS(this.quizResponse.children[i].children[j]['timeSpent']),
                   }
                   this.questionStatuTableData.push(obj)
                 }
@@ -424,7 +453,7 @@ export class ResultComponent implements OnInit, OnChanges {
             question: quizResponse.children[j]['question'],
             status: quizResponse.children[j]['result'],
             questionTagg: quizResponse.children[j]['questionLevel'],
-            timeTaken: '00:00:09',
+            timeSpent: this.millisecondsToHMS(quizResponse.children[j]['timeSpent']),
           }
           this.questionStatuTableData.push(obj)
         } else if (resultType === 'correct') {
@@ -433,7 +462,7 @@ export class ResultComponent implements OnInit, OnChanges {
               question: quizResponse.children[j]['question'],
               status: quizResponse.children[j]['result'],
               questionTagg: quizResponse.children[j]['questionLevel'],
-              timeTaken: '00:00:09',
+              timeSpent: this.millisecondsToHMS(quizResponse.children[j]['timeSpent']),
             }
             this.questionStatuTableData.push(obj)
           }
@@ -443,7 +472,7 @@ export class ResultComponent implements OnInit, OnChanges {
               question: quizResponse.children[j]['question'],
               status: quizResponse.children[j]['result'],
               questionTagg: quizResponse.children[j]['questionLevel'],
-              timeTaken: '00:00:09',
+              timeSpent: this.millisecondsToHMS(quizResponse.children[j]['timeSpent']),
             }
             this.questionStatuTableData.push(obj)
           }
@@ -453,7 +482,7 @@ export class ResultComponent implements OnInit, OnChanges {
               question: quizResponse.children[j]['question'],
               status: quizResponse.children[j]['result'],
               questionTagg: quizResponse.children[j]['questionLevel'],
-              timeTaken: '00:00:09',
+              timeSpent: this.millisecondsToHMS(quizResponse.children[j]['timeSpent']),
             }
             this.questionStatuTableData.push(obj)
           }
@@ -507,5 +536,18 @@ export class ResultComponent implements OnInit, OnChanges {
   getFinalColumns(displayedColumns: any): string[] {
     const displayColumns = _.map(displayedColumns, c => c.key)
     return displayColumns
+  }
+
+  millisecondsToHMS(milleSeconds: any): string {
+    const ms = Number(milleSeconds)
+    const seconds: number = Math.floor((ms / 1000) % 60);
+    const minutes: number = Math.floor((ms / (1000 * 60)) % 60);
+    const hours: number = Math.floor((ms / (1000 * 60 * 60)) % 24);
+
+    const hoursStr: string = (hours < 10) ? `0${hours}` : `${hours}`;
+    const minutesStr: string = (minutes < 10) ? `0${minutes}` : `${minutes}`;
+    const secondsStr: string = (seconds < 10) ? `0${seconds}` : `${seconds}`;
+
+    return `${hoursStr}:${minutesStr}:${secondsStr}`;
   }
 }
