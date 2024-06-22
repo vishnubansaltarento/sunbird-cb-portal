@@ -8,7 +8,7 @@
     'incorrect-answer-sca': showAns && !option?.isCorrect && isSelected(option),
     'ws-mat-accent-border': !(btn.checked),
     'ws-mat-accent-border-active ': (btn.checked)
-  }" [value]="option.optionId" (change)="updateParent(option.optionId)" [checked]="isSelected(option)">
+  }" [value]="option.optionId" (change)="updateParent(option.optionId, btn.checked)" [checked]="isSelected(option)">
             <span class="wrap-mat-radio-label">
                 <span class="mat-body-2 font-700" *ngIf="showAns && !option?.isCorrect && isSelected(option)" [innerHtml]="getSanitizeString(option?.text)">
                     

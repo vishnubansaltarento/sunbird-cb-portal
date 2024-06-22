@@ -42,6 +42,7 @@ export class SingleChoiseQuesComponent implements OnInit, OnDestroy {
     }
     @Input() itemSelectedList: string[] = []
     @Input() primaryCategory = NsContent.EPrimaryCategory.PRACTICE_RESOURCE
+    @Input() assessmentType = ''
     @Output() update = new EventEmitter<string | Object>()
     localQuestion: string = this.question.question
     shCorrectAnsSubscription: Subscription | null = null
@@ -87,8 +88,12 @@ export class SingleChoiseQuesComponent implements OnInit, OnDestroy {
         // return isSelected
         return this.itemSelectedList && this.itemSelectedList.indexOf(option.optionId) !== -1
     }
-    updateParent($event: any) {
-        this.update.emit($event)
+    updateParent($event: any, checked: any) {
+        if (this.assessmentType === 'optionalWeightage') {
+            this.update.emit({ 'index': $event, 'status': checked })
+        } else {
+            this.update.emit($event)
+        }
     }
     // ngOnDestroy(): void {
     //     if (this.subscription) {
