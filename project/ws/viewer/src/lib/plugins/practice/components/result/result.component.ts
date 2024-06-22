@@ -178,7 +178,7 @@ export class ResultComponent implements OnInit, OnChanges {
       let totalQuestions = 0
         /* tslint:disable */
       for (let i = 0; i < this.quizResponse.children.length; i++) {
-        if (this.quizResponse.children[i]) {
+        if (this.quizResponse.children[i] && this.quizResponse.children[i].children) {
           const sectionTotalQuestions = this.quizResponse.children[i].children.length
           totalQuestions = sectionTotalQuestions + totalQuestions
           // if (this.quizResponse.children[i]['correct']) {

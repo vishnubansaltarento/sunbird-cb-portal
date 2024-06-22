@@ -190,7 +190,7 @@ export class PracticeComponent implements OnInit, OnChanges, OnDestroy {
     this.isSubmitted = false
     this.markedQuestions = new Set([])
     this.questionAnswerHash = {}
-    this.quizSvc.mtfSrc.next({})
+    // this.quizSvc.mtfSrc.next({})
     // quizSvc.questionAnswerHash.subscribe(qaHash => {
     //   this.questionAnswerHash = qaHash
     // })
@@ -303,7 +303,10 @@ export class PracticeComponent implements OnInit, OnChanges, OnDestroy {
   getSections() {
     // this.identifier
     this.questionSectionTableData = []
-    this.fetchingSectionsStatus = 'fetching'
+    this.markedQuestions = new Set([])
+    this.questionAnswerHash = {}
+    this.questionVisitedData = []
+    this.fetchingSectionsStatus = 'fetching'    
     if (this.quizSvc.paperSections && this.quizSvc.paperSections.value
       && _.get(this.quizSvc.paperSections, 'value.questionSet.children')) {
       this.paperSections = _.get(this.quizSvc.paperSections, 'value.questionSet.children')
