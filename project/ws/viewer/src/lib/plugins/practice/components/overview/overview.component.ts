@@ -136,7 +136,7 @@ export class OverviewComponent implements OnInit, OnChanges, OnDestroy {
   }
 
   nextPage(): void {
-    if (this.currentPage < this.instructionAssessment.length - 1) {
+    if (this.instructionAssessment && (this.currentPage < this.instructionAssessment.length - 1)) {
       this.currentPage = this.currentPage + 1
     }
   }

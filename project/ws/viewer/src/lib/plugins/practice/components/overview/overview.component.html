@@ -140,7 +140,7 @@
           <span class="ml-1">Previous</span>
         </button>
       </ng-container>
-      <ng-container *ngIf="currentPage + 1 < instructionAssessment.length">
+      <ng-container *ngIf="currentPage + 1 < instructionAssessment?.length">
         <button (click)="nextPage()" mat-button class="flex gap-2 justify-center items-center blue-outline">
           <span>Next</span>
           <mat-icon class="navigation-icons">navigate_next</mat-icon>
@@ -149,7 +149,9 @@
     </div>
     <div class="summary-detail mt-5">
       <!-- <p [innerHtml]="instructionAssessment"></p> -->
-      <div [innerHTML]="instructionAssessment[currentPage]"></div>
+      <ng-container *ngIf="instructionAssessment && instructionAssessment[currentPage]">
+        <div [innerHTML]="instructionAssessment[currentPage]"></div>
+      </ng-container>
     </div>
     <div class="consent-checkbox">
       <mat-checkbox [disableRipple]="true" (change)="startTestEnable($event)">I have read and understood all the instructions. I understand that using unfair means of any sort for any advantage will lead to immediate disqualification. The decision of <b>iGOTkarmayogi.gov.in</b>  will be final in these matters.</mat-checkbox>
