@@ -328,43 +328,46 @@ export class ResultComponent implements OnInit, OnChanges {
         { header: 'Time Taken', key: 'timeSpent' },
       ]
         /* tslint:disable */
-      for (let i = 0; i < this.quizResponse.children.length; i++) {
-        let sectionName = '';
-            if(this.quizResponse.children.length === 1) {
-              sectionName = 'Default Section'
-            } else {
-              if(i==0) {
-                sectionName = 'Section A'
-              } else if(i==1) {
-                sectionName = 'Section B'
-              } else if(i==2) {
-                sectionName = 'Section C'
-              } else if(i==3) {
-                sectionName = 'Section D'
-              } else if(i==4) {
-                sectionName = 'Section E'
-              } else if(i==5) {
-                sectionName = 'Section F'
+      if(this.quizResponse && this.quizResponse.children) {
+        for (let i = 0; i < this.quizResponse.children.length; i++) {
+          let sectionName = '';
+              if(this.quizResponse.children.length === 1) {
+                sectionName = 'Default Section'
+              } else {
+                if(i==0) {
+                  sectionName = 'Section A'
+                } else if(i==1) {
+                  sectionName = 'Section B'
+                } else if(i==2) {
+                  sectionName = 'Section C'
+                } else if(i==3) {
+                  sectionName = 'Section D'
+                } else if(i==4) {
+                  sectionName = 'Section E'
+                } else if(i==5) {
+                  sectionName = 'Section F'
+                }
               }
-            }
-        const obj: any = {
-                  sectionName: sectionName,
-                  identifier: this.quizResponse.children[i]['identifier'],
-        }
-          /* tslint:disable */
-        if(this.quizResponse.children[i] && this.quizResponse.children[i].children && this.quizResponse.children[i].children.length) {
-          for (let j = 0; j < this.quizResponse.children[i].children.length; j++) {
-            const objChildren: any = {
-              question: this.quizResponse.children[i].children[j]['question'],
-              status: this.quizResponse.children[i].children[j]['result'],
-              questionTagg: this.quizResponse.children[i].children[j]['questionLevel'],
-              timeSpent: this.millisecondsToHMS(this.quizResponse.children[i].children[j]['timeSpent']),
-            }
-            this.questionStatuTableData.push(objChildren)
+          const obj: any = {
+                    sectionName: sectionName,
+                    identifier: this.quizResponse.children[i]['identifier'],
           }
-        }        
-        this.sectionsList.push(obj)
+            /* tslint:disable */
+          if(this.quizResponse.children[i] && this.quizResponse.children[i].children && this.quizResponse.children[i].children.length) {
+            for (let j = 0; j < this.quizResponse.children[i].children.length; j++) {
+              const objChildren: any = {
+                question: this.quizResponse.children[i].children[j]['question'],
+                status: this.quizResponse.children[i].children[j]['result'],
+                questionTagg: this.quizResponse.children[i].children[j]['questionLevel'],
+                timeSpent: this.millisecondsToHMS(this.quizResponse.children[i].children[j]['timeSpent']),
+              }
+              this.questionStatuTableData.push(objChildren)
+            }
+          }        
+          this.sectionsList.push(obj)
+        }
       }
+      
 
       this.getSectionalData('all', 'all')
       // this.sectionsList = [
@@ -391,7 +394,8 @@ export class ResultComponent implements OnInit, OnChanges {
     this.questionStatuTableData = []
     if (this.selectedSectionId === 'all') {
         /* tslint:disable */
-      for (let i = 0; i < this.quizResponse.children.length; i++) {
+      if(this.quizResponse && this.quizResponse.children) {
+        for (let i = 0; i < this.quizResponse.children.length; i++) {
           /* tslint:disable */
           if(this.quizResponse.children[i] && this.quizResponse.children[i].children && this.quizResponse.children[i].children.length) {
             for (let j = 0; j < this.quizResponse.children[i].children.length; j++) {
@@ -439,15 +443,20 @@ export class ResultComponent implements OnInit, OnChanges {
           }
         
       }
+      }
+      
       this.questionStatuTableDataSource = this.questionStatuTableData
     } else {
         /* tslint:disable */
-      for (let i = 0; i < this.quizResponse.children.length; i++) {
-        if (this.quizResponse.children[i]['identifier'] === this.selectedSectionId) {
-          quizResponse = this.quizResponse.children[i]
-          break
+      if(this.quizResponse && this.quizResponse.children) {
+        for (let i = 0; i < this.quizResponse.children.length; i++) {
+          if (this.quizResponse.children[i]['identifier'] === this.selectedSectionId) {
+            quizResponse = this.quizResponse.children[i]
+            break
+          }
         }
       }
+     
         /* tslint:disable */
       if(quizResponse && quizResponse.children) {
         for (let j = 0; j < quizResponse.children.length; j++) {
