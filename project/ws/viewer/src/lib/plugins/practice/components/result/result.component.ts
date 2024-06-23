@@ -158,6 +158,8 @@ export class ResultComponent implements OnInit, OnChanges {
   sectionsList: any = []
   selectedSection = 'All'
 
+  expandMwebOverView = false
+
   constructor(private langtranslations: MultilingualTranslationsService) {
 
   }
@@ -175,9 +177,9 @@ export class ResultComponent implements OnInit, OnChanges {
     this.sectionsList = [
       {
         sectionName: 'All',
-        identifier: ''
-      }      
-    ];
+        identifier: '',
+      },
+    ]
     if (this.quizResponse) {
       this.quizResponseClone = _.clone(this.quizResponse)
       const sectionTableData = []

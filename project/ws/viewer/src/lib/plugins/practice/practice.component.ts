@@ -814,7 +814,7 @@ export class PracticeComponent implements OnInit, OnChanges, OnDestroy {
       delete this.questionAnswerHash[question.questionId]
       this.quizSvc.questionAnswerHash.next(this.questionAnswerHash)
     }
-    this.quizSvc.clearResponse.next(question.questionId);
+    this.quizSvc.clearResponse.next(question.questionId)
   }
 
   get current_Question(): NSPractice.IQuestionV2 {
