@@ -83,6 +83,11 @@ export class MatchTheFollowingQuesComponent implements OnInit, OnChanges, AfterV
                 this.matchHintDisplay.push(element)
             }
         })
+        this.practiceSvc.clearResponse.subscribe((questionId:any)=>{
+           if(this.question.questionId === questionId) {
+            this.resetMtf()
+           }
+        })
     }
     get numConnections() {
         if (this.jsPlumbInstance) {

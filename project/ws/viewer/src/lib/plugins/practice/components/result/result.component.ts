@@ -172,6 +172,12 @@ export class ResultComponent implements OnInit, OnChanges {
 
   ngOnChanges() {
     // console.log(this.quizResponse, this.quizResponse)
+    this.sectionsList = [
+      {
+        sectionName: 'All',
+        identifier: ''
+      }      
+    ];
     if (this.quizResponse) {
       this.quizResponseClone = _.clone(this.quizResponse)
       const sectionTableData = []
@@ -390,7 +396,8 @@ export class ResultComponent implements OnInit, OnChanges {
 
   getSectionalData(sectionId: string= 'all', resultType: string= 'all') {
     let quizResponse: any = this.quizResponse
-    this.selectedSectionId = sectionId
+    this.selectedSectionId = sectionId ? sectionId : 'all'
+    this.selectedStatus = resultType
     this.questionStatuTableData = []
     if (this.selectedSectionId === 'all') {
         /* tslint:disable */

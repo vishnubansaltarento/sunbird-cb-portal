@@ -35,6 +35,7 @@ export class PracticeService {
   // questionAnswerHashV2:BehaviorSubject<NSPractice.IQAnswer> = new BehaviorSubject<NSPractice.IQAnswer>({})
   displayCorrectAnswer: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false)
   checkAlreadySubmitAssessment = new Subject()
+  clearResponse = new Subject()
   constructor(
     private http: HttpClient,
   ) { }
