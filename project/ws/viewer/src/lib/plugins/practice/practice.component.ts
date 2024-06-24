@@ -278,18 +278,32 @@ export class PracticeComponent implements OnInit, OnChanges, OnDestroy {
     if (this.quizSvc.questionAnswerHash.value) {
       this.questionAnswerHash = this.quizSvc.questionAnswerHash.getValue()
     }
+
     this.coursePrimaryCategory = this.widgetContentService.currentMetaData.primaryCategory
     if (this.widgetContentService.currentMetaData.children && this.widgetContentService.currentMetaData.children.length) {
       this.widgetContentService.currentMetaData.children.map((item: any) => {
-          this.selectedAssessmentCompatibilityLevel = item.compatibilityLevel
-          this.canAttend()
-          if (this.identifier === item.identifier) {
-            // this.instructionAssessment = item.description
-            if (item.identifier) {
-              this.getInstructionAssessmentPagination(item.description)
-            }
-            this.totalAssessemntQuestionsCount = item.maxQuestions
+        const activeResource =  this.findNested(item, 'identifier', this.identifier)
+          // this.selectedAssessmentCompatibilityLevel = item.compatibilityLevel
+          // console.log('item.children', item.children)
+          // console.log('selectedAssessmentCompatibilityLevel', this.selectedAssessmentCompatibilityLevel)
+          // console.log('this.identifier',this.identifier, 'item.identifier', item.identifier)
+          // this.canAttend()
+          // if (this.identifier === item.identifier) {
+          //   // this.instructionAssessment = item.description
+          //   if (item.identifier) {
+          //     this.getInstructionAssessmentPagination(item.description)
+          //   }
+          //   this.totalAssessemntQuestionsCount = item.maxQuestions
+          // }
+          if (activeResource && activeResource.compatibilityLevel) {
+            this.selectedAssessmentCompatibilityLevel = activeResource.compatibilityLevel
           }
+          if (activeResource) {
+            this.totalAssessemntQuestionsCount = activeResource.maxQuestions
+            this.instructionAssessment = activeResource.description
+            this.getInstructionAssessmentPagination(activeResource.description)
+          }
+          this.canAttend()
       })
     }
 
@@ -297,6 +311,30 @@ export class PracticeComponent implements OnInit, OnChanges, OnDestroy {
     // console.log('this.identifier', this.identifier)
   }
 
+  /* tslint:disable */
+  findNested(obj: any, key: any, value: any) {
+
+    // Base case
+    if (obj[key] === value) {
+      return obj
+    }  {
+      let keys = Object.keys(obj) // add this line to iterate over the keys
+
+      for (let i = 0, len = keys.length; i < len; i++) {
+        let k = keys[i] // use this key for iteration, instead of index "i"
+
+        // add "obj[k] &&" to ignore null values
+        if (obj[k] && typeof obj[k] == 'object') {
+          let found: any = this.findNested(obj[k], key, value)
+          if (found) {
+            // If the object was found in the recursive call, bubble it up.
+            return found
+          }
+        }
+      }
+    }
+  }
+  /* tslint:enable */
   getInstructionAssessmentPagination(htmlData: any) {
     const totalCharacters = htmlData.length
     const totalPages = Math.ceil(totalCharacters / this.charactersPerPage)
