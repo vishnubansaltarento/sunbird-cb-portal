@@ -113,3 +113,10 @@
         margin-top: 0px;
     }
 }
+
+::ng-deep.mat-tab-label-active {
+    .mat-tab-label-content {
+      font-weight: 700 !important;
+      opacity: 1;
+    }
+  }
