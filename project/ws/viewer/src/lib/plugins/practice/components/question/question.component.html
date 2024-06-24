@@ -207,7 +207,7 @@
           </div>         
         </div>
         <div>
-          <div class="question-marks" *ngIf="assessmentType === 'questionWeightage'">
+          <div class="question-marks" *ngIf="assessmentType === 'questionWeightage' && showQuestionMarks === 'Yes'">
             <p *ngIf="question?.marks">{{question?.marks}} Marks</p>
           </div>
           <div class="question-marks" *ngIf="assessmentType === 'optionalWeightage'">
@@ -284,7 +284,7 @@
             </div>         
           </div>
           <div>
-            <div class="question-marks" *ngIf="assessmentType === 'questionWeightage'">
+            <div class="question-marks" *ngIf="assessmentType === 'questionWeightage' && showQuestionMarks === 'Yes'">
               <p *ngIf="question?.marks">{{question?.marks}} Marks</p>
             </div>
             <div class="question-marks" *ngIf="assessmentType === 'optionalWeightage'">

@@ -142,6 +142,7 @@ export class PracticeComponent implements OnInit, OnChanges, OnDestroy {
   questionStartTime: number = Date.now()
   timeSpentOnQuestions: any = {}
   charactersPerPage = 1500
+  showQuestionMarks = 'No'
 
   constructor(
     private events: EventService,
@@ -283,6 +284,7 @@ export class PracticeComponent implements OnInit, OnChanges, OnDestroy {
     if (this.widgetContentService.currentMetaData.children && this.widgetContentService.currentMetaData.children.length) {
       this.widgetContentService.currentMetaData.children.map((item: any) => {
         const activeResource =  this.findNested(item, 'identifier', this.identifier)
+        this.showQuestionMarks = item.showMarks ? item.showMarks : 'No'
           // this.selectedAssessmentCompatibilityLevel = item.compatibilityLevel
           // console.log('item.children', item.children)
           // console.log('selectedAssessmentCompatibilityLevel', this.selectedAssessmentCompatibilityLevel)
@@ -399,6 +401,7 @@ export class PracticeComponent implements OnInit, OnChanges, OnDestroy {
             this.allSectionTimeLimit = section.result.questionSet.expectedDuration
             // this.quizSvc.paperSections.next(section.result)
             const tempObj = _.get(section, 'result.questionSet.children')
+            this.showQuestionMarks = _.get(section, 'result.questionSet.showMarks', 'No')
             this.updataDB(tempObj)
             this.paperSections = []
             this.questionSectionTableData = []
@@ -437,6 +440,7 @@ export class PracticeComponent implements OnInit, OnChanges, OnDestroy {
             this.allSectionTimeLimit  = section.result.questionSet.expectedDuration
             // this.quizSvc.paperSections.next(section.result)
             const tempObj = _.get(section, 'result.questionSet.children')
+            this.showQuestionMarks = _.get(section, 'result.questionSet.showMarks', 'No')
             this.updataDB(tempObj)
             this.paperSections = []
             this.questionSectionTableData = []

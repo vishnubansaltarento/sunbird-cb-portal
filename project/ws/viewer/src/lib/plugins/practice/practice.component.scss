@@ -1410,3 +1410,9 @@ $nav-height: 40px;
   border-top-left-radius: 5px;
   border-top-right-radius: 5px;
 }
+
+.disableNextSection {
+  opacity: 0.5;
+  cursor: not-allowed;
+  pointer-events: none;
+}
