@@ -33,6 +33,7 @@ export class AllProvidersComponent implements OnInit {
     { title: 'Learn', url: '/page/learn', icon: 'school' },
     { title: 'All Providers', url: 'none', icon: '' },
   ]
+  featuredProviders = []
   getAllProvidersReq = {
     request: {
       filters: {
@@ -50,6 +51,7 @@ export class AllProvidersComponent implements OnInit {
     private browseProviderSvc: BrowseProviderService,
     private localService: LocalDataService,
     private translate: TranslateService,
+    private route: ActivatedRoute,
     private langtranslations: MultilingualTranslationsService,
   ) {
     this.langtranslations.languageSelectedObservable.subscribe(() => {
@@ -59,6 +61,14 @@ export class AllProvidersComponent implements OnInit {
         this.translate.use(lang)
       }
     })
+    if (this.route.snapshot.data && this.route.snapshot.data.contentData
+      && this.route.snapshot.data.contentData.data
+      && this.route.snapshot.data.contentData.data.result
+      && this.route.snapshot.data.contentData.data.result.content
+      && this.route.snapshot.data.contentData.data.result.content.featuredProviders
+    ) {
+      this.featuredProviders = JSON.parse(this.route.snapshot.data.contentData.data.result.content.featuredProviders)
+    }
    }
 
   ngOnInit() {
