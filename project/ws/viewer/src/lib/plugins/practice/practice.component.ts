@@ -142,6 +142,7 @@ export class PracticeComponent implements OnInit, OnChanges, OnDestroy {
   questionStartTime: number = Date.now()
   timeSpentOnQuestions: any = {}
   charactersPerPage = 1500
+  showQuestionMarks = 'No'
 
   constructor(
     private events: EventService,
@@ -283,6 +284,7 @@ export class PracticeComponent implements OnInit, OnChanges, OnDestroy {
     if (this.widgetContentService.currentMetaData.children && this.widgetContentService.currentMetaData.children.length) {
       this.widgetContentService.currentMetaData.children.map((item: any) => {
         const activeResource =  this.findNested(item, 'identifier', this.identifier)
+        this.showQuestionMarks = item.showMarks ? item.showMarks : 'No'
           // this.selectedAssessmentCompatibilityLevel = item.compatibilityLevel
           // console.log('item.children', item.children)
           // console.log('selectedAssessmentCompatibilityLevel', this.selectedAssessmentCompatibilityLevel)
@@ -399,6 +401,7 @@ export class PracticeComponent implements OnInit, OnChanges, OnDestroy {
             this.allSectionTimeLimit = section.result.questionSet.expectedDuration
             // this.quizSvc.paperSections.next(section.result)
             const tempObj = _.get(section, 'result.questionSet.children')
+            this.showQuestionMarks = _.get(section, 'result.questionSet.showMarks', 'No')
             this.updataDB(tempObj)
             this.paperSections = []
             this.questionSectionTableData = []
@@ -437,6 +440,7 @@ export class PracticeComponent implements OnInit, OnChanges, OnDestroy {
             this.allSectionTimeLimit  = section.result.questionSet.expectedDuration
             // this.quizSvc.paperSections.next(section.result)
             const tempObj = _.get(section, 'result.questionSet.children')
+            this.showQuestionMarks = _.get(section, 'result.questionSet.showMarks', 'No')
             this.updataDB(tempObj)
             this.paperSections = []
             this.questionSectionTableData = []
@@ -959,10 +963,12 @@ export class PracticeComponent implements OnInit, OnChanges, OnDestroy {
     }
   }
 
-  get allSecAttempted(): { full: boolean, next: NSPractice.IPaperSection | null } {
+  get allSecAttempted(): { full: boolean, next: NSPractice.IPaperSection | null, sectionsCount: number } {
     const sections = this.quizSvc.secAttempted.getValue()
     let fullAttempted = false
+    let sectionsCount = 0
     if (sections && sections.length) {
+      sectionsCount = sections.length
       const attemped = _.filter(sections, s => s.fullAttempted || s.isAttempted)
       fullAttempted = (attemped || []).length === sections.length
     }
@@ -976,7 +982,7 @@ export class PracticeComponent implements OnInit, OnChanges, OnDestroy {
       })[0]
     }
 
-    return { next, full: fullAttempted }
+    return { next, sectionsCount, full: fullAttempted }
   }
 
   fillSelectedItems(question: NSPractice.IQuestion, response: any) {
