@@ -1372,7 +1372,7 @@
           <div>
             <div class="flex flex-1 flex-row-reverse butto_box end">
               <ng-container
-                *ngIf="assessmentType !== 'optionalWeightage'">
+                *ngIf="assessmentType !== 'optionalWeightage' && allSecAttempted.sectionsCount > 1">
                 <button class="text-white ws-mat-primary-background margin-xs quest_btn"  mat-raised-button
                   (click)="openSectionPopup(false)" i18n="button quiz submit" [disabled]="!allSecAttempted.next"
                   [ngClass]="{'disableNextSection': !allSecAttempted.next}">
@@ -1977,7 +1977,7 @@
                 </button>
               </ng-container>
               <ng-container
-                *ngIf="assessmentType !== 'optionalWeightage'">
+                *ngIf="assessmentType !== 'optionalWeightage' && allSecAttempted.sectionsCount > 1">
                 <button class="text-white ws-mat-primary-background margin-xs quest_btn" mat-raised-button
                   (click)="openSectionPopup(false)" i18n="button quiz submit" [disabled]="!allSecAttempted.next"
                   [ngClass]="{'disableNextSection': !allSecAttempted.next}">

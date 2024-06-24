@@ -963,10 +963,12 @@ export class PracticeComponent implements OnInit, OnChanges, OnDestroy {
     }
   }
 
-  get allSecAttempted(): { full: boolean, next: NSPractice.IPaperSection | null } {
+  get allSecAttempted(): { full: boolean, next: NSPractice.IPaperSection | null, sectionsCount: number } {
     const sections = this.quizSvc.secAttempted.getValue()
     let fullAttempted = false
+    let sectionsCount = 0
     if (sections && sections.length) {
+      sectionsCount = sections.length
       const attemped = _.filter(sections, s => s.fullAttempted || s.isAttempted)
       fullAttempted = (attemped || []).length === sections.length
     }
@@ -980,7 +982,7 @@ export class PracticeComponent implements OnInit, OnChanges, OnDestroy {
       })[0]
     }
 
-    return { next, full: fullAttempted }
+    return { next, sectionsCount, full: fullAttempted }
   }
 
   fillSelectedItems(question: NSPractice.IQuestion, response: any) {
