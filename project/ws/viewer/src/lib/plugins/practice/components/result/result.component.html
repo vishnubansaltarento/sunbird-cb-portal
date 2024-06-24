@@ -281,7 +281,8 @@
           <span class="mt-1"></span>
         </div>
       
-        <div class="flex wrap-mweb gap-4 mt-6 mb-6">
+        <div class="flex wrap-mweb gap-4 mt-6 mb-6" 
+        [ngClass]="{'viewOverAllPerformance': expandMwebOverView && isMobile, 'colapseOverAllPerformance': !expandMwebOverView && isMobile}">
           <ng-container *ngFor="let summary of overAllSummary">
             <div class="results-card flex">
               <div class="flex gap-4 justify-center items-center mx-4">
@@ -304,7 +305,24 @@
               </div>
             </div>
           </ng-container>
+          <div></div>
         </div>
+        <ng-container *ngIf="isMobile">
+          <div class="flex justify-center items-center">
+            <ng-container *ngIf="!expandMwebOverView; else collapse">
+              <button (click)="expandMwebOverView = !expandMwebOverView" mat-button class="viewAll-btn fles justify-center items-center gap-2">
+                <span>View All</span>
+                <mat-icon class="down-arrow ml-2">arrow_downward</mat-icon>
+              </button>
+            </ng-container>
+            <ng-template #collapse>
+              <button (click)="expandMwebOverView = !expandMwebOverView" mat-button class="collapse-btn fles justify-center items-center gap-2">
+                <span>Collapse</span>
+                <mat-icon class="up-arrow ml-2">arrow_upward</mat-icon>
+              </button>
+            </ng-template>
+          </div>
+        </ng-container>
       
         <div class="header-text flex flex-col" *ngIf="quizResponse.children.length > 1">
           My Sectionwise summary
@@ -435,7 +453,8 @@
           </div>
         </ng-template>
     
-      <div class="flex wrap-mweb gap-4 mt-6 mb-6">
+      <div class="flex wrap-mweb gap-4 mt-6 mb-6"
+      [ngClass]="{'viewOverAllPerformance': expandMwebOverView && isMobile, 'colapseOverAllPerformance': !expandMwebOverView && isMobile}">
         <ng-container *ngFor="let summary of scoreSummary">
           <div class="results-card flex">
             <div class="flex gap-4 justify-center items-center mx-4">
@@ -459,6 +478,22 @@
           </div>
         </ng-container>
       </div>
+      <ng-container *ngIf="isMobile">
+        <div class="flex justify-center items-center">
+          <ng-container *ngIf="!expandMwebOverView; else collapse">
+            <button (click)="expandMwebOverView = !expandMwebOverView" mat-button class="viewAll-btn fles justify-center items-center">
+              <span>View All</span>
+              <mat-icon class="down-arrow ml-2">arrow_downward</mat-icon>
+            </button>
+          </ng-container>
+          <ng-template #collapse>
+            <button (click)="expandMwebOverView = !expandMwebOverView" mat-button class="collapse-btn fles justify-center items-center">
+              <span>Collapse</span>
+              <mat-icon class="up-arrow ml-2">arrow_upward</mat-icon>
+            </button>
+          </ng-template>
+        </div>
+      </ng-container>
     
       <div>
         <button mat-button [matMenuTriggerFor]="sectionsMenu" class="btn-outline flex justify-center items-center px-4"><span>{{selectedSection}}</span>

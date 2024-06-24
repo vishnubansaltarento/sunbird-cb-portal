@@ -158,6 +158,8 @@ export class ResultComponent implements OnInit, OnChanges {
   sectionsList: any = []
   selectedSection = 'All'
 
+  expandMwebOverView = false
+
   constructor(private langtranslations: MultilingualTranslationsService) {
 
   }
