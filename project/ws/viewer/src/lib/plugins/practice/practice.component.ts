@@ -298,8 +298,10 @@ export class PracticeComponent implements OnInit, OnChanges, OnDestroy {
           if (activeResource && activeResource.compatibilityLevel) {
             this.selectedAssessmentCompatibilityLevel = activeResource.compatibilityLevel
           }
-          if (activeResource) {
+          if (activeResource && activeResource.maxQuestions) {
             this.totalAssessemntQuestionsCount = activeResource.maxQuestions
+          }
+          if (activeResource &&  activeResource.description) {
             this.instructionAssessment = activeResource.description
             this.getInstructionAssessmentPagination(activeResource.description)
           }
