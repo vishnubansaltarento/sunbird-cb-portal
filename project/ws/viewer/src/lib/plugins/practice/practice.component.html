@@ -33,6 +33,23 @@
             <span class="subheading-back">{{resourceName}}</span>
           </div>
         </div>
+        <div class="section-dd-container" *ngIf="assessmentType !== 'optionalWeightage'">
+          <div class="flex flex-row"  [ngClass]="{'hide-section': paperSections.length < 2}">
+            <div>
+              <mat-form-field appearance="none">
+                <select [disabled]="sectionalTimer ? 'disabled': ''" matNativeControl required class="section-dd" #choosedValue
+                  (change)="changeSection($event.target.value)">
+                  <option [value]="section.identifier" [selected]="section.identifier === selectedSectionIdentifier"
+                    *ngFor="let section of paperSections">{{section?.name}}</option>
+                </select>
+              </mat-form-field>
+            </div>
+            <div class="section-info tooltip" *ngIf="sectionalInstruction">
+              <img src="assets/icons/final-assessment/question_info.svg" />
+              <span class="tooltiptext" [innerHtml]="sectionalInstruction"></span>
+            </div>
+          </div>
+        </div>
         <div>
           <div class="flex flex-1 flex-row-reverse butto_box end">
             <ng-container
