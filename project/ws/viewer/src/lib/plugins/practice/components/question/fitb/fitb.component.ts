@@ -57,12 +57,12 @@ export class FillInTheBlankComponent implements OnInit, OnChanges, AfterViewInit
     }
     ngOnInit() {
 
-        this.practiceSvc.clearResponse.subscribe((questionId:any)=>{
+        this.practiceSvc.clearResponse.subscribe((questionId: any) => {
             for (let i = 0; i < (this.localQuestion.match(/matInput/g) || []).length; i += 1) {
-                if(questionId === this.question.questionId) {
+                if (questionId === this.question.questionId) {
                     const blank: HTMLInputElement = this.elementRef.nativeElement.querySelector(`#${this.question.questionId}${i}`)
-                    blank.value = '';
-                }                
+                    blank.value = ''
+                }
             }
         })
         if (this.primaryCategory === NsContent.EPrimaryCategory.PRACTICE_RESOURCE) {
