@@ -291,7 +291,7 @@ export class ProfileViewComponent implements OnInit, AfterViewInit, OnDestroy {
     this.getRejectedStatus()
     this.getApprovedFields()
     this.getInsightsData()
-    this.getAssessmentData()
+    //this.getAssessmentData()
   }
 
   fetchDiscussionsData(): void {

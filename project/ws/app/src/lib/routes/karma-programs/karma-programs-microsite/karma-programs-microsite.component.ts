@@ -81,7 +81,8 @@ export class KarmaProgramsMicrositeComponent implements OnInit {
           let contentList = []
           if (this.configSvc && this.configSvc.unMappedUser &&
                this.configSvc.unMappedUser.profileDetails &&
-               this.configSvc.unMappedUser.profileDetails.verifiedKarmayogi) {
+               this.configSvc.unMappedUser.profileDetails.profileStatus &&
+               this.configSvc.unMappedUser.profileDetails.profileStatus === 'VERIFIED') {
           contentList = response.results.result.content
         } else {
           contentList = response.results.result.content.filter((ele: any) => {
