@@ -1793,11 +1793,11 @@
               <div class="mb-24 mt-4">
                 <div class="flex flex-row gap-10">
                   <div class="flex flex-col align-center">
-                    <div class="ques-count">{{totalQuestionsCount - questionAttemptedCount}}</div>
+                    <div class="ques-count">{{getSectionTotalQuestionAndAnswerCount()['totalCount'] - getSectionTotalQuestionAndAnswerCount()['answered']}}</div>
                     <div class="stats-label">{{ 'playerbrief.notAnswered' | translate }}</div>
                   </div>
                   <div class="flex flex-col align-center">
-                    <div class="ques-count">{{questionAttemptedCount ? questionAttemptedCount : 0}}</div>
+                    <div class="ques-count">{{getSectionTotalQuestionAndAnswerCount()['answered']}}</div>
                     <div class="stats-label">{{ 'playerbrief.answered' | translate }}</div>
                   </div>
                 </div>
