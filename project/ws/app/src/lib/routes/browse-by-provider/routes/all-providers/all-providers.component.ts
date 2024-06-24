@@ -8,6 +8,7 @@ import _ from 'lodash'
 import { LocalDataService } from '../../../browse-by-competency/services/localService';
 import { TranslateService } from '@ngx-translate/core'
 import { MultilingualTranslationsService } from '@sunbird-cb/utils-v2'
+import { ActivatedRoute } from '@angular/router'
 // tslint:enable
 
 @Component({
