@@ -2,11 +2,11 @@
 </ws-widget-btn-page-back>
 
 <div class="container-balanced main_content_box">
-    <!-- <div class="top_card_container">
+    <div class="top_card_container">
         <h2 class="mat-h1 margin-bottom-m inline-block "> {{ 'allproviderscomponent.popularProviders' | translate }}</h2>
         <div class="top_card_inner_box flex">
-            <ng-container *ngFor="let p of allProviders | slice:0:8; let i=index">
-                <ws-app-popular-provider-card [provider]="p"></ws-app-popular-provider-card>
+            <ng-container *ngFor="let p of featuredProviders | slice:0:8; let i=index">
+                <ws-app-provider-card [provider]="p"></ws-app-provider-card>
             </ng-container>
         </div>
         <h4 *ngIf="allProviders?.length <=0 && ((displayLoader | async) === false)" class="w-full text-left ws-mat-black60-text ">
@@ -15,7 +15,7 @@
         <div *ngIf="displayLoader | async" class="mt-5 pr-4 flex items-center justify-center">
             <mat-spinner [diameter]="30"></mat-spinner>
         </div>
-    </div> -->
+    </div>
 
     <!--===========  All competencies section ============= -->
     <div class="all_provider_box">
@@ -90,9 +90,11 @@
                 <!-- search cards -->
                 <mat-sidenav-content class="custom-sidecontent  mat-drawer-content mat-sidenav-content">
 
-                    <div class="provider_card_box mt-8 justify-center md:justify-start">
-                        <ng-container *ngFor="let p of clonesProviders">
-                            <ws-app-provider-card [provider]="p"></ws-app-provider-card>
+                    <div class="provider_card_box">
+                        <ng-container *ngFor="let p of allProviders">
+                            <ng-container *ngIf="p?.orgId">
+                                <ws-app-provider-card [provider]="p"></ws-app-provider-card>
+                            </ng-container>
                         </ng-container>
                         <h4 *ngIf="clonesProviders?.length <=0 && ((displayLoader | async) === false)" class="w-full text-left ws-mat-black60-text ">
                             {{ 'allproviderscomponent.noProvidersFound' | translate }}

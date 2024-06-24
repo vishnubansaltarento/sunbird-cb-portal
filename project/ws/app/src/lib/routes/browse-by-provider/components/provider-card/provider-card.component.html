@@ -25,8 +25,18 @@
     [routerLink]="['/app/learn/browse-by/provider', provider?.name, provider?.orgId, 'micro-sites']">
     <div class="w-full flex flex-col card-container items-center justify-center">   
         <div class="flex width-inherit flex-col item-center justify-center">
-            <div class="flex items-center justify-center"><img [src]="provider.logoUrl" class="p-logo" *ngIf="provider && provider.logoUrl" onerror="'/assets/images/micro-sites/default-provider.svg'"></div>
-            <div class="flex items-center justify-center"><img src="/assets/images/micro-sites/default-provider.svg" class="p-logo" *ngIf="provider && !provider.logoUrl"></div>
+
+            
+            <div class="flex items-center justify-center">
+                <ng-container *ngIf="provider?.logoUrl;else noLogo">
+                    <img [src]="provider?.logoUrl" class="p-logo"  onerror="'/assets/images/micro-sites/default-provider.svg'">
+                </ng-container>
+                <ng-template #noLogo>
+                    <ws-widget-avatar-photo [name]="provider?.name" [photoUrl]="provider?.logoUrl" size="round-m">
+                    </ws-widget-avatar-photo>
+                </ng-template>
+            </div>
+            <!-- <div class="flex items-center justify-center"><img src="/assets/images/micro-sites/default-provider.svg" class="p-logo" *ngIf="provider && !provider.logoUrl"></div> -->
             <div class="pt-5 text-center txt-ellipsis-3  name-provider">{{provider?.name}}</div>
         </div>
     </div>

@@ -35,6 +35,7 @@ export const environment = {
   apiCache: (window as { [key: string]: any })['env']['apiCache'] || 0,
   spvorgID: (window as { [key: string]: any })['env']['spvorgID'] || '',
   mdoChannelsBookmarkId: (window as { [key: string]: any })['env']['mdoChannelsBookmarkId'] || '',
+  providerDataKey: (window as { [key: string]: any })['env']['providerDataKey'] || '',
   // mdoPortal: (window as { [key: string]: any })['env']['mdoPath'] || '',
   // spvPortal: (window as { [key: string]: any })['env']['spvPath'] || '',
   // cbcPortal: (window as { [key: string]: any })['env']['cbcPath'] || '',
