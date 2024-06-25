@@ -1262,16 +1262,7 @@ export class PracticeComponent implements OnInit, OnChanges, OnDestroy {
               questionLevel: sq.questionLevel,
               timeTaken: timeSpent.toString(),
               timeSpent: timeSpent.toString(),
-              editorState: { options: optionsAll },
-            }
-            if (sq.options.length === 0 && this.questionAnswerHash[sq.questionId]) {
-              const ftbAns = this.questionAnswerHash[sq.questionId][0].split(',')
-              ftbAns.forEach((ans: string, index) => {
-                ftb.editorState.options.push({
-                  index: index.toString(),
-                  selectedAnswer: ans,
-                })
-              })
+              editorState: { options: [] },
             }
             if (sq.options.length === 0 && this.questionAnswerHash[sq.questionId]) {
               const ftbAns = this.questionAnswerHash[sq.questionId][0].split(',')
