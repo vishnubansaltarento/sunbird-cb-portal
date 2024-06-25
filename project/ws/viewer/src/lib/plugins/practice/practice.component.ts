@@ -96,7 +96,7 @@ export class PracticeComponent implements OnInit, OnChanges, OnDestroy {
   numUnanswered = 0
   passPercentage = 0
   questionAnswerHash: NSPractice.IQAnswer = {}
-  result = 0
+  // result = 0
   sidenavMode = 'start'
   sidenavOpenDefault = false
   finalResponse!: NSPractice.IQuizSubmitResponseV2
@@ -1304,6 +1304,30 @@ export class PracticeComponent implements OnInit, OnChanges, OnDestroy {
             }
             responseQ.push(mtf)
             break
+          case 'mcq-sca-tf': 
+          const mcqScaTF: any = {
+            identifier: sq.questionId,
+            mimeType: NsContent.EMimeTypes.QUESTION,
+            objectType: 'Question',
+            question: sq.question,
+            primaryCategory: NsContent.EPrimaryCategory.SINGLE_CHOICE_QUESTION,
+            qType: 'MCQ-SCA-TF',
+            questionLevel: sq.questionLevel ? sq.questionLevel : '',
+            timeTaken: timeSpent.toString(),
+            timeSpent: timeSpent.toString(),
+            editorState: {
+              options: _.compact(_.map(sq.options, (_o: NSPractice.IOption) => {
+                if (_o.userSelected) {
+                  return {
+                    index: (_o.optionId).toString(),
+                    selectedAnswer: _o.userSelected,
+                  } as NSPractice.IResponseOptions
+                } return null
+              })),
+            },
+          }
+          responseQ.push(mcqScaTF)
+          break
         }
       })
     }
@@ -1700,8 +1724,8 @@ export class PracticeComponent implements OnInit, OnChanges, OnDestroy {
     this.numIncorrectAnswers = res.incorrect
     this.numUnanswered = res.blank
     this.passPercentage = res.passPercentage
-    this.result = typeof res.overallResult === 'number' ? res.overallResult : 0
-    if (this.result >= this.passPercentage) {
+    const result = typeof res.overallResult === 'number' ? res.overallResult : 0
+    if (result >= this.passPercentage) {
       this.isCompleted = true
     }
     const top = document.getElementById('quiz-end')
@@ -1759,12 +1783,12 @@ export class PracticeComponent implements OnInit, OnChanges, OnDestroy {
       this.setQuestionStartTime()
     }
     const tableColumns: any[] = [
-      { header: 'Section', key: 'section' },
-      { header: 'No of Questions', key: 'NoOfQuestions' },
-      { header: 'Answered', key: 'answered' },
-      { header: 'Not answered', key: 'notAnswered' },
-      { header: 'Marked for Review', key: 'markedForReview' },
-      { header: 'Not Visited', key: 'notVisited' },
+      { header: 'practiceoverview.section', key: 'section' },
+      { header: 'practiceoverview.noOfQuestions', key: 'NoOfQuestions' },
+      { header: 'practiceoverview.answered', key: 'answered' },
+      { header: 'practiceoverview.notAnswered', key: 'notAnswered' },
+      { header: 'practiceoverview.markedForReview', key: 'markedForReview' },
+      { header: 'practiceoverview.notVisited', key: 'notVisited' },
     ]
     const tableData: any = []
     /* tslint:disable */
@@ -1809,16 +1833,16 @@ export class PracticeComponent implements OnInit, OnChanges, OnDestroy {
     }
 
     if(submitAssessment) {
-      popupData['warningNote']= 'Do you want to submit your test finally. After submitting test, you will have to start the test from beginning.',
+      popupData['warningNote']= 'practiceoverview.warningNoteForAssessmentSubmit',
       popupData['buttonsList'] =[
         {
           response: 'yes',
-          text: 'Yes',
+          text: 'practiceoverview.submitYes',
           classes: 'blue-outline',
         },
         {
           response: 'no',
-          text: 'No',
+          text: 'practiceoverview.submitNo',
           classes: 'blue-full',
         },
         // {
@@ -1831,12 +1855,12 @@ export class PracticeComponent implements OnInit, OnChanges, OnDestroy {
       popupData['buttonsList'] =[
         {
           response: 'back',
-          text: 'Back',
+          text: 'practiceoverview.back',
           classes: 'gray-full',
         },
         {
           response: 'submitAssessment',
-          text: 'Submit Test',
+          text: 'practiceoverview.submitTest',
           classes: 'blue-full',
         }
       ]
@@ -1845,12 +1869,12 @@ export class PracticeComponent implements OnInit, OnChanges, OnDestroy {
       popupData['buttonsList'] =[
         {
           response: 'next-section',
-          text: 'Next Section',
+          text: 'practiceoverview.nextSection',
           classes: 'blue-full',
         },
         {
           response: 'no',
-          text: 'Back to assessment',
+          text: 'practiceoverview.backToAssessment',
           classes: 'gray-full',
         }
       ]
