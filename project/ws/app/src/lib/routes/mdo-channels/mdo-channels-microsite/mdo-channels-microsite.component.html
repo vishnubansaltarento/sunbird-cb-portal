@@ -143,7 +143,7 @@
             <div class="grid grid-cols-12 gap-4 padding-top-m mb-6">
                 <div class="col-span-12 md:col-span-{{data.tabSection.colspan}}">
                     <!-- Tabs Section -->
-                    <mat-tab-group animationDuration="0ms" class="mat-tab-labels w-full"
+                    <mat-tab-group animationDuration="0ms" class="mat-tab-labels mytabs w-full "
                         [selectedIndex]="selectedIndex" (selectedTabChange)="selectedIndex = $event.index; tabClicked($event)">
                         <mat-tab label="Content" >
                             <ng-template mat-tab-label i18n>

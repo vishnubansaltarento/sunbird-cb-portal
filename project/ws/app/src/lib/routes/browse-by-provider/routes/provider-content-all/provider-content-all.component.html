@@ -15,9 +15,20 @@
                         </mat-form-field>
                     </div>
                 </div>
-                <div class="mr-2 mb-5" *ngFor="let c of contentDataList">
-                    <sb-uic-cards [widgetData]="c.widgetData"> </sb-uic-cards>
-                </div>            
+                <ng-container *ngIf="contentDataList?.length ; else noData">
+                    <div class="mr-2 mb-5" *ngFor="let c of contentDataList">
+                        <sb-uic-cards [widgetData]="c.widgetData"> </sb-uic-cards>
+                    </div>
+                </ng-container>
+                <ng-template #noData>
+                    <div class="flex justify-center w-full">
+                        <div class="margin-xl text-center" >
+                            <img src="/assets/common/error-pages/empty_search.svg" wsUtilsImageResponsive alt="No results"
+                                class="margin-top-l margin-bottom-s">
+                            <h2 class="mat-h2" i18n="search route no result">{{'learnsearch.noResults' | translate}}</h2>
+                        </div>
+                    </div>
+                </ng-template>
             </div>
             <div class="col-span-12 md:col-span-3">
                <!-- <div class="filter-section">
