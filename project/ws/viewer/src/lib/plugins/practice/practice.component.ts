@@ -96,7 +96,7 @@ export class PracticeComponent implements OnInit, OnChanges, OnDestroy {
   numUnanswered = 0
   passPercentage = 0
   questionAnswerHash: NSPractice.IQAnswer = {}
-  // result = 0
+  result = 0
   sidenavMode = 'start'
   sidenavOpenDefault = false
   finalResponse!: NSPractice.IQuizSubmitResponseV2
@@ -1724,8 +1724,8 @@ export class PracticeComponent implements OnInit, OnChanges, OnDestroy {
     this.numIncorrectAnswers = res.incorrect
     this.numUnanswered = res.blank
     this.passPercentage = res.passPercentage
-    const result = typeof res.overallResult === 'number' ? res.overallResult : 0
-    if (result >= this.passPercentage) {
+    this.result = typeof res.overallResult === 'number' ? res.overallResult : 0
+    if (this.result >= this.passPercentage) {
       this.isCompleted = true
     }
     const top = document.getElementById('quiz-end')

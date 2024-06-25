@@ -10,6 +10,7 @@ import * as _ from 'lodash'
   styleUrls: ['./result.component.scss'],
 })
 export class ResultComponent implements OnInit, OnChanges {
+  @Input() percentage = 0
   @Input() levelText!: string
   @Input() isPassed = false
   @Input() quizCategory!: NsContent.EPrimaryCategory
@@ -256,7 +257,7 @@ export class ResultComponent implements OnInit, OnChanges {
           imgType: 'icon',
           imgPath: 'speed',
           class: 'icon-bg-blue',
-          summary: `${Math.round(Number(this.quizResponse['totalSectionMarks']))}/${this.quizResponse['totalMarks']}`,
+          summary: `${(Number(this.quizResponse['totalSectionMarks'])).toFixed(2)}/${this.quizResponse['totalMarks']}`,
           summaryType: 'quizresult.score',
         },
         {

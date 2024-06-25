@@ -325,7 +325,7 @@
 
     <div id="quiz-end"></div>
     <ng-container *ngIf="isSubmitted && (viewState === 'answer' || viewState === 'review')">
-      <viewer-result [quizCategory]="primaryCategory" [quizResponse]="finalResponse" 
+      <viewer-result [quizCategory]="primaryCategory" [quizResponse]="finalResponse" [percentage]="result"
         [isPassed]="finalResponse?.pass" (userSelection)="action($event)" (fetchResult)="getQuizResult()"
         [selectedAssessmentCompatibilityLevel]="selectedAssessmentCompatibilityLevel">
       </viewer-result>
@@ -693,7 +693,7 @@
     </div>
     <div id="quiz-end"></div>
     <ng-container *ngIf="isSubmitted && (viewState === 'answer' || viewState === 'review')">
-      <viewer-result [quizCategory]="primaryCategory" [quizResponse]="finalResponse" 
+      <viewer-result [quizCategory]="primaryCategory" [quizResponse]="finalResponse" [percentage]="result"
         [isPassed]="finalResponse?.pass" (userSelection)="action($event)" (fetchResult)="getQuizResult()"
         [selectedAssessmentCompatibilityLevel]="selectedAssessmentCompatibilityLevel">
       </viewer-result>
@@ -1398,7 +1398,7 @@
     </div>
     <div id="quiz-end"></div>
     <ng-container *ngIf="isSubmitted && (viewState === 'answer' || viewState === 'review')">
-      <viewer-result [quizCategory]="primaryCategory" [quizResponse]="finalResponse" 
+      <viewer-result [quizCategory]="primaryCategory" [quizResponse]="finalResponse" [percentage]="result"
         [isPassed]="finalResponse?.pass" (userSelection)="action($event)" (fetchResult)="getQuizResult()"
         [coursePrimaryCategory]="coursePrimaryCategory" [selectedAssessmentCompatibilityLevel]="selectedAssessmentCompatibilityLevel">
       </viewer-result>
@@ -1993,7 +1993,7 @@
     </div>
     <div id="quiz-end"></div>
     <ng-container *ngIf="isSubmitted && (viewState === 'answer' || viewState === 'review')">
-      <viewer-result [quizCategory]="primaryCategory" [quizResponse]="finalResponse" 
+      <viewer-result [quizCategory]="primaryCategory" [quizResponse]="finalResponse" [percentage]="result"
         [isPassed]="finalResponse?.pass" (userSelection)="action($event)" (fetchResult)="getQuizResult()"
         [coursePrimaryCategory]="coursePrimaryCategory" [selectedAssessmentCompatibilityLevel]="selectedAssessmentCompatibilityLevel">
       </viewer-result>
