@@ -1262,16 +1262,7 @@ export class PracticeComponent implements OnInit, OnChanges, OnDestroy {
               questionLevel: sq.questionLevel,
               timeTaken: timeSpent.toString(),
               timeSpent: timeSpent.toString(),
-              editorState: { options: optionsAll },
-            }
-            if (sq.options.length === 0 && this.questionAnswerHash[sq.questionId]) {
-              const ftbAns = this.questionAnswerHash[sq.questionId][0].split(',')
-              ftbAns.forEach((ans: string, index) => {
-                ftb.editorState.options.push({
-                  index: index.toString(),
-                  selectedAnswer: ans,
-                })
-              })
+              editorState: { options: [] },
             }
             if (sq.options.length === 0 && this.questionAnswerHash[sq.questionId]) {
               const ftbAns = this.questionAnswerHash[sq.questionId][0].split(',')
@@ -1313,6 +1304,30 @@ export class PracticeComponent implements OnInit, OnChanges, OnDestroy {
             }
             responseQ.push(mtf)
             break
+          case 'mcq-sca-tf': 
+          const mcqScaTF: any = {
+            identifier: sq.questionId,
+            mimeType: NsContent.EMimeTypes.QUESTION,
+            objectType: 'Question',
+            question: sq.question,
+            primaryCategory: NsContent.EPrimaryCategory.SINGLE_CHOICE_QUESTION,
+            qType: 'MCQ-SCA-TF',
+            questionLevel: sq.questionLevel ? sq.questionLevel : '',
+            timeTaken: timeSpent.toString(),
+            timeSpent: timeSpent.toString(),
+            editorState: {
+              options: _.compact(_.map(sq.options, (_o: NSPractice.IOption) => {
+                if (_o.userSelected) {
+                  return {
+                    index: (_o.optionId).toString(),
+                    selectedAnswer: _o.userSelected,
+                  } as NSPractice.IResponseOptions
+                } return null
+              })),
+            },
+          }
+          responseQ.push(mcqScaTF)
+          break
         }
       })
     }
@@ -1768,12 +1783,12 @@ export class PracticeComponent implements OnInit, OnChanges, OnDestroy {
       this.setQuestionStartTime()
     }
     const tableColumns: any[] = [
-      { header: 'Section', key: 'section' },
-      { header: 'No of Questions', key: 'NoOfQuestions' },
-      { header: 'Answered', key: 'answered' },
-      { header: 'Not answered', key: 'notAnswered' },
-      { header: 'Marked for Review', key: 'markedForReview' },
-      { header: 'Not Visited', key: 'notVisited' },
+      { header: 'practiceoverview.section', key: 'section' },
+      { header: 'practiceoverview.noOfQuestions', key: 'NoOfQuestions' },
+      { header: 'practiceoverview.answered', key: 'answered' },
+      { header: 'practiceoverview.notAnswered', key: 'notAnswered' },
+      { header: 'practiceoverview.markedForReview', key: 'markedForReview' },
+      { header: 'practiceoverview.notVisited', key: 'notVisited' },
     ]
     const tableData: any = []
     /* tslint:disable */
@@ -1818,16 +1833,16 @@ export class PracticeComponent implements OnInit, OnChanges, OnDestroy {
     }
 
     if(submitAssessment) {
-      popupData['warningNote']= 'Do you want to submit your test finally. After submitting test, you will have to start the test from beginning.',
+      popupData['warningNote']= 'practiceoverview.warningNoteForAssessmentSubmit',
       popupData['buttonsList'] =[
         {
           response: 'yes',
-          text: 'Yes',
+          text: 'practiceoverview.submitYes',
           classes: 'blue-outline',
         },
         {
           response: 'no',
-          text: 'No',
+          text: 'practiceoverview.submitNo',
           classes: 'blue-full',
         },
         // {
@@ -1840,12 +1855,12 @@ export class PracticeComponent implements OnInit, OnChanges, OnDestroy {
       popupData['buttonsList'] =[
         {
           response: 'back',
-          text: 'Back',
+          text: 'practiceoverview.back',
           classes: 'gray-full',
         },
         {
           response: 'submitAssessment',
-          text: 'Submit Test',
+          text: 'practiceoverview.submitTest',
           classes: 'blue-full',
         }
       ]
@@ -1854,12 +1869,12 @@ export class PracticeComponent implements OnInit, OnChanges, OnDestroy {
       popupData['buttonsList'] =[
         {
           response: 'next-section',
-          text: 'Next Section',
+          text: 'practiceoverview.nextSection',
           classes: 'blue-full',
         },
         {
           response: 'no',
-          text: 'Back to assessment',
+          text: 'practiceoverview.backToAssessment',
           classes: 'gray-full',
         }
       ]

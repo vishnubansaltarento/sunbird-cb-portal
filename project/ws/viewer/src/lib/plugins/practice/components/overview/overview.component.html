@@ -154,7 +154,7 @@
       </ng-container>
     </div>
     <div class="consent-checkbox">
-      <mat-checkbox [disableRipple]="true" (change)="startTestEnable($event)">I have read and understood all the instructions. I understand that using unfair means of any sort for any advantage will lead to immediate disqualification. The decision of <b>iGOTkarmayogi.gov.in</b>  will be final in these matters.</mat-checkbox>
+      <mat-checkbox [disableRipple]="true" (change)="startTestEnable($event)">{{'playerbrief.instructionOne' | translate}}<b>{{'playerbrief.instructionTwo' | translate}}</b>{{'playerbrief.instructionThree' | translate}}</mat-checkbox>
     </div>
   </div>
 
