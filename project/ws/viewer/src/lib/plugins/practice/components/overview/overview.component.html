@@ -153,9 +153,11 @@
         <div [innerHTML]="instructionAssessment[currentPage]"></div>
       </ng-container>
     </div>
-    <div class="consent-checkbox">
-      <mat-checkbox [disableRipple]="true" (change)="startTestEnable($event)">{{'playerbrief.instructionOne' | translate}}<b>{{'playerbrief.instructionTwo' | translate}}</b>{{'playerbrief.instructionThree' | translate}}</mat-checkbox>
-    </div>
+    <ng-container *ngIf="instructionAssessment && currentPage + 1 === instructionAssessment.length">
+      <div class="consent-checkbox">
+        <mat-checkbox [disableRipple]="true" (change)="startTestEnable($event)">{{'playerbrief.instructionOne' | translate}}<b>{{'playerbrief.instructionTwo' | translate}}</b>{{'playerbrief.instructionThree' | translate}}</mat-checkbox>
+      </div>
+    </ng-container>
   </div>
 
   
