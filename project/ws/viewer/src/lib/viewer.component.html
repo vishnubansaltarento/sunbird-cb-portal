@@ -27,7 +27,7 @@
       </ng-container> 
     </mat-sidenav>
 
-    <mat-sidenav-content #scrollableContent [ngClass]="isAssessmentScreen? 'isAssessmentScreen':''">
+    <mat-sidenav-content #scrollableContent [ngClass]="isAssessmentScreen && compatibilityLevel < 6 ? 'isAssessmentScreen':'isAssessmentScreenNew'">
       <ng-container *ngIf="viewerHeaderSideBarToggleFlag">
         <!-- *ngIf="fullScreenContainer" -->
         <viewer-viewer-secondary-top-bar [forPreview]="forPreview" [contentMIMEType]="contentMIMEType" [completedCount]="completedCount"

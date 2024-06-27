@@ -188,26 +188,27 @@ export class ResultComponent implements OnInit, OnChanges {
         for (let i = 0; i < this.quizResponse.children.length; i++) {
           if (this.quizResponse.children[i] && this.quizResponse.children[i].children) {
             const sectionTotalQuestions = this.quizResponse.children[i].children.length
+            let sectionName:any = this.quizResponse.children[i]['name'];
             if(_.get(this.quizResponse, 'total', 0) === 0) {
               totalQuestions = sectionTotalQuestions + totalQuestions
             }
             // if (this.quizResponse.children[i]['correct']) {
-              let sectionName = '';
+            
               if(this.quizResponse.children.length === 1) {
-                sectionName = 'Default Section'
+                sectionName = sectionName ? sectionName : 'Default Section'
               } else {
                 if(i==0) {
-                  sectionName = 'Section A'
+                  sectionName =  sectionName ? sectionName : 'Section A'
                 } else if(i==1) {
-                  sectionName = 'Section B'
+                  sectionName = sectionName ? sectionName : 'Section B'
                 } else if(i==2) {
-                  sectionName = 'Section C'
+                  sectionName = sectionName ? sectionName : 'Section C'
                 } else if(i==3) {
-                  sectionName = 'Section D'
+                  sectionName = sectionName ? sectionName : 'Section D'
                 } else if(i==4) {
-                  sectionName = 'Section E'
+                  sectionName = sectionName ? sectionName : 'Section E'
                 } else if(i==5) {
-                  sectionName = 'Section F'
+                  sectionName = sectionName ? sectionName :  'Section F'
                 }
               }
 
@@ -339,22 +340,22 @@ export class ResultComponent implements OnInit, OnChanges {
         /* tslint:disable */
       if(this.quizResponse && this.quizResponse.children) {
         for (let i = 0; i < this.quizResponse.children.length; i++) {
-          let sectionName = '';
+          let sectionName:any = this.quizResponse.children[i]['name'];
               if(this.quizResponse.children.length === 1) {
                 sectionName = 'Default Section'
               } else {
                 if(i==0) {
-                  sectionName = 'Section A'
+                  sectionName = sectionName ? sectionName :'Section A'
                 } else if(i==1) {
-                  sectionName = 'Section B'
+                  sectionName = sectionName ? sectionName :'Section B'
                 } else if(i==2) {
-                  sectionName = 'Section C'
+                  sectionName = sectionName ? sectionName :'Section C'
                 } else if(i==3) {
-                  sectionName = 'Section D'
+                  sectionName = sectionName ? sectionName :'Section D'
                 } else if(i==4) {
-                  sectionName = 'Section E'
+                  sectionName = sectionName ? sectionName :'Section E'
                 } else if(i==5) {
-                  sectionName = 'Section F'
+                  sectionName = sectionName ? sectionName :'Section F'
                 }
               }
           const obj: any = {
@@ -406,13 +407,19 @@ export class ResultComponent implements OnInit, OnChanges {
         /* tslint:disable */
       if(this.quizResponse && this.quizResponse.children) {
         for (let i = 0; i < this.quizResponse.children.length; i++) {
+          
           /* tslint:disable */
           if(this.quizResponse.children[i] && this.quizResponse.children[i].children && this.quizResponse.children[i].children.length) {
             for (let j = 0; j < this.quizResponse.children[i].children.length; j++) {
+              let formattedQuestion = this.quizResponse.children[i].children[j]['question']
+              formattedQuestion = formattedQuestion.replace(/&nbsp;/gi," ")
+              if(this.quizResponse.children[i].children[j]['qType'] === 'FTB') {
+                formattedQuestion = formattedQuestion.split('<input style="border-style:none none solid none" />').join('_________')                
+              }
               if (resultType === 'all') {
                 const obj: any = {
-                  question: this.quizResponse.children[i].children[j]['question'].replace(/&nbsp;/gi," "),
-                  status: this.quizResponse.children[i].children[j]['result'],
+                  question: formattedQuestion,
+                  status: this.quizResponse.children[i].children[j]['result'] === 'blank' ? 'Unattempted' : this.quizResponse.children[i].children[j]['result'] ,
                   questionTagg: this.quizResponse.children[i].children[j]['questionLevel'],
                   timeSpent: this.millisecondsToHMS(this.quizResponse.children[i].children[j]['timeSpent']),
                 }
@@ -420,7 +427,7 @@ export class ResultComponent implements OnInit, OnChanges {
               } else if (resultType === 'correct') {
                 if (this.quizResponse.children[i].children[j]['result'] === 'correct') {
                   const obj: any = {
-                    question: this.quizResponse.children[i].children[j]['question'].replace(/&nbsp;/gi," "),
+                    question: formattedQuestion,
                     status: this.quizResponse.children[i].children[j]['result'],
                     questionTagg: this.quizResponse.children[i].children[j]['questionLevel'],
                     timeSpent: this.millisecondsToHMS(this.quizResponse.children[i].children[j]['timeSpent']),
@@ -430,7 +437,7 @@ export class ResultComponent implements OnInit, OnChanges {
               } else if (resultType === 'wrong') {
                 if (this.quizResponse.children[i].children[j]['result'] === 'incorrect') {
                   const obj: any = {
-                    question: this.quizResponse.children[i].children[j]['question'].replace(/&nbsp;/gi," "),
+                    question: formattedQuestion,
                     status: this.quizResponse.children[i].children[j]['result'],
                     questionTagg: this.quizResponse.children[i].children[j]['questionLevel'],
                     timeSpent: this.millisecondsToHMS(this.quizResponse.children[i].children[j]['timeSpent']),
@@ -440,8 +447,8 @@ export class ResultComponent implements OnInit, OnChanges {
               }  else if (resultType === 'notAnswered') {
                 if (this.quizResponse.children[i].children[j]['result'] === 'blank') {
                   const obj: any = {
-                    question: this.quizResponse.children[i].children[j]['question'].replace(/&nbsp;/gi," "),
-                    status: this.quizResponse.children[i].children[j]['result'],
+                    question: formattedQuestion,
+                    status: 'Unattempted',
                     questionTagg: this.quizResponse.children[i].children[j]['questionLevel'],
                     timeSpent: this.millisecondsToHMS(this.quizResponse.children[i].children[j]['timeSpent']),
                   }
@@ -470,9 +477,13 @@ export class ResultComponent implements OnInit, OnChanges {
         /* tslint:disable */
       if(quizResponse && quizResponse.children) {
         for (let j = 0; j < quizResponse.children.length; j++) {
-          if (resultType === 'all') {
+          let formattedQuestion = quizResponse.children[j]['question'].replace(/&nbsp;/gi," ")
+          if(quizResponse.children[j]['qType'] === 'FTB') {
+            formattedQuestion = formattedQuestion.split('<input style="border-style:none none solid none" />').join('_________')                
+          }
+          if (resultType === 'all') {            
             const obj: any = {
-              question: quizResponse.children[j]['question'].replace(/&nbsp;/gi," "),
+              question: formattedQuestion ,
               status: quizResponse.children[j]['result'],
               questionTagg: quizResponse.children[j]['questionLevel'],
               timeSpent: this.millisecondsToHMS(quizResponse.children[j]['timeSpent']),
@@ -481,7 +492,7 @@ export class ResultComponent implements OnInit, OnChanges {
           } else if (resultType === 'correct') {
             if (quizResponse.children[j]['result'] === 'correct') {
               const obj: any = {
-                question: quizResponse.children[j]['question'].replace(/&nbsp;/gi," "),
+                question: formattedQuestion,
                 status: quizResponse.children[j]['result'],
                 questionTagg: quizResponse.children[j]['questionLevel'],
                 timeSpent: this.millisecondsToHMS(quizResponse.children[j]['timeSpent']),
@@ -491,7 +502,7 @@ export class ResultComponent implements OnInit, OnChanges {
           } else if (resultType === 'wrong') {
             if (quizResponse.children[j]['result'] === 'incorrect') {
               const obj: any = {
-                question: quizResponse.children[j]['question'].replace(/&nbsp;/gi," "),
+                question: formattedQuestion,
                 status: quizResponse.children[j]['result'],
                 questionTagg: quizResponse.children[j]['questionLevel'],
                 timeSpent: this.millisecondsToHMS(quizResponse.children[j]['timeSpent']),
@@ -501,8 +512,8 @@ export class ResultComponent implements OnInit, OnChanges {
           }  else if (resultType === 'notAnswered') {
             if (quizResponse.children[j]['result'] === 'blank') {
               const obj: any = {
-                question: quizResponse.children[j]['question'].replace(/&nbsp;/gi," "),
-                status: quizResponse.children[j]['result'],
+                question: formattedQuestion,
+                status: 'Unattempted',
                 questionTagg: quizResponse.children[j]['questionLevel'],
                 timeSpent: this.millisecondsToHMS(quizResponse.children[j]['timeSpent']),
               }
