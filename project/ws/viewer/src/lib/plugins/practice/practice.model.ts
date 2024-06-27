@@ -84,7 +84,8 @@ export namespace NSPractice {
     pass: boolean,
     totalMarks: number,
     sectionMarks: number,
-    children: ISectionQuestion[]
+    children: ISectionQuestion[],
+    name: string
   }
 
   export interface ISectionQuestion {

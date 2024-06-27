@@ -434,7 +434,7 @@
       </div>
     </ng-container>
     <ng-container *ngIf="selectedAssessmentCompatibilityLevel >= 6 && quizResponse && showInsight">
-      <div class="results flex flex-col gap-6 px-5 py-4">
+      <div class="results result-insight flex flex-col gap-6 px-5 py-4">
         <ng-container *ngIf="questionTYP.PRACTICE_RESOURCE !== quizCategory; else overAllPerformance">
           <div class="flex overAllScore justify-center items-center">
             <div class="flex justify-center items-center totalScore w-full">
@@ -529,7 +529,7 @@
                           mat-cell
                           *matCellDef="let element; let rowIndex = index;"
                       >
-                          <span [ngClass]="{'correct': element[disCol.key] === 'correct', 'wrong': element[disCol.key] === 'incorrect'}"><span [innerHtml]="element[disCol.key] | titlecase"></span></span>
+                          <span [ngClass]="{'correct': element[disCol.key] === 'correct', 'wrong': element[disCol.key] === 'incorrect', 'blank': element[disCol.key] === 'blank'}"><span [innerHtml]="element[disCol.key]"></span></span>
                       </td>
                   </ng-container>
               </ng-container>
