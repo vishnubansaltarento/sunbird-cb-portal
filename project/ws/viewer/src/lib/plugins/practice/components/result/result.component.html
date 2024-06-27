@@ -441,8 +441,8 @@
               Your SCORE
             </div>
             <div class="separator"></div>
-            <div class="flex justify-center items-center totalScore w-full">
-              {{(percentage || 0) | number: '1.2-2'}}/100
+            <div class="flex justify-center items-center totalScore w-full" *ngIf="quizResponse && quizResponse?.totalMarks">
+              {{(quizResponse['totalSectionMarks'] || 0) | number: '1.2-2'}}/ {{quizResponse['totalMarks']}}
             </div>
           </div>
         </ng-container>

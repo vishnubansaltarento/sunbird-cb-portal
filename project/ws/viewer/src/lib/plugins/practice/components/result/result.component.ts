@@ -411,7 +411,7 @@ export class ResultComponent implements OnInit, OnChanges {
             for (let j = 0; j < this.quizResponse.children[i].children.length; j++) {
               if (resultType === 'all') {
                 const obj: any = {
-                  question: this.quizResponse.children[i].children[j]['question'],
+                  question: this.quizResponse.children[i].children[j]['question'].replace(/&nbsp;/gi," "),
                   status: this.quizResponse.children[i].children[j]['result'],
                   questionTagg: this.quizResponse.children[i].children[j]['questionLevel'],
                   timeSpent: this.millisecondsToHMS(this.quizResponse.children[i].children[j]['timeSpent']),
@@ -420,7 +420,7 @@ export class ResultComponent implements OnInit, OnChanges {
               } else if (resultType === 'correct') {
                 if (this.quizResponse.children[i].children[j]['result'] === 'correct') {
                   const obj: any = {
-                    question: this.quizResponse.children[i].children[j]['question'],
+                    question: this.quizResponse.children[i].children[j]['question'].replace(/&nbsp;/gi," "),
                     status: this.quizResponse.children[i].children[j]['result'],
                     questionTagg: this.quizResponse.children[i].children[j]['questionLevel'],
                     timeSpent: this.millisecondsToHMS(this.quizResponse.children[i].children[j]['timeSpent']),
@@ -430,7 +430,7 @@ export class ResultComponent implements OnInit, OnChanges {
               } else if (resultType === 'wrong') {
                 if (this.quizResponse.children[i].children[j]['result'] === 'incorrect') {
                   const obj: any = {
-                    question: this.quizResponse.children[i].children[j]['question'],
+                    question: this.quizResponse.children[i].children[j]['question'].replace(/&nbsp;/gi," "),
                     status: this.quizResponse.children[i].children[j]['result'],
                     questionTagg: this.quizResponse.children[i].children[j]['questionLevel'],
                     timeSpent: this.millisecondsToHMS(this.quizResponse.children[i].children[j]['timeSpent']),
@@ -440,7 +440,7 @@ export class ResultComponent implements OnInit, OnChanges {
               }  else if (resultType === 'notAnswered') {
                 if (this.quizResponse.children[i].children[j]['result'] === 'blank') {
                   const obj: any = {
-                    question: this.quizResponse.children[i].children[j]['question'],
+                    question: this.quizResponse.children[i].children[j]['question'].replace(/&nbsp;/gi," "),
                     status: this.quizResponse.children[i].children[j]['result'],
                     questionTagg: this.quizResponse.children[i].children[j]['questionLevel'],
                     timeSpent: this.millisecondsToHMS(this.quizResponse.children[i].children[j]['timeSpent']),
@@ -472,7 +472,7 @@ export class ResultComponent implements OnInit, OnChanges {
         for (let j = 0; j < quizResponse.children.length; j++) {
           if (resultType === 'all') {
             const obj: any = {
-              question: quizResponse.children[j]['question'],
+              question: quizResponse.children[j]['question'].replace(/&nbsp;/gi," "),
               status: quizResponse.children[j]['result'],
               questionTagg: quizResponse.children[j]['questionLevel'],
               timeSpent: this.millisecondsToHMS(quizResponse.children[j]['timeSpent']),
@@ -481,7 +481,7 @@ export class ResultComponent implements OnInit, OnChanges {
           } else if (resultType === 'correct') {
             if (quizResponse.children[j]['result'] === 'correct') {
               const obj: any = {
-                question: quizResponse.children[j]['question'],
+                question: quizResponse.children[j]['question'].replace(/&nbsp;/gi," "),
                 status: quizResponse.children[j]['result'],
                 questionTagg: quizResponse.children[j]['questionLevel'],
                 timeSpent: this.millisecondsToHMS(quizResponse.children[j]['timeSpent']),
@@ -491,7 +491,7 @@ export class ResultComponent implements OnInit, OnChanges {
           } else if (resultType === 'wrong') {
             if (quizResponse.children[j]['result'] === 'incorrect') {
               const obj: any = {
-                question: quizResponse.children[j]['question'],
+                question: quizResponse.children[j]['question'].replace(/&nbsp;/gi," "),
                 status: quizResponse.children[j]['result'],
                 questionTagg: quizResponse.children[j]['questionLevel'],
                 timeSpent: this.millisecondsToHMS(quizResponse.children[j]['timeSpent']),
@@ -501,7 +501,7 @@ export class ResultComponent implements OnInit, OnChanges {
           }  else if (resultType === 'notAnswered') {
             if (quizResponse.children[j]['result'] === 'blank') {
               const obj: any = {
-                question: quizResponse.children[j]['question'],
+                question: quizResponse.children[j]['question'].replace(/&nbsp;/gi," "),
                 status: quizResponse.children[j]['result'],
                 questionTagg: quizResponse.children[j]['questionLevel'],
                 timeSpent: this.millisecondsToHMS(quizResponse.children[j]['timeSpent']),
