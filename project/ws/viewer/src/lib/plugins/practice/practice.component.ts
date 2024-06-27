@@ -1575,7 +1575,7 @@ export class PracticeComponent implements OnInit, OnChanges, OnDestroy {
   action($event: string) {
     switch ($event) {
       case 'retake':
-        // raise telemetry
+        this.raiseInteractTelemetry()
         this.raiseEvent(WsEvents.EnumTelemetrySubType.Unloaded, this.quizData)
         this.raiseEvent(WsEvents.EnumTelemetrySubType.Loaded, this.quizData)
         this.clearStoragePartial()
@@ -1773,6 +1773,23 @@ export class PracticeComponent implements OnInit, OnChanges, OnDestroy {
         },
     }
     this.events.dispatchEvent(event)
+  }
+
+  raiseInteractTelemetry() {
+    this.events.raiseInteractTelemetry(
+      {
+        type: WsEvents.EnumInteractTypes.CLICK,
+        id: 'reattempt-test',
+        subType: this.primaryCategory,
+      },
+      {
+         id: this.quizData.identifier,
+         type: this.assessmentType,
+         rollup: {
+            l1: this.activatedRoute.snapshot.queryParams.collectionId || '',
+        },
+      }
+    )
   }
 
   openSectionPopup(submitAssessment = false, getTime = true) {
