@@ -1241,4 +1241,9 @@ export class ProfileViewComponent implements OnInit, AfterViewInit, OnDestroy {
       maxWidth: '90vw',
     })
   }
+
+  viewMentorProfile() {
+    window.location.href = 'https://portal.karmayogi.nic.in/mentorship'
+    //this.router.navigateByUrl('mentorship')
+  }
 }
