@@ -1,7 +1,7 @@
 import { Component, OnDestroy, OnInit, AfterViewInit, AfterViewChecked,
   HostListener, ElementRef, ViewChild, ViewEncapsulation, Input } from '@angular/core'
 import { SafeHtml, DomSanitizer, SafeStyle } from '@angular/platform-browser'
-import { ActivatedRoute, Event, Data, Router, NavigationEnd,NavigationStart } from '@angular/router'
+import { ActivatedRoute, Event, Data, Router, NavigationEnd } from '@angular/router'
 import { FormControl, Validators } from '@angular/forms'
 import { HttpErrorResponse } from '@angular/common/http'
 import { MatDialog, MatSnackBar } from '@angular/material'
@@ -38,8 +38,6 @@ import { AppTocDialogIntroVideoComponent } from '../app-toc-dialog-intro-video/a
 import { ContentRatingV2DialogComponent } from '@sunbird-cb/collection/src/lib/_common/content-rating-v2-dialog/content-rating-v2-dialog.component'
 import { NsCardContent } from '@sunbird-cb/collection/src/lib/card-content-v2/card-content-v2.model'
 import { environment } from 'src/environments/environment'
-import { timer } from 'rxjs'
-import { Location } from '@angular/common'
 
 export enum ErrorType {
   internalServer = 'internalServer',
@@ -195,27 +193,6 @@ export class AppTocHomeComponent implements OnInit, OnDestroy, AfterViewChecked,
   rootOrgId: any
   certId: any
   mobile1200: any
-  currentTipIndex = 0;
-  tipRotationInterval = 10000; 
-  tipTimerSubscription!: Subscription
-  routerSubscription!: Subscription 
-
-  tips = [
-    { icon: 'assets/icons/learner-advisory/watch-speed.png', key: 'learnerAdvisory.watchContent' },
-    { icon: 'assets/icons/learner-advisory/avoid-fast-forwarding.png', key: 'learnerAdvisory.fastForwarding' },
-    { icon: 'assets/icons/learner-advisory/update-profile.png', key: 'learnerAdvisory.updateProfile' },
-    { icon: 'assets/icons/learner-advisory/one-course-at-a-time.png', key: 'learnerAdvisory.oneCourse' },
-    { icon: 'assets/icons/learner-advisory/participate-discussions.png', key: 'learnerAdvisory.participateDiscussions' },
-    { icon: 'assets/icons/learner-advisory/follow-suggestions.png', key: 'learnerAdvisory.followSuggestions' },
-    { icon: 'assets/icons/learner-advisory/use-supplementary-resources.png', key: 'learnerAdvisory.supplementaryResources' },
-    { icon: 'assets/icons/learner-advisory/minimize-distractions.png', key: 'learnerAdvisory.minimizeDistractions' },
-    { icon: 'assets/icons/learner-advisory/seek-clarification.png', key: 'learnerAdvisory.seekClarification' },
-    { icon: 'assets/icons/learner-advisory/use-gyaan-karmayogi.png', key: 'learnerAdvisory.useGyaanKarmayogi' },
-    { icon: 'assets/icons/learner-advisory/allocate-time.png', key: 'learnerAdvisory.allocateTime' },
-    { icon: 'assets/icons/learner-advisory/dont-rush-assessments.png', key: 'learnerAdvisory.dontRushAssessments' },
-    { icon: 'assets/icons/learner-advisory/follow-sequence.png', key: 'learnerAdvisory.followSequence' },
-    
-  ];
 
   @HostListener('window:scroll', ['$event'])
   handleScroll() {
@@ -267,8 +244,7 @@ export class AppTocHomeComponent implements OnInit, OnDestroy, AfterViewChecked,
     private matSnackBar: MatSnackBar,
     private loadCheckService: LoadCheckService,
     private handleClaimService: HandleClaimService,
-    private resetRatingsService: ResetRatingsService,
-    private location: Location
+    private resetRatingsService: ResetRatingsService
   ) {
     this.historyData = history.state
     this.handleBreadcrumbs()
@@ -278,7 +254,6 @@ export class AppTocHomeComponent implements OnInit, OnDestroy, AfterViewChecked,
       const lang = localStorage.getItem('websiteLanguage')!
       this.translate.use(lang)
     }
-    
 
     this.loadCheckService.childComponentLoaded$.subscribe(_isLoaded => {
       // Present in app-toc-about.component
@@ -464,35 +439,6 @@ export class AppTocHomeComponent implements OnInit, OnDestroy, AfterViewChecked,
         this.rootOrgId = this.configSvc.userProfile.rootOrgId
       }
     }
-    this.startTipTimer();
-    this.routerSubscription = this.router.events.subscribe(event => {
-      if (event instanceof NavigationStart) {
-        this.resetTipTimer();
-      }
-    });
-  }
-
-  startTipTimer() {
-    this.tipTimerSubscription = timer(0, this.tipRotationInterval).subscribe(() => {
-      this.rotateTip();
-    });
-  }
-
-  resetTipTimer() {
-    if (this.tipTimerSubscription) {
-      this.tipTimerSubscription.unsubscribe();
-    }
-    this.startTipTimer();
-  }
-
-  stopTipTimer() {
-    if (this.tipTimerSubscription) {
-      this.tipTimerSubscription.unsubscribe();
-    }
-  }
-
-  rotateTip() {
-    this.currentTipIndex = (this.currentTipIndex + 1) % this.tips.length;
   }
 
   getKarmapointsLimit() {
@@ -1879,19 +1825,12 @@ export class AppTocHomeComponent implements OnInit, OnDestroy, AfterViewChecked,
     if (this.resumeDataSubscription) {
       this.resumeDataSubscription.unsubscribe()
     }
-    this.stopTipTimer();
-    if (this.routerSubscription) {
-      this.routerSubscription.unsubscribe();
-    }
   }
 
   programEnrollCall(batchData: any) {
     this.autoEnrollCuratedProgram(NsContent.ECourseCategory.MODERATED_PROGRAM, batchData)
   }
   showAllTips() {
-    this.router.navigateByUrl('/app/learner-advisory', { skipLocationChange: true }).then(() => {
-    this.location.go('/app/learner-advisory');
-    window.location.reload();
-   });
+    this.router.navigate(['public/learner-advisory']);
   }
 }

@@ -73,7 +73,6 @@ export class CardHubsListComponent extends WidgetBaseComponent
   hubsList!: NsInstanceConfig.IHubs[]
   inactiveHubList!: NsInstanceConfig.IHubs[]
   ngOnInit() {
-    console.log("Widget Data",this.widgetData)
     this.router.events.subscribe((event: any) => {
       if (event instanceof NavigationEnd) {
           // certificate link check

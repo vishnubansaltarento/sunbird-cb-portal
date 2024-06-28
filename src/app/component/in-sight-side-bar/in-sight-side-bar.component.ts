@@ -3,11 +3,10 @@ import { Component, OnInit } from '@angular/core'
 import { HomePageService } from 'src/app/services/home-page.service'
 import { ConfigurationsService, EventService, WsEvents } from '@sunbird-cb/utils'
 import { HttpErrorResponse } from '@angular/common/http'
-import { ActivatedRoute, NavigationStart, Router } from '@angular/router'
+import { ActivatedRoute, Router } from '@angular/router'
 import { DiscussUtilsService } from '@ws/app/src/lib/routes/discuss/services/discuss-utils.service'
 import { TranslateService } from '@ngx-translate/core'
 import { MatSnackBar } from '@angular/material'
-import { Subscription, timer } from 'rxjs';
 
 const DEFAULT_WEEKLY_DURATION = 300
 const DEFAULT_DISCUSS_DURATION = 600
@@ -75,27 +74,6 @@ export class InsightSideBarComponent implements OnInit {
   credMessage = 'View my credentials'
   assessmentsData: any
   isLeaderboardExist = false
-  currentTipIndex = 0;
-  tipRotationInterval = 10000; 
-  tipTimerSubscription!: Subscription
-  routerSubscription!: Subscription 
-
-  tips = [
-    { icon: 'assets/icons/learner-advisory/watch-speed.png', key: 'learnerAdvisory.watchContent' },
-    { icon: 'assets/icons/learner-advisory/avoid-fast-forwarding.png', key: 'learnerAdvisory.fastForwarding' },
-    { icon: 'assets/icons/learner-advisory/update-profile.png', key: 'learnerAdvisory.updateProfile' },
-    { icon: 'assets/icons/learner-advisory/one-course-at-a-time.png', key: 'learnerAdvisory.oneCourse' },
-    { icon: 'assets/icons/learner-advisory/participate-discussions.png', key: 'learnerAdvisory.participateDiscussions' },
-    { icon: 'assets/icons/learner-advisory/follow-suggestions.png', key: 'learnerAdvisory.followSuggestions' },
-    { icon: 'assets/icons/learner-advisory/use-supplementary-resources.png', key: 'learnerAdvisory.supplementaryResources' },
-    { icon: 'assets/icons/learner-advisory/minimize-distractions.png', key: 'learnerAdvisory.minimizeDistractions' },
-    { icon: 'assets/icons/learner-advisory/seek-clarification.png', key: 'learnerAdvisory.seekClarification' },
-    { icon: 'assets/icons/learner-advisory/use-gyaan-karmayogi.png', key: 'learnerAdvisory.useGyaanKarmayogi' },
-    { icon: 'assets/icons/learner-advisory/allocate-time.png', key: 'learnerAdvisory.allocateTime' },
-    { icon: 'assets/icons/learner-advisory/dont-rush-assessments.png', key: 'learnerAdvisory.dontRushAssessments' },
-    { icon: 'assets/icons/learner-advisory/follow-sequence.png', key: 'learnerAdvisory.followSequence' },
-    
-  ];
 
   constructor(
     private homePageSvc: HomePageService,
@@ -123,45 +101,7 @@ export class InsightSideBarComponent implements OnInit {
     this.noDataValue = noData
     this.getDiscussionsData()
     // this.getAssessmentData()
-    this.startTipTimer();
-    this.routerSubscription = this.router.events.subscribe(event => {
-      if (event instanceof NavigationStart) {
-        this.resetTipTimer();
-      }
-    });
   }
-
-  ngOnDestroy() {
-    this.stopTipTimer();
-    if (this.routerSubscription) {
-      this.routerSubscription.unsubscribe();
-    }
-  }
-
-  startTipTimer() {
-    this.tipTimerSubscription = timer(0, this.tipRotationInterval).subscribe(() => {
-      this.rotateTip();
-    });
-  }
-
-  resetTipTimer() {
-    if (this.tipTimerSubscription) {
-      this.tipTimerSubscription.unsubscribe();
-    }
-    this.startTipTimer();
-  }
-
-  stopTipTimer() {
-    if (this.tipTimerSubscription) {
-      this.tipTimerSubscription.unsubscribe();
-    }
-  }
-
-  rotateTip() {
-    this.currentTipIndex = (this.currentTipIndex + 1) % this.tips.length;
-  }
-
-  
 
   getInsights() {
     this.profileDataLoading = true
@@ -389,6 +329,6 @@ export class InsightSideBarComponent implements OnInit {
     })
   }
   showAllTips() {
-    this.router.navigate(['app/learner-advisory'])
+    this.router.navigate(['public/learner-advisory'])
   }
 }
