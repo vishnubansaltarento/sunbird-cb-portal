@@ -23,6 +23,7 @@ export class OverviewComponent implements OnInit, OnChanges, OnDestroy {
   @Input() instructionAssessment: any
   @Input() selectedAssessmentCompatibilityLevel: any
   @Output() userSelection = new EventEmitter<NSPractice.TUserSelectionType>()
+  @Input() forPreview = false
   questionTYP = NsContent.EPrimaryCategory
   // staticImage = '/assets/images/exam/practice-test.png'
   staticImage = '/assets/images/exam/practice-result.png'
@@ -60,12 +61,15 @@ export class OverviewComponent implements OnInit, OnChanges, OnDestroy {
   }
 
   ngOnChanges() {
-    if (this.canAttempt && (this.canAttempt.attemptsMade >= this.canAttempt.attemptsAllowed)) {
-      if (!this.maxAttempPopup) {
-        this.showAssessmentPopup()
-      }
+    if (!this.forPreview) {
+      if (this.canAttempt && (this.canAttempt.attemptsMade >= this.canAttempt.attemptsAllowed)) {
+        if (!this.maxAttempPopup) {
+          this.showAssessmentPopup()
+        }
 
+      }
     }
+
   }
 
   showAssessmentPopup() {
