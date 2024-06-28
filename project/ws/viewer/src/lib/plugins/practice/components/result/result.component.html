@@ -438,7 +438,7 @@
         <ng-container *ngIf="questionTYP.PRACTICE_RESOURCE !== quizCategory; else overAllPerformance">
           <div class="flex overAllScore justify-center items-center">
             <div class="flex justify-center items-center totalScore w-full">
-              Your SCORE
+              {{ 'quizresult.yourScore' | translate}}
             </div>
             <div class="separator"></div>
             <div class="flex justify-center items-center totalScore w-full" *ngIf="quizResponse && quizResponse?.totalMarks">

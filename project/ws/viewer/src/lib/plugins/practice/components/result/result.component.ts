@@ -253,6 +253,7 @@ export class ResultComponent implements OnInit, OnChanges {
         }
       }
 
+      const overallResult = typeof this.quizResponse.overallResult === 'number' ? this.quizResponse.overallResult : 0
       this.overAllSummary = [
         {
           imgType: 'icon',
@@ -286,19 +287,19 @@ export class ResultComponent implements OnInit, OnChanges {
           imgType: 'img',
           imgPath: '/assets/icons/final-assessment/target.svg',
           class: 'icon-bg-dark-green',
-          summary: `${Math.round(Number(this.quizResponse.overallResult))}%`,
+          summary: `${Math.round(Number(overallResult))}%`,
           summaryType: 'quizresult.accuracy',
         },
       ]
 
       this.scoreSummary = [
-        {
-          imgType: 'img',
-          imgPath: '/assets/icons/final-assessment/nest_clock_farsight_analog.svg',
-          class: 'icon-bg-lite-green',
-          summary: this.millisecondsToHMS(this.quizResponse['timeTakenForAssessment']),
-          summaryType: 'quizresult.timeTaken',
-        },
+        // {
+        //   imgType: 'img',
+        //   imgPath: '/assets/icons/final-assessment/nest_clock_farsight_analog.svg',
+        //   class: 'icon-bg-lite-green',
+        //   summary: this.millisecondsToHMS(this.quizResponse['timeTakenForAssessment']),
+        //   summaryType: 'quizresult.timeTaken',
+        // },
         {
           imgType: 'img',
           imgPath: '/assets/icons/final-assessment/assignment.svg',
@@ -324,10 +325,22 @@ export class ResultComponent implements OnInit, OnChanges {
           imgType: 'img',
           imgPath: '/assets/icons/final-assessment/target.svg',
           class: 'icon-bg-dark-green',
-          summary: `${Math.round(Number(this.quizResponse.overallResult))}%`,
+          summary: `${Math.round(Number(overallResult))}%`,
           summaryType: 'quizresult.accuracy',
         },
       ]
+
+      if (this.questionTYP.PRACTICE_RESOURCE !== this.quizCategory) {
+        this.scoreSummary.unshift(
+          {
+            imgType: 'img',
+            imgPath: '/assets/icons/final-assessment/nest_clock_farsight_analog.svg',
+            class: 'icon-bg-lite-green',
+            summary: this.millisecondsToHMS(this.quizResponse['timeTakenForAssessment']),
+            summaryType: 'quizresult.timeTaken',
+          }
+        )
+      }
 
       this.questionStatuTableDataSource = new MatTableDataSource([
       ])
