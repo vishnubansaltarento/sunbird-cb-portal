@@ -143,7 +143,8 @@ export class PracticeComponent implements OnInit, OnChanges, OnDestroy {
   timeSpentOnQuestions: any = {}
   charactersPerPage = 1500
   showQuestionMarks = 'No'
-
+  forPreview = (window.location.href.includes('public') || window.location.href.includes('author') ||
+                window.location.href.includes('editMode'))
   constructor(
     private events: EventService,
     public dialog: MatDialog,
@@ -170,6 +171,7 @@ export class PracticeComponent implements OnInit, OnChanges, OnDestroy {
         this.showToolTip = false
       }
     })
+
   }
 
   toggleToolTip() {

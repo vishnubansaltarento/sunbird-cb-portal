@@ -4,7 +4,8 @@
   [primaryCategory]="primaryCategory" [canAttempt]="canAttempt" [noOfQuestions]="noOfQuestions"
   (userSelection)="getSections($event)" [coursePrimaryCategory]="coursePrimaryCategory"
   [instructionAssessment]="instructionAssessment"
-  [selectedAssessmentCompatibilityLevel]="selectedAssessmentCompatibilityLevel">
+  [selectedAssessmentCompatibilityLevel]="selectedAssessmentCompatibilityLevel"
+  [forPreview]="forPreview">
 </viewer-overview>
 
 <!-- Overlay Loader -->
@@ -65,7 +66,7 @@
               <ng-container *ngIf="!isXsmall">{{ 'playerbrief.next' | translate }}</ng-container>
             </a>
             &nbsp;&nbsp;
-            <a *ngIf="(currentQuestionIndex + 1) === totalQCount"
+            <a *ngIf="(currentQuestionIndex + 1) === totalQCount && !forPreview"
               class="text-white ws-mat-primary-background margin-xs quest_btn" mat-button (click)="proceedToSubmit()">
               <ng-container *ngIf="!isXsmall">{{ 'playerbrief.submit' | translate }}</ng-container>
             </a>
@@ -682,7 +683,7 @@
             <ng-container>{{ 'playerbrief.next' | translate }}</ng-container>
           </a>
           &nbsp;&nbsp;
-          <a *ngIf="(currentQuestionIndex + 1) === totalQCount" class="text-white ws-mat-primary-background quest_btn"
+          <a *ngIf="(currentQuestionIndex + 1) === totalQCount && !forPreview" class="text-white ws-mat-primary-background quest_btn"
             mat-button (click)="proceedToSubmit()">
             <ng-container>{{ 'playerbrief.submit' | translate }}</ng-container>
           </a>
@@ -1139,7 +1140,7 @@
             <div class="flex flex-row"  [ngClass]="{'hide-section': paperSections.length < 2}">
               <div>
                 <mat-form-field appearance="none">
-                  <select [disabled]="sectionalTimer ? 'disabled': ''" matNativeControl required class="section-dd" #choosedValue
+                  <select [disabled]="sectionalTimer && !forPreview  ? 'disabled': ''" matNativeControl required class="section-dd" #choosedValue
                     (change)="changeSection($event.target.value)">
                     <option [value]="section.identifier" [selected]="section.identifier === selectedSectionIdentifier"
                       *ngFor="let section of paperSections">{{section?.name}}</option>
@@ -1153,7 +1154,7 @@
             </div>
           </div>
 
-          <div>
+          <div *ngIf="!forPreview">
             <a [ngClass]="(totalQCount != getAllQuestionAnswer() && assessmentType === 'optionalWeightage') ? 'pointer-events-none secondary-standalone text-standalone-black margin-xs quest_btn justify-right ': 'text-white ws-mat-primary-background margin-xs quest_btn justify-right' "  
             mat-button (click)="proceedToSubmit()">
               <ng-container *ngIf="!isXsmall">{{ 'playerbrief.submitTheTest' | translate }}</ng-container>
@@ -1726,7 +1727,7 @@
             <div class="flex flex-row">
               <div *ngIf="assessmentType !== 'optionalWeightage'">
                 <mat-form-field appearance="none">
-                  <select [disabled]="sectionalTimer ? 'disabled': ''" matNativeControl required class="section-dd" #choosedValue
+                  <select [disabled]="sectionalTimer && !forPreview ? 'disabled': ''" matNativeControl required class="section-dd" #choosedValue
                     (change)="changeSection($event.target.value)">
                     <option [value]="section.identifier" [selected]="section.identifier === selectedSectionIdentifier"
                       *ngFor="let section of paperSections">{{section?.name}}</option>
@@ -1736,7 +1737,7 @@
             </div>
           </div>
 
-          <div>
+          <div *ngIf="!forPreview">
             
             <a mat-button (click)="proceedToSubmit()" [ngClass]=
             "(totalQCount != getAllQuestionAnswer() && assessmentType === 'optionalWeightage') ? 'pointer-events-none secondary-standalone text-standalone-black margin-xs quest_btn_option_weightage': 'text-white ws-mat-primary-background margin-xs quest_btn' ">
