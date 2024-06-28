@@ -41,8 +41,7 @@ import {
   DisplayContentTypeIconModule,
   BtnContentFeedbackV2Module,
   PlayerBriefModule,
-  ContentProgressModule,
-  BtnPageBackNavModule,
+  ContentProgressModule
 } from '@sunbird-cb/collection'
 
 import { WidgetResolverModule } from '@sunbird-cb/resolver'
@@ -80,7 +79,6 @@ import { SkeletonLoaderModule } from '@sunbird-cb/collection/src/lib/_common/ske
     MatSnackBarModule,
     ViewerRoutingModule,
     ErrorResolverModule,
-    BtnPageBackNavModule,
     PipeDurationTransformModule,
     PipeLimitToModule,
     PipePublicURLModule,
