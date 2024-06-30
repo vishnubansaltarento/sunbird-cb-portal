@@ -432,6 +432,7 @@ export class ResultComponent implements OnInit, OnChanges {
               if (resultType === 'all') {
                 const obj: any = {
                   question: formattedQuestion,
+                  /* tslint:disable */
                   status: this.quizResponse.children[i].children[j]['result'] === 'blank' ? 'Unattempted' :  (this.quizResponse.children[i].children[j]['result'] === 'incorrect' ? 'wrong' : this.quizResponse.children[i].children[j]['result'] ),
                   questionTagg: this.quizResponse.children[i].children[j]['questionLevel'],
                   timeSpent: this.millisecondsToHMS(this.quizResponse.children[i].children[j]['timeSpent']),
@@ -497,6 +498,7 @@ export class ResultComponent implements OnInit, OnChanges {
           if (resultType === 'all') {            
             const obj: any = {
               question: formattedQuestion ,
+              /* tslint:disable */
               status: quizResponse.children[j]['result'] === 'blank' ? 'Unattempted' :  (quizResponse.children[j]['result'] === 'incorrect' ? 'wrong' : quizResponse.children[j]['result'] ),
               questionTagg: quizResponse.children[j]['questionLevel'],
               timeSpent: this.millisecondsToHMS(quizResponse.children[j]['timeSpent']),
