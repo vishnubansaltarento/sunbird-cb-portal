@@ -41,7 +41,7 @@ import {
   DisplayContentTypeIconModule,
   BtnContentFeedbackV2Module,
   PlayerBriefModule,
-  ContentProgressModule
+  ContentProgressModule,
 } from '@sunbird-cb/collection'
 
 import { WidgetResolverModule } from '@sunbird-cb/resolver'
