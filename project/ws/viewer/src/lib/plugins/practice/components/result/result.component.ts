@@ -259,28 +259,28 @@ export class ResultComponent implements OnInit, OnChanges {
           imgType: 'icon',
           imgPath: 'speed',
           class: 'icon-bg-blue',
-          summary: `${(Number(this.quizResponse['totalSectionMarks'])).toFixed(2)}/${this.quizResponse['totalMarks']}`,
+          summary: this.quizResponse['totalSectionMarks'] ? `${(Number(this.quizResponse['totalSectionMarks'])).toFixed(2)}/${this.quizResponse['totalMarks']}` : '0',
           summaryType: 'quizresult.score',
         },
         {
           imgType: 'img',
           imgPath: '/assets/icons/final-assessment/nest_clock_farsight_analog.svg',
           class: 'icon-bg-lite-green',
-          summary: this.millisecondsToHMS(this.quizResponse['timeTakenForAssessment']),
+          summary: this.quizResponse['timeTakenForAssessment'] ? this.millisecondsToHMS(this.quizResponse['timeTakenForAssessment']) : '00:00:00',
           summaryType: 'quizresult.timeTaken',
         },
         {
           imgType: 'img',
           imgPath: '/assets/icons/final-assessment/assignment.svg',
           class: 'icon-bg-pink',
-          summary: `${(this.quizResponse.correct + this.quizResponse.incorrect)}/${totalQuestions}`,
+          summary: totalQuestions ? `${(this.quizResponse.correct + this.quizResponse.incorrect)}/${totalQuestions}`: '0',
           summaryType: 'quizresult.attempted',
         },
         {
           imgType: 'icon',
           imgPath: 'check_circle_outline',
           class: 'icon-bg-yellow',
-          summary: `${this.quizResponse.correct}/${totalQuestions}`,
+          summary: totalQuestions ? `${this.quizResponse.correct}/${totalQuestions}`: '0',
           summaryType: 'quizresult.correct',
         },
         {
@@ -304,14 +304,14 @@ export class ResultComponent implements OnInit, OnChanges {
           imgType: 'img',
           imgPath: '/assets/icons/final-assessment/assignment.svg',
           class: 'icon-bg-pink',
-          summary: `${(this.quizResponse.correct + this.quizResponse.incorrect)}/${totalQuestions}`,
+          summary: totalQuestions ? `${(this.quizResponse.correct + this.quizResponse.incorrect)}/${totalQuestions}` : '0',
           summaryType: 'quizresult.attempted',
         },
         {
           imgType: 'icon',
           imgPath: 'check_circle_outline',
           class: 'icon-bg-yellow',
-          summary: `${this.quizResponse.correct}/${totalQuestions}`,
+          summary: totalQuestions ? `${this.quizResponse.correct}/${totalQuestions}` : '0',
           summaryType: 'quizresult.correct',
         },
         {
@@ -336,7 +336,7 @@ export class ResultComponent implements OnInit, OnChanges {
             imgType: 'img',
             imgPath: '/assets/icons/final-assessment/nest_clock_farsight_analog.svg',
             class: 'icon-bg-lite-green',
-            summary: this.millisecondsToHMS(this.quizResponse['timeTakenForAssessment']),
+            summary: this.quizResponse['timeTakenForAssessment'] ? this.millisecondsToHMS(this.quizResponse['timeTakenForAssessment']) : '0',
             summaryType: 'quizresult.timeTaken',
           }
         )

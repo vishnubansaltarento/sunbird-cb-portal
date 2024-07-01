@@ -324,12 +324,12 @@
           </div>
         </ng-container>
       
-        <div class="header-text flex flex-col" *ngIf="quizResponse.children.length > 1">
+        <div class="header-text flex flex-col" *ngIf="quizResponse?.children?.length > 1">
           {{ 'quizresult.mySectionwiseSummary' | translate}}
           <span class="mt-1"></span>
         </div>
       
-        <div *ngIf="quizResponse.children.length > 1">
+        <div *ngIf="quizResponse?.children?.length > 1">
           <table
             mat-table
             [dataSource]="summaryTableDataSource"
