@@ -117,7 +117,7 @@
             <ng-container *ngIf="!skeletonLoader">
                 <div class="mat-subheading-1">{{ 'apptochome.objectives' | translate }}</div>
                 <div class="desc"   >
-                    <span [innerHTML]="extContentReadData?.objectives" class="mob-text"></span>
+                    <span [innerHTML]="replaceText(extContentReadData?.objectives, '_x000D_,')" class="mob-text"></span>
                 </div>
             </ng-container>
         </div>
@@ -155,12 +155,18 @@
 
         <div class="flex flex-col gap-4 p-5 border-bottom">
             <ng-container *ngIf="extContentReadData?.redirectUrl">
-                <a class="flex action-button justify-center resume" target="_blank" [href]="extContentReadData?.redirectUrl">
+                <a class="flex action-button justify-center resume" target="_blank" [href]="redirectToContent(extContentReadData)">
                   <ng-container >{{ 'apptochome.redirect' | translate }}
                     <mat-icon class="ml-2 ws-mat-white-text">open_in_new</mat-icon>
                   </ng-container>
                 </a>
               </ng-container>
+        </div>
+        <div>
+            <div class="flex flex-col kpi-values items-center gap-2" *ngIf="extContentReadData?.duration > 0">
+                <img src="/assets/icons/toc/timer.svg" width="20px" alt="web image" />
+                <div class="text-xs">{{ extContentReadData?.duration | pipeDurationTransform: 'hms' }}</div>
+            </div>
         </div>
         </div>
     </div>
