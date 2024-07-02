@@ -57,8 +57,8 @@ export class SeeAllHomeComponent implements OnInit, OnDestroy {
       }
     })
     if(!this.seeAllPageConfig) {
-      configData.assessmentData.forEach((ele: any) => {
-        if (ele && ele.strips.length > 0) {
+      configData && configData.assessmentData.forEach((ele: any) => {
+        if (ele && ele.strips && ele.strips.length > 0) {
           ele.strips.forEach((subEle: any) => {
             if (subEle.key === this.keyData) {
               this.seeAllPageConfig = subEle
