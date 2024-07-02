@@ -46,7 +46,6 @@ export class SeeAllHomeComponent implements OnInit, OnDestroy {
       this.tabCompleted = (res.tab) ? res.tab : ''
       this.tabSelected = (res.tabSelected) ? res.tabSelected : ''
     })
-    debugger
     const configData = await this.seeAllSvc.getSeeAllConfigJson().catch(_error => {})
     configData.homeStrips.forEach((ele: any) => {
       if (ele && ele.strips.length > 0) {
