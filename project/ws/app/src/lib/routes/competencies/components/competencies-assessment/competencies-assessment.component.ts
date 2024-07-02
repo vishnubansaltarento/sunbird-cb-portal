@@ -40,6 +40,8 @@ export class CompetenciesAssessmentComponent implements OnInit {
                     questionId: '',
                     instructions: '',
                     questionType: undefined,
+                    questionLevel: '',
+                    marks: 0,
                     options: [
                         {
                             optionId: '',

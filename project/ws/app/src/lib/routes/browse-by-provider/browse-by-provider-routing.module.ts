@@ -9,6 +9,7 @@ import { ProviderPageComponent } from './routes/provider-page/provider-page.comp
 import { ProviderFormResolverService } from './services/provider-form-resolver.service'
 import { ProviderCalendarComponent } from './routes/provider-calendar/provider-calendar.component'
 import { ProviderContentAllComponent } from './routes/provider-content-all/provider-content-all.component'
+import { ContentReadResolverService } from './services/content-read-resolver.service'
 
 const routes: Routes = [
   {
@@ -22,6 +23,9 @@ const routes: Routes = [
     data: {
       pageId: 'all-providers',
       module: 'Learn',
+    },
+    resolve: {
+      contentData: ContentReadResolverService,
     },
   },
   {
@@ -54,14 +58,6 @@ const routes: Routes = [
           module: 'explore',
         },
       },
-      {
-        path: 'all-content',
-        component: ProviderContentAllComponent,
-        data: {
-          pageId: 'all-content',
-          module: 'explore',
-        },
-      },
       // {
       //   path: 'insights',
       //   component: InsightsComponent,
@@ -71,6 +67,14 @@ const routes: Routes = [
       //   },
       // },
     ],
+  },
+  {
+    path: ':provider/:orgId/all-content',
+    component: ProviderContentAllComponent,
+    data: {
+      pageId: 'all-content',
+      module: 'explore',
+    },
   },
   {
     path: ':provider/:orgId/micro-sites',

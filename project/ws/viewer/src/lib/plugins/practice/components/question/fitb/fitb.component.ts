@@ -28,6 +28,8 @@ export class FillInTheBlankComponent implements OnInit, OnChanges, AfterViewInit
         question: '',
         instructions: '',
         questionId: '',
+        questionLevel: '',
+        timeTaken: '',
         editorState: undefined,
         options: [
             {
@@ -54,6 +56,15 @@ export class FillInTheBlankComponent implements OnInit, OnChanges, AfterViewInit
 
     }
     ngOnInit() {
+
+        this.practiceSvc.clearResponse.subscribe((questionId: any) => {
+            for (let i = 0; i < (this.localQuestion.match(/matInput/g) || []).length; i += 1) {
+                if (questionId === this.question.questionId) {
+                    const blank: HTMLInputElement = this.elementRef.nativeElement.querySelector(`#${this.question.questionId}${i}`)
+                    blank.value = ''
+                }
+            }
+        })
         if (this.primaryCategory === NsContent.EPrimaryCategory.PRACTICE_RESOURCE) {
             if (this.shCorrectAnsSubscription) {
                 this.shCorrectAnsSubscription.unsubscribe()
@@ -79,7 +90,6 @@ export class FillInTheBlankComponent implements OnInit, OnChanges, AfterViewInit
             const blank: HTMLInputElement = this.elementRef.nativeElement.querySelector(`#${this.question.questionId}${i}`)
             arr.push(blank.value.trim())
         }
-        // console.log(arr)
         this.update.emit(arr.join())
         if (this.primaryCategory === NsContent.EPrimaryCategory.PRACTICE_RESOURCE) {
             this.ifFillInTheBlankCorrect(id)
@@ -130,7 +140,13 @@ export class FillInTheBlankComponent implements OnInit, OnChanges, AfterViewInit
             let fromRichTextEditor = false
             for (let i = 0; i < iterationNumber; i += 1) {
                 // tslint:disable-next-line
-                this.localQuestion = this.localQuestion.replace('_______________', 'idMarkerForReplacement')
+                if(this.localQuestion.includes('/_______________/') ) {
+                    this.localQuestion = this.localQuestion.replace('_______________', 'idMarkerForReplacement')
+                } else if (this.localQuestion.includes('input style="border-style:none none solid none"')) {
+                    // tslint:disable-next-line
+                    this.localQuestion = this.localQuestion.replace('<input style="border-style:none none solid none" />', 'idMarkerForReplacement')
+                }
+
             }
             if (iterationNumber === 0) {
                 // replacing input tag forom richtext. new courses
@@ -168,6 +184,24 @@ export class FillInTheBlankComponent implements OnInit, OnChanges, AfterViewInit
                    />`,
                         )
                     }
+                } else {
+                    if (value[i]) {
+                        this.localQuestion = this.localQuestion.replace(
+                            'idMarkerForReplacement',
+                            `<input matInput autocomplete="off" style="border-style: none none solid none;
+                   padding: 8px 12px;" type="text" id="${this.question.questionId}${i}"
+                  value="${value[i]}" />`,
+                        )
+                        setTimeout(() => { this.ifFillInTheBlankCorrect(`${this.question.questionId}${i}`) }, 200)
+
+                    } else {
+                        this.localQuestion = this.localQuestion.replace(
+                            'idMarkerForReplacement',
+                            `<input matInput autocomplete="off" style="border-style: none none solid none;
+                   padding: 8px 12px;" type="text" id="${this.question.questionId}${i}"
+                   />`,
+                        )
+                    }
                 }
             }
         } else {
@@ -181,7 +215,14 @@ export class FillInTheBlankComponent implements OnInit, OnChanges, AfterViewInit
     }
     functionChangeBlankBorder() {
         if (this.question.questionType === 'ftb' && this.showAns) {
-            for (let i = 0; i < (this.question.question.match(/_______________/g) || []).length; i += 1) {
+            let iterationNumber: any = 0
+            if (this.localQuestion.includes('/_______________/')) {
+                iterationNumber = ((this.localQuestion.match(/_______________/g) || []).length)
+            } else if (this.localQuestion.includes('input style="border-style:none none solid none"')) {
+                iterationNumber = ((this.localQuestion.match(/input style="border-style:none none solid none"/g) || []).length)
+            }
+
+            for (let i = 0; i < iterationNumber; i += 1) {
                 if (this.correctOption[i] && !this.unTouchedBlank[i]) {
                     this.elementRef.nativeElement
                         .querySelector(`#${this.question.questionId}${i}`)
@@ -208,7 +249,6 @@ export class FillInTheBlankComponent implements OnInit, OnChanges, AfterViewInit
         return ''
 
     }
-
     getSanitizeString(res: any) {
         if (res && (typeof res === 'string')) {
             const response = res.replace(/\&lt;/g, '&lt;').replace('&gt;', '>')
@@ -216,7 +256,6 @@ export class FillInTheBlankComponent implements OnInit, OnChanges, AfterViewInit
         }
         return res
     }
-
     ngOnDestroy(): void {
         this.practiceSvc.shCorrectAnswer(false)
         if (this.shCorrectAnsSubscription) {
