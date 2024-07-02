@@ -1583,7 +1583,13 @@ export class PracticeComponent implements OnInit, OnChanges, OnDestroy {
         this.clearStoragePartial()
         this.clearStorage()
         this.retake = true
-        this.init()
+        // this.init()
+        if(this.selectedAssessmentCompatibilityLevel < 6) {
+          this.init()
+        } else {
+          this.canAttend()
+        }
+        
         break
     }
   }
