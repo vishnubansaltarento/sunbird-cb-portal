@@ -283,7 +283,7 @@ export class PracticeComponent implements OnInit, OnChanges, OnDestroy {
     //   this.init()
     //   this.updateVisivility()
     // } else {
-      if(this.selectedAssessmentCompatibilityLevel) {
+      if (this.selectedAssessmentCompatibilityLevel) {
         if (this.selectedAssessmentCompatibilityLevel < 6) {
           this.quizSvc.canAttend(this.identifier).subscribe(response => {
             if (response) {
@@ -310,7 +310,6 @@ export class PracticeComponent implements OnInit, OnChanges, OnDestroy {
           })
         }
       }
-     
 
     // }
   }
