@@ -60,6 +60,11 @@ export class HomeComponent implements OnInit, AfterViewInit {
   jan26Change: any
   pendingApprovalList: any
   isTelemetryRaised = false
+  isMDOMsgOpen = true
+  approvedStatusList: any = []
+  rejectedStatusList: any = []
+  approvedStatus = false
+  rejectedStatus = false
 
   configSuccess: MatSnackBarConfig = {
     panelClass: 'style-success',
@@ -71,6 +76,15 @@ export class HomeComponent implements OnInit, AfterViewInit {
   ngOnInit() {
     if (this.configSvc) {
       this.jan26Change = this.configSvc.overrideThemeChanges
+      if (this.configSvc.unMappedUser.profileDetails && this.configSvc.unMappedUser.profileDetails.additionalProperties) {
+        if (this.configSvc.unMappedUser.profileDetails.additionalProperties.isProfileUpdatedMsgViewed !== undefined) {
+          this.isMDOMsgOpen = this.configSvc.unMappedUser.profileDetails.additionalProperties.isProfileUpdatedMsgViewed
+          if (!this.isMDOMsgOpen) {
+            this.getApprovedStatus()
+            this.getRejectedStatus()
+          }
+        }
+      }
     }
     this.mobileAppsService.mobileTopHeaderVisibilityStatus.subscribe((status: any) => {
       this.mobileTopHeaderVisibilityStatus = status
@@ -322,7 +336,6 @@ export class HomeComponent implements OnInit, AfterViewInit {
        this.checkSectionVisibility(this.sectionList[i]['section'])
       }
     }
-
   }
 
   checkSectionVisibility(className: string) {
@@ -411,4 +424,84 @@ export class HomeComponent implements OnInit, AfterViewInit {
       }
     )
   }
+
+  handleMDOMsgstatus() {
+    const reqUpdates = {
+      request: {
+        userId: this.configSvc.unMappedUser.id,
+        profileDetails: {
+          additionalProperties: {
+            isProfileUpdatedMsgViewed:  true,
+          },
+         },
+      },
+    }
+    this.userProfileService.editProfileDetails(reqUpdates).subscribe((res: any) => {
+      if (res) {
+
+      }
+    },                                                               (error: HttpErrorResponse) => {
+      if (!error.ok) {
+        this.matSnackBar.open(error.error.text)
+      }
+    })
+  }
+
+  getApprovedStatus(): void {
+      this.userProfileService.fetchApprovedFields()
+      .pipe(takeUntil(this.destroySubject$))
+      .subscribe((res: any) => {
+        if (res) {
+          this.approvedStatusList = res.result.data
+          if (this.approvedStatusList && this.approvedStatusList.length > 0) {
+
+            const exists = this.approvedStatusList.filter((obj: any) => {
+              if (obj.hasOwnProperty('name') || obj.hasOwnProperty('group') || obj.hasOwnProperty('designation')) {
+                return obj
+              }
+            }).length > 0
+            if (exists) {
+              this.approvedStatus = true
+            } else {
+              this.approvedStatus = false
+            }
+          } else {
+            this.approvedStatus = false
+          }
+         }
+      },         (error: HttpErrorResponse) => {
+        if (!error.ok) {
+          this.matSnackBar.open(error.error.text)
+        }
+      })
+    }
+
+  getRejectedStatus(): void {
+      this.userProfileService.listRejectedFields()
+      .pipe(takeUntil(this.destroySubject$))
+      .subscribe((res: any) => {
+        if (res) {
+          this.rejectedStatusList = res.result.data
+          if (this.rejectedStatusList && this.rejectedStatusList.length > 0) {
+            const exists = this.rejectedStatusList.filter((obj: any) => {
+              if (obj.hasOwnProperty('name') || obj.hasOwnProperty('group') || obj.hasOwnProperty('designation')) {
+                return obj
+              }
+            }).length > 0
+
+            if (exists) {
+              this.rejectedStatus = true
+            } else {
+              this.rejectedStatus = false
+            }
+          } else {
+            this.rejectedStatus = false
+          }
+        }
+      },         (error: HttpErrorResponse) => {
+        if (!error.ok) {
+          this.matSnackBar.open(error.error.text)
+        }
+      })
+    }
 }

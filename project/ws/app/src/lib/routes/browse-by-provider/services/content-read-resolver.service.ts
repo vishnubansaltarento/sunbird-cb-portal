@@ -19,7 +19,7 @@ export class ContentReadResolverService implements
       _route: ActivatedRouteSnapshot,
       _state: RouterStateSnapshot,
   ): Observable<IResolveResponse<any>> {
-    if(environment && environment.providerDataKey){
+    if (environment && environment.providerDataKey) {
       const collectionId: any = environment.providerDataKey || ''
       return this.contentSvc.fetchProgramContent(collectionId).pipe(
         map((rData: any) => ({ data: rData, error: null })), //  (rData.responseData || []).map((p: any) => p.name)
@@ -27,6 +27,6 @@ export class ContentReadResolverService implements
         catchError((error: any) => of({ error, data: null })),
         )
     }
-    return of({data:'',error: 'No Provider Data Key' })
+    return of({ data: '', error: 'No Provider Data Key' })
   }
 }
