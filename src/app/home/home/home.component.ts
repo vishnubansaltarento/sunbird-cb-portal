@@ -60,7 +60,7 @@ export class HomeComponent implements OnInit, AfterViewInit {
   jan26Change: any
   pendingApprovalList: any
   isTelemetryRaised = false
-  isMDOMsgOpen = true 
+  isMDOMsgOpen = true
   approvedStatusList: any = []
   rejectedStatusList: any = []
   approvedStatus = false
@@ -429,10 +429,10 @@ export class HomeComponent implements OnInit, AfterViewInit {
     const reqUpdates = {
       request: {
         userId: this.configSvc.unMappedUser.id,
-        profileDetails: { 
+        profileDetails: {
           additionalProperties: {
-            isProfileUpdatedMsgViewed:  true
-          }
+            isProfileUpdatedMsgViewed:  true,
+          },
          },
       },
     }
@@ -440,7 +440,7 @@ export class HomeComponent implements OnInit, AfterViewInit {
       if (res) {
 
       }
-    }, (error: HttpErrorResponse) => {
+    },                                                               (error: HttpErrorResponse) => {
       if (!error.ok) {
         this.matSnackBar.open(error.error.text)
       }
@@ -475,7 +475,7 @@ export class HomeComponent implements OnInit, AfterViewInit {
         }
       })
     }
-  
+
   getRejectedStatus(): void {
       this.userProfileService.listRejectedFields()
       .pipe(takeUntil(this.destroySubject$))
@@ -488,7 +488,7 @@ export class HomeComponent implements OnInit, AfterViewInit {
                 return obj
               }
             }).length > 0
-            
+
             if (exists) {
               this.rejectedStatus = true
             } else {
