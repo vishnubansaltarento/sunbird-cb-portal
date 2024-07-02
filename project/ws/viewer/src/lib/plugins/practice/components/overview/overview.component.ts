@@ -60,7 +60,7 @@ export class OverviewComponent implements OnInit, OnChanges, OnDestroy {
     })
   }
 
-  ngOnChanges() {    
+  ngOnChanges() {
     if (!this.forPreview) {
       if (this.canAttempt && (this.canAttempt.attemptsMade >= this.canAttempt.attemptsAllowed)) {
         if (!this.maxAttempPopup) {
@@ -110,7 +110,7 @@ export class OverviewComponent implements OnInit, OnChanges, OnDestroy {
   }
 
   checkForAssessmentSubmitAlready(identifier: any) {
-    if(this.selectedAssessmentCompatibilityLevel < 6) {
+    if (this.selectedAssessmentCompatibilityLevel < 6) {
       this.quizSvc.canAttend(identifier).subscribe(response => {
         if (response && response.attemptsMade > 0) {
           this.quizSvc.checkAlreadySubmitAssessment.next(true)
@@ -123,7 +123,7 @@ export class OverviewComponent implements OnInit, OnChanges, OnDestroy {
         }
       })
     }
-    
+
   }
 
   ngOnDestroy() {
