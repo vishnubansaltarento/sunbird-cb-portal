@@ -5,21 +5,20 @@
 </div>
 
 
-<div class="assessment-box margin-top-l">
-<ng-container  [ngTemplateOutlet]="loadNewStrips"></ng-container>
 
-    <ng-template #loadNewStrips>
-        <ng-container *ngFor="let newStrip of assessmentStrip">
-            <sb-uic-content-strip-with-tabs 
-           
-            [widgetData]="newStrip">
-        </sb-uic-content-strip-with-tabs>
-        </ng-container>
-    </ng-template>
-</div>
 
 
 <section class="hidden md:block" style="position: relative;" [ngClass]="{'':!collapsed, 'margin-bottom-m': collapsed}">
+    <div class="assessment-box  collapsible" [@collapse]="collapsed" [ngClass]="{'margin-bottom-remove margin-top-remove':collapsed,'margin-top-l':!collapsed}">
+        <ng-container  [ngTemplateOutlet]="loadNewStrips"></ng-container>
+            <ng-template #loadNewStrips>
+                <ng-container *ngFor="let newStrip of assessmentStrip">
+                    <sb-uic-content-strip-with-tabs 
+                    [widgetData]="newStrip">
+                </sb-uic-content-strip-with-tabs>
+                </ng-container>
+            </ng-template>
+        </div>
     <section class="collapsible" [@collapse]="collapsed" [ngClass]="{'padding-top-m':(!collapsed && isLeaderboardExist)}">
         <ws-widget-user-leaderboard (isLeaderboardAvailable)="checkLeaderboardData($event)"></ws-widget-user-leaderboard>
     </section>
