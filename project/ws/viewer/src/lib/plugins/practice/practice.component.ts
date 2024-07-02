@@ -134,7 +134,7 @@ export class PracticeComponent implements OnInit, OnChanges, OnDestroy {
   questionVisitedData: any = []
   assessmentType = 'optionalWeightage'
   compatibilityLevel = 2
-  selectedAssessmentCompatibilityLevel = 2
+  selectedAssessmentCompatibilityLevel = 0
   sectionalInstruction: any = ''
   allSectionTimeLimit = 0
   totalAssessemntQuestionsCount = 0
@@ -226,6 +226,44 @@ export class PracticeComponent implements OnInit, OnChanges, OnDestroy {
       }
     })
   }
+
+  retakeAssessment() {
+    if (window.innerWidth < 768) {
+      this.isMobile = true
+    } else {
+      this.isMobile = false
+    }
+    // if (this.coursePrimaryCategory === 'Standalone Assessment') {
+    //   // this.getSections()
+    // }
+    this.isSubmitted = false
+    this.markedQuestions = new Set([])
+    this.questionAnswerHash = {}
+    // this.quizSvc.mtfSrc.next({})
+    // quizSvc.questionAnswerHash.subscribe(qaHash => {
+    //   this.questionAnswerHash = qaHash
+    // })
+    // console.log(activatedRoute.snapshot.data)
+    this.router.events.pipe(
+      filter(e => e instanceof NavigationStart && e.navigationTrigger === 'imperative'),
+      // switchMap(() => this.router.events.pipe(
+      //   filter(e => e instanceof NavigationEnd
+      //     || e instanceof NavigationCancel
+      //     || e instanceof NavigationError
+      //   ),
+      //   take(1),
+      //   filter(e => e instanceof NavigationEnd)
+      // ))
+    ).subscribe(() => {
+      if (this.viewState !== 'initial' && !this.isSubmitted) {
+        this.submitQuiz()
+      }
+      // console.log(val)
+    })
+    this.valueSvc.isXSmall$.subscribe((isXSmall: any) => {
+      this.isXsmall = isXSmall
+    })
+  }
   @HostListener('window:beforeunload', ['$event'])
   beforeUnloadHander(e: any) {
     // or directly false
@@ -245,36 +283,38 @@ export class PracticeComponent implements OnInit, OnChanges, OnDestroy {
     //   this.init()
     //   this.updateVisivility()
     // } else {
-      if (this.selectedAssessmentCompatibilityLevel < 6) {
-        this.quizSvc.canAttend(this.identifier).subscribe(response => {
-          if (response) {
-             this.canAttempt = response
-            //  this.canAttempt = {
-            //   attemptsAllowed: 1,
-            //   attemptsMade: 0,
-            // }
-          }
-          this.init()
-          this.updateVisivility()
-        })
-      } else {
-        this.quizSvc.canAttendV5(this.identifier).subscribe(response => {
-          if (response) {
-             this.canAttempt = response
-            //  this.canAttempt = {
-            //   attemptsAllowed: 1,
-            //   attemptsMade: 0,
-            // }
-          }
-          this.init()
-          this.updateVisivility()
-        })
+      if(this.selectedAssessmentCompatibilityLevel) {
+        if (this.selectedAssessmentCompatibilityLevel < 6) {
+          this.quizSvc.canAttend(this.identifier).subscribe(response => {
+            if (response) {
+               this.canAttempt = response
+              //  this.canAttempt = {
+              //   attemptsAllowed: 1,
+              //   attemptsMade: 0,
+              // }
+            }
+            this.init()
+            this.updateVisivility()
+          })
+        } else {
+          this.quizSvc.canAttendV5(this.identifier).subscribe(response => {
+            if (response) {
+               this.canAttempt = response
+              //  this.canAttempt = {
+              //   attemptsAllowed: 1,
+              //   attemptsMade: 0,
+              // }
+            }
+            this.init()
+            this.updateVisivility()
+          })
+        }
       }
+     
 
     // }
   }
   ngOnInit() {
-
     this.attemptSubscription = this.quizSvc.secAttempted.subscribe(data => {
       this.attemptSubData = data
     })
@@ -1583,11 +1623,21 @@ export class PracticeComponent implements OnInit, OnChanges, OnDestroy {
         this.clearStoragePartial()
         this.clearStorage()
         this.retake = true
+        
         // this.init()
         if(this.selectedAssessmentCompatibilityLevel < 6) {
           this.init()
-        } else {
-          this.canAttend()
+        } else {      
+          this.quizSvc.canAttendV5(this.identifier).subscribe(response => {
+            if (response) {
+                this.canAttempt = response
+              //  this.canAttempt = {
+              //   attemptsAllowed: 1,
+              //   attemptsMade: 0,
+              // }
+            }
+          })
+          this.retakeAssessment()
         }
         
         break
