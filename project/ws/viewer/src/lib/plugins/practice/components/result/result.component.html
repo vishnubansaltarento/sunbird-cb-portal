@@ -324,12 +324,12 @@
           </div>
         </ng-container>
       
-        <div class="header-text flex flex-col" *ngIf="quizResponse.children.length > 1">
+        <div class="header-text flex flex-col" *ngIf="quizResponse?.children?.length > 1">
           {{ 'quizresult.mySectionwiseSummary' | translate}}
           <span class="mt-1"></span>
         </div>
       
-        <div *ngIf="quizResponse.children.length > 1">
+        <div *ngIf="quizResponse?.children?.length > 1">
           <table
             mat-table
             [dataSource]="summaryTableDataSource"
@@ -438,7 +438,7 @@
         <ng-container *ngIf="questionTYP.PRACTICE_RESOURCE !== quizCategory; else overAllPerformance">
           <div class="flex overAllScore justify-center items-center">
             <div class="flex justify-center items-center totalScore w-full">
-              Your SCORE
+              {{ 'quizresult.yourScore' | translate}}
             </div>
             <div class="separator"></div>
             <div class="flex justify-center items-center totalScore w-full" *ngIf="quizResponse && quizResponse?.totalMarks">
@@ -529,7 +529,7 @@
                           mat-cell
                           *matCellDef="let element; let rowIndex = index;"
                       >
-                          <span [ngClass]="{'correct': element[disCol.key] === 'correct', 'wrong': element[disCol.key] === 'incorrect', 'blank': element[disCol.key] === 'blank'}"><span [innerHtml]="element[disCol.key]"></span></span>
+                          <span [ngClass]="{'correct': element[disCol.key] === 'correct', 'wrong': element[disCol.key] === 'wrong', 'blank': element[disCol.key] === 'blank'}"><span [innerHtml]="element[disCol.key]"></span></span>
                       </td>
                   </ng-container>
               </ng-container>

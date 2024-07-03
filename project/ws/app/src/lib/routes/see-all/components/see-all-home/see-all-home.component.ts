@@ -46,7 +46,6 @@ export class SeeAllHomeComponent implements OnInit, OnDestroy {
       this.tabCompleted = (res.tab) ? res.tab : ''
       this.tabSelected = (res.tabSelected) ? res.tabSelected : ''
     })
-
     const configData = await this.seeAllSvc.getSeeAllConfigJson().catch(_error => {})
     configData.homeStrips.forEach((ele: any) => {
       if (ele && ele.strips.length > 0) {
@@ -57,6 +56,17 @@ export class SeeAllHomeComponent implements OnInit, OnDestroy {
         })
       }
     })
+    if(!this.seeAllPageConfig) {
+      configData && configData.assessmentData.forEach((ele: any) => {
+        if (ele && ele.strips && ele.strips.length > 0) {
+          ele.strips.forEach((subEle: any) => {
+            if (subEle.key === this.keyData) {
+              this.seeAllPageConfig = subEle
+            }
+          })
+        }
+      })
+    }
     if (
       this.tabSelected &&
       this.seeAllPageConfig.tabs &&

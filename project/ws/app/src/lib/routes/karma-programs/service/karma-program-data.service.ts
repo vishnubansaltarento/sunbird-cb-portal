@@ -26,8 +26,7 @@ resolve(
       'pageSize': 100,
       'orderBy': 'createdOn',
       'orderDirection': 'ASC',
-      'facets': ['category', 'orgId'],
-      'query': '',
+      'facets': ['category', 'orgId']
     }
     return this.http.post(requestUrl, requestData).pipe(
       map((rData: any) => ({ data: rData, error: null })),
