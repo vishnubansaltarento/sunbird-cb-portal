@@ -4,13 +4,50 @@
         [insightsData]="insightsData" [isLoading]="profileDataLoading"></ws-widget-profile-card-stats>
 </div>
 
+
+
+
+
 <section class="hidden md:block" style="position: relative;" [ngClass]="{'':!collapsed, 'margin-bottom-m': collapsed}">
+    <div class="assessment-box  collapsible" [@collapse]="collapsed" [ngClass]="{'margin-bottom-remove margin-top-remove':collapsed,'margin-top-l':!collapsed}">
+        <ng-container  [ngTemplateOutlet]="loadNewStrips"></ng-container>
+            <ng-template #loadNewStrips>
+                <ng-container *ngFor="let newStrip of assessmentStrip">
+                    <sb-uic-content-strip-with-tabs 
+                    [widgetData]="newStrip">
+                </sb-uic-content-strip-with-tabs>
+                </ng-container>
+            </ng-template>
+        </div>
     <section class="collapsible" [@collapse]="collapsed" [ngClass]="{'padding-top-m':(!collapsed && isLeaderboardExist)}">
         <ws-widget-user-leaderboard (isLeaderboardAvailable)="checkLeaderboardData($event)"></ws-widget-user-leaderboard>
     </section>
     <div class="collapsible" [@collapseWeekly]="collapsed" [ngClass]="{'margin-bottom-m margin-top-m':!collapsed}">
         <ws-widget-weekly-claps [insightsData]="insightsData" [weeklyData]="homePageData.weeklyClaps" [isLoading]="clapsDataLoading"></ws-widget-weekly-claps>
     </div>
+
+    <div class="tips-container">
+        <div class="circle-box">
+            <div class="background-circle">
+                <!-- circle -->
+            </div>
+        </div>
+        <div class="tips-header">
+            <h3>Tips for Learners</h3>
+            <button (click)="showAllTips()">Show all ></button>
+        </div>
+        <div class="tip-content">
+            <div class =" background">
+            <img  class="book-icon" src="assets/icons/learner-advisory/use-gyaan-karmayogi.png"
+                alt="Use the new section Gyaan Karmayogi regularly, to go over case studies and other learning material.">
+            </div>    
+            <p>{{'learnerAdvisory.useGyaanKarmayogi' | translate}}</p>
+            <div class="tip-count">
+                1/13
+            </div>
+        </div>
+    </div>
+
 
     <div *ngIf="assessmentsData" class="margin-bottom-m" class="collapsible" [@collapsDiscuss]="collapsed" [ngClass]="{'padding-bottom-m': !collapsed}">
         <div class="assessments-wrapper">
