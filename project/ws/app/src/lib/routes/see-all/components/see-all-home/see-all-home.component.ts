@@ -8,7 +8,7 @@ import {
 } from '@angular/router'
 // tslint:disable-next-line
 import * as _ from 'lodash'
-import { ConfigurationsService, EventService, MultilingualTranslationsService, WsEvents,NsContent } from '@sunbird-cb/utils-v2'
+import { ConfigurationsService, EventService, MultilingualTranslationsService, WsEvents, NsContent } from '@sunbird-cb/utils-v2'
 import { SeeAllService } from '../../services/see-all.service'
 import { WidgetUserService } from '@sunbird-cb/collection/src/lib/_services/widget-user.service'
 import { MatTabChangeEvent } from '@angular/material'
@@ -61,7 +61,7 @@ export class SeeAllHomeComponent implements OnInit, OnDestroy {
         })
       }
     })
-    if(!this.seeAllPageConfig) {
+    if (!this.seeAllPageConfig) {
       configData && configData.assessmentData.forEach((ele: any) => {
         if (ele && ele.strips && ele.strips.length > 0) {
           ele.strips.forEach((subEle: any) => {
