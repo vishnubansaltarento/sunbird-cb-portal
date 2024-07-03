@@ -3,7 +3,12 @@ import { Component, HostBinding, Input, OnInit } from '@angular/core'
 import { Router } from '@angular/router'
 // import { environment } from './../../../environments/environment'
 import { NsWidgetResolver, WidgetBaseComponent } from '@sunbird-cb/resolver'
+<<<<<<< HEAD
 import { ConfigurationsService, MultilingualTranslationsService, NsInstanceConfig } from '@sunbird-cb/utils'
+=======
+import { ConfigurationsService, MultilingualTranslationsService, NsInstanceConfig } from '@sunbird-cb/utils-v2'
+
+>>>>>>> 996d3676df4b6f3fe3bab79d2d013b117461a04e
 import { BtnPageBackService } from './btn-page-back.service'
 import { DiscussUtilsService } from '@ws/app/src/lib/routes/discuss/services/discuss-utils.service'
 import { environment } from 'src/environments/environment'

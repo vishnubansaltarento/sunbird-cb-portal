@@ -1,6 +1,6 @@
 import { Component, Input, OnInit, OnDestroy, HostBinding } from '@angular/core'
 import { NsWidgetResolver, WidgetBaseComponent } from '@sunbird-cb/resolver'
-import { ConfigurationsService, LogoutComponent, NsPage, NsAppsConfig, EventService, WsEvents } from '@sunbird-cb/utils'
+import { ConfigurationsService, LogoutComponent, NsPage, NsAppsConfig, EventService, WsEvents } from '@sunbird-cb/utils-v2'
 import { IBtnAppsConfig } from '../btn-apps/btn-apps.model'
 import { MatDialog } from '@angular/material'
 import { Subscription } from 'rxjs'
@@ -60,7 +60,8 @@ export class BtnProfileComponent extends WidgetBaseComponent
     super()
     this.btnAppsConfig = { ...this.basicBtnAppsConfig }
     this.btnSettingsConfig = { ... this.settingBtnConfig }
-    if (this.configSvc.unMappedUser.profileDetails.profileStatus === 'VERIFIED') {
+    if (this.configSvc.unMappedUser && this.configSvc.unMappedUser.profileDetails && 
+      this.configSvc.unMappedUser.profileDetails.profileStatus === 'VERIFIED') {
       this.verifiedBadge = true
     }
     this.updateUserInfo()

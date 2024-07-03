@@ -8,7 +8,7 @@ import { SafeHtml } from '@angular/platform-browser'
 import { PracticeService } from '../../practice.service'
 // tslint:disable-next-line
 import _ from 'lodash'
-import { NsContent } from '@sunbird-cb/utils/src/public-api'
+import { NsContent } from '@sunbird-cb/utils-v2'
 import { MatSnackBar, MatSnackBarConfig } from '@angular/material'
 @Component({
   selector: 'viewer-question',
@@ -27,6 +27,7 @@ export class QuestionComponent implements OnInit, OnChanges, AfterViewInit {
   @Input() totalQCount: any
   @Input() showAnswer: any
   @Input() currentQuestion: any
+  @Input() selectedAssessmentCompatibilityLevel = 2
   @Input() question: NSPractice.IQuestion = {
     multiSelection: false,
     section: '',
@@ -34,6 +35,8 @@ export class QuestionComponent implements OnInit, OnChanges, AfterViewInit {
     editorState: undefined,
     question: '',
     questionId: '',
+    questionLevel: '',
+    timeTaken: '',
     options: [
       {
         optionId: '',
@@ -45,7 +48,10 @@ export class QuestionComponent implements OnInit, OnChanges, AfterViewInit {
   @Input() itemSelectedList: string[] = []
   @Input() markedQuestions: Set<string> = new Set()
   @Output() itemSelected = new EventEmitter<string | Object>()
-
+  @Output() getNextQuestion = new EventEmitter<Boolean>()
+  @Output() clearQuestion = new EventEmitter<Boolean>()
+  @Input() questionAnswerHash: any
+  @Input() showQuestionMarks = 'No'
   quizAnswerHash: { [questionId: string]: string[] } = {}
   title = 'match'
   itemSelectedList1: any
@@ -56,7 +62,12 @@ export class QuestionComponent implements OnInit, OnChanges, AfterViewInit {
   matchHintDisplay: NSPractice.IOption[] = []
   isMobile = false
   @Input() mobileQuestionSetExpand: any = false
+  @Input() coursePrimaryCategory: any
+  @Input() showOnlyQuestion: any
+  @Input() showMarkForReview: any = false
+  @Input() assessmentType = ''
   expandedQuestionSetSubscription: any
+
   constructor(
     // private domSanitizer: DomSanitizer,
     // private elementRef: ElementRef,
@@ -125,7 +136,14 @@ export class QuestionComponent implements OnInit, OnChanges, AfterViewInit {
       this.markedQuestions.delete(this.question.questionId)
     } else {
       this.markedQuestions.add(this.question.questionId)
+      if (this.selectedAssessmentCompatibilityLevel >= 6) {
+        this.getNextQuestion.emit(true)
+      }
     }
+  }
+
+  clearResponse() {
+    this.clearQuestion.emit(true)
   }
 
   setBorderColorById(id: string, color: string | null) {

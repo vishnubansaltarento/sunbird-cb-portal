@@ -1,7 +1,7 @@
 import { DatePipe } from '@angular/common'
 import {  Component, OnInit } from '@angular/core'
 import { ActivatedRoute, Router } from '@angular/router'
-import { EventService, WsEvents } from '@sunbird-cb/utils'
+import { EventService, WsEvents } from '@sunbird-cb/utils-v2'
 import * as _ from 'lodash'
 
 @Component({
@@ -103,11 +103,12 @@ export class ProviderPageComponent implements OnInit  {
         delete(stripData['loaderWidgets'])
         this.router.navigate(
           [`/app/learn/browse-by/provider/${this.providerName}/${this.providerId}/all-content`],
-          { queryParams: { stripData: JSON.stringify(stripData) } })
+          { queryParams: { stripData: JSON.stringify(stripData), pageDetails: true } })
       }
     } else {
        this.router.navigate(
-        [`/app/learn/browse-by/provider/${this.providerName}/${this.providerId}/all-CBP`])
+        [`/app/learn/browse-by/provider/${this.providerName}/${this.providerId}/all-CBP`],
+        { queryParams: { pageDetails: true } })
     }
   }
 
@@ -135,7 +136,6 @@ export class ProviderPageComponent implements OnInit  {
     }
   }
 
- 
   raiseCompetencyTelemetry(name: string) {
     this.raiseTelemetry(`${name} core expertise`)
   }

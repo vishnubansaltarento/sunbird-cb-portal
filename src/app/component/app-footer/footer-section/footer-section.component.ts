@@ -1,5 +1,5 @@
 import { Component, Input, OnInit } from '@angular/core'
-import { ConfigurationsService, MultilingualTranslationsService } from '@sunbird-cb/utils'
+import { ConfigurationsService, MultilingualTranslationsService } from '@sunbird-cb/utils-v2'
 import { Router } from '@angular/router'
 import { DiscussUtilsService } from '@ws/app/src/lib/routes/discuss/services/discuss-utils.service'
 /* tslint:disable */

@@ -2,7 +2,7 @@ import { Component, OnInit, OnDestroy, Inject, PLATFORM_ID } from '@angular/core
 import { Subscription, Observable, interval } from 'rxjs'
 import { FormGroup, FormControl, Validators, AbstractControl, ValidatorFn } from '@angular/forms'
 import { SignupService } from './signup.service'
-import { LoggerService, ConfigurationsService, NsInstanceConfig, MultilingualTranslationsService } from '@sunbird-cb/utils/src/public-api'
+import { LoggerService, ConfigurationsService, NsInstanceConfig, MultilingualTranslationsService } from '@sunbird-cb/utils-v2'
 import { startWith, map, pairwise } from 'rxjs/operators'
 import { environment } from 'src/environments/environment'
 import { MatSnackBar, MatDialog } from '@angular/material'

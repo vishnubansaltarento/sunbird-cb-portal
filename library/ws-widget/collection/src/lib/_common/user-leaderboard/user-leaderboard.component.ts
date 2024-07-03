@@ -1,11 +1,11 @@
 import { Component, EventEmitter, OnInit, Output } from '@angular/core'
 // import { Router } from '@angular/router'
-import { ConfigurationsService, MultilingualTranslationsService } from '@sunbird-cb/utils'
-import { PipeDurationTransformPipe } from '@sunbird-cb/utils/src/public-api'
+import { ConfigurationsService, MultilingualTranslationsService, PipeDurationTransformPipe
+  , PipeOrdinalPipe,
+ } from '@sunbird-cb/utils-v2'
 import { HomePageService } from 'src/app/services/home-page.service'
 import moment from 'moment'
 import { UserProfileService } from '@ws/app/src/lib/routes/user-profile/services/user-profile.service'
-import { PipeOrdinalPipe } from '@sunbird-cb/utils/src/lib/pipes/pipe-ordinal/pipe-ordinal.pipe'
 
 @Component({
   selector: 'ws-widget-user-leaderboard',

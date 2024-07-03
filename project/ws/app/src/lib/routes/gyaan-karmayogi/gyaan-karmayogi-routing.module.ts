@@ -6,7 +6,7 @@ import { GyaanPlayerComponent } from './components/gyaan-player/gyaan-player.com
 import { GyaanKarmayogiComponent } from './gyaan-karmayogi.component'
 import { ViewerResolve } from '@ws/viewer/src/lib/viewer.resolve'
 import { GyaanKarmayogiViewAllComponent } from './components/gyaan-karmayogi-view-all/gyaan-karmayogi-view-all.component'
-import { PageResolve } from '@sunbird-cb/utils/src/public-api'
+import { PageResolve } from '@sunbird-cb/utils-v2'
 import { GyaanVideoComponent } from './components/players/gyaan-video/gyaan-video.component'
 import { PdfComponent } from './components/players/pdf/pdf.component'
 import { GyaanAudioComponent } from './components/players/gyaan-audio/gyaan-audio.component'

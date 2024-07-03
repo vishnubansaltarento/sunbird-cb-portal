@@ -7,7 +7,8 @@ import { Subject, Observable } from 'rxjs'
 import _ from 'lodash'
 import { LocalDataService } from '../../../browse-by-competency/services/localService';
 import { TranslateService } from '@ngx-translate/core'
-import { MultilingualTranslationsService } from '@sunbird-cb/utils/src/public-api'
+import { MultilingualTranslationsService } from '@sunbird-cb/utils-v2'
+import { ActivatedRoute } from '@angular/router'
 // tslint:enable
 
 @Component({
@@ -33,6 +34,7 @@ export class AllProvidersComponent implements OnInit {
     { title: 'Learn', url: '/page/learn', icon: 'school' },
     { title: 'All Providers', url: 'none', icon: '' },
   ]
+  featuredProviders = []
   getAllProvidersReq = {
     request: {
       filters: {
@@ -50,6 +52,7 @@ export class AllProvidersComponent implements OnInit {
     private browseProviderSvc: BrowseProviderService,
     private localService: LocalDataService,
     private translate: TranslateService,
+    private route: ActivatedRoute,
     private langtranslations: MultilingualTranslationsService,
   ) {
     this.langtranslations.languageSelectedObservable.subscribe(() => {
@@ -59,6 +62,14 @@ export class AllProvidersComponent implements OnInit {
         this.translate.use(lang)
       }
     })
+    if (this.route.snapshot.data && this.route.snapshot.data.contentData
+      && this.route.snapshot.data.contentData.data
+      && this.route.snapshot.data.contentData.data.result
+      && this.route.snapshot.data.contentData.data.result.content
+      && this.route.snapshot.data.contentData.data.result.content.featuredProviders
+    ) {
+      this.featuredProviders = JSON.parse(this.route.snapshot.data.contentData.data.result.content.featuredProviders)
+    }
    }
 
   ngOnInit() {

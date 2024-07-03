@@ -43,6 +43,7 @@ export const environment: IEnvironment = {
   supportEmail: (window as { [key: string]: any })['env']['supportEmail'] || '',
   spvorgID: (window as { [key: string]: any })['env']['spvorgID'] || '',
   mdoChannelsBookmarkId: (window as { [key: string]: any })['env']['mdoChannelsBookmarkId'] || '',
+  providerDataKey: (window as { [key: string]: any })['env']['providerDataKey'] || '',
 }
 interface IEnvironment {
   name: string,
@@ -81,6 +82,7 @@ interface IEnvironment {
   apiCache: number,
   spvorgID: number,
   mdoChannelsBookmarkId: string
+  providerDataKey: string,
 }
 
 // import { AnyCnameRecord } from 'dns'

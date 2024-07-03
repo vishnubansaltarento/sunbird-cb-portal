@@ -145,6 +145,16 @@
     }
 }
 
+.box-height-standalone {
+    min-height: 557px;
+    box-sizing: border-box;
+    .small-screen {
+    @include breakpoint-xs {
+        display: none !important;
+    } 
+    }
+}
+
 .summary-detail-list {
     margin-left: 16px !important;
 }
@@ -161,6 +171,11 @@
 
 .assessment-stats-count {
     padding: 24px 16px;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.08);
+}
+
+.standalone-assessment-stats-count {
+    padding: 12px 0px;
     border-bottom: 1px solid rgba(0, 0, 0, 0.08);
 }
 
@@ -220,8 +235,30 @@
     background-color: rgb(26,76,161);
 }
 
-.summary-list-label {
-    // margin-left: 16px;
+// .summary-list-label {
+//     // margin-left: 16px;
+// }
+
+.summary-standalone {
+    word-wrap: break-word;
+    overflow-y: auto;
+    min-height: 100px;
+    // height: calc(100vh - 220px);
+
+}
+
+::ng-deep .consent-checkbox .mat-checkbox-label{
+    width: 100%;    
+    /* overflow: hidden; */
+    white-space: pre-wrap;
+}
+
+.secondary-standalone {
+    background-color: #999999;
+}
+
+.text-standalone-black {
+    color: #666666
 }
 
 @media only screen and (max-width: 767px) {
@@ -258,6 +295,32 @@
     .start-assessment-cta button {
         width: 98%;
     }
+
+    .box-height-standalone {
+        min-height: 100vh;
+    }
+
+    .summary-standalone {
+        word-wrap: break-word;
+        overflow-y: auto;
+        height: calc(100vh - 350px);
+    
+    }
+
+    .consent-checkbox {
+        bottom: 0;
+        /* margin: 0 auto; */
+        /* width: 100%; */
+        padding: 0 10px;
+        margin: 10px 0;
+    }
+
+    ::ng-deep .consent-checkbox .mat-checkbox-label{
+        width: 100%;    
+        /* overflow: hidden; */
+        white-space: pre-wrap;
+    }
+
 }
 
 @media only screen and (min-width: 540px) and (max-width: 540px) {
@@ -393,6 +456,22 @@
 
     .start-assessment-cta button {
         width: 100%;
+    }
+}
+
+.blue-outline {
+    height: 30px;
+    padding: 0px 16px;
+    border-radius: 20px;
+    font-size: 14px;
+    font-weight: 700;
+    border: 1px solid #1B4CA1;
+    color: #1B4CA1 !important;
+
+    .navigation-icons {
+        height: 20px;
+        font-size: 20px;
+        width: 15px;
     }
 }
 

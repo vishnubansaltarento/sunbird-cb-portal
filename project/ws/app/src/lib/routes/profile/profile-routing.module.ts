@@ -2,7 +2,7 @@ import { AccountPasswordSettingsComponent } from './routes/settings/components/a
 import { PrivacySettingsComponent } from './routes/settings/components/privacy-settings/privacy-settings.component'
 import { NgModule } from '@angular/core'
 import { RouterModule, Routes } from '@angular/router'
-import { PageResolve } from '@sunbird-cb/utils'
+import { PageResolve } from '@sunbird-cb/utils-v2'
 import { ProfileComponent } from './profile.component'
 import { LearningComponent } from './routes/analytics/routes/learning/learning.component'
 import { PlansComponent } from './routes/analytics/routes/plans/plans.component'

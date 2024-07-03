@@ -1,5 +1,5 @@
 import { AfterViewChecked, Component, ElementRef, OnInit, Renderer2, ViewChild } from '@angular/core'
-import { ConfigurationsService, EventService, WsEvents } from '@sunbird-cb/utils'
+import { ConfigurationsService, EventService, WsEvents } from '@sunbird-cb/utils-v2'
 // import { ChatbotService } from './chatbot.service'
 import { RootService } from './../root/root.service'
 import { environment } from 'src/environments/environment'

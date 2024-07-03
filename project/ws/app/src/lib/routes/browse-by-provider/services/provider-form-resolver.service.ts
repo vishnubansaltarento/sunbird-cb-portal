@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core'
-import { ActivatedRouteSnapshot, Resolve, RouterStateSnapshot } from '@angular/router'
-import { IResolveResponse } from '@sunbird-cb/utils'
+import { ActivatedRouteSnapshot, Resolve, Router, RouterStateSnapshot } from '@angular/router'
+import { IResolveResponse } from '@sunbird-cb/utils-v2'
 import { Observable, of } from 'rxjs'
 import { catchError, map, tap } from 'rxjs/operators'
 import { FormExtService } from 'src/app/services/form-ext.service'
@@ -12,6 +12,7 @@ export class ProviderFormResolverService
 implements
 Resolve<Observable<IResolveResponse<any>> | IResolveResponse<any>> {
 constructor(
+private router: Router,
 private formSvc: FormExtService) {}
 
 resolve(
@@ -19,6 +20,7 @@ resolve(
     _state: RouterStateSnapshot,
 ): Observable<IResolveResponse<any>> {
     const orgId = _route.params && _route.params.orgId || ''
+    const provider = _route.params && _route.params.provider || ''
     const requestData: any = {
       'request': {
           'type': 'ATI-CTI',
@@ -32,6 +34,10 @@ resolve(
       map((rData: any) => ({ data: rData, error: null })),
       tap((resolveData: any) => {
         const finalData = resolveData && resolveData.data.result.form
+        if (finalData.rootOrgId !== orgId) {
+          this.router.navigate([`/app/learn/browse-by/provider/${provider}/${orgId}/all-CBP`])
+          return  of({ })
+        }
         return of({ error: null, data: finalData })
       }),
       catchError((error: any) => of({ error, data: null })),

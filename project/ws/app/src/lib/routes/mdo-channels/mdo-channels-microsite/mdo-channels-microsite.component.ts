@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core'
 import { MatTabChangeEvent } from '@angular/material'
 import { ActivatedRoute, Router } from '@angular/router'
-import { EventService, WsEvents } from '@sunbird-cb/utils'
+import { EventService, WsEvents } from '@sunbird-cb/utils-v2'
 /* tslint:disable */
 import * as _ from 'lodash'
 import { TranslateService } from '@ngx-translate/core'
@@ -22,7 +22,7 @@ export class MdoChannelsMicrositeComponent implements OnInit {
   titles = [
     { title: 'Learn', url: '/page/learn', icon: 'school', disableTranslate: false },
     {
-      title: `MDO channel`,
+      title: `MDO Channel`,
       url: `/app/learn/mdo-channels/all-channels`,
       icon: '', disableTranslate: true,
     },
@@ -73,6 +73,9 @@ export class MdoChannelsMicrositeComponent implements OnInit {
     if (event) {
       contentStripData['hideSection'] = true
       this.contentTabEmptyResponseCount = this.contentTabEmptyResponseCount + 1
+      // if(this.contentTabEmptyResponseCount === 4 ) {
+      //   this.selectedIndex = 1
+      // }
     }
   }
 

@@ -5,7 +5,7 @@ import { errorCodes } from './errors'
 import _ from 'lodash'
 import { HttpBackend, HttpClient } from '@angular/common/http'
 import { ActivatedRoute } from '@angular/router';
-import { ConfigurationsService } from '@sunbird-cb/utils/src/public-api';
+import { ConfigurationsService } from '@sunbird-cb/utils-v2';
 import { NsContent } from '@sunbird-cb/collection'
 import dayjs from 'dayjs'
 import { ViewerUtilService } from '../../../viewer-util.service'

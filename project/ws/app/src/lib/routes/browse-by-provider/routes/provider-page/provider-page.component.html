@@ -80,7 +80,8 @@
                     </div>
                     <button
                         (click)="raiseTelemetry(data?.contentButton?.title)"
-                        [routerLink]="[data?.contentButton?.redirectUrl, providerName, providerId, 'all-CBP']" mat-button type="button"
+                        [routerLink]="[data?.contentButton?.redirectUrl, providerName, providerId, 'all-CBP']"
+                        [queryParams]="{pageDetails: true}" mat-button type="button"
                         class="view-btn margin-left-xs margin-right-xs small-button blue-border flex-auto-display">
                         <span class="mat-heading-1 bold ws-mat-default-text" i18n>
                             {{data?.contentButton?.title}}
@@ -250,8 +251,8 @@
     <div class="contributors-background px-5 py-5" [style.background]="data?.background" *ngIf="!data?.hideSection">
         <div class="container">
             <div class="grid grid-cols-12 gap-4 padding-top-l mb-6">
-                <div class="col-span-12 md:col-span-3 contributor-desc">
-                    <div class="infra-box flex flex-col">
+                <div class="col-span-12 md:col-span-4 contributor-desc">
+                    <div class="infra-box-review flex flex-col">
                         <div class="learner-title hidden md:block">
                             {{data?.detaulTitle}}
                         </div>
@@ -263,7 +264,7 @@
                         </div>  
                     </div> 
                 </div>
-                <div class="col-span-12 md:col-span-9">
+                <div class="col-span-12 md:col-span-8">
                     <sb-uic-user-content-rating (emptyResponse)="hideLearnerReview($event, data)"  [formData]="data" [providerId]="providerId"></sb-uic-user-content-rating>
                 </div>
             </div>

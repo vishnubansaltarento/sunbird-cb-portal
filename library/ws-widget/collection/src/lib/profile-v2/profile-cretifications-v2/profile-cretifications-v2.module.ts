@@ -6,7 +6,7 @@ import {
 } from '@angular/material'
 import { BrowserModule } from '@angular/platform-browser'
 import { ProfileCertificateDialogModule } from '../profile-certificate-dialog/profile-certificate-dialog.module'
-import { PipePublicURLModule, DefaultThumbnailModule, PipeCertificateImageURLModule } from '@sunbird-cb/utils/src/public-api'
+import { PipePublicURLModule, DefaultThumbnailModule, PipeCertificateImageURLModule } from '@sunbird-cb/utils-v2'
 import { TranslateModule } from '@ngx-translate/core'
 
 @NgModule({

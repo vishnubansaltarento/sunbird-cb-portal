@@ -1,7 +1,7 @@
 import { HttpClient } from '@angular/common/http'
 import { Injectable } from '@angular/core'
 import { Resolve } from '@angular/router'
-import { IResolveResponse } from '@sunbird-cb/utils/src/public-api'
+import { IResolveResponse } from '@sunbird-cb/utils-v2'
 import { Observable, forkJoin, of } from 'rxjs'
 import { catchError, map, tap } from 'rxjs/operators'
 

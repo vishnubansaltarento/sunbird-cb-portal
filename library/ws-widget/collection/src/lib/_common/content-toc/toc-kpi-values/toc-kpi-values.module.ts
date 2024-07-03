@@ -5,7 +5,7 @@ import { HttpClient } from '@angular/common/http'
 import { HttpLoaderFactory } from 'src/app/app.module'
 import { TranslateModule, TranslateLoader } from '@ngx-translate/core'
 
-import { PipeDurationTransformModule } from '@sunbird-cb/utils/src/public-api'
+import { PipeDurationTransformModule } from '@sunbird-cb/utils-v2'
 
 import { TocKpiValuesComponent } from './toc-kpi-values.component'
 

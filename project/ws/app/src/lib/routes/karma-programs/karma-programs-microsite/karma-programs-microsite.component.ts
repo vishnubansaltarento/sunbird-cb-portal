@@ -2,9 +2,8 @@ import { Component, OnInit } from '@angular/core'
 import { ActivatedRoute } from '@angular/router'
 import { CommonMethodsService } from '@sunbird-cb/consumption'
 import { KarmaProgramsService } from '../service/karma-programs.service'
-import { EventService, WsEvents } from '@sunbird-cb/utils'
+import { EventService, WsEvents, MultilingualTranslationsService, ConfigurationsService } from '@sunbird-cb/utils-v2'
 import { TranslateService } from '@ngx-translate/core'
-import { MultilingualTranslationsService } from '@sunbird-cb/utils-v2'
 
 @Component({
   selector: 'ws-app-karma-programs-microsite',
@@ -22,7 +21,7 @@ export class KarmaProgramsMicrositeComponent implements OnInit {
   titles = [
     { title: 'Learn', url: '/page/learn', icon: 'school', disableTranslate: false },
     {
-      title: `Karma programs`,
+      title: `Karma Programs`,
       url: `/app/learn/karma-programs/all-programs`,
       icon: '', disableTranslate: true,
     },
@@ -34,6 +33,7 @@ export class KarmaProgramsMicrositeComponent implements OnInit {
               private translate: TranslateService,
               private langtranslations: MultilingualTranslationsService,
               public eventSvc: EventService,
+              private configSvc: ConfigurationsService,
               public commonSvc: CommonMethodsService) {
                 this.langtranslations.languageSelectedObservable.subscribe(() => {
                   if (localStorage.getItem('websiteLanguage')) {
@@ -78,8 +78,22 @@ export class KarmaProgramsMicrositeComponent implements OnInit {
       const response = await this.fetchFromSearchV6(request)
       if (response && response.results) {
         if (response.results.result.content) {
-         this.contentDataList = this.commonSvc.transformContentsToWidgets(response.results.result.content, strip)
-         this.originalContentlist = response.results.result.content
+          let contentList = []
+          if (this.configSvc && this.configSvc.unMappedUser &&
+               this.configSvc.unMappedUser.profileDetails &&
+               this.configSvc.unMappedUser.profileDetails.profileStatus &&
+               this.configSvc.unMappedUser.profileDetails.profileStatus === 'VERIFIED') {
+          contentList = response.results.result.content
+        } else {
+          contentList = response.results.result.content.filter((ele: any) => {
+            if (ele.secureSettings) {
+              return ele.secureSettings && ele.secureSettings.isVerifiedKarmayogi === 'No'
+            }
+            return ele
+          })
+        }
+         this.contentDataList = this.commonSvc.transformContentsToWidgets(contentList, strip)
+         this.originalContentlist = contentList
         }
         this.loadContentSearch = false
       }

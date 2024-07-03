@@ -32,7 +32,7 @@ import {
   UtilityService,
   EventService,
   WsEvents,
-} from '@sunbird-cb/utils'
+} from '@sunbird-cb/utils-v2'
 import { delay, first, catchError, map, filter } from 'rxjs/operators'
 import { MobileAppsService } from '../../services/mobile-apps.service'
 import { RootService } from './root.service'

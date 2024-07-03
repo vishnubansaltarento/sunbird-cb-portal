@@ -10,7 +10,7 @@ import {
   EventService,
   ConfigurationsService,
   UtilityService,
-} from '@sunbird-cb/utils'
+} from '@sunbird-cb/utils-v2'
 import { Subscription } from 'rxjs'
 import { filter } from 'rxjs/operators'
 import { WidgetUserService } from '../_services/widget-user.service'

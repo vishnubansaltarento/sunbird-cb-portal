@@ -18,8 +18,14 @@ export class ProviderContentAllComponent implements OnInit {
   seeAllPageConfig: any = {}
   keyData: any
   contentDataList: any = []
+  originalContentlist: any = []
   isMobile = false
   requestData: any
+  titles = [
+    { title: 'Learn', url: '/page/learn', icon: 'school', disableTranslate: false },
+    { title: `All Providers`, url: `/app/learn/browse-by/provider/all-providers`, icon: '', disableTranslate: false },
+    // { title: `${this.provider}`, url: `none`, icon: '' },
+  ]
   constructor(public commonSvc: CommonMethodsService,
               public activatedRoute: ActivatedRoute,
               public contentSvc: BrowseProviderService,
@@ -29,9 +35,11 @@ export class ProviderContentAllComponent implements OnInit {
    }
 
   ngOnInit( ) {
+
     this.activatedRoute.params.subscribe(params => {
       this.providerName = params['provider']
       this.providerId = params['orgId']
+
       if (this.activatedRoute.snapshot.queryParams && this.activatedRoute.snapshot.queryParams.stripData) {
         const data  = JSON.parse(this.activatedRoute.snapshot.queryParams.stripData)
         this.isMobile = this.utilitySvc.isMobile || false
@@ -43,6 +51,9 @@ export class ProviderContentAllComponent implements OnInit {
           data['loaderConfig']['cardSubType'] = 'card-wide-v2-skeleton'
         }
         this.seeAllPageConfig = data
+        const urlTomicrosite = `/app/learn/browse-by/provider/${this.providerName}/${this.providerId}/micro-sites`
+        this.titles.push({ title: this.providerName, icon: '', url: urlTomicrosite,  disableTranslate: true })
+        this.titles.push({ title: this.seeAllPageConfig.title, icon: '', url: 'none', disableTranslate: false })
         this.contentDataList = this.commonSvc.transformSkeletonToWidgets(data)
       }
     })
@@ -73,6 +84,7 @@ export class ProviderContentAllComponent implements OnInit {
         if (response && response.results) {
           // console.log('calling  after-- ')
           if (response.results.result.content && response.results.result.content.length) {
+            this.originalContentlist = response.results.result.content
             this.contentDataList = this.commonSvc.transformContentsToWidgets(response.results.result.content, strip)
           } else {
             this.contentDataList = []
@@ -103,6 +115,7 @@ export class ProviderContentAllComponent implements OnInit {
         if (response && response.results) {
           // console.log('calling  after-- ')
           if (response.results.result.content && response.results.result.content.length) {
+            this.originalContentlist = response.results.result.content
             this.contentDataList = this.commonSvc.transformContentsToWidgets(response.results.result.content, strip)
 
           } else {
@@ -148,8 +161,16 @@ export class ProviderContentAllComponent implements OnInit {
 
   handleSearchQuery(e: any) {
     if (e.target.value || e.target.value === '') {
-      this.callApi(e.target.value)
+      // this.callApi(e.target.value)
+      this.filterContentList(e.target.value)
     }
+  }
+
+  filterContentList(searchText: string) {
+    const data = [...this.originalContentlist]
+    const filterValue = searchText.toLowerCase()
+    const filteredData = data.filter((p: any) => p &&  p.name && p.name.toLowerCase().includes(filterValue))
+    this.contentDataList  = this.commonSvc.transformContentsToWidgets(filteredData, this.seeAllPageConfig)
   }
 
 }

@@ -6,7 +6,7 @@ import _ from 'lodash'
 import { ActivatedRoute } from '@angular/router';
 import { Subscription, Observable } from 'rxjs';
 import { FormGroup, FormControl } from '@angular/forms';
-import { ValueService } from '@sunbird-cb/utils'
+import { ValueService } from '@sunbird-cb/utils-v2'
 import { LocalDataService } from '../../services/localService';
 
 @Component({

@@ -2,7 +2,7 @@ import { Component, Input, OnDestroy, OnInit } from '@angular/core'
 import { NsContent, NsDiscussionForum } from '@sunbird-cb/collection'
 import { NsWidgetResolver } from '@sunbird-cb/resolver'
 import { ActivatedRoute } from '@angular/router'
-import { ConfigurationsService } from '@sunbird-cb/utils'
+import { ConfigurationsService } from '@sunbird-cb/utils-v2'
 import { PdfScormDataService } from '../../pdf-scorm-data-service'
 @Component({
   selector: 'viewer-pdf-container',

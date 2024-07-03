@@ -1,7 +1,7 @@
 import { AUTO_STYLE, animate, state, transition, trigger, style } from '@angular/animations'
 import { Component, OnInit } from '@angular/core'
 import { HomePageService } from 'src/app/services/home-page.service'
-import { ConfigurationsService, EventService, WsEvents } from '@sunbird-cb/utils'
+import { ConfigurationsService, EventService, WsEvents } from '@sunbird-cb/utils-v2'
 import { HttpErrorResponse } from '@angular/common/http'
 import { ActivatedRoute, Router } from '@angular/router'
 import { DiscussUtilsService } from '@ws/app/src/lib/routes/discuss/services/discuss-utils.service'
@@ -74,6 +74,7 @@ export class InsightSideBarComponent implements OnInit {
   credMessage = 'View my credentials'
   assessmentsData: any
   isLeaderboardExist = false
+  assessmentStrip: any
 
   constructor(
     private homePageSvc: HomePageService,
@@ -100,6 +101,11 @@ export class InsightSideBarComponent implements OnInit {
     this.getPendingRequestData()
     this.noDataValue = noData
     this.getDiscussionsData()
+
+    if (this.activatedRoute.snapshot.data.pageData && this.activatedRoute.snapshot.data.pageData.data.assessmentData) {
+      this.assessmentStrip = this.activatedRoute.snapshot.data.pageData.data.assessmentData
+
+    }
     // this.getAssessmentData()
   }
 

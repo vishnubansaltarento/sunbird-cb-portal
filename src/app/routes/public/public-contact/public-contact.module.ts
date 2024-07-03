@@ -11,7 +11,7 @@ import {
   MatInputModule,
 } from '@angular/material'
 import { BtnPageBackModule, LeftMenuModule } from '@sunbird-cb/collection'
-import { PipeSafeSanitizerModule } from '@sunbird-cb/utils'
+import { PipeSafeSanitizerModule } from '@sunbird-cb/utils-v2'
 import { FormsModule } from '@angular/forms'
 import { Ng2SearchPipeModule } from 'ng2-search-filter'
 import { TranslateModule } from '@ngx-translate/core'

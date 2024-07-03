@@ -29,7 +29,7 @@ import {
   PipeRelativeTimeModule,
   PipeFilterSearchModule,
   PipeFilterModule,
-} from '@sunbird-cb/utils'
+} from '@sunbird-cb/utils-v2'
 import { CareersCardComponent } from './components/careers-card/careers-card.component'
 import { CareerDetailComponent } from './routes/career-detail/career-detail.component'
 import { RelatedPostsComponent } from './components/related-posts/related-posts.component'

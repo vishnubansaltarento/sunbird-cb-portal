@@ -8,20 +8,11 @@ import {
 } from '@angular/router'
 // tslint:disable-next-line
 import * as _ from 'lodash'
-import {
-  SeeAllService,
-} from '../../services/see-all.service'
-import {
-  NsContentStripWithTabs,
-} from '@sunbird-cb/collection/src/lib/content-strip-with-tabs/content-strip-with-tabs.model'
-import {
-  NsContent,
-} from '@sunbird-cb/collection/src/lib/_services/widget-content.model'
-import {
-  ConfigurationsService, EventService, MultilingualTranslationsService, WsEvents,
-} from '@sunbird-cb/utils'
+import { ConfigurationsService, EventService, MultilingualTranslationsService, WsEvents,NsContent } from '@sunbird-cb/utils-v2'
+import { SeeAllService } from '../../services/see-all.service'
 import { WidgetUserService } from '@sunbird-cb/collection/src/lib/_services/widget-user.service'
 import { MatTabChangeEvent } from '@angular/material'
+import { NsContentStripWithTabs } from '@sunbird-cb/collection/src/lib/content-strip-with-tabs/content-strip-with-tabs.model'
 
 @Component({
   selector: 'ws-app-see-all-home',
@@ -59,7 +50,7 @@ export class SeeAllHomeComponent implements OnInit, OnDestroy {
     this.activated.queryParams.subscribe((res: any) => {
       this.keyData = (res.key) ? res.key : ''
       this.tabSelected = (res.tabSelected) ? res.tabSelected : ''
-  })
+    })
     const configData = await this.seeAllSvc.getSeeAllConfigJson().catch(_error => {})
     configData.homeStrips.forEach((ele: any) => {
       if (ele && ele.strips.length > 0) {
@@ -70,6 +61,17 @@ export class SeeAllHomeComponent implements OnInit, OnDestroy {
         })
       }
     })
+    if(!this.seeAllPageConfig) {
+      configData && configData.assessmentData.forEach((ele: any) => {
+        if (ele && ele.strips && ele.strips.length > 0) {
+          ele.strips.forEach((subEle: any) => {
+            if (subEle.key === this.keyData) {
+              this.seeAllPageConfig = subEle
+            }
+          })
+        }
+      })
+    }
     if (
       this.tabSelected &&
       this.seeAllPageConfig.tabs &&

@@ -11,10 +11,10 @@ import {
   ConfigurationsService,
   UtilityService,
   MultilingualTranslationsService,
-} from '@sunbird-cb/utils'
+} from '@sunbird-cb/utils-v2'
 import { Subscription } from 'rxjs'
 import { filter } from 'rxjs/operators'
-// import { NSSearch } from '@sunbird-cb/utils/src/lib/services/widget-search.model'
+// import { NSSearch } from '@sunbird-cb/utils-v2'
 import { WidgetUserService } from '../_services/widget-user.service'
 // tslint:disable-next-line
 import _ from 'lodash'

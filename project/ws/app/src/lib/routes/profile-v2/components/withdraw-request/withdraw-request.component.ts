@@ -7,7 +7,7 @@ import { takeUntil } from 'rxjs/operators'
 
 import { UserProfileService } from '../../../user-profile/services/user-profile.service'
 import { HttpErrorResponse } from '@angular/common/http'
-import { ConfigurationsService } from '@sunbird-cb/utils/src/public-api'
+import { ConfigurationsService } from '@sunbird-cb/utils-v2'
 
 @Component({
   selector: 'ws-withdraw-request',

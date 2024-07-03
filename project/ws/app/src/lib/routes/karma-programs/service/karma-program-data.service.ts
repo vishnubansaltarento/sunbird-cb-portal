@@ -1,7 +1,7 @@
 import { HttpClient } from '@angular/common/http'
 import { Injectable } from '@angular/core'
 import { ActivatedRouteSnapshot, Resolve, RouterStateSnapshot } from '@angular/router'
-import { IResolveResponse } from '@sunbird-cb/utils'
+import { IResolveResponse } from '@sunbird-cb/utils-v2'
 import { Observable, of } from 'rxjs'
 import { catchError, map, tap } from 'rxjs/operators'
 
@@ -26,8 +26,7 @@ resolve(
       'pageSize': 100,
       'orderBy': 'createdOn',
       'orderDirection': 'ASC',
-      'facets': ['category', 'orgId'],
-      'query': '',
+      'facets': ['category', 'orgId']
     }
     return this.http.post(requestUrl, requestData).pipe(
       map((rData: any) => ({ data: rData, error: null })),

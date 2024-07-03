@@ -10,13 +10,12 @@ import { DateAdapter, MAT_DATE_FORMATS, MAT_DATE_LOCALE } from '@angular/materia
 
 /* tslint:disable */
 import _ from 'lodash'
-import moment from 'moment'
 import { Subject } from 'rxjs'
 import { debounceTime, distinctUntilChanged, startWith, takeUntil } from 'rxjs/operators'
 
-import { ImageCropComponent, ConfigurationsService } from '@sunbird-cb/utils'
+import { ImageCropComponent, ConfigurationsService } from '@sunbird-cb/utils-v2'
 import { LoaderService } from '@ws/author/src/public-api'
-import { PipeCertificateImageURL } from '@sunbird-cb/utils/src/public-api'
+import { PipeCertificateImageURL } from '@sunbird-cb/utils-v2'
 import { IMAGE_MAX_SIZE, PROFILE_IMAGE_SUPPORT_TYPES } from '@ws/author/src/lib/constants/upload'
 import { Notify } from '@ws/author/src/lib/constants/notificationMessage'
 import { NOTIFICATION_TIME } from '@ws/author/src/lib/constants/constant'
@@ -277,11 +276,8 @@ export class ProfileViewComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   ngOnInit() {
-    if (this.currentUser.lastName) {
-      this.nameInitials = this.currentUser.firstName.charAt(0) + this.currentUser.lastName.charAt(0)
-
-    }
-
+    // if (this.currentUser.lastName) {
+    //   this.nameInitials = this.currentUser.firstName.charAt(0) + this.currentUser.lastName.charAt(0)}
     this.getInitials()
     this.profileName = this.portalProfile.personalDetails && this.portalProfile.personalDetails.firstname
 
@@ -295,7 +291,7 @@ export class ProfileViewComponent implements OnInit, AfterViewInit, OnDestroy {
     this.getRejectedStatus()
     this.getApprovedFields()
     this.getInsightsData()
-    this.getAssessmentData()
+    // this.getAssessmentData()
   }
 
   fetchDiscussionsData(): void {
@@ -458,12 +454,21 @@ export class ProfileViewComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   getInitials(): void {
-    if (this.currentUser.firstName) {
-      if (this.currentUser.firstName.split(' ').length > 1) {
-        const nameArr = this.currentUser.firstName.split(' ')
+    // if (this.currentUser.firstName) {
+    //   if (this.currentUser.firstName.split(' ').length > 1) {
+    //     const nameArr = this.currentUser.firstName.split(' ')
+    //     this.nameInitials = nameArr[0].charAt(0) + nameArr[1].charAt(0)
+    //   } else {
+    //     this.nameInitials = this.currentUser.firstName.charAt(0)
+    //   }
+    // }
+
+    if (this.portalProfile && this.portalProfile.personalDetails && this.portalProfile.personalDetails.firstname) {
+      if (this.portalProfile.personalDetails.firstname.split(' ').length > 1) {
+        const nameArr = this.portalProfile.personalDetails.firstname.split(' ')
         this.nameInitials = nameArr[0].charAt(0) + nameArr[1].charAt(0)
       } else {
-        this.nameInitials = this.currentUser.firstName.charAt(0)
+        this.nameInitials = this.portalProfile.personalDetails.firstname.charAt(0)
       }
     }
   }
@@ -517,16 +522,17 @@ export class ProfileViewComponent implements OnInit, AfterViewInit, OnDestroy {
       }
     }
 
-    if (this.portalProfile.personalDetails.dob) {
-      const dateArray = this.portalProfile.personalDetails.dob.split('-')
-      this.dateOfBirth = new Date(`${dateArray[1]}/${dateArray[0]}/${dateArray[2]}`)
-    }
+    // if (this.portalProfile.personalDetails.dob) {
+    //   console.log(this.portalProfile.personalDetails.dob, "this.portalProfile.personalDetails.dob=======")
+    //   const dateArray = this.portalProfile.personalDetails.dob.split('-')
+    //   this.dateOfBirth = new Date(`${dateArray[2]}-${dateArray[1]}-${dateArray[0]}`)
+    // }
 
     this.otherDetailsForm.patchValue({
       employeeCode: this.portalProfile.employmentDetails && this.portalProfile.employmentDetails.employeeCode || '',
       primaryEmail: this.portalProfile.personalDetails.primaryEmail,
       gender: this.portalProfile.personalDetails.gender && this.portalProfile.personalDetails.gender.toUpperCase(),
-      dob: this.dateOfBirth,
+      dob: this.getDateFromText(this.portalProfile.personalDetails.dob),
       domicileMedium: this.portalProfile.personalDetails.domicileMedium,
       mobile: this.portalProfile.personalDetails.mobile,
       countryCode: this.portalProfile.personalDetails.countryCode || '+91',
@@ -552,11 +558,25 @@ export class ProfileViewComponent implements OnInit, AfterViewInit, OnDestroy {
     this.prefillForm()
   }
 
-  handleDateFormat(dateString: string): any {
-    const dateArr = dateString.split('-')
-    const newDateStr = `${dateArr[1]}/${dateArr[0]}/${dateArr[2]}`
-    return moment(new Date(newDateStr)).format('D MMM YYYY')
+  private getDateFromText(dateString: string): any {
+    if (dateString) {
+      const sv: string[] = dateString.split('T')
+      if (sv && sv.length > 1) {
+        return sv[0]
+      }
+      const splitValues: string[] = dateString.split('-')
+      const [dd, mm, yyyy] = splitValues
+      const dateToBeConverted = dd.length !== 4 ? `${yyyy}-${mm}-${dd}` : `${dd}-${mm}-${yyyy}`
+      return new Date(dateToBeConverted)
+    }
+    return ''
   }
+
+  // handleDateFormat(dateString: string): any {
+  //   const dateArr = dateString.split('-')
+  //   const newDateStr = `${dateArr[2]}/${dateArr[1]}/${dateArr[0]}`
+  //   return moment(new Date(newDateStr)).format('D MMM YYYY')
+  // }
 
   handleVerifyOTP(verifyType: string, _value?: string): void {
     const dialogRef = this.dialog.open(VerifyOtpComponent, {
@@ -753,7 +773,7 @@ export class ProfileViewComponent implements OnInit, AfterViewInit, OnDestroy {
     this.userProfileService.getGroups()
     .pipe(takeUntil(this.destroySubject$))
     .subscribe((res: any) => {
-      this.groupData = res.result && res.result.response
+      this.groupData = res.result && res.result.response.filter((ele: any) => ele !== 'Others')
     },         (error: HttpErrorResponse) => {
       if (!error.ok) {
         this.matSnackBar.open(this.handleTranslateTo('groupDataFaile'))

@@ -9,7 +9,7 @@ import {
   ViewChild, ViewChildren,
   Renderer2,
 } from '@angular/core'
-import { MatDialog, MatSidenav, MatSnackBar } from '@angular/material'
+import { MatDialog, MatSidenav, MatSnackBar, MatSnackBarConfig } from '@angular/material'
 import { Subscription, interval } from 'rxjs'
 import { filter, map } from 'rxjs/operators'
 import { NSPractice } from './practice.model'
@@ -17,7 +17,8 @@ import { QuestionComponent } from './components/question/question.component'
 import { SubmitQuizDialogComponent } from './components/submit-quiz-dialog/submit-quiz-dialog.component'
 import { OnConnectionBindInfo } from 'jsplumb'
 import { PracticeService } from './practice.service'
-import { EventService, NsContent, ValueService, WsEvents } from '@sunbird-cb/utils'
+import { EventService, NsContent, ValueService, WsEvents } from '@sunbird-cb/utils-v2'
+import { WidgetContentService } from '@sunbird-cb/collection'
 import { ActivatedRoute, NavigationStart, Router } from '@angular/router'
 import { ViewerUtilService } from '../../viewer-util.service'
 // tslint:disable-next-line
@@ -27,6 +28,7 @@ import { environment } from 'src/environments/environment'
 import { DomSanitizer, SafeHtml } from '@angular/platform-browser'
 import { ViewerDataService } from '../../viewer-data.service'
 import { ViewerHeaderSideBarToggleService } from './../../viewer-header-side-bar-toggle.service'
+import { FinalAssessmentPopupComponent } from './components/final-assessment-popup/final-assessment-popup.component'
 // import { ViewerDataService } from '../../viewer-data.service'
 export type FetchStatus = 'hasMore' | 'fetching' | 'done' | 'error' | 'none'
 @Component({
@@ -55,6 +57,8 @@ export class PracticeComponent implements OnInit, OnChanges, OnDestroy {
         questionId: '',
         instructions: '',
         questionType: undefined,
+        questionLevel: '',
+        marks: 0,
         options: [
           {
             optionId: '',
@@ -120,6 +124,27 @@ export class PracticeComponent implements OnInit, OnChanges, OnDestroy {
   expandFalse = true
   showOverlay = false
   showToolTip = false
+  coursePrimaryCategory: any
+  currentSetNumber = 0
+  noOfQuestionsPerSet = 20
+  totalQuestionsCount = 0
+  instructionAssessment: any = ''
+  selectedSectionIdentifier: any
+  questionSectionTableData: any = []
+  questionVisitedData: any = []
+  assessmentType = 'optionalWeightage'
+  compatibilityLevel = 2
+  selectedAssessmentCompatibilityLevel = 0
+  sectionalInstruction: any = ''
+  allSectionTimeLimit = 0
+  totalAssessemntQuestionsCount = 0
+  sectionalTimer = false
+  questionStartTime: number = Date.now()
+  timeSpentOnQuestions: any = {}
+  charactersPerPage = 1500
+  showQuestionMarks = 'No'
+  forPreview = (window.location.href.includes('public') || window.location.href.includes('author') ||
+                window.location.href.includes('editMode'))
   constructor(
     private events: EventService,
     public dialog: MatDialog,
@@ -133,7 +158,8 @@ export class PracticeComponent implements OnInit, OnChanges, OnDestroy {
     private sanitized: DomSanitizer,
     private viewerDataSvc: ViewerDataService,
     private viewerHeaderSideBarToggleService: ViewerHeaderSideBarToggleService,
-    private renderer: Renderer2
+    private renderer: Renderer2,
+    private widgetContentService: WidgetContentService
 
   ) {
     if (environment.assessmentBuffer) {
@@ -145,6 +171,7 @@ export class PracticeComponent implements OnInit, OnChanges, OnDestroy {
         this.showToolTip = false
       }
     })
+
   }
 
   toggleToolTip() {
@@ -156,17 +183,18 @@ export class PracticeComponent implements OnInit, OnChanges, OnDestroy {
     }
   }
   init() {
-
     if (window.innerWidth < 768) {
       this.isMobile = true
     } else {
       this.isMobile = false
     }
-    // this.getSections()
+    // if (this.coursePrimaryCategory === 'Standalone Assessment') {
+    //   // this.getSections()
+    // }
     this.isSubmitted = false
     this.markedQuestions = new Set([])
     this.questionAnswerHash = {}
-    this.quizSvc.mtfSrc.next({})
+    // this.quizSvc.mtfSrc.next({})
     // quizSvc.questionAnswerHash.subscribe(qaHash => {
     //   this.questionAnswerHash = qaHash
     // })
@@ -187,7 +215,7 @@ export class PracticeComponent implements OnInit, OnChanges, OnDestroy {
       }
       // console.log(val)
     })
-    this.valueSvc.isXSmall$.subscribe(isXSmall => {
+    this.valueSvc.isXSmall$.subscribe((isXSmall: any) => {
       this.isXsmall = isXSmall
     })
 
@@ -196,6 +224,44 @@ export class PracticeComponent implements OnInit, OnChanges, OnDestroy {
         this.isSubmitted = true
         this.viewState = 'answer' || 'review'
       }
+    })
+  }
+
+  retakeAssessment() {
+    if (window.innerWidth < 768) {
+      this.isMobile = true
+    } else {
+      this.isMobile = false
+    }
+    // if (this.coursePrimaryCategory === 'Standalone Assessment') {
+    //   // this.getSections()
+    // }
+    this.isSubmitted = false
+    this.markedQuestions = new Set([])
+    this.questionAnswerHash = {}
+    // this.quizSvc.mtfSrc.next({})
+    // quizSvc.questionAnswerHash.subscribe(qaHash => {
+    //   this.questionAnswerHash = qaHash
+    // })
+    // console.log(activatedRoute.snapshot.data)
+    this.router.events.pipe(
+      filter(e => e instanceof NavigationStart && e.navigationTrigger === 'imperative'),
+      // switchMap(() => this.router.events.pipe(
+      //   filter(e => e instanceof NavigationEnd
+      //     || e instanceof NavigationCancel
+      //     || e instanceof NavigationError
+      //   ),
+      //   take(1),
+      //   filter(e => e instanceof NavigationEnd)
+      // ))
+    ).subscribe(() => {
+      if (this.viewState !== 'initial' && !this.isSubmitted) {
+        this.submitQuiz()
+      }
+      // console.log(val)
+    })
+    this.valueSvc.isXSmall$.subscribe((isXSmall: any) => {
+      this.isXsmall = isXSmall
     })
   }
   @HostListener('window:beforeunload', ['$event'])
@@ -209,37 +275,123 @@ export class PracticeComponent implements OnInit, OnChanges, OnDestroy {
     return
   }
   canAttend() {
-    if (this.primaryCategory === NsContent.EPrimaryCategory.PRACTICE_RESOURCE) {
-      this.canAttempt = {
-        attemptsAllowed: 1,
-        attemptsMade: 0,
-      }
-      this.init()
-      this.updateVisivility()
-    } else {
-      this.quizSvc.canAttend(this.identifier).subscribe(response => {
-        if (response) {
-           this.canAttempt = response
-          //  this.canAttempt = {
-          //   attemptsAllowed: 1,
-          //   attemptsMade: 0,
-          // }
+    // if (this.primaryCategory === NsContent.EPrimaryCategory.PRACTICE_RESOURCE) {
+    //   this.canAttempt = {
+    //     attemptsAllowed: 1,
+    //     attemptsMade: 0,
+    //   }
+    //   this.init()
+    //   this.updateVisivility()
+    // } else {
+      if (this.selectedAssessmentCompatibilityLevel) {
+        if (this.selectedAssessmentCompatibilityLevel < 6) {
+          this.quizSvc.canAttend(this.identifier).subscribe(response => {
+            if (response) {
+               this.canAttempt = response
+              //  this.canAttempt = {
+              //   attemptsAllowed: 1,
+              //   attemptsMade: 0,
+              // }
+            }
+            this.init()
+            this.updateVisivility()
+          })
+        } else {
+          this.quizSvc.canAttendV5(this.identifier).subscribe(response => {
+            if (response) {
+               this.canAttempt = response
+              //  this.canAttempt = {
+              //   attemptsAllowed: 1,
+              //   attemptsMade: 0,
+              // }
+            }
+            this.init()
+            this.updateVisivility()
+          })
         }
-        this.init()
-        this.updateVisivility()
-      })
-    }
+      }
+
+    // }
   }
   ngOnInit() {
-    this.canAttend()
     this.attemptSubscription = this.quizSvc.secAttempted.subscribe(data => {
       this.attemptSubData = data
     })
     if (this.quizSvc.questionAnswerHash.value) {
       this.questionAnswerHash = this.quizSvc.questionAnswerHash.getValue()
     }
-    // console.log(this.vws.resource)
+
+    this.coursePrimaryCategory = this.widgetContentService.currentMetaData.primaryCategory
+    if (this.widgetContentService.currentMetaData.children && this.widgetContentService.currentMetaData.children.length) {
+      this.widgetContentService.currentMetaData.children.map((item: any) => {
+        const activeResource =  this.findNested(item, 'identifier', this.identifier)
+        this.showQuestionMarks = item.showMarks ? item.showMarks : 'No'
+          // this.selectedAssessmentCompatibilityLevel = item.compatibilityLevel
+          // console.log('item.children', item.children)
+          // console.log('selectedAssessmentCompatibilityLevel', this.selectedAssessmentCompatibilityLevel)
+          // console.log('this.identifier',this.identifier, 'item.identifier', item.identifier)
+          // this.canAttend()
+          // if (this.identifier === item.identifier) {
+          //   // this.instructionAssessment = item.description
+          //   if (item.identifier) {
+          //     this.getInstructionAssessmentPagination(item.description)
+          //   }
+          //   this.totalAssessemntQuestionsCount = item.maxQuestions
+          // }
+          if (activeResource && activeResource.compatibilityLevel) {
+            this.selectedAssessmentCompatibilityLevel = activeResource.compatibilityLevel
+          }
+          if (activeResource && activeResource.maxQuestions) {
+            this.totalAssessemntQuestionsCount = activeResource.maxQuestions
+          }
+          if (activeResource &&  activeResource.description) {
+            this.instructionAssessment = activeResource.description
+            this.getInstructionAssessmentPagination(activeResource.description)
+          }
+          this.canAttend()
+      })
+    }
+
+    // console.log('this.widgetContentService.currentMetaData', this.widgetContentService)
+    // console.log('this.identifier', this.identifier)
   }
+
+  /* tslint:disable */
+  findNested(obj: any, key: any, value: any) {
+
+    // Base case
+    if (obj[key] === value) {
+      return obj
+    }  {
+      let keys = Object.keys(obj) // add this line to iterate over the keys
+
+      for (let i = 0, len = keys.length; i < len; i++) {
+        let k = keys[i] // use this key for iteration, instead of index "i"
+
+        // add "obj[k] &&" to ignore null values
+        if (obj[k] && typeof obj[k] == 'object') {
+          let found: any = this.findNested(obj[k], key, value)
+          if (found) {
+            // If the object was found in the recursive call, bubble it up.
+            return found
+          }
+        }
+      }
+    }
+  }
+  /* tslint:enable */
+  getInstructionAssessmentPagination(htmlData: any) {
+    const totalCharacters = htmlData.length
+    const totalPages = Math.ceil(totalCharacters / this.charactersPerPage)
+    this.instructionAssessment = []
+
+    for (let i = 0; i < totalPages; i += 1) {
+      const start = i * this.charactersPerPage
+      const pageContent = htmlData.substr(start, this.charactersPerPage)
+      this.instructionAssessment.push(pageContent)
+    }
+  }
+
   get getTimeLimit(): number {
     let jsonTime = (this.quizJson.timeLimit || 0)
     if (this.retake && jsonTime === 0) {
@@ -248,12 +400,18 @@ export class PracticeComponent implements OnInit, OnChanges, OnDestroy {
     }
     return jsonTime + this.assessmentBuffer
   }
-  getSections(_event: NSPractice.TUserSelectionType) {
+  getSections() {
     // this.identifier
+    this.questionSectionTableData = []
+    this.markedQuestions = new Set([])
+    this.questionAnswerHash = {}
+    this.questionVisitedData = []
     this.fetchingSectionsStatus = 'fetching'
     if (this.quizSvc.paperSections && this.quizSvc.paperSections.value
       && _.get(this.quizSvc.paperSections, 'value.questionSet.children')) {
       this.paperSections = _.get(this.quizSvc.paperSections, 'value.questionSet.children')
+      this.questionSectionTableData = _.get(this.quizSvc.paperSections, 'value.questionSet.children')
+
       const showTimer = _.toLower(_.get(this.quizSvc.paperSections, 'value.questionSet.showTimer')) === 'yes'
       if (showTimer || this.primaryCategory !== NsContent.EPrimaryCategory.PRACTICE_RESOURCE) {
         this.quizJson.timeLimit = (_.get(this.quizSvc.paperSections, 'value.questionSet.expectedDuration') || 0)
@@ -261,47 +419,107 @@ export class PracticeComponent implements OnInit, OnChanges, OnDestroy {
         // this.quizJson.timeLimit = this.duration * 60
         this.quizJson.timeLimit = this.quizJson.timeLimit
       }
+      this.allSectionTimeLimit = (_.get(this.quizSvc.paperSections, 'value.questionSet.expectedDuration') || 0)
       this.fetchingSectionsStatus = 'done'
       this.viewState = 'detail'
       this.startIfonlySection()
     } else {
-      this.quizSvc.getSection(this.identifier).subscribe((section: NSPractice.ISectionResponse) => {
-        // console.log(section)
-        this.fetchingSectionsStatus = 'done'
-        if (section.responseCode && section.responseCode === 'OK') {
-          /** this is to enable or disable Timer */
-          const showTimer = _.toLower(_.get(section, 'result.questionSet.showTimer')) === 'yes'
-          if (showTimer) {
-            this.quizJson.timeLimit = section.result.questionSet.expectedDuration
-          } else {
-            // this.quizJson.timeLimit = this.duration * 60
-            this.quizJson.timeLimit = this.quizJson.timeLimit
-          }
-          this.quizSvc.paperSections.next(section.result)
-          const tempObj = _.get(section, 'result.questionSet.children')
-          this.updataDB(tempObj)
-          this.paperSections = []
-          _.each(tempObj, o => {
-            if (this.paperSections) {
-              this.paperSections.push(o)
+      if (this.selectedAssessmentCompatibilityLevel < 6) {
+        this.quizSvc.getSectionV4(this.identifier).subscribe((section: NSPractice.ISectionResponse) => {
+          // console.log(section)
+          this.fetchingSectionsStatus = 'done'
+          if (section.responseCode && section.responseCode === 'OK') {
+            this.compatibilityLevel = section.result.questionSet.compatibilityLevel
+            this.assessmentType = section.result.questionSet.assessmentType
+            /** this is to enable or disable Timer */
+            const showTimer = _.toLower(_.get(section, 'result.questionSet.showTimer')) === 'yes'
+            if (showTimer) {
+              this.quizJson.timeLimit = section.result.questionSet.expectedDuration
+            } else {
+              // this.quizJson.timeLimit = this.duration * 60
+              this.quizJson.timeLimit = this.quizJson.timeLimit
             }
-          })
-          // this.paperSections = _.get(section, 'result.questionSet.children')
-          this.viewState = 'detail'
-          // this.updateTimer()
-          this.startIfonlySection()
-        }
-      })
+            this.allSectionTimeLimit = section.result.questionSet.expectedDuration
+            // this.quizSvc.paperSections.next(section.result)
+            const tempObj = _.get(section, 'result.questionSet.children')
+            this.showQuestionMarks = _.get(section, 'result.questionSet.showMarks', 'No')
+            this.updataDB(tempObj)
+            this.paperSections = []
+            this.questionSectionTableData = []
+            let totalQuestions = 0
+            _.each(tempObj, o => {
+              if (this.paperSections) {
+                this.paperSections.push(o)
+                this.questionSectionTableData.push(o)
+                if (o.childNodes) {
+                  totalQuestions = totalQuestions + o.childNodes.length
+                }
+              }
+            })
+            this.totalAssessemntQuestionsCount = totalQuestions
+            // this.paperSections = _.get(section, 'result.questionSet.children')
+            this.viewState = 'detail'
+            // this.updateTimer()
+            this.startIfonlySection()
+          }
+        })
+      } else {
+        this.quizSvc.getSection(this.identifier).subscribe((section: NSPractice.ISectionResponse) => {
+          // console.log(section)
+          this.fetchingSectionsStatus = 'done'
+          if (section.responseCode && section.responseCode === 'OK') {
+            this.compatibilityLevel = section.result.questionSet.compatibilityLevel
+            this.assessmentType = section.result.questionSet.assessmentType
+            /** this is to enable or disable Timer */
+            const showTimer = _.toLower(_.get(section, 'result.questionSet.showTimer')) === 'yes'
+            if (showTimer) {
+              this.quizJson.timeLimit = section.result.questionSet.expectedDuration
+            } else {
+              // this.quizJson.timeLimit = this.duration * 60
+              this.quizJson.timeLimit = this.quizJson.timeLimit
+            }
+            this.allSectionTimeLimit  = section.result.questionSet.expectedDuration
+            // this.quizSvc.paperSections.next(section.result)
+            const tempObj = _.get(section, 'result.questionSet.children')
+            this.showQuestionMarks = _.get(section, 'result.questionSet.showMarks', 'No')
+            this.updataDB(tempObj)
+            this.paperSections = []
+            this.questionSectionTableData = []
+            let totalQuestions = 0
+            _.each(tempObj, o => {
+              if (this.paperSections) {
+                this.paperSections.push(o)
+                this.questionSectionTableData.push(o)
+                if (o.childNodes) {
+                  totalQuestions = totalQuestions + o.childNodes.length
+                }
+              }
+            })
+            this.totalAssessemntQuestionsCount = totalQuestions
+            // this.paperSections = _.get(section, 'result.questionSet.children')
+            this.viewState = 'detail'
+            // this.updateTimer()
+            this.startIfonlySection()
+          }
+        })
+      }
+
     }
   }
   startIfonlySection() {
+    // console.log('in start only section', this.isOnlySection)
     // directly start section if only section is there is set
-    if (this.isOnlySection) {
-      const firstSection = _.first(this.paperSections) || null
-      if (firstSection) {
-        this.nextSection(firstSection)
-        this.overViewed('start')
-      }
+    // if (this.isOnlySection) {
+    //   const firstSection = _.first(this.paperSections) || null
+    //   if (firstSection) {
+    //     this.nextSection(firstSection)
+    //     this.overViewed('start')
+    //   }
+    // }
+    const firstSection = _.first(this.paperSections) || null
+    if (firstSection) {
+      this.nextSection(firstSection)
+      this.overViewed('start')
     }
     this.updateTimer()
 
@@ -330,15 +548,47 @@ export class PracticeComponent implements OnInit, OnChanges, OnDestroy {
       return []
     }
     const qq = _.filter(this.quizJson.questions, { section: this.selectedSection.identifier })
-    return qq
+    this.totalQuestionsCount = qq ? qq.length : 0
+    const setStartIndex = this.noOfQuestionsPerSet * this.currentSetNumber
+    const setEndIndex = setStartIndex + this.noOfQuestionsPerSet
+    const secQuestions = qq.slice(setStartIndex, setEndIndex)
+    return secQuestions
   }
+
+  get hasNextSet(): boolean {
+    return this.totalQuestionsCount > this.noOfQuestionsPerSet * (this.currentSetNumber + 1)
+  }
+
   nextSection(section: NSPractice.IPaperSection) {
-    this.quizSvc.currentSection.next(section)
+    // this.quizSvc.currentSection.next(section)
     this.startSection(section)
   }
+
+  changeSection(identifier: any) {
+   const selectedSection: any =  _.filter(this.paperSections, { identifier })
+   if (selectedSection && selectedSection.length) {
+    this.selectedSectionIdentifier = selectedSection[0]['identifier']
+    this.startSection(selectedSection[0])
+   }
+  }
   startSection(section: NSPractice.IPaperSection) {
+    this.sectionalInstruction = section.additionalInstructions
+    this.selectedSectionIdentifier = section.identifier
+    if (section.childNodes && section.childNodes.length) {
+      this.totalQuestionsCount = section.childNodes.length
+      this.questionAttemptedCount = 0
+    }
+
+    if (section && section.expectedDuration) {
+      this.quizJson.timeLimit = section.expectedDuration
+      this.timeLeft  = section.expectedDuration
+      this.sectionalTimer = true
+    } else {
+      this.sectionalTimer = false
+    }
+    // this.quizJson.timeLimit = (_.get(this.quizSvc.paperSections, 'value.questionSet.expectedDuration') || 0)
     if (section) {
-      this.quizSvc.currentSection.next(section)
+      // this.quizSvc.currentSection.next(section)
       this.fetchingQuestionsStatus = 'fetching'
       this.selectedSection = section
       if (this.secQuestions && this.secQuestions.length > 0) {
@@ -370,6 +620,9 @@ export class PracticeComponent implements OnInit, OnChanges, OnDestroy {
                 instructions: null,
                 options: this.getOptions(q),
                 editorState: q.editorState,
+                questionLevel: q.questionLevel,
+                marks: q.totalMarks,
+                rhsChoices: this.getRhsValue(q),
               })
             }
           })
@@ -404,6 +657,18 @@ export class PracticeComponent implements OnInit, OnChanges, OnDestroy {
   getMultiQuestions(ids: string[]) {
     return this.quizSvc.getQuestions(ids, this.identifier).toPromise()
   }
+  getRhsValue(question: NSPractice.IQuestionV2) {
+    if (question && question.qType) {
+      const qTyp = question.qType
+      switch (qTyp) {
+        case 'MTF':
+          return question.rhsChoices
+        default:
+          return []
+      }
+    }
+    return []
+  }
   getOptions(question: NSPractice.IQuestionV2): NSPractice.IOption[] {
     const options: NSPractice.IOption[] = []
     if (question && question.qType) {
@@ -414,6 +679,8 @@ export class PracticeComponent implements OnInit, OnChanges, OnDestroy {
         case 'MCQ-SCA':
         case 'mcq-mca':
         case 'MCQ-MCA':
+        case 'MCQ-MCA-W':
+        case 'MCQ-SCA-TF':
         case 'MCQ':
           _.each(this.primaryCategory === NsContent.EPrimaryCategory.PRACTICE_RESOURCE && question.editorState
             // tslint:disable-next-line: align
@@ -536,19 +803,105 @@ export class PracticeComponent implements OnInit, OnChanges, OnDestroy {
     }
   }
   getNextQuestion(idx: any) {
-    this.process = true
-    if (idx !== this.currentQuestionIndex) {
-      this.currentQuestionIndex = idx
+    const currentQuestionId = this.currentQuestion ? this.currentQuestion.questionId : ''
+    if (currentQuestionId && this.secQuestions && this.currentQuestion.section === this.secQuestions[0]['section']) {
+      this.calculateTimeSpentOnQuestion(currentQuestionId)
+    } else {
+      this.setQuestionStartTime()
     }
     const questions = this.secQuestions
-    this.currentQuestion = questions && questions[idx] ? questions[idx] : null
-    setTimeout(() => {
-      this.process = false
-      // tslint:disable-next-line
-    }, 10)
-    this.showAnswer = false
-    this.matchHintDisplay = []
+    if (this.assessmentType === 'optionalWeightage') {
+      if (idx > 0) {
+        if (questions && questions[idx - 1]) {
+          const response = this.isQuestionAttempted(questions[idx - 1]['questionId'])
+          if (!response) {
+            this.openSnackbar('Please attempt the current question to move on next question.')
+          } else {
+            if (this.totalQCount > idx) {
+              this.process = true
+              if (idx !== this.currentQuestionIndex) {
+                this.currentQuestionIndex = idx
+              }
+
+              this.currentQuestion = questions && questions[idx] ? questions[idx] : null
+              if (questions[idx] && questions[idx]['questionId'] &&
+              !(this.questionVisitedData.indexOf(questions[idx]['questionId']) > -1)) {
+                this.questionVisitedData.push(questions[idx]['questionId'])
+              }
+
+              setTimeout(() => {
+                this.process = false
+                // tslint:disable-next-line
+              }, 10)
+              this.showAnswer = false
+              this.matchHintDisplay = []
+
+              if (this.compatibilityLevel <= 6) {
+                // console.log(this.generateRequest)
+              }
+            }
+          }
+        }
+      } else {
+        if (this.totalQCount > idx) {
+          this.process = true
+          if (idx !== this.currentQuestionIndex) {
+            this.currentQuestionIndex = idx
+          }
+
+          this.currentQuestion = questions && questions[idx] ? questions[idx] : null
+          if (questions[idx] && questions[idx]['questionId'] && !(this.questionVisitedData.indexOf(questions[idx]['questionId']) > -1)) {
+            this.questionVisitedData.push(questions[idx]['questionId'])
+          }
+
+          setTimeout(() => {
+            this.process = false
+            // tslint:disable-next-line
+          }, 10)
+          this.showAnswer = false
+          this.matchHintDisplay = []
+
+          if (this.compatibilityLevel <= 6) {
+            // console.log(this.generateRequest)
+          }
+        }
+      }
+
+    } else {
+      if (this.totalQCount > idx) {
+        this.process = true
+        if (idx !== this.currentQuestionIndex) {
+          this.currentQuestionIndex = idx
+        }
+
+        this.currentQuestion = questions && questions[idx] ? questions[idx] : null
+        if (questions[idx] && questions[idx]['questionId'] && !(this.questionVisitedData.indexOf(questions[idx]['questionId']) > -1)) {
+          this.questionVisitedData.push(questions[idx]['questionId'])
+        }
+
+        setTimeout(() => {
+          this.process = false
+          // tslint:disable-next-line
+        }, 10)
+        this.showAnswer = false
+        this.matchHintDisplay = []
+
+        if (this.compatibilityLevel <= 6) {
+          // console.log(this.generateRequest)
+        }
+      }
+    }
+
   }
+
+  clearQuestion(question: any) {
+    if (this.questionAnswerHash[question.questionId]) {
+      delete this.questionAnswerHash[question.questionId]
+      this.quizSvc.questionAnswerHash.next(this.questionAnswerHash)
+    }
+    this.quizSvc.clearResponse.next(question.questionId)
+  }
+
   get current_Question(): NSPractice.IQuestionV2 {
     return this.currentQuestion
   }
@@ -560,14 +913,15 @@ export class PracticeComponent implements OnInit, OnChanges, OnDestroy {
     return questions.length
   }
   get noOfQuestions(): number {
-    if (this.quizJson.maxQuestions) {
-      return this.quizJson.maxQuestions
+    if (this.totalAssessemntQuestionsCount) {
+      return this.totalAssessemntQuestionsCount
     }
     if (this.retake) {
       return _.get(this.activatedRoute, 'snapshot.data.content.data.maxQuestions') || 0
     }
     return 0
   }
+
   backToSections() {
     this.viewState = 'detail'
   }
@@ -608,6 +962,7 @@ export class PracticeComponent implements OnInit, OnChanges, OnDestroy {
     this.viewState = 'attempt'
     this.getNextQuestion(this.currentQuestionIndex)
   }
+
   updateTimer() {
     this.startTime = Date.now()
     this.timeLeft = this.getTimeLimit
@@ -624,29 +979,63 @@ export class PracticeComponent implements OnInit, OnChanges, OnDestroy {
         .subscribe(_timeRemaining => {
           this.timeLeft -= 1
           if (this.timeLeft < 0) {
-            this.isIdeal = true
-            this.timeLeft = 0
-            if (this.timerSubscription) {
-              this.timerSubscription.unsubscribe()
+            if (this.paperSections && this.paperSections.length) {
+              if (this.allSecAttempted.full) {
+                this.isIdeal = true
+                this.timeLeft = 0
+                if (this.timerSubscription) {
+                  this.timerSubscription.unsubscribe()
+                }
+                this.submitQuiz()
+              } else if (this.allSecAttempted.next) {
+                this.nextSection(this.allSecAttempted.next)
+              }
+            } else {
+              this.isIdeal = true
+              this.timeLeft = 0
+              if (this.timerSubscription) {
+                this.timerSubscription.unsubscribe()
+              }
+              this.submitQuiz()
             }
-            this.submitQuiz()
+
           }
         })
     }
   }
-  get allSecAttempted(): { full: boolean, next: NSPractice.IPaperSection | null } {
+
+  get allSecAttempted(): { full: boolean, next: NSPractice.IPaperSection | null, sectionsCount: number } {
     const sections = this.quizSvc.secAttempted.getValue()
     let fullAttempted = false
+    let sectionsCount = 0
     if (sections && sections.length) {
+      sectionsCount = sections.length
       const attemped = _.filter(sections, s => s.fullAttempted || s.isAttempted)
       fullAttempted = (attemped || []).length === sections.length
     }
     const currentSectionId = _.get(this.selectedSection, 'identifier') || _.get(this.quizSvc, 'currentSection.value.identifier')
     const nextId = _.get(_.first(_.filter(_.get(this.quizSvc.secAttempted, 'value'), { identifier: currentSectionId })), 'nextSection')
-    const next = _.first(_.filter(_.get(this.quizSvc.paperSections.value, 'questionSet.children'), { identifier: nextId }))
-    return { next, full: fullAttempted }
+    // const next = _.first(_.filter(_.get(this.paperSections, 'childNodes'), { identifier: nextId }))
+    let next: any
+    if (this.paperSections) {
+      next = this.paperSections.filter(el => {
+        return el.identifier === nextId
+      })[0]
+    }
+
+    return { next, sectionsCount, full: fullAttempted }
   }
-  fillSelectedItems(question: NSPractice.IQuestion, optionId: string) {
+
+  fillSelectedItems(question: NSPractice.IQuestion, response: any) {
+    let optionId: any
+    let checked: any
+    if (this.assessmentType === 'optionalWeightage')  {
+      optionId = response['index']
+      checked = response['status']
+    } else {
+       optionId = response
+    }
+
     if (typeof (optionId) === 'string') {
       this.raiseTelemetry('mark', optionId, 'click')
     } if (this.viewState === 'answer') {
@@ -671,7 +1060,20 @@ export class PracticeComponent implements OnInit, OnChanges, OnDestroy {
         delete this.questionAnswerHash[question.questionId]
       }
     } else {
-      this.questionAnswerHash[question.questionId] = [optionId]
+      if (this.assessmentType === 'optionalWeightage') {
+        if (!checked) {
+          if (this.questionAnswerHash[question.questionId]) {
+            // const questionIndex = this.questionAnswerHash[question.questionId].indexOf(optionId)
+            // this.questionAnswerHash[question.questionId].splice(questionIndex, 1)
+            delete this.questionAnswerHash[question.questionId]
+          }
+        } else {
+          this.questionAnswerHash[question.questionId] = [optionId]
+        }
+      } else {
+        this.questionAnswerHash[question.questionId] = [optionId]
+      }
+
     }
     // tslint:disable-next-line
     if (question.questionType && question.questionType === 'mtf') {
@@ -679,12 +1081,15 @@ export class PracticeComponent implements OnInit, OnChanges, OnDestroy {
       mTfval[question.questionId] = {
         // [_.first(_.map(optionId, 'source.innerText'))]: {
         source: _.map(optionId, 'source.innerText'),
-        target: _.map(optionId, 'target.innerText'),
+        target: _.map(optionId, 'target.id'),
+        // target: [wrapper.firstChild.innerHTML]
         // sourceId: _.first(_.map(optionId, 'source.id')),
         // targetId: _.first(_.map(optionId, 'target.id')),
         // },
       }
+      // console.log('mTfval--', mTfval)
       this.quizSvc.mtfSrc.next(mTfval)
+
     }
     this.quizSvc.qAnsHash({ ...this.questionAnswerHash })
     const answered = (this.quizSvc.questionAnswerHash.getValue() || [])
@@ -706,25 +1111,32 @@ export class PracticeComponent implements OnInit, OnChanges, OnDestroy {
   }
   proceedToSubmit() {
     // if (this.timeLeft || this.primaryCategory === this.ePrimaryCategory.PRACTICE_RESOURCE) {
-    if (
-      Object.keys(this.questionAnswerHash).length !==
-      this.quizJson.questions.length
-    ) {
-      this.submissionState = 'unanswered'
-    } else if (this.markedQuestions.size) {
-      this.submissionState = 'marked'
-    } else {
-      this.submissionState = 'answered'
-    }
-    const dialogRef = this.dialog.open(SubmitQuizDialogComponent, {
-      width: '250px',
-      data: this.submissionState,
-    })
-    dialogRef.afterClosed().subscribe(result => {
-      if (result) {
-        this.submitQuiz()
+      // if (this.coursePrimaryCategory === 'Standalone Assessment') {
+      if (this.selectedAssessmentCompatibilityLevel >= 6) {
+        const submitAssessment = true
+        this.openSectionPopup(submitAssessment)
+      } else {
+        if (
+          Object.keys(this.questionAnswerHash).length !==
+          this.quizJson.questions.length
+        ) {
+          this.submissionState = 'unanswered'
+        } else if (this.markedQuestions.size) {
+          this.submissionState = 'marked'
+        } else {
+          this.submissionState = 'answered'
+        }
+        const dialogRef = this.dialog.open(SubmitQuizDialogComponent, {
+          width: '250px',
+          data: this.submissionState,
+        })
+        dialogRef.afterClosed().subscribe(result => {
+          if (result) {
+            this.submitQuiz()
+          }
+        })
       }
-    })
+
     // }
   }
   back() {
@@ -774,6 +1186,7 @@ export class PracticeComponent implements OnInit, OnChanges, OnDestroy {
     if (section && section.identifier) {
       const secQues = _.filter(req.questions, q => q.section === section.identifier)
       _.each(secQues, sq => {
+        const timeSpent = this.timeSpentOnQuestions[sq.questionId] ? this.timeSpentOnQuestions[sq.questionId] : ''
         switch (_.toLower(sq.questionType || '')) {
           case 'mcq-mca':
             const mcqMca: NSPractice.IMCQ_MCA = {
@@ -783,6 +1196,9 @@ export class PracticeComponent implements OnInit, OnChanges, OnDestroy {
               objectType: 'Question',
               primaryCategory: NsContent.EPrimaryCategory.MULTIPLE_CHOICE_QUESTION,
               qType: 'MCQ-MCA',
+              questionLevel: sq.questionLevel ? sq.questionLevel : '',
+              timeTaken: timeSpent.toString(),
+              timeSpent: timeSpent.toString(),
               editorState: {
                 options: _.compact(_.map(sq.options, (_o: NSPractice.IOption) => {
                   if (_o.userSelected) {
@@ -796,6 +1212,30 @@ export class PracticeComponent implements OnInit, OnChanges, OnDestroy {
             }
             responseQ.push(mcqMca)
             break
+          case 'mcq-mca-w':
+            const mcqMcaW: NSPractice.IMCQ_MCA_W = {
+              identifier: sq.questionId,
+              question: sq.question,
+              mimeType: NsContent.EMimeTypes.QUESTION,
+              objectType: 'Question',
+              primaryCategory: NsContent.EPrimaryCategory.MULTIPLE_CHOICE_QUESTION,
+              qType: 'MCQ-MCA-W',
+              questionLevel: sq.questionLevel,
+              timeTaken: timeSpent.toString(),
+              timeSpent: timeSpent.toString(),
+              editorState: {
+                options: _.compact(_.map(sq.options, (_o: NSPractice.IOption) => {
+                  if (_o.userSelected) {
+                    return {
+                      index: (_o.optionId).toString(),
+                      selectedAnswer: !!_o.userSelected,
+                    } as NSPractice.IResponseOptions
+                  } return null
+                })),
+              },
+            }
+            responseQ.push(mcqMcaW)
+            break
           case 'mcq-sca':
             const mcqSca: NSPractice.IMCQ_SCA = {
               identifier: sq.questionId,
@@ -804,6 +1244,9 @@ export class PracticeComponent implements OnInit, OnChanges, OnDestroy {
               question: sq.question,
               primaryCategory: NsContent.EPrimaryCategory.SINGLE_CHOICE_QUESTION,
               qType: 'MCQ-SCA',
+              questionLevel: sq.questionLevel ? sq.questionLevel : '',
+              timeTaken: timeSpent.toString(),
+              timeSpent: timeSpent.toString(),
               editorState: {
                 options: _.compact(_.map(sq.options, (_o: NSPractice.IOption) => {
                   if (_o.userSelected) {
@@ -818,6 +1261,38 @@ export class PracticeComponent implements OnInit, OnChanges, OnDestroy {
             responseQ.push(mcqSca)
             break
           case 'ftb':
+            const obj: any = {}
+            let optionsAll: any = []
+            if (sq.options && sq.options.length) {
+              optionsAll =  _.compact(_.map(sq.options, (_o: NSPractice.IOption, idx: number) => {
+                  if (_o.response) {
+                    return {
+                      index: (_o.optionId || idx).toString(),
+                      selectedAnswer: _o.response || '',
+                    } as NSPractice.IResponseOptions
+                  } return null
+                }))
+                // selectedAnswer: _.join(_.map(sq.options, (_o: NSPractice.IOption) => {
+                //   return _o.response
+                // }),
+                //   // tslint:disable-next-line:align
+                //   ','
+                // ),
+
+            } else {
+              /* tslint:disable */
+              for (let i = 0; i < Object.keys(this.questionAnswerHash).length; i++) {
+                if (Object.keys(this.questionAnswerHash)[i] === sq.questionId) {
+                  /* tslint:disable */
+                  for (let j = 0; j < Object.values(this.questionAnswerHash)[i].length; j++) {
+                    obj['index'] = j,
+                    obj['selectedAnswer'] = Object.values(this.questionAnswerHash)[i][j]
+                    optionsAll.push(obj)
+                  }
+
+                }
+              }
+            }
             const ftb: NSPractice.IMCQ_FTB = {
               identifier: sq.questionId,
               mimeType: NsContent.EMimeTypes.QUESTION,
@@ -825,22 +1300,19 @@ export class PracticeComponent implements OnInit, OnChanges, OnDestroy {
               question: sq.question,
               primaryCategory: NsContent.EPrimaryCategory.FTB_QUESTION,
               qType: 'FTB',
-              editorState: {
-                options: _.compact(_.map(sq.options, (_o: NSPractice.IOption, idx: number) => {
-                  if (_o.response) {
-                    return {
-                      index: (_o.optionId || idx).toString(),
-                      selectedAnswer: _o.response || '',
-                    } as NSPractice.IResponseOptions
-                  } return null
-                })),
-                // selectedAnswer: _.join(_.map(sq.options, (_o: NSPractice.IOption) => {
-                //   return _o.response
-                // }),
-                //   // tslint:disable-next-line:align
-                //   ','
-                // ),
-              },
+              questionLevel: sq.questionLevel,
+              timeTaken: timeSpent.toString(),
+              timeSpent: timeSpent.toString(),
+              editorState: { options: [] },
+            }
+            if (sq.options.length === 0 && this.questionAnswerHash[sq.questionId]) {
+              const ftbAns = this.questionAnswerHash[sq.questionId][0].split(',')
+              ftbAns.forEach((ans: string, index) => {
+                ftb.editorState.options.push({
+                  index: index.toString(),
+                  selectedAnswer: ans,
+                })
+              })
             }
             responseQ.push(ftb)
             break
@@ -852,6 +1324,9 @@ export class PracticeComponent implements OnInit, OnChanges, OnDestroy {
               question: sq.question,
               primaryCategory: NsContent.EPrimaryCategory.MTF_QUESTION,
               qType: 'MTF',
+              questionLevel: sq.questionLevel,
+              timeTaken: timeSpent.toString(),
+              timeSpent: timeSpent.toString(),
               editorState: {
                 options: _.compact(_.map(sq.options, (_o: NSPractice.IOption) => {
                   if (_o.userSelected) {
@@ -859,12 +1334,41 @@ export class PracticeComponent implements OnInit, OnChanges, OnDestroy {
                       index: (_o.optionId).toString(),
                       selectedAnswer: _o.response,
                     } as NSPractice.IResponseOptions
-                  } return null
+                  }
+                    return {
+                      index: (_o.optionId).toString(),
+                      selectedAnswer: _o.response,
+                    } as NSPractice.IResponseOptions
+
                 })),
               },
             }
             responseQ.push(mtf)
             break
+          case 'mcq-sca-tf': 
+          const mcqScaTF: any = {
+            identifier: sq.questionId,
+            mimeType: NsContent.EMimeTypes.QUESTION,
+            objectType: 'Question',
+            question: sq.question,
+            primaryCategory: NsContent.EPrimaryCategory.SINGLE_CHOICE_QUESTION,
+            qType: 'MCQ-SCA-TF',
+            questionLevel: sq.questionLevel ? sq.questionLevel : '',
+            timeTaken: timeSpent.toString(),
+            timeSpent: timeSpent.toString(),
+            editorState: {
+              options: _.compact(_.map(sq.options, (_o: NSPractice.IOption) => {
+                if (_o.userSelected) {
+                  return {
+                    index: (_o.optionId).toString(),
+                    selectedAnswer: _o.userSelected,
+                  } as NSPractice.IResponseOptions
+                } return null
+              })),
+            },
+          }
+          responseQ.push(mcqScaTF)
+          break
         }
       })
     }
@@ -890,16 +1394,30 @@ export class PracticeComponent implements OnInit, OnChanges, OnDestroy {
     } else {
       this.viewState = 'answer'
     }
-    const quizV4Res: any = await this.quizSvc.submitQuizV4(this.generateRequest).toPromise().catch(_error => {})
-    if (quizV4Res && quizV4Res.params && quizV4Res.params.status.toLowerCase() === 'success') {
-      if (quizV4Res.result.primaryCategory === 'Course Assessment') {
-        setTimeout(() => {
-          this.getQuizResult()
-        },         environment.quizResultTimeout)
-      } else if (quizV4Res.result.primaryCategory === 'Practice Question Set') {
-        this.assignQuizResult(quizV4Res.result)
+    if (this.selectedAssessmentCompatibilityLevel < 6) {
+      const quizV4Res: any = await this.quizSvc.submitQuizV4(this.generateRequest).toPromise().catch(_error => {})
+      if (quizV4Res && quizV4Res.params && quizV4Res.params.status.toLowerCase() === 'success') {
+        if (quizV4Res.result.primaryCategory === 'Course Assessment') {
+          setTimeout(() => {
+            this.getQuizResult()
+          },         environment.quizResultTimeout)
+        } else if (quizV4Res.result.primaryCategory === 'Practice Question Set') {
+          this.assignQuizResult(quizV4Res.result)
+        }
+      }
+    } else {
+      const quizV4Res: any = await this.quizSvc.submitQuizV5(this.generateRequest).toPromise().catch(_error => {})
+      if (quizV4Res && quizV4Res.params && quizV4Res.params.status.toLowerCase() === 'success') {
+        if (quizV4Res.result.primaryCategory === 'Course Assessment') {
+          setTimeout(() => {
+            this.getQuizResult()
+          },         environment.quizResultTimeout)
+        } else if (quizV4Res.result.primaryCategory === 'Practice Question Set') {
+          this.assignQuizResult(quizV4Res.result)
+        }
       }
     }
+
     // this.quizSvc.submitQuizV3(this.generateRequest).subscribe(
     //   (res: NSPractice.IQuizSubmitResponseV2) => {
     //     // call content progress with status 2 i.e, completed
@@ -1084,6 +1602,10 @@ export class PracticeComponent implements OnInit, OnChanges, OnDestroy {
     return this.markedQuestions.has(questionId as unknown as never)
   }
 
+  isQuestionVisited(questionId: string) {
+    return (this.questionVisitedData.indexOf(questionId) > -1)
+  }
+
   markQuestion(questionId: string) {
     if (this.markedQuestions.has(questionId as unknown as never)) {
       this.markedQuestions.delete(questionId as unknown as never)
@@ -1094,13 +1616,29 @@ export class PracticeComponent implements OnInit, OnChanges, OnDestroy {
   action($event: string) {
     switch ($event) {
       case 'retake':
-        // raise telemetry
+        this.raiseInteractTelemetry()
         this.raiseEvent(WsEvents.EnumTelemetrySubType.Unloaded, this.quizData)
         this.raiseEvent(WsEvents.EnumTelemetrySubType.Loaded, this.quizData)
         this.clearStoragePartial()
         this.clearStorage()
         this.retake = true
-        this.init()
+        
+        // this.init()
+        if(this.selectedAssessmentCompatibilityLevel < 6) {
+          this.init()
+        } else {      
+          this.quizSvc.canAttendV5(this.identifier).subscribe(response => {
+            if (response) {
+                this.canAttempt = response
+              //  this.canAttempt = {
+              //   attemptsAllowed: 1,
+              //   attemptsMade: 0,
+              // }
+            }
+          })
+          this.retakeAssessment()
+        }
+        
         break
     }
   }
@@ -1207,15 +1745,28 @@ export class PracticeComponent implements OnInit, OnChanges, OnDestroy {
         courseId: this.generateRequest.courseId,
       },
     }
-    const resultRes: any = await this.quizSvc.quizResult(req).toPromise().catch(_error => {})
-    if (resultRes && resultRes.params && resultRes.params.status.toLowerCase() === 'success') {
-      if (resultRes.result) {
-        this.fetchingResultsStatus = (resultRes.result.isInProgress) ?  'fetching' : 'done'
-        this.assignQuizResult(resultRes.result)
+    if(this.selectedAssessmentCompatibilityLevel < 6) {
+      const resultRes: any = await this.quizSvc.quizResult(req).toPromise().catch(_error => {})
+      if (resultRes && resultRes.params && resultRes.params.status.toLowerCase() === 'success') {
+        if (resultRes.result) {
+          this.fetchingResultsStatus = (resultRes.result.isInProgress) ?  'fetching' : 'done'
+          this.assignQuizResult(resultRes.result)
+        }
+      } else if (resultRes && resultRes.params && resultRes.params.status.toLowerCase() === 'failed') {
+        this.finalResponse = resultRes.responseCode
       }
-    } else if (resultRes && resultRes.params && resultRes.params.status.toLowerCase() === 'failed') {
-      this.finalResponse = resultRes.responseCode
+    } else {
+      const resultRes: any = await this.quizSvc.quizResultV5(req).toPromise().catch(_error => {})
+      if (resultRes && resultRes.params && resultRes.params.status.toLowerCase() === 'success') {
+        if (resultRes.result) {
+          this.fetchingResultsStatus = (resultRes.result.isInProgress) ?  'fetching' : 'done'
+          this.assignQuizResult(resultRes.result)
+        }
+      } else if (resultRes && resultRes.params && resultRes.params.status.toLowerCase() === 'failed') {
+        this.finalResponse = resultRes.responseCode
+      }
     }
+    
   }
 
   assignQuizResult(res: NSPractice.IQuizSubmitResponseV2) {
@@ -1230,7 +1781,7 @@ export class PracticeComponent implements OnInit, OnChanges, OnDestroy {
     this.numIncorrectAnswers = res.incorrect
     this.numUnanswered = res.blank
     this.passPercentage = res.passPercentage
-    this.result = res.overallResult
+    this.result = typeof res.overallResult === 'number' ? res.overallResult : 0
     if (this.result >= this.passPercentage) {
       this.isCompleted = true
     }
@@ -1279,6 +1830,325 @@ export class PracticeComponent implements OnInit, OnChanges, OnDestroy {
         },
     }
     this.events.dispatchEvent(event)
+  }
+
+  raiseInteractTelemetry() {
+    this.events.raiseInteractTelemetry(
+      {
+        type: WsEvents.EnumInteractTypes.CLICK,
+        id: 'reattempt-test',
+        subType: this.primaryCategory,
+      },
+      {
+         id: this.quizData.identifier,
+         type: this.assessmentType,
+         rollup: {
+            l1: this.activatedRoute.snapshot.queryParams.collectionId || '',
+        },
+      }
+    )
+  }
+
+  openSectionPopup(submitAssessment = false, getTime = true) {
+    const currentQuestionId = this.currentQuestion ? this.currentQuestion.questionId : ''
+    if(currentQuestionId && this.secQuestions && this.currentQuestion.section === this.secQuestions[0]['section'] && getTime) {
+      this.calculateTimeSpentOnQuestion(currentQuestionId)
+    } else {
+      this.setQuestionStartTime()
+    }
+    const tableColumns: any[] = [
+      { header: 'practiceoverview.section', key: 'section' },
+      { header: 'practiceoverview.noOfQuestions', key: 'NoOfQuestions' },
+      { header: 'practiceoverview.answered', key: 'answered' },
+      { header: 'practiceoverview.notAnswered', key: 'notAnswered' },
+      { header: 'practiceoverview.markedForReview', key: 'markedForReview' },
+      { header: 'practiceoverview.notVisited', key: 'notVisited' },
+    ]
+    const tableData: any = []
+    /* tslint:disable */
+    for (let i = 0; i < this.questionSectionTableData.length; i++) {
+      if(submitAssessment) {
+        const sectionChildNodes = this.getSectionTableDataCounts(this.questionSectionTableData[i]['childNodes'])
+        const tableObj = {
+          section: this.questionSectionTableData[i]['name'],
+          // NoOfQuestions: this.questionSectionTableData[i]['maxQuestions'],
+          NoOfQuestions: this.questionSectionTableData[i]['childNodes'].length,
+          answered: sectionChildNodes.answeredCount,
+          notAnswered: sectionChildNodes.notAnsweredCount,
+          markedForReview: sectionChildNodes.markedForReviewCount,
+          notVisited: sectionChildNodes.notVisitedCount,
+        }
+        tableData.push(tableObj)
+      } else {
+        if(this.questionSectionTableData[i]['identifier'] === this.selectedSectionIdentifier) {
+          const sectionChildNodes = this.getSectionTableDataCounts(this.questionSectionTableData[i]['childNodes'])
+          const tableObj = {
+            section: this.questionSectionTableData[i]['name'],
+            // NoOfQuestions: this.questionSectionTableData[i]['maxQuestions'],
+            NoOfQuestions: this.questionSectionTableData[i]['childNodes'].length,
+            answered: sectionChildNodes.answeredCount,
+            notAnswered: sectionChildNodes.notAnsweredCount,
+            markedForReview: sectionChildNodes.markedForReviewCount,
+            notVisited: sectionChildNodes.notVisitedCount,
+          }
+          tableData.push(tableObj)
+        }
+      }
+     
+    }
+    let popupData:any = {
+      headerText: this.resourceName,
+      assessmentType: this.assessmentType,
+      tableDetails: {
+        tableColumns,
+        tableData,
+      }      
+     
+    }
+
+    if(submitAssessment) {
+      popupData['warningNote']= 'practiceoverview.warningNoteForAssessmentSubmit',
+      popupData['buttonsList'] =[
+        {
+          response: 'yes',
+          text: 'practiceoverview.submitYes',
+          classes: 'blue-outline',
+        },
+        {
+          response: 'no',
+          text: 'practiceoverview.submitNo',
+          classes: 'blue-full',
+        },
+        // {
+        //   response: 'Back',
+        //   text: 'back',
+        //   classes: 'gray-full'
+        // },
+      ]
+    } else if(this.allSecAttempted.full) {
+      popupData['buttonsList'] =[
+        {
+          response: 'back',
+          text: 'practiceoverview.back',
+          classes: 'gray-full',
+        },
+        {
+          response: 'submitAssessment',
+          text: 'practiceoverview.submitTest',
+          classes: 'blue-full',
+        }
+      ]
+    }
+     else if(this.allSecAttempted.next) {
+      popupData['buttonsList'] =[
+        {
+          response: 'next-section',
+          text: 'practiceoverview.nextSection',
+          classes: 'blue-full',
+        },
+        {
+          response: 'no',
+          text: 'practiceoverview.backToAssessment',
+          classes: 'gray-full',
+        }
+      ]
+    }
+
+    if (this.assessmentType === 'optionalWeightage') {
+      if(this.secQuestions.length !== Object.keys(this.questionAnswerHash).length) {        
+          this.openSnackbar('Please attempt the current question to move on next question.')        
+      } else {
+        this.showOverlay = true
+        setTimeout(() => {
+          this.showOverlay = false
+          this.showAssessmentPopup(popupData)
+        },         5000)
+      }
+      
+      
+
+    } else {
+      this.showAssessmentPopup(popupData)
+    }
+
+  }
+
+  showAssessmentPopup(popupData: any) {    
+    const dialogRef =  this.dialog.open(FinalAssessmentPopupComponent, {
+      data: popupData,
+      width: popupData.assessmentType === 'optionalWeightage' ? '300px' : '1000px',
+      maxWidth: '90vw',
+      height: 'auto',
+      maxHeight: '90vh',
+      panelClass: 'final-assessment',
+    })
+    // dialogRef.componentInstance.xyz = this.configSvc
+    dialogRef.afterClosed().subscribe((result: any) => {
+      if (result) {
+        switch (result) {
+          case 'yes':
+          this.submitQuiz()
+          break
+          case 'next-section':
+            if(this.allSecAttempted.next) {              
+              this.nextSection(this.allSecAttempted.next)
+            }
+            
+          break;
+          case 'retake':
+          if(this.assessmentType === 'optionalWeightage') {
+            setTimeout(() => {
+              this.showOverlay = false
+              this.viewerHeaderSideBarToggleService.visibilityStatus.next(true)
+            },100)
+          }
+         
+          this.action('retake')
+          break;
+          case 'submitAssessment':
+            const submitAssessment = true
+            const getTime = false
+            this.openSectionPopup(submitAssessment, getTime)
+            break;
+          default :
+            this.setQuestionStartTime()
+        }
+
+      }
+    })
+  }
+
+  getSectionTableDataCounts(quesArray: any) {
+    const obj  = {
+      answeredCount : 0,
+      notAnsweredCount: 0,
+      markedForReviewCount: 0,
+      notVisitedCount: 0,
+    }
+    const markedQuestionArray:any = [...this.markedQuestions]
+    /* tslint:disable */
+    const questionAnswerHashKeys:string[] = Object.keys(this.questionAnswerHash)
+    for (let i = 0; i < questionAnswerHashKeys.length; i++) {
+      if (quesArray.indexOf(questionAnswerHashKeys[i]) > -1
+        && markedQuestionArray.indexOf(questionAnswerHashKeys[i]) < 0) {
+        obj['answeredCount'] = obj['answeredCount'] + 1
+      }
+
+    }
+    /* tslint:disable */
+    for (let i = 0; i < markedQuestionArray.length; i++) {
+      if (quesArray.indexOf(markedQuestionArray[i]) > -1) {
+        obj['markedForReviewCount'] = obj['markedForReviewCount'] + 1
+      }
+
+    }
+    /* tslint:disable */
+    for (let i = 0; i < this.questionVisitedData.length; i++) {
+      if (quesArray.indexOf(this.questionVisitedData[i]) > -1) {
+        obj['notVisitedCount'] = obj['notVisitedCount'] + 1
+      }
+    }
+    obj['notVisitedCount'] = quesArray.length - obj['notVisitedCount']
+    obj['notAnsweredCount'] = (quesArray.length - obj['answeredCount'] - obj['markedForReviewCount'] - obj['notVisitedCount'])
+
+    return obj
+  }
+
+  getQuestionIndex(index: number): number {
+    return (this.noOfQuestionsPerSet * this.currentSetNumber) + index + 1
+  }
+
+  getSectionTotalQuestionAndAnswerCount() {
+    let obj:any = {totalCount:0, answered:0, notAnswered:0, markedForReview:0, notVisited:0}
+    if(this.questionSectionTableData && this.questionSectionTableData.length) {      
+      for(let i = 0; i<this.questionSectionTableData.length;i++) {
+        if(this.questionSectionTableData[i]['identifier'] === this.selectedSectionIdentifier) {
+          const sectionChildNodes = this.getSectionTableDataCounts(this.questionSectionTableData[i]['childNodes'])
+          obj = {
+            section: this.questionSectionTableData[i]['name'],
+            totalCount: this.questionSectionTableData[i]['childNodes'].length,
+            answered: sectionChildNodes.answeredCount,
+            notAnswered: sectionChildNodes.notAnsweredCount,
+            markedForReview: sectionChildNodes.markedForReviewCount,
+            notVisited: sectionChildNodes.notVisitedCount,
+          }
+          break;
+        }
+      }
+    }
+    return obj
+  }
+
+  private openSnackbar(primaryMsg: string, duration: number = 5000) {
+    if (window.innerWidth <= 1200) {
+      const config = new MatSnackBarConfig()
+      config.panelClass = ['show-answer-alert-class']
+      config.duration = duration
+      config.verticalPosition = 'top'
+      config.horizontalPosition = 'center',
+      this.snackbar.open(primaryMsg, '', config)
+    } else {
+      const config = new MatSnackBarConfig()
+      config.panelClass = ['show-answer-alert-class']
+      config.duration = duration
+      this.snackbar.open(primaryMsg, '', config)
+    }
+  }
+
+  getAllQuestionAnswer() {
+    // let count = 0;
+    // if(this.generateRequest.children && this.generateRequest.children.length) {
+    //   for(let i=0; i<this.generateRequest.children[0].children.length;i++) {
+    //     if(this.generateRequest.children[0].children[i] &&
+    //       this.generateRequest.children[0].children[i]['editorState'] && 
+    //       this.generateRequest.children[0].children[i]['editorState']['options'] 
+    //       ) {
+    //         let optionLength:any = this.generateRequest.children[0].children[i]['editorState']['options'];
+    //         if(optionLength.length) {
+    //           count++;
+    //         }            
+    //       }        
+    //   }
+    // }
+    // return count
+    return Object.keys(this.questionAnswerHash).length
+  }
+
+  calculateTimeSpentOnQuestion(currentQuestionId: string) {
+    if(currentQuestionId) {
+      if(this.timeSpentOnQuestions && this.timeSpentOnQuestions[currentQuestionId]) {
+        this.timeSpentOnQuestions[currentQuestionId] = this.timeSpentOnQuestions[currentQuestionId] + this.timeSpent
+      } else {
+        this.timeSpentOnQuestions[currentQuestionId] = this.timeSpent
+      }
+    }
+    this.setQuestionStartTime()
+  }
+
+  get timeSpent(): number {
+    const timeSpentNow = Date.now() - this.questionStartTime;
+    return timeSpentNow
+  }
+
+  setQuestionStartTime() {
+    this.questionStartTime = Date.now()
+  }
+
+  get getTimeZone(): string {
+    if (this.selectedSection) {
+      if (this.timeLeft < (this.selectedSection!.expectedDuration * 0.2)) {
+        return 'countDownTimerReg'
+      } else if (this.timeLeft < (this.selectedSection!.expectedDuration * 0.5)) {
+        return 'countDownTimerOrange'
+      }
+    } else if (this.quizJson.timeLimit) {
+      if (this.timeLeft < (this.quizJson.timeLimit * 0.2)) {
+        return 'countDownTimerReg'
+      } else if (this.timeLeft < (this.quizJson.timeLimit * 0.5)) {
+        return 'countDownTimerOrange'
+      }
+    }
+    return 'countDownTimerGreen' 
   }
 
 }

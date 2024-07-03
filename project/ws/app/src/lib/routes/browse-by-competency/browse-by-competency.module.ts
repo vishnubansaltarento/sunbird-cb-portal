@@ -7,7 +7,7 @@ import {
   PipeRelativeTimeModule,
   PipeListFilterModule,
   PipeFilterV2Module,
-} from '@sunbird-cb/utils'
+} from '@sunbird-cb/utils-v2'
 import { MatGridListModule } from '@angular/material/grid-list'
 import { ReactiveFormsModule, FormsModule } from '@angular/forms'
 import { WidgetResolverModule } from '@sunbird-cb/resolver'

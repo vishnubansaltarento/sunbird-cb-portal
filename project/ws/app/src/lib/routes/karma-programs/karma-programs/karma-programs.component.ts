@@ -4,8 +4,7 @@ import { Observable, Subject } from 'rxjs'
 import { BrowseProviderService } from '../../browse-by-provider/services/browse-provider.service'
 import { LocalDataService } from '../../browse-by-competency/services/localService'
 import { TranslateService } from '@ngx-translate/core'
-import { EventService, WsEvents } from '@sunbird-cb/utils'
-import { MultilingualTranslationsService } from '@sunbird-cb/utils-v2'
+import { EventService, WsEvents, MultilingualTranslationsService } from '@sunbird-cb/utils-v2'
 import { debounceTime, switchMap, takeUntil } from 'rxjs/operators'
 // tslint:disable
 import _ from 'lodash'
@@ -69,7 +68,14 @@ export class KarmaProgramsComponent implements OnInit {
       && this.route.snapshot.data.programData.data.result.data
       && this.route.snapshot.data.programData.data.result.data.length
     ) {
-      this.allProviders = this.route.snapshot.data.programData.data.result.data
+      // this.allProviders = this.route.snapshot.data.programData.data.result.data
+      this.allProviders = []
+      let programData: any = this.route.snapshot.data.programData.data.result.data
+      programData.forEach((prgData: any) => {
+        if(prgData.children && prgData.children.length) {
+          this.allProviders.push(prgData)
+        }
+      })
       // .data.result.form.data.sectionList
     }
     this.clonesProviders = this.allProviders

@@ -9,7 +9,7 @@ import {
     RatingService,
 } from '@sunbird-cb/collection'
 import { NsWidgetResolver } from '@sunbird-cb/resolver'
-import { ConfigurationsService, LoggerService, NsPage, TFetchStatus, UtilityService } from '@sunbird-cb/utils'
+import { ConfigurationsService, LoggerService, NsPage, TFetchStatus, UtilityService } from '@sunbird-cb/utils-v2'
 import { Subscription, Observable } from 'rxjs'
 import { share } from 'rxjs/operators'
 import { SafeHtml, DomSanitizer, SafeStyle } from '@angular/platform-browser'

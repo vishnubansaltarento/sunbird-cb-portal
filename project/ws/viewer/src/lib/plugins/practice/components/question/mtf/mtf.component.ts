@@ -14,7 +14,7 @@ import { jsPlumb, OnConnectionBindInfo } from 'jsplumb'
 // tslint:disable-next-line
 import _ from 'lodash'
 import { Subscription } from 'rxjs'
-import { NsContent } from '@sunbird-cb/utils/src/public-api'
+import { NsContent } from '@sunbird-cb/utils-v2'
 
 @Component({
     selector: 'viewer-mtf-question',
@@ -30,6 +30,8 @@ export class MatchTheFollowingQuesComponent implements OnInit, OnChanges, AfterV
         instructions: '',
         question: '',
         questionId: '',
+        questionLevel: '',
+        timeTaken: '',
         editorState: undefined,
         options: [
             {
@@ -80,6 +82,11 @@ export class MatchTheFollowingQuesComponent implements OnInit, OnChanges, AfterV
             if (element.hint) {
                 this.matchHintDisplay.push(element)
             }
+        })
+        this.practiceSvc.clearResponse.subscribe((questionId: any) => {
+           if (this.question.questionId === questionId) {
+            this.resetMtf()
+           }
         })
     }
     get numConnections() {
@@ -273,7 +280,6 @@ export class MatchTheFollowingQuesComponent implements OnInit, OnChanges, AfterV
         )
 
     }
-
     getSanitizeString(res: any) {
         if (res && (typeof res === 'string')) {
             const response = res.replace(/\&lt;/g, '<').replace(/\&gt;/g, '>')

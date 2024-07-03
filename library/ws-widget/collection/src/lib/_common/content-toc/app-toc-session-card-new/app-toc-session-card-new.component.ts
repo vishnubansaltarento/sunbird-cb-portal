@@ -1,6 +1,6 @@
 import { animate, style, transition, trigger } from '@angular/animations'
 import { Component, Input, OnInit } from '@angular/core'
-import { NsContent } from '@sunbird-cb/utils/src/public-api'
+import { NsContent } from '@sunbird-cb/utils-v2'
 import { viewerRouteGenerator } from '../../../_services/viewer-route-util'
 import { Router } from '@angular/router'
 import moment from 'moment'

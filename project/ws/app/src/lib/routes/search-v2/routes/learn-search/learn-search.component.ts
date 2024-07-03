@@ -1,6 +1,6 @@
 import { Component, OnInit, OnDestroy, Input, OnChanges, SimpleChanges } from '@angular/core'
 import { GbSearchService } from '../../services/gb-search.service'
-import { ConfigurationsService, EventService, MultilingualTranslationsService, ValueService } from '@sunbird-cb/utils'
+import { ConfigurationsService, EventService, MultilingualTranslationsService, ValueService } from '@sunbird-cb/utils-v2'
 import { ActivatedRoute, Router } from '@angular/router'
 // tslint:disable-next-line
 import _ from 'lodash'
@@ -130,7 +130,8 @@ export class LearnSearchComponent implements OnInit, OnChanges, OnDestroy {
 
   ngOnChanges(changes: SimpleChanges) {
     if (this.configSvc.unMappedUser && this.configSvc.unMappedUser.profileDetails) {
-      this.veifiedKarmayogi = this.configSvc.unMappedUser.profileDetails.verifiedKarmayogi
+      this.veifiedKarmayogi = this.configSvc.unMappedUser.profileDetails.profileStatus
+        && this.configSvc.unMappedUser.profileDetails.profileStatus === 'VERIFIED' ? true : false
     }
     // for (const prop in changes) {
     if (changes.param.currentValue !== changes.param.previousValue) {
@@ -359,7 +360,7 @@ export class LearnSearchComponent implements OnInit, OnChanges, OnDestroy {
       'secureSettings',
     ]
     this.newQueryParam = data
-    // let modifiedDataCount = 0
+    let modifiedDataCount = 0
     if (data.request.filters.courseCategory.includes(NsContent.ECourseCategory.MODERATED_COURSE) ||
       data.request.filters.courseCategory.includes(NsContent.ECourseCategory.MODERATED_ASSESSEMENT) ||
       data.request.filters.courseCategory.includes(NsContent.ECourseCategory.MODERATED_PROGRAM)) {
@@ -375,24 +376,24 @@ export class LearnSearchComponent implements OnInit, OnChanges, OnDestroy {
     this.searchResults = []
     this.searchSrvc.fetchSearchDataByCategory(data).subscribe((response: any) => {
       if (response && response.result && response.result.count) {
-        // response.result.content.forEach((res: any) => {
-        //   if (res.courseCategory === NsContent.ECourseCategory.MODERATED_COURSE ||
-        //     res.courseCategory === NsContent.ECourseCategory.MODERATED_ASSESSEMENT ||
-        //     res.courseCategory === NsContent.ECourseCategory.MODERATED_PROGRAM) {
-        //       if (this.veifiedKarmayogi) {
-        //         this.searchResults.push(res)
-        //         modifiedDataCount = modifiedDataCount + 1
-        //       } else {
-        //         if (res.secureSettings && res.secureSettings.isVerifiedKarmayogi === 'No') {
-        //           this.searchResults.push(res)
-        //           modifiedDataCount = modifiedDataCount + 1
-        //         }
-        //       }
-        //     } else {
-        //       this.searchResults.push(res)
-        //       modifiedDataCount = modifiedDataCount + 1
-        //     }
-        // })
+        response.result.content.forEach((res: any) => {
+          if (res.courseCategory === NsContent.ECourseCategory.MODERATED_COURSE ||
+            res.courseCategory === NsContent.ECourseCategory.MODERATED_ASSESSEMENT ||
+            res.courseCategory === NsContent.ECourseCategory.MODERATED_PROGRAM) {
+              if (this.veifiedKarmayogi) {
+                this.searchResults.push(res)
+                modifiedDataCount = modifiedDataCount + 1
+              } else {
+                if (res.secureSettings && res.secureSettings.isVerifiedKarmayogi === 'No') {
+                  this.searchResults.push(res)
+                  modifiedDataCount = modifiedDataCount + 1
+                }
+              }
+            } else {
+              this.searchResults.push(res)
+              modifiedDataCount = modifiedDataCount + 1
+            }
+        })
         this.searchResults = response.result.content
       }
       this.totalResults = response.result.count

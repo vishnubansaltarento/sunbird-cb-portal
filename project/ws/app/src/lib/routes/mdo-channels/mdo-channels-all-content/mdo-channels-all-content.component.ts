@@ -4,8 +4,7 @@ import { CommonMethodsService } from '@sunbird-cb/consumption'
 import { NsContentStripWithTabs } from '@sunbird-cb/consumption/lib/_common/content-strip-with-tabs-lib/content-strip-with-tabs-lib.model'
 
 import { AllContentService } from './../service/all-content.service'
-import { MultilingualTranslationsService } from '@sunbird-cb/utils-v2'
-import { EventService, UtilityService, WsEvents } from '@sunbird-cb/utils'
+import { EventService, UtilityService, WsEvents, MultilingualTranslationsService } from '@sunbird-cb/utils-v2'
 import { environment } from 'src/environments/environment'
 import { TranslateService } from '@ngx-translate/core'
 
@@ -65,11 +64,16 @@ export class MdoChannelsAllContentComponent implements OnInit {
     })
     this.titles = [
       { title: 'Learn', url: '/page/learn', icon: 'school', disableTranslate: false },
-      { title: `MDO channel`, url: `/app/learn/mdo-channels/${this.orgName}/${this.orgId}/micro-sites`, icon: '', disableTranslate: true },
+      { title: `MDO channel`, url: `/app/learn/mdo-channels/all-channels`, icon: '', disableTranslate: true },
       {
         title: this.orgName,
-        url: `none`,
-        textClass: 'ws-mat-black60-text',
+        url: `/app/learn/mdo-channels/${this.orgName}/${this.orgId}/micro-sites`,
+        disableTranslate: true,
+      },
+      { title: this.seeAllPageConfig.title,
+        icon: '',
+        url: 'none',
+        disableTranslate: false,
       },
     ]
     this.callApi()

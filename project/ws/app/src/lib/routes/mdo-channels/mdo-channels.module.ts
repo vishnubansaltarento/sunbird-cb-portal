@@ -3,7 +3,7 @@ import { CommonModule } from '@angular/common'
 import {
   PipeOrderByModule,
   PipeFilterV2Module,
-} from '@sunbird-cb/utils'
+} from '@sunbird-cb/utils-v2'
 import {
   MatToolbarModule,
   MatIconModule,
@@ -40,6 +40,7 @@ import {
   CommonMethodsService,
   CommonStripModule,
   CompetencyPassbookModule,
+  CompetencyPassbookMdoModule,
   ContentStripWithTabsLibModule,
   DataPointsModule,
   SlidersLibModule,
@@ -90,6 +91,7 @@ import { AllContentService } from './service/all-content.service'
     CardContentV2Module,
     ContentStripWithTabsLibModule,
     CompetencyPassbookModule,
+    CompetencyPassbookMdoModule,
     DataPointsModule,
     SlidersLibModule,
     CommonStripModule,
