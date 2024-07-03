@@ -110,18 +110,22 @@ export class OverviewComponent implements OnInit, OnChanges, OnDestroy {
   }
 
   checkForAssessmentSubmitAlready(identifier: any) {
-    if (this.selectedAssessmentCompatibilityLevel < 6) {
-      this.quizSvc.canAttend(identifier).subscribe(response => {
-        if (response && response.attemptsMade > 0) {
-          this.quizSvc.checkAlreadySubmitAssessment.next(true)
-        }
-      })
-    } else {
-      this.quizSvc.canAttendV5(identifier).subscribe(response => {
-        if (response && response.attemptsMade > 0) {
-          this.quizSvc.checkAlreadySubmitAssessment.next(true)
-        }
-      })
+    if (this.selectedAssessmentCompatibilityLevel) {
+      if (this.selectedAssessmentCompatibilityLevel < 6) {
+        this.quizSvc.canAttend(identifier).subscribe(response => {
+          if (response && response.attemptsMade > 0) {
+            this.quizSvc.checkAlreadySubmitAssessment.next(true)
+          }
+        })
+      } else {
+        // this.quizSvc.canAttendV5(identifier).subscribe(response => {
+        //   if (response && response.attemptsMade > 0 && response.attemptsMade < response.attemptsAllowed) {
+        //     this.quizSvc.checkAlreadySubmitAssessment.next(true)
+        //   } else {
+        //     this.quizSvc.checkAlreadySubmitAssessment.next(false)
+        //   }
+        // })
+      }
     }
 
   }
