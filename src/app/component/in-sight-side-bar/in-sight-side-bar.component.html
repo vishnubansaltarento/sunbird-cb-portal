@@ -26,6 +26,29 @@
         <ws-widget-weekly-claps [insightsData]="insightsData" [weeklyData]="homePageData.weeklyClaps" [isLoading]="clapsDataLoading"></ws-widget-weekly-claps>
     </div>
 
+    <div class="tips-container">
+        <div class="circle-box">
+            <div class="background-circle">
+                <!-- circle -->
+            </div>
+        </div>
+        <div class="tips-header">
+            <h3>Tips for Learners</h3>
+            <button (click)="showAllTips()">Show all ></button>
+        </div>
+        <div class="tip-content">
+            <div class =" background">
+            <img  class="book-icon" src="assets/icons/learner-advisory/use-gyaan-karmayogi.png"
+                alt="Use the new section Gyaan Karmayogi regularly, to go over case studies and other learning material.">
+            </div>    
+            <p>{{'learnerAdvisory.useGyaanKarmayogi' | translate}}</p>
+            <div class="tip-count">
+                1/13
+            </div>
+        </div>
+    </div>
+
+
     <div *ngIf="assessmentsData" class="margin-bottom-m" class="collapsible" [@collapsDiscuss]="collapsed" [ngClass]="{'padding-bottom-m': !collapsed}">
         <div class="assessments-wrapper">
             <div class="assessments-info-wrapper">
