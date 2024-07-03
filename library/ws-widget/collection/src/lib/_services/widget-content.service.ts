@@ -55,6 +55,7 @@ const API_END_POINTS = {
   READ_COURSE_KARMAPOINTS: '/apis/proxies/v8/karmapoints/user/course/read',
   CLAIM_KARMAPOINTS: '/apis/proxies/v8/claimkarmapoints',
   USER_KARMA_POINTS: '/apis/proxies/v8/user/totalkarmapoints',
+  EXT_CONTENT_READ: (contentId: any) => `/apis/proxies/v8/cios/v1/content/read/${contentId}`,
 }
 
 @Injectable({
@@ -435,6 +436,9 @@ export class WidgetContentService {
     url = `/api/content/v1/read/${contentId}`
     return this.http.get<NsContent.IContent[]>(url)
     // return this.http.get<NsContent.IContent[]>(API_END_POINTS.CONTENT_READ(contentId))
+  }
+  fetchExternalContent(contentId: string[]): Observable<NsContent.IContent[]> {
+    return this.http.get<NsContent.IContent[]>(API_END_POINTS.EXT_CONTENT_READ(contentId))
   }
 
   getCourseKarmaPoints(request: any) {

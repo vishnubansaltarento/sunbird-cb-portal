@@ -134,6 +134,8 @@ import { AppTocOverviewDirective } from './routes/app-toc-overview/app-toc-overv
 import { AppTocHomeDirective } from './routes/app-toc-home/app-toc-home.directive'
 import { AppTocCohortsDirective } from './routes/app-toc-cohorts/app-toc-cohorts.directive'
 import { AppTocSinglePageDirective } from './routes/app-toc-single-page/app-toc-single-page.directive'
+import { AppTocCiosHomeComponent } from './components/app-toc-cios-home/app-toc-cios-home.component'
+import { CommonMethodsService } from '@sunbird-cb/consumption'
 
 @NgModule({
   declarations: [
@@ -163,6 +165,7 @@ import { AppTocSinglePageDirective } from './routes/app-toc-single-page/app-toc-
     AppTocSessionsComponent,
     AppTocSessionCardComponent,
     EnrollQuestionnaireComponent,
+    AppTocCiosHomeComponent,
   ],
   imports: [
     CommonModule,
@@ -266,6 +269,7 @@ import { AppTocSinglePageDirective } from './routes/app-toc-single-page/app-toc-
     ProfileResolverService,
     ActionService,
     MultilingualTranslationsService,
+    CommonMethodsService,
   ],
   exports: [
     AppTocDiscussionComponent,
