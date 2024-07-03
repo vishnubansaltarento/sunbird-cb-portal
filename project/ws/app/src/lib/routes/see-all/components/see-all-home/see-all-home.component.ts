@@ -1,20 +1,26 @@
-import { Component, OnInit, OnDestroy } from '@angular/core'
-import { ActivatedRoute } from '@angular/router'
-import { MatTabChangeEvent } from '@angular/material'
+import {
+  Component,
+  OnInit,
+  OnDestroy,
+} from '@angular/core'
+import {
+  ActivatedRoute,
+} from '@angular/router'
 // tslint:disable-next-line
 import * as _ from 'lodash'
-import { ConfigurationsService, EventService, MultilingualTranslationsService, WsEvents } from '@sunbird-cb/utils-v2'
+import { ConfigurationsService, EventService, MultilingualTranslationsService, WsEvents, NsContent } from '@sunbird-cb/utils-v2'
 import { SeeAllService } from '../../services/see-all.service'
 import { WidgetUserService } from '@sunbird-cb/collection/src/lib/_services/widget-user.service'
+import { MatTabChangeEvent } from '@angular/material'
 import { NsContentStripWithTabs } from '@sunbird-cb/collection/src/lib/content-strip-with-tabs/content-strip-with-tabs.model'
-import { NsContent } from '@sunbird-cb/collection/src/lib/_services/widget-content.model'
+
 @Component({
   selector: 'ws-app-see-all-home',
   templateUrl: './see-all-home.component.html',
   styleUrls: ['./see-all-home.component.scss'],
 })
-
 export class SeeAllHomeComponent implements OnInit, OnDestroy {
+
   seeAllPageConfig: any
   keyData: any
   contentDataList: any = []
@@ -27,10 +33,10 @@ export class SeeAllHomeComponent implements OnInit, OnDestroy {
   tabResults: any[] = []
   tabSelected: any
   dynamicTabIndex = 0
-  tabCompleted = ''
 
   constructor(
     private activated: ActivatedRoute,
+    // private router: Router,
     private seeAllSvc: SeeAllService,
     private configSvc: ConfigurationsService,
     private userSvc: WidgetUserService,
@@ -43,7 +49,6 @@ export class SeeAllHomeComponent implements OnInit, OnDestroy {
   async ngOnInit() {
     this.activated.queryParams.subscribe((res: any) => {
       this.keyData = (res.key) ? res.key : ''
-      this.tabCompleted = (res.tab) ? res.tab : ''
       this.tabSelected = (res.tabSelected) ? res.tabSelected : ''
     })
     const configData = await this.seeAllSvc.getSeeAllConfigJson().catch(_error => {})
@@ -56,7 +61,7 @@ export class SeeAllHomeComponent implements OnInit, OnDestroy {
         })
       }
     })
-    if(!this.seeAllPageConfig) {
+    if (!this.seeAllPageConfig) {
       configData && configData.assessmentData.forEach((ele: any) => {
         if (ele && ele.strips && ele.strips.length > 0) {
           ele.strips.forEach((subEle: any) => {
@@ -164,14 +169,15 @@ export class SeeAllHomeComponent implements OnInit, OnDestroy {
     return v6filters
   }
 
-  getInprogressAndCompleted(array: NsContent.IContent[], customFilter: any, strip: NsContentStripWithTabs.IContentStripUnit) {
+  getInprogressAndCompleted(array: NsContent.IContent[],
+                            customFilter: any,
+                            strip: NsContentStripWithTabs.IContentStripUnit) {
     const inprogress: any[] = []
     const completed: any[] = []
     array.forEach((e: any, idx: number, arr: any[]) => (customFilter(e, idx, arr) ? inprogress : completed).push(e))
     return [
-      { value: 'inprogress', widgets: this.transformContentsToWidgets(inprogress, strip) },
-      { value: 'completed', widgets: this.transformContentsToWidgets(completed, strip) },
-    ]
+    { value: 'inprogress', widgets: this.transformContentsToWidgets(inprogress, strip) },
+    { value: 'completed', widgets: this.transformContentsToWidgets(completed, strip) }]
   }
 
   splitEnrollmentTabsData(contentNew: NsContent.IContent[], strip: NsContentStripWithTabs.IContentStripUnit) {
@@ -207,7 +213,6 @@ export class SeeAllHomeComponent implements OnInit, OnDestroy {
       label: `${tabEvent.tab.textLabel}`,
       index: tabEvent.index,
     }
-
     this.eventSvc.raiseInteractTelemetry(
       {
         type: WsEvents.EnumInteractTypes.CLICK,
@@ -219,7 +224,6 @@ export class SeeAllHomeComponent implements OnInit, OnDestroy {
         module: WsEvents.EnumTelemetrymodules.HOME,
       }
     )
-
     const currentTabFromMap = stripMap.tabs && stripMap.tabs[tabEvent.index]
     const currentStrip = stripMap
     if (currentStrip && currentTabFromMap && !currentTabFromMap.computeDataOnClick) {
@@ -266,14 +270,10 @@ export class SeeAllHomeComponent implements OnInit, OnDestroy {
             const dateB: any = new Date(b.lastContentAccessTime || 0)
             return dateB - dateA
           })
-
           if (strip.tabs && strip.tabs.length) {
             this.tabResults = this.splitEnrollmentTabsData(contentNew, strip)
-            if (this.tabCompleted) {
-              this.dynamicTabIndex = (this.tabCompleted && this.tabCompleted === 'completed') ? 1 : 0
-            } else {
-              this.dynamicTabIndex = _.findIndex(this.tabResults, (v: any) => v.label === this.tabSelected)
-            }
+            this.dynamicTabIndex = _.findIndex(this.tabResults, (v: any) => v.label === this.tabSelected)
+          } else {
           }
         },
         () => {
@@ -301,7 +301,6 @@ export class SeeAllHomeComponent implements OnInit, OnDestroy {
         if (firstTab.requestRequired) {
           if (this.seeAllPageConfig.tabs) {
             const allTabs = this.seeAllPageConfig.tabs
-            // tslint:disable-next-line:max-line-length
             const currentTabFromMap = (allTabs && allTabs.length && allTabs[this.dynamicTabIndex]) as NsContentStripWithTabs.IContentStripTab
             this.getTabDataByNewReqSearchV6(strip, this.dynamicTabIndex, currentTabFromMap, calculateParentStatus)
           }
@@ -386,7 +385,6 @@ export class SeeAllHomeComponent implements OnInit, OnDestroy {
         if (firstTab.requestRequired) {
           if (this.seeAllPageConfig.tabs) {
             const allTabs = this.seeAllPageConfig.tabs
-            // tslint:disable-next-line:max-line-length
             const currentTabFromMap = (allTabs && allTabs.length && allTabs[this.dynamicTabIndex]) as NsContentStripWithTabs.IContentStripTab
             this.getTabDataByNewReqTrending(strip, this.dynamicTabIndex, currentTabFromMap, calculateParentStatus)
           }
@@ -536,10 +534,10 @@ export class SeeAllHomeComponent implements OnInit, OnDestroy {
     }
   }
 
+  ngOnDestroy() {}
+
   translateLabels(label: string, type: any) {
     return this.langtranslations.translateLabel(label.toLowerCase(), type, '')
   }
-
-  ngOnDestroy() {}
 
 }

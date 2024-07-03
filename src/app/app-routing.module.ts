@@ -42,6 +42,7 @@ import { MicrosotesComponent } from './routes/microsites/microsotes.component'
 import { MicrositesModule } from './routes/microsites/microsites.module'
 import { AppGyaanKarmayogiService } from './services/app-gyaan-karmayogi.service'
 import { PrivacyPolicyComponent } from './component/privacy-policy/privacy-policy.component'
+import { LearnerAdvisoryComponent } from './learner-advisory/learner-advisory.component'
 // 💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥
 // Please declare routes in alphabetical order
 // 😵😵😵😵😵😵😵😵😵😵😵😵😵😵😵😵😵😵😵😵😵😵😵😵😵😵😵😵😵😵😵😵😵😵😵😵😵😵😵
@@ -950,6 +951,14 @@ const routes: Routes = [
     data: {
       module: 'privacy-policy',
       pageId: 'public/privacy-policy',
+    },
+  },
+  {
+    path: 'public/learner-advisory',
+    component: LearnerAdvisoryComponent,
+    data: {
+      module: 'learner-advisory',
+      pageId: 'public/learner-advisory',
     },
   },
   {
