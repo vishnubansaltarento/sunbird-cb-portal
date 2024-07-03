@@ -14,7 +14,7 @@
         </div>
         <div class="ml-4 mr-6 mb-2 view-more ws-mat-accent-text view-all" *ngIf="currentEvent">
           <a mat-button class="flex-1" href="{{eventData?.registrationLink}}" target="_blank" (click)="raiseTelemetry('join-event')">
-            <span i18n>{{ 'eventDetailsRightCard.joinEvent":' | translate }}</span>
+            <span i18n>{{ 'eventDetailsRightCard.joinEvent' | translate }}</span>
           </a>
         </div>
         <div class="ml-4 mr-6 mb-2 view-more ws-mat-accent-text view-all" *ngIf="futureEvent">

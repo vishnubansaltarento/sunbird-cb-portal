@@ -64,11 +64,16 @@ export class MdoChannelsAllContentComponent implements OnInit {
     })
     this.titles = [
       { title: 'Learn', url: '/page/learn', icon: 'school', disableTranslate: false },
-      { title: `MDO channel`, url: `/app/learn/mdo-channels/${this.orgName}/${this.orgId}/micro-sites`, icon: '', disableTranslate: true },
+      { title: `MDO channel`, url: `/app/learn/mdo-channels/all-channels`, icon: '', disableTranslate: true },
       {
         title: this.orgName,
-        url: `none`,
-        textClass: 'ws-mat-black60-text',
+        url: `/app/learn/mdo-channels/${this.orgName}/${this.orgId}/micro-sites`,
+        disableTranslate: true,
+      },
+      { title: this.seeAllPageConfig.title,
+        icon: '',
+        url: 'none',
+        disableTranslate: false,
       },
     ]
     this.callApi()

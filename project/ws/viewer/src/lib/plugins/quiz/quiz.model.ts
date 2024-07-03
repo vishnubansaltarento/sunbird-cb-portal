@@ -22,7 +22,8 @@ export namespace NSQuiz {
     editorState?: any[]
     questionLevel: string
     questionType?: TQuizQuestionType
-    rhsChoices?: any[]
+    rhsChoices?: any[],
+    marks: number
   }
 
   export interface IOption {

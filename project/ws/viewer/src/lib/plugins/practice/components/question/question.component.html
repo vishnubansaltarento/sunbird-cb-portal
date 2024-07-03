@@ -1,4 +1,4 @@
-<ng-container *ngIf="coursePrimaryCategory !== 'Standalone Assessment'">
+<ng-container *ngIf="selectedAssessmentCompatibilityLevel < 6">
   <mat-card *ngIf="!(question?.questionType === 'mtf' || question?.questionType === 'ftb')"
     class="flex flex-1 respo margin-bottom-m no-shadow">
     <div class="flex flex-column width-100" [ngClass]="mobileQuestionSetExpand ? 'mobile-responsive-question-container-expand' : 'mobile-responsive-question-container'">
@@ -60,14 +60,14 @@
           </div>
           <div class="flex flex-1">
             <!-- {{log(question)}} -->
-            <ng-container *ngIf="question.questionType === 'mcq-mca' || question.questionType === 'mcq-mca-w'">
-              <viewer-mcq-mca-question   [primaryCategory]="primaryCategory" class="flex-1" [question]="question" [itemSelectedList]="itemSelectedList1"
+            <ng-container *ngIf="question.questionType === 'mcq-mca'">
+              <viewer-mcq-mca-question   [primaryCategory]="primaryCategory" class="flex-1" [question]="question" [itemSelectedList]="itemSelectedList1" [assessmentType]="assessmentType"
                 (update)="update($event)">
               </viewer-mcq-mca-question>
             </ng-container>
     
-            <ng-container *ngIf="question.questionType === 'mcq-sca' || question.questionType === 'mcq-sca-tf'">
-              <viewer-mcq-sca-question   [primaryCategory]="primaryCategory" class="flex-1" [question]="question" [itemSelectedList]="itemSelectedList1"
+            <ng-container *ngIf="question.questionType === 'mcq-sca' || question.questionType === 'mcq-sca-tf' || question.questionType === 'mcq-mca-w'">
+              <viewer-mcq-sca-question   [primaryCategory]="primaryCategory" class="flex-1" [question]="question" [itemSelectedList]="itemSelectedList1" [assessmentType]="assessmentType" 
                 (update)="update($event)"></viewer-mcq-sca-question>
             </ng-container>
             <ng-container *ngIf="question.questionType === 'mtf'">
@@ -193,7 +193,7 @@
 </ng-container>
 
 <!-- Standalone Assessment-->
-<ng-container *ngIf="coursePrimaryCategory == 'Standalone Assessment' && !showMarkForReview">
+<ng-container *ngIf="selectedAssessmentCompatibilityLevel >= 6 && !showMarkForReview">
   <mat-card *ngIf="!(question?.questionType === 'mtf' || question?.questionType === 'ftb')"
     class="flex flex-1 respo margin-bottom-m no-shadow standalone-assessment" [ngClass]="showOnlyQuestion ? 'show-only-question': 'show-only-answer'">
     <!-- [ngClass]="mobileQuestionSetExpand ? 'mobile-responsive-question-container-expand' : 'mobile-responsive-question-container'" -->
@@ -207,15 +207,15 @@
           </div>         
         </div>
         <div>
-          <div class="question-marks" *ngIf="assessmentType === 'questionWeightage'">
-            <p *ngIf="question?.marks">{{question?.marks}} Marks</p>
+          <div class="question-marks" *ngIf="assessmentType === 'questionWeightage' && showQuestionMarks === 'Yes'">
+            <p *ngIf="question?.marks">{{question?.marks}} {{ 'practiceoverview.marks' | translate }}</p>
           </div>
-          <div class="question-marks" *ngIf="assessmentType === 'optionWeightage'">
+          <div class="question-marks" *ngIf="assessmentType === 'optionalWeightage'">
             <p>{{questionNumber}}/{{ total }}</p>
           </div>
         </div>
       </div>      
-      <div class="respo flex flex-column padding-top-m" *ngIf="!showOnlyQuestion" [ngClass]="mobileQuestionSetExpand ? 'mobile-responsive-question-container-expand' : 'mobile-responsive-question-container'">
+      <div class="respo flex flex-column" *ngIf="!showOnlyQuestion" [ngClass]="mobileQuestionSetExpand ? 'mobile-responsive-question-container-expand' : 'mobile-responsive-question-container'">
         
         <div class="flex flex-column respo_inner">
           <div class="flex flex-1">
@@ -229,14 +229,14 @@
           </div>
           <div class="flex flex-1">
             <!-- {{log(question)}} -->
-            <ng-container *ngIf="question.questionType === 'mcq-mca' || question.questionType === 'mcq-mca-w'">
-              <viewer-mcq-mca-question   [primaryCategory]="primaryCategory" class="flex-1" [question]="question" [itemSelectedList]="itemSelectedList1"
+            <ng-container *ngIf="question.questionType === 'mcq-mca'">
+              <viewer-mcq-mca-question   [primaryCategory]="primaryCategory" class="flex-1" [question]="question" [itemSelectedList]="itemSelectedList1" [assessmentType]="assessmentType"
                 (update)="update($event)">
               </viewer-mcq-mca-question>
             </ng-container>
     
-            <ng-container *ngIf="question.questionType === 'mcq-sca' || question.questionType === 'mcq-sca-tf'">
-              <viewer-mcq-sca-question   [primaryCategory]="primaryCategory" class="flex-1" [question]="question" [itemSelectedList]="itemSelectedList1"
+            <ng-container *ngIf="question.questionType === 'mcq-sca' || question.questionType === 'mcq-sca-tf' || question.questionType === 'mcq-mca-w'">
+              <viewer-mcq-sca-question   [primaryCategory]="primaryCategory" class="flex-1" [question]="question" [itemSelectedList]="itemSelectedList1" [assessmentType]="assessmentType"
                 (update)="update($event)"></viewer-mcq-sca-question>
             </ng-container>
             <ng-container *ngIf="question.questionType === 'mtf'">
@@ -284,15 +284,15 @@
             </div>         
           </div>
           <div>
-            <div class="question-marks" *ngIf="assessmentType === 'questionWeightage'">
-              <p>{{question?.marks}} Marks</p>
+            <div class="question-marks" *ngIf="assessmentType === 'questionWeightage' && showQuestionMarks === 'Yes'">
+              <p *ngIf="question?.marks">{{question?.marks}} {{ 'practiceoverview.marks' | translate }}</p>
             </div>
-            <div class="question-marks" *ngIf="assessmentType === 'optionWeightage'">
+            <div class="question-marks" *ngIf="assessmentType === 'optionalWeightage'">
               <p>{{questionNumber}}/{{ total }}</p>
             </div>
           </div>
         </div>
-      <div class="respo flex flex-column padding-top-m" *ngIf="!showOnlyQuestion" [ngClass]="mobileQuestionSetExpand ? 'mobile-responsive-question-container-expand' : 'mobile-responsive-question-container'">
+      <div class="respo flex flex-column " *ngIf="!showOnlyQuestion" [ngClass]="mobileQuestionSetExpand ? 'mobile-responsive-question-container-expand' : 'mobile-responsive-question-container'">
         <div class="flex flex-1- flex-column respo_inner">
           <div class="flex flex-1" *ngIf="question.questionType === 'mtf'">
             <div class="flex flex-1 flex-column">
@@ -326,17 +326,17 @@
   </mat-card>
 </ng-container>
 
-<ng-container *ngIf="coursePrimaryCategory == 'Standalone Assessment' && showMarkForReview" >
-  <div>
+<ng-container *ngIf="selectedAssessmentCompatibilityLevel >= 6 && showMarkForReview" >
+  <div class="Mweb-btns">
     <a 
                 class="text-black margin-xs quest_btn_review" mat-button
                 (click)="markQuestion()">
-                <ng-container *ngIf="!isXsmall">Mark for Review & next</ng-container>
+                <ng-container *ngIf="!isXsmall">{{ 'practiceoverview.markForReviewNext' | translate }}</ng-container>
               </a>
     <a 
           class="text-black margin-xs quest_btn_review" mat-button
           (click)="clearResponse()">
-          <ng-container *ngIf="!isXsmall">Clear Response</ng-container>
+          <ng-container *ngIf="!isXsmall">{{ 'practiceoverview.clearResponse' | translate }}</ng-container>
         </a>
   </div>
   

@@ -22,6 +22,7 @@ export class QuestionComponent implements OnInit, AfterViewInit {
     questionType: undefined,
     questionId: '',
     questionLevel: '',
+    marks: 0,
     options: [
       {
         optionId: '',

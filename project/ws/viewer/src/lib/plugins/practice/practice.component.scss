@@ -492,6 +492,28 @@ $nav-height: 40px;
    
 }
 
+.countDownTimer {
+  width: 102px;
+  align-items: center;
+  justify-content: center;
+}
+
+.timerText {
+  color: #ffffff !important;
+}
+
+.countDownTimerGreen {
+  background-color: #1D8923 !important;
+}
+
+.countDownTimerOrange {
+  background-color: #F3962F !important;
+}
+
+.countDownTimerReg {
+  background-color: #D13924 !important;
+}
+
 .light-blue-small {
   background-color: #eff3f9 !important;
   border: 2px solid #1b4ca1;
@@ -952,6 +974,18 @@ $nav-height: 40px;
   visibility: visible;
 }
 
+.pointers-event-none {
+  pointer-events: none;
+}
+
+.secondary-standalone {
+  background-color: #999999 !important;
+}
+
+.text-standalone-black {
+  color: #666666 !important
+}
+
 /** Media Query **/
 @media only screen and (max-width: 600px) {
   .overflow-hidden {
@@ -1011,6 +1045,16 @@ $nav-height: 40px;
     position: relative;
   }
 
+  .exapnd-collapse-mweb {
+    height: 32px;
+    width: 100%;
+    padding: 0;
+    background: #ebedee;
+    margin-top: 25px;
+    display: flex;
+    flex-direction: row;
+  }
+
   .expand-icon-standalone {
     width: 55px;
     height: 25px;
@@ -1033,6 +1077,21 @@ $nav-height: 40px;
       height: 20px;
       width: 20px;
     }
+  }
+
+  .expand-icon-mweb {
+    width: 32px;
+    height: 32px;
+    background: #000;
+    color: #fff;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    left: 47%;
+    right: 50%;
+    margin-top: -16px;
+    cursor: pointer;
   }
 
   .fixed-question-control-standalone {
@@ -1113,6 +1172,10 @@ $nav-height: 40px;
     flex-direction: column;
     background-color: #fff;
     overflow-y: auto;
+  }
+
+  .quiz-container-mweb {
+    height: calc(100vh - 80px) !important;
   }
 
   .quiz-container-option-weightage  {
@@ -1341,4 +1404,15 @@ $nav-height: 40px;
 
 .hide-section {
   visibility: hidden;
+}
+
+.quiz-progress-mweb-level6 {
+  border-top-left-radius: 5px;
+  border-top-right-radius: 5px;
+}
+
+.disableNextSection {
+  opacity: 0.5;
+  cursor: not-allowed;
+  pointer-events: none;
 }

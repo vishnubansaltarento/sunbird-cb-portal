@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, OnDestroy, OnInit, Output } from '@angular/core'
+import { Component, EventEmitter, Input, OnChanges, OnDestroy, OnInit, Output } from '@angular/core'
 import { MultilingualTranslationsService, NsContent } from '@sunbird-cb/utils-v2'
 import { NSPractice } from '../../practice.model'
 import { ActivatedRoute } from '@angular/router'
@@ -11,7 +11,7 @@ import { MatDialog } from '@angular/material'
   templateUrl: './overview.component.html',
   styleUrls: ['./overview.component.scss'],
 })
-export class OverviewComponent implements OnInit, OnDestroy {
+export class OverviewComponent implements OnInit, OnChanges, OnDestroy {
   @Input() learningObjective = ''
   @Input() complexityLevel = ''
   @Input() primaryCategory = NsContent.EPrimaryCategory.PRACTICE_RESOURCE
@@ -23,6 +23,7 @@ export class OverviewComponent implements OnInit, OnDestroy {
   @Input() instructionAssessment: any
   @Input() selectedAssessmentCompatibilityLevel: any
   @Output() userSelection = new EventEmitter<NSPractice.TUserSelectionType>()
+  @Input() forPreview = false
   questionTYP = NsContent.EPrimaryCategory
   // staticImage = '/assets/images/exam/practice-test.png'
   staticImage = '/assets/images/exam/practice-result.png'
@@ -35,6 +36,8 @@ export class OverviewComponent implements OnInit, OnDestroy {
   isretakeAllowed = false
   dataSubscription: any
   consentGiven = false
+  maxAttempPopup = false
+  currentPage = 0
   constructor(
     public dialog: MatDialog,
     private route: ActivatedRoute,
@@ -44,10 +47,6 @@ export class OverviewComponent implements OnInit, OnDestroy {
   ) { }
 
   ngOnInit() {
-    if (this.canAttempt && (this.canAttempt.attemptsMade >= this.canAttempt.attemptsAllowed)) {
-      this.showAssessmentPopup()
-    }
-
     this.dataSubscription = this.route.data.subscribe(data => {
       if (data && data.pageData) {
         if (data && data.content && data.content.data && data.content.data.identifier) {
@@ -61,7 +60,20 @@ export class OverviewComponent implements OnInit, OnDestroy {
     })
   }
 
+  ngOnChanges() {
+    if (!this.forPreview) {
+      if (this.canAttempt && (this.canAttempt.attemptsMade >= this.canAttempt.attemptsAllowed)) {
+        if (!this.maxAttempPopup) {
+          this.showAssessmentPopup()
+        }
+
+      }
+    }
+
+  }
+
   showAssessmentPopup() {
+    this.maxAttempPopup = true
     const popupData = {
       headerText: 'this.resourceName',
       assessmentType: 'maxAttemptReached',
@@ -88,6 +100,7 @@ export class OverviewComponent implements OnInit, OnDestroy {
       if (result) {
         switch (result) {
           case 'yes':
+            this.maxAttempPopup = false
           // this.submitQuiz()
           break
         }
@@ -97,11 +110,20 @@ export class OverviewComponent implements OnInit, OnDestroy {
   }
 
   checkForAssessmentSubmitAlready(identifier: any) {
-    this.quizSvc.canAttend(identifier).subscribe(response => {
-      if (response && response.attemptsMade > 0) {
-        this.quizSvc.checkAlreadySubmitAssessment.next(true)
-      }
-    })
+    if (this.selectedAssessmentCompatibilityLevel < 6) {
+      this.quizSvc.canAttend(identifier).subscribe(response => {
+        if (response && response.attemptsMade > 0) {
+          this.quizSvc.checkAlreadySubmitAssessment.next(true)
+        }
+      })
+    } else {
+      this.quizSvc.canAttendV5(identifier).subscribe(response => {
+        if (response && response.attemptsMade > 0) {
+          this.quizSvc.checkAlreadySubmitAssessment.next(true)
+        }
+      })
+    }
+
   }
 
   ngOnDestroy() {
@@ -124,5 +146,17 @@ export class OverviewComponent implements OnInit, OnDestroy {
     // tslint:disable-next-line
     console.log('event', event)
     this.consentGiven = !this.consentGiven
+  }
+
+  nextPage(): void {
+    if (this.instructionAssessment && (this.currentPage < this.instructionAssessment.length - 1)) {
+      this.currentPage = this.currentPage + 1
+    }
+  }
+
+  previousPage(): void {
+    if (this.currentPage > 0) {
+      this.currentPage = this.currentPage - 1
+    }
   }
 }

@@ -27,6 +27,7 @@ export class QuestionComponent implements OnInit, OnChanges, AfterViewInit {
   @Input() totalQCount: any
   @Input() showAnswer: any
   @Input() currentQuestion: any
+  @Input() selectedAssessmentCompatibilityLevel = 2
   @Input() question: NSPractice.IQuestion = {
     multiSelection: false,
     section: '',
@@ -50,6 +51,7 @@ export class QuestionComponent implements OnInit, OnChanges, AfterViewInit {
   @Output() getNextQuestion = new EventEmitter<Boolean>()
   @Output() clearQuestion = new EventEmitter<Boolean>()
   @Input() questionAnswerHash: any
+  @Input() showQuestionMarks = 'No'
   quizAnswerHash: { [questionId: string]: string[] } = {}
   title = 'match'
   itemSelectedList1: any
@@ -63,7 +65,7 @@ export class QuestionComponent implements OnInit, OnChanges, AfterViewInit {
   @Input() coursePrimaryCategory: any
   @Input() showOnlyQuestion: any
   @Input() showMarkForReview: any = false
-  @Input() assessmentType = 'optionWeightage'
+  @Input() assessmentType = ''
   expandedQuestionSetSubscription: any
 
   constructor(
@@ -134,7 +136,7 @@ export class QuestionComponent implements OnInit, OnChanges, AfterViewInit {
       this.markedQuestions.delete(this.question.questionId)
     } else {
       this.markedQuestions.add(this.question.questionId)
-      if (this.coursePrimaryCategory === 'Standalone Assessment') {
+      if (this.selectedAssessmentCompatibilityLevel >= 6) {
         this.getNextQuestion.emit(true)
       }
     }

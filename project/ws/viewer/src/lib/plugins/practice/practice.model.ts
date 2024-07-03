@@ -15,7 +15,6 @@ export namespace NSPractice {
     question: string
     questionId: string
     options: IOption[]
-    questionType?: TQuizQuestionType,
     questionLevel: String,
     timeTaken: String,
     rhsChoices?: string[]
@@ -82,7 +81,10 @@ export namespace NSPractice {
     passPercent: number
     inCorrect: number
     pass: boolean,
-    children: ISectionQuestion[]
+    totalMarks: number,
+    sectionMarks: number,
+    children: ISectionQuestion[],
+    name: string
   }
 
   export interface ISectionQuestion {
@@ -94,6 +96,7 @@ export namespace NSPractice {
     question: string
     result: string,
     questionLevel: string
+    timeSpent: string
   }
   export interface IQuizSubmitResponseV2 {
     identifier: string
@@ -109,6 +112,9 @@ export namespace NSPractice {
     incorrect: number
     pass: boolean
     isInProgress?: boolean
+    timeTakenForAssessment: string,
+    totalSectionMarks: number,
+    totalMarks: number
   }
 
   export interface IQPaper {
@@ -301,6 +307,7 @@ export namespace NSPractice {
     objectType: 'Question'
     qType: string,
     timeTaken: string,
+    timeSpent: string,
     editorState: {
       options?: any[]
       selectedAnswer?: string | null
@@ -322,6 +329,17 @@ export namespace NSPractice {
     primaryCategory: NsContent.EPrimaryCategory.MULTIPLE_CHOICE_QUESTION
     mimeType: NsContent.EMimeTypes.QUESTION
     qType: 'MCQ-MCA',
+    question: String,
+    questionLevel: String,
+    editorState: {
+      options: IResponseOptions[]
+    }
+  }
+  // tslint:disable-next-line
+  export interface IMCQ_MCA_W extends IRScratch {
+    primaryCategory: NsContent.EPrimaryCategory.MULTIPLE_CHOICE_QUESTION
+    mimeType: NsContent.EMimeTypes.QUESTION
+    qType: 'MCQ-MCA-W',
     question: String,
     questionLevel: String,
     editorState: {

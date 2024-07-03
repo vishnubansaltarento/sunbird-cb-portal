@@ -16,6 +16,7 @@ export class ResultComponent implements OnInit, OnChanges {
   @Input() quizCategory!: NsContent.EPrimaryCategory
   @Input() quizResponse!: NSPractice.IQuizSubmitResponseV2
   @Input() coursePrimaryCategory: any
+  @Input() selectedAssessmentCompatibilityLevel = 2
   @Output() userSelection = new EventEmitter<string>()
   @Output() fetchResult = new EventEmitter<string>()
   @ViewChild(MatAccordion, { static: true }) accordion: MatAccordion | undefined
@@ -34,23 +35,22 @@ export class ResultComponent implements OnInit, OnChanges {
   selectedSectionId = ''
   selectedStatus = 'all'
   summaryTableDataSource: any = new MatTableDataSource([
-    {
-      subject: 'Section A',
-      yourScore: '0.25 / 35',
-    },
-    {
-      subject: 'Section B',
-      yourScore: '-1.25 / 35',
-    },
-    {
-      subject: 'Section C',
-      yourScore: '-1.25 / 30',
-    },
+    // {
+    //   subject: 'Section A',
+    //   yourScore: '0.25 / 35',
+    // },
+    // {
+    //   subject: 'Section B',
+    //   yourScore: '-1.25 / 35',
+    // },
+    // {
+    //   subject: 'Section C',
+    //   yourScore: '-1.25 / 30',
+    // },
   ])
-  summaryTableDisplayeColumns = [
-    { header: 'Subject', key: 'subject' },
-    { header: 'Your Score', key: 'yourScore' },
-  ]
+  summaryTableDisplayeColumns:
+    { header: string, key: string }[] = [
+    ]
 
   competitiveTableDataSource = new MatTableDataSource([
     {
@@ -65,8 +65,8 @@ export class ResultComponent implements OnInit, OnChanges {
     },
   ])
   competitiveTableDisplayedColumns = [
-    { header: 'Subject', key: 'subject' },
-    { header: 'Your Score', key: 'yourScore' },
+    { header: 'quizresult.subject', key: 'subject' },
+    { header: 'quizresult.yourScore', key: 'yourScore' },
     // { header: 'Topper Score', key: 'topperScore' },
   ]
 
@@ -76,35 +76,35 @@ export class ResultComponent implements OnInit, OnChanges {
       imgPath: 'speed',
       class: 'icon-bg-blue',
       summary: '',
-      summaryType: 'Score',
+      summaryType: 'quizresult.score',
     },
-    // {
-    //   imgType: 'img',
-    //   imgPath: '/assets/icons/final-assessment/nest_clock_farsight_analog.svg',
-    //   class: 'icon-bg-lite-green',
-    //   summary: '0:9:8',
-    //   summaryType: 'Time Taken',
-    // },
+    {
+      imgType: 'img',
+      imgPath: '/assets/icons/final-assessment/nest_clock_farsight_analog.svg',
+      class: 'icon-bg-lite-green',
+      summary: '',
+      summaryType: 'quizresult.timeTaken',
+    },
     {
       imgType: 'img',
       imgPath: '/assets/icons/final-assessment/assignment.svg',
       class: 'icon-bg-pink',
       summary: '',
-      summaryType: 'Attempted',
+      summaryType: 'quizresult.attempted',
     },
     {
       imgType: 'icon',
       imgPath: 'check_circle_outline',
       class: 'icon-bg-yellow',
       summary: '',
-      summaryType: 'Correct',
+      summaryType: 'quizresult.correct',
     },
     {
       imgType: 'img',
       imgPath: '/assets/icons/final-assessment/target.svg',
       class: 'icon-bg-dark-green',
       summary: '',
-      summaryType: 'Accuracy',
+      summaryType: 'quizresult.accuracy',
     },
   ]
 
@@ -114,40 +114,50 @@ export class ResultComponent implements OnInit, OnChanges {
       imgPath: '/assets/icons/final-assessment/nest_clock_farsight_analog.svg',
       class: 'icon-bg-lite-green',
       summary: '0:9:8',
-      summaryType: 'Time Taken',
+      summaryType: 'quizresult.timeTaken',
     },
     {
       imgType: 'img',
       imgPath: '/assets/icons/final-assessment/assignment.svg',
       class: 'icon-bg-pink',
       summary: '84/100',
-      summaryType: 'Attempted',
+      summaryType: 'quizresult.attempted',
     },
     {
       imgType: 'icon',
       imgPath: 'check_circle_outline',
       class: 'icon-bg-yellow',
       summary: '15/100',
-      summaryType: 'Correct',
+      summaryType: 'quizresult.correct',
     },
     {
       imgType: 'icon',
       imgPath: 'cancel',
       class: 'icon-bg-red',
       summary: '69',
-      summaryType: 'Worning',
+      summaryType: 'quizresult.wrong',
+    },
+    {
+      imgType: 'img',
+      imgPath: '/assets/icons/final-assessment/target.svg',
+      class: 'icon-bg-dark-green',
+      summary: '',
+      summaryType: 'quizresult.accuracy',
     },
   ]
 
   questionStatuTableDataSource: any = new MatTableDataSource([])
   questionStatuTableColumns = [
-    { header: 'Questions', key: 'question' },
-    { header: 'Status', key: 'status' },
-    { header: 'Question Tagging', key: 'questionTagg' },
-    { header: 'Time Taken', key: 'timeTaken' },
+    { header: 'quizresult.questions', key: 'question' },
+    { header: 'quizresult.status', key: 'status' },
+    { header: 'quizresult.questionTagging', key: 'questionTagg' },
+    { header: 'quizresult.timeTaken', key: 'timeSpent' },
   ]
 
   sectionsList: any = []
+  selectedSection = 'All'
+
+  expandMwebOverView = false
 
   constructor(private langtranslations: MultilingualTranslationsService) {
 
@@ -163,41 +173,55 @@ export class ResultComponent implements OnInit, OnChanges {
 
   ngOnChanges() {
     // console.log(this.quizResponse, this.quizResponse)
+    this.sectionsList = [
+      {
+        sectionName: 'All',
+        identifier: '',
+      },
+    ]
     if (this.quizResponse) {
       this.quizResponseClone = _.clone(this.quizResponse)
       const sectionTableData = []
+      let totalQuestions = _.get(this.quizResponse, 'total', 0)
         /* tslint:disable */
-      for (let i = 0; i < this.quizResponse.children.length; i++) {
-        if (this.quizResponse.children[i]) {
-          // if (this.quizResponse.children[i]['correct']) {
-            let sectionName = '';
-            if(this.quizResponse.children.length === 1) {
-              sectionName = 'Default Section'
-            } else {
-              if(i==0) {
-                sectionName = 'Section A'
-              } else if(i==1) {
-                sectionName = 'Section B'
-              } else if(i==2) {
-                sectionName = 'Section C'
-              } else if(i==3) {
-                sectionName = 'Section D'
-              } else if(i==4) {
-                sectionName = 'Section E'
-              } else if(i==5) {
-                sectionName = 'Section F'
-              }
+      if(this.quizResponse.children) {
+        for (let i = 0; i < this.quizResponse.children.length; i++) {
+          if (this.quizResponse.children[i] && this.quizResponse.children[i].children) {
+            const sectionTotalQuestions = this.quizResponse.children[i].children.length
+            let sectionName:any = this.quizResponse.children[i]['name'];
+            if(_.get(this.quizResponse, 'total', 0) === 0) {
+              totalQuestions = sectionTotalQuestions + totalQuestions
             }
+            // if (this.quizResponse.children[i]['correct']) {
             
-            const sectionObj = { subject: `${sectionName}`, yourScore : ((this.quizResponse.children[i]['correct']) / Number(this.quizResponse.children[i]['total']))}
-            sectionTableData.push(sectionObj)
-          // }
+              if(this.quizResponse.children.length === 1) {
+                sectionName = sectionName ? sectionName : 'Default Section'
+              } else {
+                if(i==0) {
+                  sectionName =  sectionName ? sectionName : 'Section A'
+                } else if(i==1) {
+                  sectionName = sectionName ? sectionName : 'Section B'
+                } else if(i==2) {
+                  sectionName = sectionName ? sectionName : 'Section C'
+                } else if(i==3) {
+                  sectionName = sectionName ? sectionName : 'Section D'
+                } else if(i==4) {
+                  sectionName = sectionName ? sectionName : 'Section E'
+                } else if(i==5) {
+                  sectionName = sectionName ? sectionName :  'Section F'
+                }
+              }
+
+              const sectionObj = { subject: `${sectionName}`, yourScore : `${this.quizResponse.children[i]['sectionMarks']} / ${this.quizResponse.children[i]['totalMarks']}`}
+              sectionTableData.push(sectionObj)
+            // }
+          }
         }
       }
       this.summaryTableDataSource = new MatTableDataSource(sectionTableData)
       this.summaryTableDisplayeColumns = [
-        { header: 'Subject', key: 'subject' },
-        { header: 'Your Score', key: 'yourScore' },
+        { header: 'quizresult.subject', key: 'subject' },
+        { header: 'quizresult.yourScore', key: 'yourScore' },
       ]
 
       this.competitiveTableDataSource = new MatTableDataSource([
@@ -213,46 +237,58 @@ export class ResultComponent implements OnInit, OnChanges {
         },
       ])
       this.competitiveTableDisplayedColumns = [
-        { header: 'Subject', key: 'subject' },
-        { header: 'Your Score', key: 'yourScore' },
+        { header: 'quizresult.subject', key: 'subject' },
+        { header: 'quizresult.yourScore', key: 'yourScore' },
         // { header: 'Topper Score', key: 'topperScore' },
       ]
 
+      if(this.questionTYP.PRACTICE_RESOURCE === this.quizCategory) {
+        if(this.quizResponse.correct === undefined) {
+          this.quizResponse.correct = 0
+          this.quizResponse.incorrect = 0
+          this.quizResponse.children.forEach((section: any) => {
+            this.quizResponse.correct = section.correct + this.quizResponse.correct
+            this.quizResponse.incorrect = section.incorrect + this.quizResponse.incorrect
+          })
+        }
+      }
+
+      const overallResult = typeof this.quizResponse.overallResult === 'number' ? this.quizResponse.overallResult : 0
       this.overAllSummary = [
         {
           imgType: 'icon',
           imgPath: 'speed',
           class: 'icon-bg-blue',
-          summary: `${Number(this.percentage)}/100`,
-          summaryType: 'Score',
+          summary: this.quizResponse['totalSectionMarks'] ? `${(Number(this.quizResponse['totalSectionMarks'])).toFixed(2)}/${this.quizResponse['totalMarks']}` : '0',
+          summaryType: 'quizresult.score',
         },
-        // {
-        //   imgType: 'img',
-        //   imgPath: '/assets/icons/final-assessment/nest_clock_farsight_analog.svg',
-        //   class: 'icon-bg-lite-green',
-        //   summary: '0:9:8',
-        //   summaryType: 'Time Taken',
-        // },
+        {
+          imgType: 'img',
+          imgPath: '/assets/icons/final-assessment/nest_clock_farsight_analog.svg',
+          class: 'icon-bg-lite-green',
+          summary: this.quizResponse['timeTakenForAssessment'] ? this.millisecondsToHMS(this.quizResponse['timeTakenForAssessment']) : '00:00:00',
+          summaryType: 'quizresult.timeTaken',
+        },
         {
           imgType: 'img',
           imgPath: '/assets/icons/final-assessment/assignment.svg',
           class: 'icon-bg-pink',
-          summary: `${(this.quizResponse.correct + this.quizResponse.incorrect)}/${this.quizResponse.total}`,
-          summaryType: 'Attempted',
+          summary: totalQuestions ? `${(this.quizResponse.correct + this.quizResponse.incorrect)}/${totalQuestions}`: '0',
+          summaryType: 'quizresult.attempted',
         },
         {
           imgType: 'icon',
           imgPath: 'check_circle_outline',
           class: 'icon-bg-yellow',
-          summary: `${this.quizResponse.correct}/${this.quizResponse.total}`,
-          summaryType: 'Correct',
+          summary: totalQuestions ? `${this.quizResponse.correct}/${totalQuestions}`: '0',
+          summaryType: 'quizresult.correct',
         },
         {
           imgType: 'img',
           imgPath: '/assets/icons/final-assessment/target.svg',
           class: 'icon-bg-dark-green',
-          summary: `${(Number(this.quizResponse.correct / this.quizResponse.total) * 100)}%`,
-          summaryType: 'Accuracy',
+          summary: `${Math.round(Number(overallResult))}%`,
+          summaryType: 'quizresult.accuracy',
         },
       ]
 
@@ -261,78 +297,100 @@ export class ResultComponent implements OnInit, OnChanges {
         //   imgType: 'img',
         //   imgPath: '/assets/icons/final-assessment/nest_clock_farsight_analog.svg',
         //   class: 'icon-bg-lite-green',
-        //   summary: '0:9:8',
-        //   summaryType: 'Time Taken',
+        //   summary: this.millisecondsToHMS(this.quizResponse['timeTakenForAssessment']),
+        //   summaryType: 'quizresult.timeTaken',
         // },
         {
           imgType: 'img',
           imgPath: '/assets/icons/final-assessment/assignment.svg',
           class: 'icon-bg-pink',
-          summary: `${(this.quizResponse.correct + this.quizResponse.incorrect)}/${this.quizResponse.total}`,
-          summaryType: 'Attempted',
+          summary: totalQuestions ? `${(this.quizResponse.correct + this.quizResponse.incorrect)}/${totalQuestions}` : '0',
+          summaryType: 'quizresult.attempted',
         },
         {
           imgType: 'icon',
           imgPath: 'check_circle_outline',
           class: 'icon-bg-yellow',
-          summary: `${this.quizResponse.correct}/${this.quizResponse.total}`,
-          summaryType: 'Correct',
+          summary: totalQuestions ? `${this.quizResponse.correct}/${totalQuestions}` : '0',
+          summaryType: 'quizresult.correct',
         },
         {
           imgType: 'icon',
           imgPath: 'cancel',
           class: 'icon-bg-red',
-          summary: this.quizResponse.incorrect.toString(),
-          summaryType: 'Wrong',
+          summary: this.quizResponse.incorrect ? this.quizResponse.incorrect.toString() : '0',
+          summaryType: 'quizresult.wrong',
+        },
+        {
+          imgType: 'img',
+          imgPath: '/assets/icons/final-assessment/target.svg',
+          class: 'icon-bg-dark-green',
+          summary: `${Math.round(Number(overallResult))}%`,
+          summaryType: 'quizresult.accuracy',
         },
       ]
+
+      if (this.questionTYP.PRACTICE_RESOURCE !== this.quizCategory) {
+        this.scoreSummary.unshift(
+          {
+            imgType: 'img',
+            imgPath: '/assets/icons/final-assessment/nest_clock_farsight_analog.svg',
+            class: 'icon-bg-lite-green',
+            summary: this.quizResponse['timeTakenForAssessment'] ? this.millisecondsToHMS(this.quizResponse['timeTakenForAssessment']) : '0',
+            summaryType: 'quizresult.timeTaken',
+          }
+        )
+      }
 
       this.questionStatuTableDataSource = new MatTableDataSource([
       ])
       this.questionStatuTableColumns = [
-        { header: 'Questions', key: 'question' },
-        { header: 'Status', key: 'status' },
-        // { header: 'Question Tagging', key: 'questionTagg' },
-        // { header: 'Time Taken', key: 'timeTaken' },
+        { header: 'quizresult.questions', key: 'question' },
+        { header: 'quizresult.status', key: 'status' },
+        { header: 'quizresult.questionTagging', key: 'questionTagg' },
+        { header: 'quizresult.timeTaken', key: 'timeSpent' },
       ]
         /* tslint:disable */
-      for (let i = 0; i < this.quizResponse.children.length; i++) {
-        let sectionName = '';
-            if(this.quizResponse.children.length === 1) {
-              sectionName = 'Default Section'
-            } else {
-              if(i==0) {
-                sectionName = 'Section A'
-              } else if(i==1) {
-                sectionName = 'Section B'
-              } else if(i==2) {
-                sectionName = 'Section C'
-              } else if(i==3) {
-                sectionName = 'Section D'
-              } else if(i==4) {
-                sectionName = 'Section E'
-              } else if(i==5) {
-                sectionName = 'Section F'
+      if(this.quizResponse && this.quizResponse.children) {
+        for (let i = 0; i < this.quizResponse.children.length; i++) {
+          let sectionName:any = this.quizResponse.children[i]['name'];
+              if(this.quizResponse.children.length === 1) {
+                sectionName = 'Default Section'
+              } else {
+                if(i==0) {
+                  sectionName = sectionName ? sectionName :'Section A'
+                } else if(i==1) {
+                  sectionName = sectionName ? sectionName :'Section B'
+                } else if(i==2) {
+                  sectionName = sectionName ? sectionName :'Section C'
+                } else if(i==3) {
+                  sectionName = sectionName ? sectionName :'Section D'
+                } else if(i==4) {
+                  sectionName = sectionName ? sectionName :'Section E'
+                } else if(i==5) {
+                  sectionName = sectionName ? sectionName :'Section F'
+                }
               }
-            }
-        const obj: any = {
-                  sectionName: sectionName,
-                  identifier: this.quizResponse.children[i]['identifier'],
-        }
-          /* tslint:disable */
-        if(this.quizResponse.children[i] && this.quizResponse.children[i].children && this.quizResponse.children[i].children.length) {
-          for (let j = 0; j < this.quizResponse.children[i].children.length; j++) {
-            const objChildren: any = {
-              question: this.quizResponse.children[i].children[j]['question'],
-              status: this.quizResponse.children[i].children[j]['result'],
-              questionTagg: this.quizResponse.children[i].children[j]['questionLevel'],
-              timeTaken: '00:00:09',
-            }
-            this.questionStatuTableData.push(objChildren)
+          const obj: any = {
+                    sectionName: sectionName,
+                    identifier: this.quizResponse.children[i]['identifier'],
           }
-        }        
-        this.sectionsList.push(obj)
+            /* tslint:disable */
+          if(this.quizResponse.children[i] && this.quizResponse.children[i].children && this.quizResponse.children[i].children.length) {
+            for (let j = 0; j < this.quizResponse.children[i].children.length; j++) {
+              const objChildren: any = {
+                question: this.quizResponse.children[i].children[j]['question'],
+                status: this.quizResponse.children[i].children[j]['result'],
+                questionTagg: this.quizResponse.children[i].children[j]['questionLevel'],
+                timeSpent: this.millisecondsToHMS(this.quizResponse.children[i].children[j]['timeSpent']),
+              }
+              this.questionStatuTableData.push(objChildren)
+            }
+          }        
+          this.sectionsList.push(obj)
+        }
       }
+      
 
       this.getSectionalData('all', 'all')
       // this.sectionsList = [
@@ -347,53 +405,66 @@ export class ResultComponent implements OnInit, OnChanges {
       //   },
       // ]
     }
+
+    if(this.quizCategory) {
+      this.showInsight = this.questionTYP.PRACTICE_RESOURCE === this.quizCategory
+    }
   }
 
   getSectionalData(sectionId: string= 'all', resultType: string= 'all') {
     let quizResponse: any = this.quizResponse
-    this.selectedSectionId = sectionId
+    this.selectedSectionId = sectionId ? sectionId : 'all'
+    this.selectedStatus = resultType
     this.questionStatuTableData = []
     if (this.selectedSectionId === 'all') {
         /* tslint:disable */
-      for (let i = 0; i < this.quizResponse.children.length; i++) {
+      if(this.quizResponse && this.quizResponse.children) {
+        for (let i = 0; i < this.quizResponse.children.length; i++) {
+          
           /* tslint:disable */
           if(this.quizResponse.children[i] && this.quizResponse.children[i].children && this.quizResponse.children[i].children.length) {
             for (let j = 0; j < this.quizResponse.children[i].children.length; j++) {
+              let formattedQuestion = this.quizResponse.children[i].children[j]['question']
+              formattedQuestion = formattedQuestion.replace(/&nbsp;/gi," ")
+              if(this.quizResponse.children[i].children[j]['qType'] === 'FTB') {
+                formattedQuestion = formattedQuestion.split('<input style="border-style:none none solid none" />').join('_________')                
+              }
               if (resultType === 'all') {
                 const obj: any = {
-                  question: this.quizResponse.children[i].children[j]['question'],
-                  status: this.quizResponse.children[i].children[j]['result'],
+                  question: formattedQuestion,
+                  /* tslint:disable */
+                  status: this.quizResponse.children[i].children[j]['result'] === 'blank' ? 'Unattempted' :  (this.quizResponse.children[i].children[j]['result'] === 'incorrect' ? 'wrong' : this.quizResponse.children[i].children[j]['result'] ),
                   questionTagg: this.quizResponse.children[i].children[j]['questionLevel'],
-                  timeTaken: '00:00:09',
+                  timeSpent: this.millisecondsToHMS(this.quizResponse.children[i].children[j]['timeSpent']),
                 }
                 this.questionStatuTableData.push(obj)
               } else if (resultType === 'correct') {
                 if (this.quizResponse.children[i].children[j]['result'] === 'correct') {
                   const obj: any = {
-                    question: this.quizResponse.children[i].children[j]['question'],
+                    question: formattedQuestion,
                     status: this.quizResponse.children[i].children[j]['result'],
                     questionTagg: this.quizResponse.children[i].children[j]['questionLevel'],
-                    timeTaken: '00:00:09',
+                    timeSpent: this.millisecondsToHMS(this.quizResponse.children[i].children[j]['timeSpent']),
                   }
                   this.questionStatuTableData.push(obj)
                 }
               } else if (resultType === 'wrong') {
                 if (this.quizResponse.children[i].children[j]['result'] === 'incorrect') {
                   const obj: any = {
-                    question: this.quizResponse.children[i].children[j]['question'],
-                    status: this.quizResponse.children[i].children[j]['result'],
+                    question: formattedQuestion,
+                    status: 'wrong',
                     questionTagg: this.quizResponse.children[i].children[j]['questionLevel'],
-                    timeTaken: '00:00:09',
+                    timeSpent: this.millisecondsToHMS(this.quizResponse.children[i].children[j]['timeSpent']),
                   }
                   this.questionStatuTableData.push(obj)
                 }
               }  else if (resultType === 'notAnswered') {
                 if (this.quizResponse.children[i].children[j]['result'] === 'blank') {
                   const obj: any = {
-                    question: this.quizResponse.children[i].children[j]['question'],
-                    status: this.quizResponse.children[i].children[j]['result'],
+                    question: formattedQuestion,
+                    status: 'Unattempted',
                     questionTagg: this.quizResponse.children[i].children[j]['questionLevel'],
-                    timeTaken: '00:00:09',
+                    timeSpent: this.millisecondsToHMS(this.quizResponse.children[i].children[j]['timeSpent']),
                   }
                   this.questionStatuTableData.push(obj)
                 }
@@ -403,54 +474,66 @@ export class ResultComponent implements OnInit, OnChanges {
           }
         
       }
+      }
+      
       this.questionStatuTableDataSource = this.questionStatuTableData
     } else {
         /* tslint:disable */
-      for (let i = 0; i < this.quizResponse.children.length; i++) {
-        if (this.quizResponse.children[i]['identifier'] === this.selectedSectionId) {
-          quizResponse = this.quizResponse.children[i]
-          break
+      if(this.quizResponse && this.quizResponse.children) {
+        for (let i = 0; i < this.quizResponse.children.length; i++) {
+          if (this.quizResponse.children[i]['identifier'] === this.selectedSectionId) {
+            quizResponse = this.quizResponse.children[i]
+            break
+          }
         }
       }
+     
         /* tslint:disable */
-      for (let j = 0; j < quizResponse.children.length; j++) {
-        if (resultType === 'all') {
-          const obj: any = {
-            question: quizResponse.children[j]['question'],
-            status: quizResponse.children[j]['result'],
-            questionTagg: quizResponse.children[j]['questionLevel'],
-            timeTaken: '00:00:09',
+      if(quizResponse && quizResponse.children) {
+        for (let j = 0; j < quizResponse.children.length; j++) {
+          let formattedQuestion = quizResponse.children[j]['question'].replace(/&nbsp;/gi," ")
+          if(quizResponse.children[j]['qType'] === 'FTB') {
+            formattedQuestion = formattedQuestion.split('<input style="border-style:none none solid none" />').join('_________')                
           }
-          this.questionStatuTableData.push(obj)
-        } else if (resultType === 'correct') {
-          if (quizResponse.children[j]['result'] === 'correct') {
+          if (resultType === 'all') {            
             const obj: any = {
-              question: quizResponse.children[j]['question'],
-              status: quizResponse.children[j]['result'],
+              question: formattedQuestion ,
+              /* tslint:disable */
+              status: quizResponse.children[j]['result'] === 'blank' ? 'Unattempted' :  (quizResponse.children[j]['result'] === 'incorrect' ? 'wrong' : quizResponse.children[j]['result'] ),
               questionTagg: quizResponse.children[j]['questionLevel'],
-              timeTaken: '00:00:09',
+              timeSpent: this.millisecondsToHMS(quizResponse.children[j]['timeSpent']),
             }
             this.questionStatuTableData.push(obj)
-          }
-        } else if (resultType === 'wrong') {
-          if (quizResponse.children[j]['result'] === 'incorrect') {
-            const obj: any = {
-              question: quizResponse.children[j]['question'],
-              status: quizResponse.children[j]['result'],
-              questionTagg: quizResponse.children[j]['questionLevel'],
-              timeTaken: '00:00:09',
+          } else if (resultType === 'correct') {
+            if (quizResponse.children[j]['result'] === 'correct') {
+              const obj: any = {
+                question: formattedQuestion,
+                status: quizResponse.children[j]['result'],
+                questionTagg: quizResponse.children[j]['questionLevel'],
+                timeSpent: this.millisecondsToHMS(quizResponse.children[j]['timeSpent']),
+              }
+              this.questionStatuTableData.push(obj)
             }
-            this.questionStatuTableData.push(obj)
-          }
-        }  else if (resultType === 'notAnswered') {
-          if (quizResponse.children[j]['result'] === 'blank') {
-            const obj: any = {
-              question: quizResponse.children[j]['question'],
-              status: quizResponse.children[j]['result'],
-              questionTagg: quizResponse.children[j]['questionLevel'],
-              timeTaken: '00:00:09',
+          } else if (resultType === 'wrong') {
+            if (quizResponse.children[j]['result'] === 'incorrect') {
+              const obj: any = {
+                question: formattedQuestion,
+                status: 'wrong',
+                questionTagg: quizResponse.children[j]['questionLevel'],
+                timeSpent: this.millisecondsToHMS(quizResponse.children[j]['timeSpent']),
+              }
+              this.questionStatuTableData.push(obj)
             }
-            this.questionStatuTableData.push(obj)
+          }  else if (resultType === 'notAnswered') {
+            if (quizResponse.children[j]['result'] === 'blank') {
+              const obj: any = {
+                question: formattedQuestion,
+                status: 'Unattempted',
+                questionTagg: quizResponse.children[j]['questionLevel'],
+                timeSpent: this.millisecondsToHMS(quizResponse.children[j]['timeSpent']),
+              }
+              this.questionStatuTableData.push(obj)
+            }
           }
         }
       }
@@ -502,5 +585,18 @@ export class ResultComponent implements OnInit, OnChanges {
   getFinalColumns(displayedColumns: any): string[] {
     const displayColumns = _.map(displayedColumns, c => c.key)
     return displayColumns
+  }
+
+  millisecondsToHMS(milleSeconds: any): string {
+    const ms = Number(milleSeconds)
+    const seconds: number = Math.floor((ms / 1000) % 60);
+    const minutes: number = Math.floor((ms / (1000 * 60)) % 60);
+    const hours: number = Math.floor((ms / (1000 * 60 * 60)) % 24);
+
+    const hoursStr: string = (hours < 10) ? `0${hours}` : `${hours}`;
+    const minutesStr: string = (minutes < 10) ? `0${minutes}` : `${minutes}`;
+    const secondsStr: string = (seconds < 10) ? `0${seconds}` : `${seconds}`;
+
+    return `${hoursStr}:${minutesStr}:${secondsStr}`;
   }
 }

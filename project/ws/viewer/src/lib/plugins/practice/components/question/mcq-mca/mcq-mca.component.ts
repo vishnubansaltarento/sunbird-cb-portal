@@ -40,6 +40,7 @@ export class MultipleChoiseQuesComponent implements OnInit, OnChanges, AfterView
     @Input() itemSelectedList: string[] = []
     @Input() primaryCategory = NsContent.EPrimaryCategory.PRACTICE_RESOURCE
     @Output() update = new EventEmitter<string | Object>()
+    @Input() assessmentType = ''
     localQuestion: string = this.question.question
     shCorrectAnsSubscription: Subscription | null = null
     showAns = false
@@ -69,8 +70,13 @@ export class MultipleChoiseQuesComponent implements OnInit, OnChanges, AfterView
     isSelected(option: NSPractice.IOption) {
         return this.itemSelectedList && this.itemSelectedList.indexOf(option.optionId) !== -1
     }
-    updateParent($event: any) {
-        this.update.emit($event)
+    updateParent($event: any, checked: any) {
+        if (this.assessmentType === 'optionalWeightage') {
+            this.update.emit({ 'index': $event, 'status': checked })
+        } else {
+            this.update.emit($event)
+        }
+
     }
     getSanitizeString(res: any) {
         if (res && (typeof res === 'string')) {

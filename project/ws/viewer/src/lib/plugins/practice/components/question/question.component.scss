@@ -104,9 +104,12 @@
 .respo_inner {
   padding: 0px 16px;
   @include breakpoint-lt-m {
-    padding: 0px;
+    padding: 16px 8px;
+    border: 1px solid #00000070;
+    border-radius: 5px;
+    margin-top: -5px;
   }
-  width:98%;
+  // width:98%;
   word-wrap: break-word;
 }
 .mtf-flag {
@@ -228,6 +231,7 @@ color: rgb(27, 76, 161)
   width: auto;
   border-radius: 63px;
   color: #000 !important;
+  border: 1px solid #1B4CA1;
 
 }
 
@@ -264,6 +268,11 @@ color: rgb(27, 76, 161)
         height: calc(100vh - 500px);
         overflow-y: auto
       }
+
+    .Mweb-btns {
+      display: flex;
+      justify-content: center;
+    }
 
       
 }
