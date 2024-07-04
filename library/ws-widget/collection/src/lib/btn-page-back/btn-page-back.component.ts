@@ -35,7 +35,7 @@ type TUrl = undefined | 'none' | 'back' | string
 })
 export class BtnPageBackComponent extends WidgetBaseComponent
   implements OnInit, NsWidgetResolver.IWidgetData<{ url: TUrl }> {
-  @Input() widgetData: { url: TUrl, titles?: NsWidgetResolver.ITitle[] } = { url: 'none', titles: [] }
+  @Input() widgetData: { url: TUrl, titles?: NsWidgetResolver.ITitle[], textClass?:string } = { url: 'none', titles: [] }
   presentUrl = ''
   @HostBinding('id')
   public id = 'nav-back'
