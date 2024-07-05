@@ -380,6 +380,7 @@ export class HomeComponent implements OnInit, AfterViewInit {
 
   fetchProfile() {
     this.router.navigate(['/app/person-profile/me'])
+    this.handleMDOMsgstatus()
   }
 
   closeKarmaPointsPanel() {
