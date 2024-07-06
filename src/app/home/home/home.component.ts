@@ -379,6 +379,7 @@ export class HomeComponent implements OnInit, AfterViewInit {
   }
 
   fetchProfile() {
+    this.handleMDOMsgstatus()
     this.router.navigate(['/app/person-profile/me'])
   }
 
