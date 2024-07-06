@@ -72,7 +72,7 @@
             </ng-container>
             <ng-container *ngIf="question.questionType === 'mtf'">
               <viewer-mtf-question   [primaryCategory]="primaryCategory" class="flex-1" [question]="question" (update)="update($event)"
-              [selectedAssessmentCompatibilityLevel]="selectedAssessmentCompatibilityLevel"></viewer-mtf-question>
+              ></viewer-mtf-question>
               <div *ngIf="
               viewState !== 'review' &&
               numConnections &&
@@ -166,7 +166,7 @@
                 <!-- {{log(question)}} -->
                 <ng-container>
                   <viewer-mtf-question class="flex-1" [question]="question" (update)="update($event)"
-                  [selectedAssessmentCompatibilityLevel]="selectedAssessmentCompatibilityLevel"></viewer-mtf-question>
+                  ></viewer-mtf-question>
                 </ng-container>
               </div>
             </div>
@@ -248,7 +248,7 @@
             </ng-container>
             <ng-container *ngIf="question.questionType === 'mtf'">
               <viewer-mtf-question   [primaryCategory]="primaryCategory" class="flex-1" [question]="question" (update)="update($event)"
-              [selectedAssessmentCompatibilityLevel]="selectedAssessmentCompatibilityLevel"></viewer-mtf-question>
+              ></viewer-mtf-question>
               <div *ngIf="
               viewState !== 'review' &&
               numConnections &&
@@ -307,7 +307,7 @@
               <div class="flex flex-1 viewer_quest_box">
                 <ng-container>
                   <viewer-mtf-question class="flex-1" [question]="question" (update)="update($event)"
-                  [selectedAssessmentCompatibilityLevel]="selectedAssessmentCompatibilityLevel"></viewer-mtf-question>
+                  ></viewer-mtf-question>
                 </ng-container>
               </div>
             </div>
