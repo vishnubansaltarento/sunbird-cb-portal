@@ -62,15 +62,17 @@ export class SeeAllHomeComponent implements OnInit, OnDestroy {
       }
     })
     if (!this.seeAllPageConfig) {
-      configData && configData.assessmentData.forEach((ele: any) => {
-        if (ele && ele.strips && ele.strips.length > 0) {
-          ele.strips.forEach((subEle: any) => {
-            if (subEle.key === this.keyData) {
-              this.seeAllPageConfig = subEle
-            }
-          })
-        }
-      })
+      if (configData) {
+        configData.assessmentData.forEach((ele: any) => {
+          if (ele && ele.strips && ele.strips.length > 0) {
+            ele.strips.forEach((subEle: any) => {
+              if (subEle.key === this.keyData) {
+                this.seeAllPageConfig = subEle
+              }
+            })
+          }
+        })
+      }
     }
     if (
       this.tabSelected &&
@@ -301,8 +303,10 @@ export class SeeAllHomeComponent implements OnInit, OnDestroy {
         if (firstTab.requestRequired) {
           if (this.seeAllPageConfig.tabs) {
             const allTabs = this.seeAllPageConfig.tabs
-            const currentTabFromMap = (allTabs && allTabs.length && allTabs[this.dynamicTabIndex]) as NsContentStripWithTabs.IContentStripTab
-            this.getTabDataByNewReqSearchV6(strip, this.dynamicTabIndex, currentTabFromMap, calculateParentStatus)
+            const currentTabFromMap = (allTabs && allTabs.length &&
+               allTabs[this.dynamicTabIndex]) as NsContentStripWithTabs.IContentStripTab
+            this.getTabDataByNewReqSearchV6(strip, this.dynamicTabIndex,
+                                            currentTabFromMap, calculateParentStatus)
           }
         }
 
@@ -385,8 +389,10 @@ export class SeeAllHomeComponent implements OnInit, OnDestroy {
         if (firstTab.requestRequired) {
           if (this.seeAllPageConfig.tabs) {
             const allTabs = this.seeAllPageConfig.tabs
-            const currentTabFromMap = (allTabs && allTabs.length && allTabs[this.dynamicTabIndex]) as NsContentStripWithTabs.IContentStripTab
-            this.getTabDataByNewReqTrending(strip, this.dynamicTabIndex, currentTabFromMap, calculateParentStatus)
+            const currentTabFromMap = (allTabs && allTabs.length &&
+               allTabs[this.dynamicTabIndex]) as NsContentStripWithTabs.IContentStripTab
+            this.getTabDataByNewReqTrending(strip, this.dynamicTabIndex, currentTabFromMap,
+                                            calculateParentStatus)
           }
         }
 
