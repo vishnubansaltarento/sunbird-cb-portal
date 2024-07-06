@@ -71,7 +71,8 @@
                 (update)="update($event)"></viewer-mcq-sca-question>
             </ng-container>
             <ng-container *ngIf="question.questionType === 'mtf'">
-              <viewer-mtf-question   [primaryCategory]="primaryCategory" class="flex-1" [question]="question" (update)="update($event)"></viewer-mtf-question>
+              <viewer-mtf-question   [primaryCategory]="primaryCategory" class="flex-1" [question]="question" (update)="update($event)"
+              ></viewer-mtf-question>
               <div *ngIf="
               viewState !== 'review' &&
               numConnections &&
@@ -164,7 +165,8 @@
               <div class="flex flex-1 viewer_quest_box">
                 <!-- {{log(question)}} -->
                 <ng-container>
-                  <viewer-mtf-question class="flex-1" [question]="question" (update)="update($event)"></viewer-mtf-question>
+                  <viewer-mtf-question class="flex-1" [question]="question" (update)="update($event)"
+                  ></viewer-mtf-question>
                 </ng-container>
               </div>
             </div>
@@ -182,7 +184,8 @@
               </span>
             </ng-container>
             <ng-container *ngIf="question.questionType === 'ftb'">
-              <viewer-fitb-question   [primaryCategory]="primaryCategory" class="flex-1" [question]="question" (update)="update($event)"></viewer-fitb-question>
+              <viewer-fitb-question   [primaryCategory]="primaryCategory" class="flex-1" [question]="question" (update)="update($event)"
+              ></viewer-fitb-question>
             </ng-container>
           </div>
         </div>
@@ -227,7 +230,8 @@
             </h2>
             <ng-container *ngIf="question.questionType === 'ftb'">
               <viewer-fitb-question [primaryCategory]="primaryCategory" class="flex-1" [question]="question"
-                (update)="update($event)"></viewer-fitb-question>
+                (update)="update($event)" 
+                ></viewer-fitb-question>
             </ng-container>
           </div>
           <div class="flex flex-1">
@@ -243,7 +247,8 @@
                 (update)="update($event)"></viewer-mcq-sca-question>
             </ng-container>
             <ng-container *ngIf="question.questionType === 'mtf'">
-              <viewer-mtf-question   [primaryCategory]="primaryCategory" class="flex-1" [question]="question" (update)="update($event)"></viewer-mtf-question>
+              <viewer-mtf-question   [primaryCategory]="primaryCategory" class="flex-1" [question]="question" (update)="update($event)"
+              ></viewer-mtf-question>
               <div *ngIf="
               viewState !== 'review' &&
               numConnections &&
@@ -301,7 +306,8 @@
             <div class="flex flex-1 flex-column">
               <div class="flex flex-1 viewer_quest_box">
                 <ng-container>
-                  <viewer-mtf-question class="flex-1" [question]="question" (update)="update($event)"></viewer-mtf-question>
+                  <viewer-mtf-question class="flex-1" [question]="question" (update)="update($event)"
+                  ></viewer-mtf-question>
                 </ng-container>
               </div>
             </div>
@@ -319,7 +325,8 @@
               </span>
             </ng-container>
             <ng-container *ngIf="question.questionType === 'ftb'">
-              <viewer-fitb-question   [primaryCategory]="primaryCategory" class="flex-1" [question]="question" (update)="update($event)"></viewer-fitb-question>
+              <viewer-fitb-question   [primaryCategory]="primaryCategory" class="flex-1" [question]="question" (update)="update($event)"
+              ></viewer-fitb-question>
             </ng-container>
           </div>
         </div>
