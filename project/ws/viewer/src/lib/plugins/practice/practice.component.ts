@@ -552,7 +552,7 @@ export class PracticeComponent implements OnInit, OnChanges, OnDestroy {
     const setStartIndex = this.noOfQuestionsPerSet * this.currentSetNumber
     const setEndIndex = setStartIndex + this.noOfQuestionsPerSet
     const secQuestions = qq.slice(setStartIndex, setEndIndex)
-    return secQuestions
+    return this.selectedAssessmentCompatibilityLevel < 7 ? qq : secQuestions
   }
 
   get hasNextSet(): boolean {
@@ -655,7 +655,10 @@ export class PracticeComponent implements OnInit, OnChanges, OnDestroy {
     }
   }
   getMultiQuestions(ids: string[]) {
-    return this.quizSvc.getQuestions(ids, this.identifier).toPromise()
+    if (this.selectedAssessmentCompatibilityLevel < 7) {
+      return this.quizSvc.getQuestionsV4(ids, this.identifier).toPromise()
+    }
+      return this.quizSvc.getQuestions(ids, this.identifier).toPromise()
   }
   getRhsValue(question: NSPractice.IQuestionV2) {
     if (question && question.qType) {
