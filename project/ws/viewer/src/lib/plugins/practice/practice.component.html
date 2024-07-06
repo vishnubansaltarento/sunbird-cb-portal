@@ -21,7 +21,7 @@
 
 </div>
 <!-- Course Assessment-->
-<ng-container *ngIf="selectedAssessmentCompatibilityLevel < 6">
+<ng-container *ngIf="selectedAssessmentCompatibilityLevel < 7">
   <!-- Desktop Not Standalone Assessment -->
   <div #quizContainer class="quiz-container"
     *ngIf="viewState !== 'initial' && !isMobile && fetchingQuestionsStatus === 'done'">
@@ -1110,7 +1110,7 @@
 <!------------------------------------------------------------------------------------------------------------------------------------>
 
 <!-- Desktop Standalone Assessment-->
-<ng-container *ngIf="selectedAssessmentCompatibilityLevel >= 6">
+<ng-container *ngIf="selectedAssessmentCompatibilityLevel >= 7">
   <div #quizContainer class="quiz-container-standalone"
     *ngIf="viewState !== 'initial' && !isMobile && fetchingQuestionsStatus === 'done'">
     <div class="margin-m"
