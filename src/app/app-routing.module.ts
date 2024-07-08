@@ -842,7 +842,7 @@ const routes: Routes = [
     canActivate: [GeneralGuard],
   },
   {
-    path: 'page/learner-advisory',
+    path: 'learner-advisory',
     component: LearnerAdvisoryComponent,
     canActivate: [GeneralGuard],
     // data: {
