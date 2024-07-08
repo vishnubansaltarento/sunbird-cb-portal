@@ -340,7 +340,7 @@ export class RootComponent implements OnInit, AfterViewInit, AfterViewChecked {
           this.showNavbar = true
           this.isNavBarRequired = true
         }
-        if (window.location.pathname.includes('/public/learner-advisory')) {
+        if (window.location.pathname.includes('/page/learner-advisory')) {
           this.showNavbar = true
           this.isNavBarRequired = true
           this.showBottomNav = true
