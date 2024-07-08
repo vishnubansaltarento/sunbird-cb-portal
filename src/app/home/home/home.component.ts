@@ -379,6 +379,7 @@ export class HomeComponent implements OnInit, AfterViewInit {
   }
 
   fetchProfile() {
+    this.handleMDOMsgstatus()
     this.router.navigate(['/app/person-profile/me'])
   }
 
@@ -438,7 +439,7 @@ export class HomeComponent implements OnInit, AfterViewInit {
     }
     this.userProfileService.editProfileDetails(reqUpdates).subscribe((res: any) => {
       if (res) {
-
+        this.isMDOMsgOpen = true
       }
     },                                                               (error: HttpErrorResponse) => {
       if (!error.ok) {
