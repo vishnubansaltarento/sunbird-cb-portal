@@ -39,7 +39,7 @@ import { HttpLoaderFactory } from '../app.module'
 import { HttpClient } from '@angular/common/http'
 import { UserLeaderboardModule } from '@sunbird-cb/collection/src/lib/_common/user-leaderboard/user-leaderboard.module'
 import { MatTooltipModule } from '@angular/material'
-import { ContentStripWithTabsLibModule } from '@sunbird-cb/consumption'
+import { ContentStripWithTabsLibModule, ContentStripWithTabsPillsModule } from '@sunbird-cb/consumption'
 
 @NgModule({
   declarations: [
@@ -71,6 +71,7 @@ import { ContentStripWithTabsLibModule } from '@sunbird-cb/consumption'
     AvatarPhotoModule,
     PendingRequestModule,
     ContentStripWithTabsLibModule,
+    ContentStripWithTabsPillsModule,
     TranslateModule.forRoot({
       loader: {
         provide: TranslateLoader,
