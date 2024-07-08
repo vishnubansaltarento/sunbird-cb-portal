@@ -229,7 +229,7 @@ export class BtnProfileComponent extends WidgetBaseComponent
   }
   redirectToLearnersPage() {
     this.raiseTelemetry('Tips For Learners')
-    this.router.navigate(['/page/learner-advisory'])
+    this.router.navigate(['/learner-advisory'])
   }
 
   // rasieProfileMenuTelemetry(tabname: string) {

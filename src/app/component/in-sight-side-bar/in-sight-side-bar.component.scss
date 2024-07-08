@@ -143,8 +143,9 @@
   .tip-content {
     display: flex;
     justify-content: space-between;
-    align-items: center;
+    // align-items: center;
     z-index: 10;
+    padding-top: 6px;
   }
    
   .tip-content p {
@@ -153,7 +154,7 @@
     font-family: Lato;
     font-size: 14px;
     z-index: 10;
-    padding: 5px;
+    padding: 0px 5px;
     line-height: 16.8px;
   }
   
@@ -170,6 +171,16 @@
       z-index: 10;
       font-weight: 600;
       line-height: 19.5px;
+  }
+  .view-more {
+    display: flex;
+    align-items: center;
+    text-align: center;
+    height: 40px;
+    justify-content: center;
+}
+  .view-more:hover {
+    background-color: #DCDFE5;
   }
   
   .background-circle {
@@ -199,4 +210,5 @@
     width: 56px;
     height: 42px;
     border-radius: 5px;
+    text-align: center;
  }
