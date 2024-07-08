@@ -21,6 +21,8 @@ export class QuestionComponent implements OnInit, AfterViewInit {
     section: '',
     questionType: undefined,
     questionId: '',
+    questionLevel: '',
+    marks: 0,
     options: [
       {
         optionId: '',

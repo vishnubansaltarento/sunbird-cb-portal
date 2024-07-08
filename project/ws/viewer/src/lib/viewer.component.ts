@@ -71,6 +71,8 @@ export class ViewerComponent implements OnInit, OnDestroy, AfterViewChecked {
   tocConfig: any = null
   isAssessmentScreen = false
   pageScrollSubscription: Subscription | null = null
+  coursePrimaryCategory: any = ''
+  compatibilityLevel = 0
   constructor(
     private activatedRoute: ActivatedRoute,
     private router: Router,
@@ -157,6 +159,10 @@ export class ViewerComponent implements OnInit, OnDestroy, AfterViewChecked {
     && this.activatedRoute.snapshot.data.contentRead.data || ''
 
     if (contentData && contentData.result && contentData.result.content) {
+      this.coursePrimaryCategory = contentData.result.content.courseCategory
+      if (contentData.result.content.children && contentData.result.content.children.length) {
+        this.compatibilityLevel = contentData.result.content.children[0]['compatibilityLevel']
+      }
       this.hierarchyData = contentData.result.content
       this.manipulateHierarchyData()
       this.resetAndFetchTocStructure()
@@ -182,6 +188,7 @@ export class ViewerComponent implements OnInit, OnDestroy, AfterViewChecked {
 
     this.viewerHeaderSideBarToggleService.visibilityStatus.subscribe((data: any) => {
       const sideNavBarDrawerState: any = document.getElementById('side-nav-drawer-state')
+
       if (data) {
         if (this.isMobile) {
           this.sideNavBarOpened = false
@@ -285,22 +292,25 @@ export class ViewerComponent implements OnInit, OnDestroy, AfterViewChecked {
   }
 
   downloadCertificate(courseData: any): void {
-    const certificateId = courseData.issuedCertificates[0].identifier
-    this.widgetServ.downloadCert(certificateId).subscribe((response: any) => {
-      if (this.content) {
-        this.content['certificateObj'] = {
-          certData: response.result.printUri,
-          certId: certificateId,
+    if (courseData && courseData.issuedCertificates && courseData.issuedCertificates.length) {
+      const certificateId = courseData.issuedCertificates[0].identifier
+      this.widgetServ.downloadCert(certificateId).subscribe((response: any) => {
+        if (this.content) {
+          this.content['certificateObj'] = {
+            certData: response.result.printUri,
+            certId: certificateId,
+          }
         }
-      }
 
-      if (this.hierarchyData) {
-        this.hierarchyData['certificateObj'] = {
-          certData: response.result.printUri,
-          certId: certificateId,
+        if (this.hierarchyData) {
+          this.hierarchyData['certificateObj'] = {
+            certData: response.result.printUri,
+            certId: certificateId,
+          }
         }
-      }
-    })
+      })
+    }
+
   }
 
   getTocConfig() {
@@ -386,6 +396,11 @@ export class ViewerComponent implements OnInit, OnDestroy, AfterViewChecked {
 
   updateCount(event: any) {
     this.completedCount = event
+  }
+
+  navigateToBack() {
+    this.viewerHeaderSideBarToggleService.visibilityStatus.next(true)
+    window.history.back()
   }
 
  }

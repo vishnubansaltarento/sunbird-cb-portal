@@ -1042,7 +1042,7 @@ export class AppTocHomeComponent implements OnInit, OnDestroy, AfterViewChecked,
       this.enrollBtnLoading = true
       this.changeTab = !this.changeTab
       this.userSvc.resetTime('enrollmentService')
-      const batchData = this.contentReadData && this.contentReadData.batches[0]
+      const batchData = this.contentReadData && this.contentReadData.batches && this.contentReadData.batches[0]
       if (this.content && this.content.primaryCategory === NsContent.EPrimaryCategory.CURATED_PROGRAM) {
         this.autoEnrollCuratedProgram(NsContent.ECourseCategory.CURATED_PROGRAM, batchData)
       } else if (this.content && this.content.courseCategory === NsContent.ECourseCategory.MODERATED_PROGRAM) {
@@ -1829,5 +1829,8 @@ export class AppTocHomeComponent implements OnInit, OnDestroy, AfterViewChecked,
 
   programEnrollCall(batchData: any) {
     this.autoEnrollCuratedProgram(NsContent.ECourseCategory.MODERATED_PROGRAM, batchData)
+  }
+  showAllTips() {
+    this.router.navigate(['public/learner-advisory']);
   }
 }

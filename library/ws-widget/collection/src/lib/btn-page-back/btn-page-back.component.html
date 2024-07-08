@@ -24,6 +24,12 @@
                 <span class="m-t-b mat-body-2 font-bold-imp {{title?.textClass}}" *ngIf="title?.disableTranslate"> {{ title?.title }}</span>
               </a>
             </div>
+            <div class="flex" role="menuitem">
+    <mat-icon class="m-auto mr-2">keyboard_arrow_right</mat-icon>
+    <a class="flex m-auto ws-mat-default-text" [routerLink]="['/tips-for-learners']" role="menuitem">
+      <span class="m-t-b mat-body-2 font-bold-imp">{{ 'btnpageback.tipsForLearners' | translate }}</span>
+    </a>
+  </div>  
           </ng-container>
         </div>
         <div class="flex flex-col" *ngIf="visible" [@enterAnimation]="visible">

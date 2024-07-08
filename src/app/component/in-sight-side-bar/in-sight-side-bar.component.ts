@@ -74,6 +74,7 @@ export class InsightSideBarComponent implements OnInit {
   credMessage = 'View my credentials'
   assessmentsData: any
   isLeaderboardExist = false
+  assessmentStrip: any
 
   constructor(
     private homePageSvc: HomePageService,
@@ -100,6 +101,11 @@ export class InsightSideBarComponent implements OnInit {
     this.getPendingRequestData()
     this.noDataValue = noData
     this.getDiscussionsData()
+
+    if (this.activatedRoute.snapshot.data.pageData && this.activatedRoute.snapshot.data.pageData.data.assessmentData) {
+      this.assessmentStrip = this.activatedRoute.snapshot.data.pageData.data.assessmentData
+
+    }
     // this.getAssessmentData()
   }
 
@@ -327,5 +333,8 @@ export class InsightSideBarComponent implements OnInit {
     this.snackBar.open(primaryMsg, 'X', {
       duration,
     })
+  }
+  showAllTips() {
+    this.router.navigate(['public/learner-advisory'])
   }
 }

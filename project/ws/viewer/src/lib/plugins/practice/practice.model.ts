@@ -15,7 +15,9 @@ export namespace NSPractice {
     question: string
     questionId: string
     options: IOption[]
-    questionType?: TQuizQuestionType
+    questionLevel: String,
+    timeTaken: String,
+    questionType?: TQuizQuestionType,
     rhsChoices?: string[]
   }
 
@@ -79,7 +81,23 @@ export namespace NSPractice {
     correct: number
     passPercent: number
     inCorrect: number
-    pass: boolean
+    pass: boolean,
+    totalMarks: number,
+    sectionMarks: number,
+    children: ISectionQuestion[],
+    name: string
+  }
+
+  export interface ISectionQuestion {
+    identifier: string,
+    mimeType: string,
+    objectType: string
+    primaryCategory: string
+    qType: string
+    question: string
+    result: string,
+    questionLevel: string
+    timeSpent: string
   }
   export interface IQuizSubmitResponseV2 {
     identifier: string
@@ -95,10 +113,14 @@ export namespace NSPractice {
     incorrect: number
     pass: boolean
     isInProgress?: boolean
+    timeTakenForAssessment: string,
+    totalSectionMarks: number,
+    totalMarks: number
   }
 
   export interface IQPaper {
     questionSet: {
+      assessmentType: string,
       lastStatusChangedOn: string
       children: IPaperSection[]
       name: string
@@ -190,7 +212,8 @@ export namespace NSPractice {
     contentDisposition: string
     visibility: string
     showSolutions: 'Yes' | 'No'
-    index: number
+    index: number,
+    expectedDuration: number
   }
   export interface IQuestionV2 {
     lastStatusChangedOn: string
@@ -283,7 +306,9 @@ export namespace NSPractice {
     primaryCategory: string
     mimeType: string
     objectType: 'Question'
-    qType: string
+    qType: string,
+    timeTaken: string,
+    timeSpent: string,
     editorState: {
       options?: any[]
       selectedAnswer?: string | null
@@ -295,6 +320,7 @@ export namespace NSPractice {
     mimeType: NsContent.EMimeTypes.QUESTION
     qType: 'MCQ-SCA',
     question: String,
+    questionLevel: String,
     editorState: {
       options: IResponseOptions[]
     }
@@ -305,6 +331,18 @@ export namespace NSPractice {
     mimeType: NsContent.EMimeTypes.QUESTION
     qType: 'MCQ-MCA',
     question: String,
+    questionLevel: String,
+    editorState: {
+      options: IResponseOptions[]
+    }
+  }
+  // tslint:disable-next-line
+  export interface IMCQ_MCA_W extends IRScratch {
+    primaryCategory: NsContent.EPrimaryCategory.MULTIPLE_CHOICE_QUESTION
+    mimeType: NsContent.EMimeTypes.QUESTION
+    qType: 'MCQ-MCA-W',
+    question: String,
+    questionLevel: String,
     editorState: {
       options: IResponseOptions[]
     }
@@ -315,6 +353,7 @@ export namespace NSPractice {
     mimeType: NsContent.EMimeTypes.QUESTION
     qType: 'MTF',
     question: String,
+    questionLevel: String,
     editorState: {
       options: IResponseOptions[]
       rhsChoices?: String[]
@@ -325,7 +364,8 @@ export namespace NSPractice {
     primaryCategory: NsContent.EPrimaryCategory.FTB_QUESTION
     mimeType: NsContent.EMimeTypes.QUESTION
     qType: 'FTB'
-    question: String,
+    question: String
+    questionLevel: String,
     editorState: {
       // selectedAnswer: string | null
       options: IResponseOptions[]
