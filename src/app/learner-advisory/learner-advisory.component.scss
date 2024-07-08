@@ -1,16 +1,16 @@
 .tips-container {
     max-width: 900px;
     margin: 0 auto;
-    padding: 20px;
+    // padding: 20px;
     background-color: #f3f4f6;
   }
   
   .banner img {
-    padding: 1px;
+    // padding: 1px;
     border-radius: 8px;
-    width: 100vw; 
-    margin-left: calc(-50vw + 50%); 
-    margin-right: calc(-50vw + 50%); 
+    width: 100%; 
+    // margin-left: calc(-50vw + 50%); 
+    // margin-right: calc(-50vw + 50%); 
 }
   .tips-list {
     margin-top: 20px;
