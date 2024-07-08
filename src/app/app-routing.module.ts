@@ -842,6 +842,15 @@ const routes: Routes = [
     canActivate: [GeneralGuard],
   },
   {
+    path: 'page/learner-advisory',
+    component: LearnerAdvisoryComponent,
+    canActivate: [GeneralGuard],
+    // data: {
+    //   module: 'learner-advisory',
+    //   // pageId: 'page/learner-advisory',
+    // },
+  },
+  {
     path: 'page/explore/:tags',
     data: {
       pageType: 'page',
@@ -953,14 +962,7 @@ const routes: Routes = [
       pageId: 'public/privacy-policy',
     },
   },
-  {
-    path: 'public/learner-advisory',
-    component: LearnerAdvisoryComponent,
-    data: {
-      module: 'learner-advisory',
-      pageId: 'public/learner-advisory',
-    },
-  },
+ 
   {
     path: 'public/google/sso',
     component: PublicLoginWGComponent,

@@ -46,10 +46,12 @@ import { SeeAllRoutingModule } from './seeAll-routing.module'
 import { SeeAllHomeComponent } from './components/see-all-home/see-all-home.component'
 import { CardContentV2Module } from '@sunbird-cb/collection/src/lib/card-content-v2/card-content-v2.module'
 import { TranslateModule } from '@ngx-translate/core'
+import { SeeAllWithPillsComponent } from './components/see-all-with-pills/see-all-with-pills.component'
 
 @NgModule({
   declarations: [
     SeeAllHomeComponent,
+    SeeAllWithPillsComponent,
   ],
   imports: [
     CommonModule,
