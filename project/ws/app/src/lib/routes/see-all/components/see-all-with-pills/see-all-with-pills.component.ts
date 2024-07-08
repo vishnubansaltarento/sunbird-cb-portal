@@ -322,7 +322,6 @@ export class SeeAllWithPillsComponent  implements OnInit, OnDestroy {
   ) {
     try {
       const response = await this.trendingSearchRequest(strip, currentTab.request, calculateParentStatus)
-      let tabResult: any
       if (response && response.results && response.results.response) {
         const content = response.results.response[currentTab.value] || []
         const widgets = this.transformContentsToWidgets(content, strip)
@@ -345,7 +344,6 @@ export class SeeAllWithPillsComponent  implements OnInit, OnDestroy {
               widgets,
               fetchTabStatus: 'done',
             }
-            tabResult = allTabs
           }
         }
       } else {
@@ -367,7 +365,6 @@ export class SeeAllWithPillsComponent  implements OnInit, OnDestroy {
               widgets: [],
               fetchTabStatus: 'done',
             }
-            tabResult = allTabs
           }
         }
         // this.processStrip(strip, [], 'done', calculateParentStatus, null);
@@ -389,7 +386,6 @@ export class SeeAllWithPillsComponent  implements OnInit, OnDestroy {
       const response = await this.searchV6Request(strip, currentTab.request, calculateParentStatus)
       if (response && response.results) {
         const widgets = this.transformContentsToWidgets(response.results.result.content, strip)
-        let tabResult: any
         if (this.seeAllPageConfig  && this.seeAllPageConfig.tabs) {
           const allTabs = this.seeAllPageConfig.tabs
           const allPills = this.seeAllPageConfig.tabs[tabIndex].pillsData
@@ -408,7 +404,6 @@ export class SeeAllWithPillsComponent  implements OnInit, OnDestroy {
               widgets,
               fetchTabStatus: 'done',
             }
-            tabResult = allTabs
           }
         }
       } else {
