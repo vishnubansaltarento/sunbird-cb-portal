@@ -6,7 +6,7 @@
   </div>
 </div>
 <!-- *ngIf="isNPSOpen" -->
-<div id="grid-container" class="nps-footer">
+<div id="grid-container" class="nps-footer" *ngIf="isNPSOpen">
   <span class="closeicon cursor-pointer" (click)="closeNPS(); raiseInteractTelemetry('close')"><mat-icon>close_small</mat-icon></span>
   <div class="center-box padding-bottom-l padding-top-s" *ngIf="!onSuccessRating">
     <span *ngIf="!ratingGiven" class="ratingtitle">{{ 'platformrating.howLikelyRecommend' | translate }}</span>

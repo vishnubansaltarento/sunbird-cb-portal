@@ -68,7 +68,7 @@ export class GridLayoutComponent extends WidgetBaseComponent
     },
     {
       value: 2,
-      image: '/assets/images/nps/1.svg',
+      image: '/assets/images/nps/2.svg',
       showImage: false,
     },
     {
