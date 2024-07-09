@@ -426,12 +426,14 @@ export class CardContentV2Component extends WidgetBaseComponent
         }
       })
     } else {
-      let urlData = await this.contSvc.getResourseLink(content)
-      this.router.navigate(
-        [urlData.url],
-        {
-          queryParams: urlData.queryParams
-        })
+      if (content && content.status && content.status.toLowerCase() !== 'retired') {
+        let urlData = await this.contSvc.getResourseLink(content)
+        this.router.navigate(
+          [urlData.url],
+          {
+            queryParams: urlData.queryParams
+          })
+      }
     }
  
     
