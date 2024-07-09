@@ -326,7 +326,9 @@ export class GridLayoutComponent extends WidgetBaseComponent
         formId: Number(this.formID),
         timestamp: currenttimestamp,
         version: 1,
-        dataObject: {},
+        dataObject: {
+          'Please rate your experience with the platform': -1,
+        },
       }
       this.npsService.submitPlatformRating(reqbody).subscribe((resp: any) => {
         this.isNPSOpen = false
