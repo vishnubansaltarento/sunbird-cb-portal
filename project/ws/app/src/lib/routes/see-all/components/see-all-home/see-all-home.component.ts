@@ -275,16 +275,16 @@ export class SeeAllHomeComponent implements OnInit, OnDestroy {
       let contentNew: NsContent.IContent[]
       this.tabResults = []
       const queryParams = _.get(strip.request.enrollmentList, 'queryParams')
-      if (queryParams && queryParams.batchDetails) {
-        if (!queryParams.batchDetails.includes('&retiredCoursesEnabled=true')) {
-          queryParams.batchDetails += '&retiredCoursesEnabled=true'
-        }
-      }
+      // if (queryParams && queryParams.batchDetails) {
+      //   if (!queryParams.batchDetails.includes('&retiredCoursesEnabled=true')) {
+      //     queryParams.batchDetails += '&retiredCoursesEnabled=true'
+      //   }
+      // }
       if (this.configSvc.userProfile) {
         userId = this.configSvc.userProfile.userId
       }
       // tslint:disable-next-line: deprecation
-      this.userSvc.resetTime('enrollmentService')
+      // this.userSvc.resetTime('enrollmentService')
       this.userSvc.fetchUserBatchList(userId, queryParams).subscribe(
         (result: any) => {
           const courses = result && result.courses

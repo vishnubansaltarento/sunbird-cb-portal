@@ -324,15 +324,15 @@ export class ContentStripWithTabsComponent extends WidgetBaseComponent
       let contentNew: NsContent.IContent[]
       let tabResults: any[] = []
       const queryParams = _.get(strip.request.enrollmentList, 'queryParams')
-      if (queryParams && queryParams.batchDetails) {
-        if (!queryParams.batchDetails.includes('&retiredCoursesEnabled=true')) {
-          queryParams.batchDetails += '&retiredCoursesEnabled=true'
-        }
-      }
+      // if (queryParams && queryParams.batchDetails) {
+      //   if (!queryParams.batchDetails.includes('&retiredCoursesEnabled=true')) {
+      //     queryParams.batchDetails += '&retiredCoursesEnabled=true'
+      //   }
+      // }
       if (this.configSvc.userProfile) {
         userId = this.configSvc.userProfile.userId
       }
-      this.userSvc.resetTime('enrollmentService')
+      // this.userSvc.resetTime('enrollmentService')
       // tslint:disable-next-line: deprecation
       this.userSvc.fetchUserBatchList(userId, queryParams).subscribe(
         (result: any) => {
