@@ -426,7 +426,7 @@ export class CardContentV2Component extends WidgetBaseComponent
         }
       })
     } else {
-      if (content && content.status !=='Retired') {
+      if (content && content.status.toLowerCase() === 'retired') {
         let urlData = await this.contSvc.getResourseLink(content)
         this.router.navigate(
           [urlData.url],

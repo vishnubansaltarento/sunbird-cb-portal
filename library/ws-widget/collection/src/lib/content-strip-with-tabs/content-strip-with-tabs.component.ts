@@ -453,8 +453,9 @@ export class ContentStripWithTabsComponent extends WidgetBaseComponent
     const completed: any[] = []
     // array.forEach((e: any, idx: number, arr: any[]) => (customFilter(e, idx, arr) ? inprogress : completed).push(e))
     array.forEach((e, idx, arr) => {
+      const statusRetired = (e.status as string).toLowerCase()
       if (customFilter(e, idx, arr)) {
-        if ((e.status as string) !== 'Retired') {
+        if (statusRetired !== 'retired') {
           inprogress.push(e)
         }
       } else {
@@ -463,17 +464,21 @@ export class ContentStripWithTabsComponent extends WidgetBaseComponent
     })
     // Sort the completed array with 'Live' status first and 'Retired' status second
     completed.sort((a: any, b: any) => {
-      if (a.status === 'live' && b.status !== 'live') {
-        return 1
-      }  if (a.status !== 'live' && b.status === 'live') {
-        return -1
-      }  if (a.status === 'Retired' && b.status !== 'Retired') {
-        return 1
-      }  if (a.status !== 'Retired' && b.status === 'Retired') {
+      const statusA = a.status.toLowerCase()
+      const statusB = b.status.toLowerCase()
+      if (statusA === 'live' && statusB !== 'live') {
         return -1
       }
-        return 0
-
+      if (statusA !== 'live' && statusB === 'live') {
+        return 1
+      }
+      if (statusA === 'retired' && statusB !== 'retired') {
+        return 1
+      }
+      if (statusA !== 'retired' && statusB === 'retired') {
+        return -1
+      }
+      return 0
     })
     return [
       { value: 'inprogress', widgets: this.transformContentsToWidgets(inprogress, strip) },
