@@ -27,7 +27,7 @@
       </ng-container> 
     </mat-sidenav>
 
-    <mat-sidenav-content #scrollableContent [ngClass]="isAssessmentScreen && compatibilityLevel < 7 ? 'isAssessmentScreen':'isAssessmentScreenNew'">
+    <mat-sidenav-content #scrollableContent [ngClass]="isAssessmentScreen && compatibilityLevel < 6 ? 'isAssessmentScreen':'isAssessmentScreenNew'">
       <ng-container *ngIf="viewerHeaderSideBarToggleFlag">
         <!-- *ngIf="fullScreenContainer" -->
         <viewer-viewer-secondary-top-bar [forPreview]="forPreview" [contentMIMEType]="contentMIMEType" [completedCount]="completedCount"
@@ -116,7 +116,7 @@
         </div>
       </div>
 
-      <div class="viewer-player-container" [ngClass]="contentMIMEType == 'application/vnd.sunbird.questionset' && compatibilityLevel < 7 ? 'sidenavContent':'standaloneSidenavContent'">
+      <div class="viewer-player-container" [ngClass]="contentMIMEType == 'application/vnd.sunbird.questionset' && compatibilityLevel < 6 ? 'sidenavContent':'standaloneSidenavContent'">
         <router-outlet (activate)="getContentData($event)"></router-outlet>
       </div>
 
