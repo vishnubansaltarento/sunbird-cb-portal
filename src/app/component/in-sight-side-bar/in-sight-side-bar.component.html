@@ -34,7 +34,13 @@
         </div>
         <div class="tips-header">
             <h3>Tips for Learners</h3>
-            <button (click)="showAllTips()">Show all ></button>
+            <!-- <button (click)="showAllTips()">Show all </button> -->
+            <div class="ml-4 pl-2 view-more ws-mat-default-text ng-star-inserted">
+                <a class="flex ws-mat-default-text items-center justify-center mat-body-1 cursor-pointer" (click)="showAllTips()">
+                    <span class="ws-mat-default-text">Show all</span>
+                    <mat-icon class="ws-mat-default-text mat-icon" color="accent" role="img" aria-hidden="true">navigate_next</mat-icon>
+                </a>
+            </div>
         </div>
         <div class="tip-content">
             <div class =" background">

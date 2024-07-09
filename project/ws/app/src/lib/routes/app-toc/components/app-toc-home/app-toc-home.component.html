@@ -414,6 +414,7 @@
 
     <div class="right-container" >
       <div class="right-content" #rightContainer>
+        <div class="right-content-inner">
         <ng-container *ngIf="skeletonLoader">
           <ws-widget-skeleton-loader [width]="'384px'" [height]="'224px'"
             [bindingClass]="'rounded'"></ws-widget-skeleton-loader>
@@ -620,7 +621,6 @@
           </ng-container>
         </div>
       </div>
-
       <div class="tips-container" >
         <div class="circle-box">
             <div class="background-circle">
@@ -629,10 +629,16 @@
         </div>
         <div class="tips-header">
             <h3>Tips for Learners</h3>
-            <button (click)="showAllTips()">Show all ></button>
+            <!-- <button (click)="showAllTips()">Show all ></button> -->
+            <div class="ml-4 pl-2 view-more ws-mat-default-text ng-star-inserted">
+              <a class="flex ws-mat-default-text items-center justify-center mat-body-1 cursor-pointer" (click)="showAllTips()">
+                  <span class="ws-mat-default-text">{{ 'msg.showAll' | translate }}</span>
+                  <mat-icon class="ws-mat-default-text mat-icon" color="accent" role="img" aria-hidden="true">navigate_next</mat-icon>
+              </a>
+          </div>
         </div>
         <div class="tip-content">
-            <div class =" background">
+            <div class ="background">
             <img  class="book-icon" src="assets/icons/learner-advisory/use-gyaan-karmayogi.png"
                 alt="Use the new section Gyaan Karmayogi regularly, to go over case studies and other learning material.">
             </div>    
@@ -642,6 +648,9 @@
             </div>
         </div>
     </div>
+      </div>
+
+     
 
   </div>
 </div>
