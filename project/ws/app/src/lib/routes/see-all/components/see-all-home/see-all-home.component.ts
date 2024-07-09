@@ -177,19 +177,20 @@ export class SeeAllHomeComponent implements OnInit, OnDestroy {
     const inprogress: any[] = []
     const completed: any[] = []
     array.forEach((e, idx, arr) => {
-      const statusRetired = (e.status as string).toLowerCase()
+      const status = e.status ? (e.status as string).toLowerCase() : ''
+      const statusRetired = status === 'retired'
       if (customFilter(e, idx, arr)) {
-        if (statusRetired !== 'retired') {
-          inprogress.push(e)
-        }
-      } else {
-        completed.push(e)
+      if (!statusRetired) {
+        inprogress.push(e)
       }
-    })
+     } else {
+      completed.push(e)
+     }
+      })
     // Sort the completed array with 'live' status first and 'Retired' status second
     completed.sort((a: any, b: any) => {
-      const statusA = a.status.toLowerCase()
-      const statusB = b.status.toLowerCase()
+      const statusA = a.status ? a.status.toLowerCase() : ''
+      const statusB = b.status ? b.status.toLowerCase() : ''
       if (statusA === 'live' && statusB !== 'live') {
         return -1
       }

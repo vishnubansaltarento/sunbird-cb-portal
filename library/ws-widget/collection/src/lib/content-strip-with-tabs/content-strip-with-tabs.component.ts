@@ -453,19 +453,20 @@ export class ContentStripWithTabsComponent extends WidgetBaseComponent
     const completed: any[] = []
     // array.forEach((e: any, idx: number, arr: any[]) => (customFilter(e, idx, arr) ? inprogress : completed).push(e))
     array.forEach((e, idx, arr) => {
-      const statusRetired = (e.status as string).toLowerCase()
-      if (customFilter(e, idx, arr)) {
-        if (statusRetired !== 'retired') {
-          inprogress.push(e)
-        }
-      } else {
-        completed.push(e)
-      }
+    const status = e.status ? (e.status as string).toLowerCase() : ''
+    const statusRetired = status === 'retired'
+    if (customFilter(e, idx, arr)) {
+    if (!statusRetired) {
+      inprogress.push(e)
+    }
+   } else {
+    completed.push(e)
+   }
     })
     // Sort the completed array with 'Live' status first and 'Retired' status second
     completed.sort((a: any, b: any) => {
-      const statusA = a.status.toLowerCase()
-      const statusB = b.status.toLowerCase()
+      const statusA = a.status ? a.status.toLowerCase() : ''
+      const statusB = b.status ? b.status.toLowerCase() : ''
       if (statusA === 'live' && statusB !== 'live') {
         return -1
       }
