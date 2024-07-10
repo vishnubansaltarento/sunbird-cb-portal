@@ -2,7 +2,7 @@ import { AfterViewInit, Component, ElementRef, HostListener, OnInit, ViewChild }
 import { ActivatedRoute } from '@angular/router'
 import { TranslateService } from '@ngx-translate/core'
 import { CommonMethodsService } from '@sunbird-cb/consumption'
-import { MultilingualTranslationsService } from '@sunbird-cb/utils-v2'
+import { ConfigurationsService, MultilingualTranslationsService } from '@sunbird-cb/utils-v2'
 
 @Component({
   selector: 'ws-app-app-toc-cios-home',
@@ -42,6 +42,7 @@ export class AppTocCiosHomeComponent implements OnInit, AfterViewInit {
   constructor(private route: ActivatedRoute,
               private commonSvc: CommonMethodsService,
               private translate: TranslateService,
+              private configSvc: ConfigurationsService,
               private langtranslations: MultilingualTranslationsService,
   ) {
     this.route.data.subscribe((data: any) => {
@@ -75,5 +76,12 @@ export class AppTocCiosHomeComponent implements OnInit, AfterViewInit {
       this.rcElem.offSetTop = this.rcElement.nativeElement.offsetTop
     }
   }
-
+  redirectToContent(contentData: any) {
+    const userData: any = this.configSvc.userProfileV2
+    const extUrl: string = contentData.redirectUrl.replace('<username>', userData.email)
+    return extUrl
+  }
+  replaceText(str: any, replaceTxt: any) {
+    return str.replaceAll(replaceTxt, '')
+  }
 }
