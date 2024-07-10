@@ -99,7 +99,7 @@ export class InsightSideBarComponent implements OnInit {
     this.userData = this.configSvc && this.configSvc.userProfile
     if (this.activatedRoute.snapshot.data.pageData && this.activatedRoute.snapshot.data.pageData.data) {
       this.homePageData = this.activatedRoute.snapshot.data.pageData.data
-      
+
     }
     this.learnAdvisoryData = this.homePageData.learnerAdvisory
     this.learnAdvisoryDataLength = this.learnAdvisoryData.length
@@ -120,8 +120,6 @@ export class InsightSideBarComponent implements OnInit {
     const randomIndex = Math.floor(Math.random() * this.learnAdvisoryData.length)
     this.randomlearnAdvisoryObj = this.learnAdvisoryData[randomIndex]
   }
-
-  
 
   getInsights() {
     this.profileDataLoading = true
