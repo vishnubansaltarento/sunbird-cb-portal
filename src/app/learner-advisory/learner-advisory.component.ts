@@ -13,6 +13,7 @@ export class LearnerAdvisoryComponent implements OnInit {
   constructor() { }
 
   ngOnInit() {
+    
   }
 
 }

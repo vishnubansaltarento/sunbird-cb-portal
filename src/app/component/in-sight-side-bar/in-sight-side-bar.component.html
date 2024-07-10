@@ -26,7 +26,7 @@
         <ws-widget-weekly-claps [insightsData]="insightsData" [weeklyData]="homePageData.weeklyClaps" [isLoading]="clapsDataLoading"></ws-widget-weekly-claps>
     </div>
 
-    <div class="tips-container">
+    <div class="tips-container" *ngIf="randomlearnAdvisoryObj">
         <div class="circle-box">
             <div class="background-circle">
                 <!-- circle -->
@@ -43,13 +43,13 @@
             </div>
         </div>
         <div class="tip-content">
-            <div class =" background">
-            <img  class="book-icon" src="assets/icons/learner-advisory/use-gyaan-karmayogi.png"
-                alt="Use the new section Gyaan Karmayogi regularly, to go over case studies and other learning material.">
+            <div class ="background">
+            <img  class="book-icon" src="{{randomlearnAdvisoryObj.contentImg}}"
+                alt="{{randomlearnAdvisoryObj.content}}">
             </div>    
-            <p>{{'learnerAdvisory.useGyaanKarmayogi' | translate}}</p>
+            <p>{{randomlearnAdvisoryObj.content}}</p>
             <div class="tip-count">
-                1/13
+                {{randomlearnAdvisoryObj.id}}/{{learnAdvisoryDataLength}}
             </div>
         </div>
     </div>
