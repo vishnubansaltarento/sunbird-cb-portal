@@ -435,7 +435,8 @@ export class CardContentV2Component extends WidgetBaseComponent
               queryParams: urlData.queryParams
             })
     } else {
-      this.snackBar.open('This course/program has been retired.', 'X', { duration: 2000 })
+      const contentType = urlData;
+      this.snackBar.open(`This ${contentType} has been retired.`, 'X', { duration: 2000 });
     }
     }
     
