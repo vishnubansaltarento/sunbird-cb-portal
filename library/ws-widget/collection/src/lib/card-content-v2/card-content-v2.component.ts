@@ -418,6 +418,7 @@ export class CardContentV2Component extends WidgetBaseComponent
     }
   }
   async getRedirectUrlData(content: any,contentType?:any){
+    const contentCategory = content && content.primaryCategory ? content.primaryCategory : 'Content'
     if(contentType) {
       this.router.navigate([`/app/gyaan-karmayogi/player/${VIEWER_ROUTE_FROM_MIME(content.mimeType)}/${content.identifier}`],{
         queryParams : {
@@ -435,7 +436,8 @@ export class CardContentV2Component extends WidgetBaseComponent
               queryParams: urlData.queryParams
             })
     } else {
-      this.snackBar.open('This course/program has been retired.', 'X', { duration: 2000 })
+      // const contentType = urlData;
+      this.snackBar.open(`This ${contentCategory} has been archived and is no longer available.`, 'X', { duration: 2000 });
     }
     }
     
