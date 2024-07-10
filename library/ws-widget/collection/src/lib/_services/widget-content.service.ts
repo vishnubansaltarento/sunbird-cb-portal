@@ -462,21 +462,21 @@ export class WidgetContentService {
   async getResourseLink(content: any) {
     const enrolledCourseData: any = this.getEnrolledData(content.identifier)
     if (enrolledCourseData) {
-      if (enrolledCourseData.content.courseCategory ===  NsContent.ECourseCategory.BLENDED_PROGRAM ||
-        enrolledCourseData.content.courseCategory ===  NsContent.ECourseCategory.INVITE_ONLY_PROGRAM ||
-        enrolledCourseData.content.courseCategory ===  NsContent.ECourseCategory.MODERATED_PROGRAM ||
-        enrolledCourseData.content.primaryCategory ===  NsContent.EPrimaryCategory.BLENDED_PROGRAM ||
-        enrolledCourseData.content.primaryCategory ===  NsContent.EPrimaryCategory.PROGRAM) {
-          if (!this.isBatchInProgress(enrolledCourseData.batch)) {
-            return this.gotoTocPage(content)
-          }
+      if (enrolledCourseData && enrolledCourseData.content && enrolledCourseData.content.status && content.status.toLowerCase() !== 'retired') {
+        if (enrolledCourseData.content.courseCategory ===  NsContent.ECourseCategory.BLENDED_PROGRAM ||
+          enrolledCourseData.content.courseCategory ===  NsContent.ECourseCategory.INVITE_ONLY_PROGRAM ||
+          enrolledCourseData.content.courseCategory ===  NsContent.ECourseCategory.MODERATED_PROGRAM ||
+          enrolledCourseData.content.primaryCategory ===  NsContent.EPrimaryCategory.BLENDED_PROGRAM ||
+          enrolledCourseData.content.primaryCategory ===  NsContent.EPrimaryCategory.PROGRAM) {
+            if (!this.isBatchInProgress(enrolledCourseData.batch)) {
+              return this.gotoTocPage(content)
+            }
+        } else {
           const data =  await this.checkForDataToFormUrl(content, enrolledCourseData)
           return data
-      }  {
-        const data =  await this.checkForDataToFormUrl(content, enrolledCourseData)
-        return data
+        }
       }
-
+      return ''
     }
     return this.gotoTocPage(content)
 
@@ -543,7 +543,6 @@ export class WidgetContentService {
     return this.gotoTocPage(content)
   }
   gotoTocPage(content: any) {
-    if (content && content.status && content.status.toLowerCase() !== 'retired') { 
     const urlData: any = {
       url: `/app/toc/${content.identifier ? content.identifier : content.collectionId}/overview`,
       queryParams: { batchId: content.batchId },
@@ -552,7 +551,6 @@ export class WidgetContentService {
       urlData.queryParams = { ...urlData.queryParams, planType: 'cbPlan', endDate: content.endDate }
     }
     return urlData
-  }
   }
   isBatchInProgress(batchData: any) {
     // if (this.content && this.content['batches']) {
