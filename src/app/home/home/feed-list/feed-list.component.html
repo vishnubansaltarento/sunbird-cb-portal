@@ -9,5 +9,12 @@
     </div>
     <ws-widget-content-strip-with-tabs [widgetData]="widgetData"></ws-widget-content-strip-with-tabs>
 </div> -->
-<ws-widget-content-strip-with-tabs [widgetData]="widgetData"></ws-widget-content-strip-with-tabs>
+<ng-container *ngIf="widgetData?.loadStripType;else packageStrip">
+    <sb-uic-content-strip-with-tabs  
+    (telemtryResponse)="raiseTelemetryInteratEvent($event)" [widgetData]="widgetData"> </sb-uic-content-strip-with-tabs>
+</ng-container>
+
+<ng-template #packageStrip>
+    <ws-widget-content-strip-with-tabs [widgetData]="widgetData"></ws-widget-content-strip-with-tabs>
+</ng-template>
     
