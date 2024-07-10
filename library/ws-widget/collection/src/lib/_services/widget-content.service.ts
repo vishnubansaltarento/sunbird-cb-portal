@@ -543,6 +543,7 @@ export class WidgetContentService {
     return this.gotoTocPage(content)
   }
   gotoTocPage(content: any) {
+    if (content && content.status && content.status.toLowerCase() !== 'retired') { 
     const urlData: any = {
       url: `/app/toc/${content.identifier ? content.identifier : content.collectionId}/overview`,
       queryParams: { batchId: content.batchId },
@@ -551,6 +552,7 @@ export class WidgetContentService {
       urlData.queryParams = { ...urlData.queryParams, planType: 'cbPlan', endDate: content.endDate }
     }
     return urlData
+  }
   }
   isBatchInProgress(batchData: any) {
     // if (this.content && this.content['batches']) {
