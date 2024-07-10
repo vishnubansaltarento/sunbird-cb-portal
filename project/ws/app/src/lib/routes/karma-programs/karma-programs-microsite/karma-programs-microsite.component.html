@@ -41,7 +41,7 @@
                                 <ng-container *ngIf="data?.referenceLinks && data?.referenceLinks?.length">
                                     <ng-container *ngFor="let ref of data?.referenceLinks">
                                         <p >
-                                            {{ref?.label}} : <a href="{{ref?.value}}" class=" ref-links " target="_blank"> Click here</a>
+                                            {{ref?.label}} : <a href="{{ref?.value}}" class=" ref-links " target="_blank"> {{'contentstripmultiple.clickHere' | translate}}</a>
                                         </p>
                                     </ng-container>
                                 </ng-container>
@@ -74,7 +74,7 @@
                 <ng-container *ngIf="data?.referenceLinks && data?.referenceLinks?.length">
                     <ng-container *ngFor="let ref of data?.referenceLinks">
                         <p >
-                            {{ref?.label}} : <a href="{{ref?.value}}" class=" ref-links "  target="_blank"> Click here</a>
+                            {{ref?.label}} : <a href="{{ref?.value}}" class=" ref-links "  target="_blank">{{'contentstripmultiple.clickHere' | translate}}</a>
                         </p>
                     </ng-container>
                 </ng-container>
