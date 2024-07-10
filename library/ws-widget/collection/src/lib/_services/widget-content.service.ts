@@ -462,21 +462,21 @@ export class WidgetContentService {
   async getResourseLink(content: any) {
     const enrolledCourseData: any = this.getEnrolledData(content.identifier)
     if (enrolledCourseData) {
-      if (enrolledCourseData.content.courseCategory ===  NsContent.ECourseCategory.BLENDED_PROGRAM ||
-        enrolledCourseData.content.courseCategory ===  NsContent.ECourseCategory.INVITE_ONLY_PROGRAM ||
-        enrolledCourseData.content.courseCategory ===  NsContent.ECourseCategory.MODERATED_PROGRAM ||
-        enrolledCourseData.content.primaryCategory ===  NsContent.EPrimaryCategory.BLENDED_PROGRAM ||
-        enrolledCourseData.content.primaryCategory ===  NsContent.EPrimaryCategory.PROGRAM) {
-          if (!this.isBatchInProgress(enrolledCourseData.batch)) {
-            return this.gotoTocPage(content)
-          }
+      if (enrolledCourseData && enrolledCourseData.content && enrolledCourseData.content.status && content.status.toLowerCase() !== 'retired') {
+        if (enrolledCourseData.content.courseCategory ===  NsContent.ECourseCategory.BLENDED_PROGRAM ||
+          enrolledCourseData.content.courseCategory ===  NsContent.ECourseCategory.INVITE_ONLY_PROGRAM ||
+          enrolledCourseData.content.courseCategory ===  NsContent.ECourseCategory.MODERATED_PROGRAM ||
+          enrolledCourseData.content.primaryCategory ===  NsContent.EPrimaryCategory.BLENDED_PROGRAM ||
+          enrolledCourseData.content.primaryCategory ===  NsContent.EPrimaryCategory.PROGRAM) {
+            if (!this.isBatchInProgress(enrolledCourseData.batch)) {
+              return this.gotoTocPage(content)
+            }
+        } else {
           const data =  await this.checkForDataToFormUrl(content, enrolledCourseData)
           return data
-      }  {
-        const data =  await this.checkForDataToFormUrl(content, enrolledCourseData)
-        return data
+        }
       }
-
+      return ''
     }
     return this.gotoTocPage(content)
 

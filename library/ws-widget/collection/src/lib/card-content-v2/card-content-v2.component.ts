@@ -426,16 +426,18 @@ export class CardContentV2Component extends WidgetBaseComponent
         }
       })
     } else {
-      if (content && content.status && content.status.toLowerCase() !== 'retired') {
+      // if (content && content.status && content.status.toLowerCase() !== 'retired') {
         let urlData = await this.contSvc.getResourseLink(content)
-        this.router.navigate(
-          [urlData.url],
-          {
-            queryParams: urlData.queryParams
-          })
-      }
+        if (urlData && urlData.url ) {
+          this.router.navigate(
+            [urlData.url],
+            {
+              queryParams: urlData.queryParams
+            })
+    } else {
+      this.snackBar.open('This course/program has been retired.', 'X', { duration: 2000 })
     }
- 
+    }
     
   }
 
