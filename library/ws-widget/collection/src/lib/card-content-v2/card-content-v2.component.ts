@@ -437,7 +437,7 @@ export class CardContentV2Component extends WidgetBaseComponent
             })
     } else {
       // const contentType = urlData;
-      this.snackBar.open(`This ${contentCategory} has been retired.`, 'X', { duration: 2000 });
+      this.snackBar.open(`This ${contentCategory} has been archived and is no longer available.`, 'X', { duration: 2000 });
     }
     }
     
