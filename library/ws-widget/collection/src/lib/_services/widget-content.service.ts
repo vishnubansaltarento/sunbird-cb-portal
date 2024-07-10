@@ -462,7 +462,6 @@ export class WidgetContentService {
   async getResourseLink(content: any) {
     const enrolledCourseData: any = this.getEnrolledData(content.identifier)
     if (enrolledCourseData) {
-      const contentCategory = enrolledCourseData.content && enrolledCourseData.content.primaryCategory ? enrolledCourseData.content.primaryCategory : 'Content'
       if (enrolledCourseData && enrolledCourseData.content && enrolledCourseData.content.status && content.status.toLowerCase() !== 'retired') {
         if (enrolledCourseData.content.courseCategory ===  NsContent.ECourseCategory.BLENDED_PROGRAM ||
           enrolledCourseData.content.courseCategory ===  NsContent.ECourseCategory.INVITE_ONLY_PROGRAM ||
@@ -477,7 +476,7 @@ export class WidgetContentService {
           return data
         }
       }
-      return contentCategory
+      return ''
     }
     return this.gotoTocPage(content)
 

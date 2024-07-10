@@ -418,6 +418,7 @@ export class CardContentV2Component extends WidgetBaseComponent
     }
   }
   async getRedirectUrlData(content: any,contentType?:any){
+    const contentCategory = content && content.primaryCategory ? content.primaryCategory : 'Content'
     if(contentType) {
       this.router.navigate([`/app/gyaan-karmayogi/player/${VIEWER_ROUTE_FROM_MIME(content.mimeType)}/${content.identifier}`],{
         queryParams : {
@@ -435,8 +436,8 @@ export class CardContentV2Component extends WidgetBaseComponent
               queryParams: urlData.queryParams
             })
     } else {
-      const contentType = urlData;
-      this.snackBar.open(`This ${contentType} has been retired.`, 'X', { duration: 2000 });
+      // const contentType = urlData;
+      this.snackBar.open(`This ${contentCategory} has been retired.`, 'X', { duration: 2000 });
     }
     }
     
