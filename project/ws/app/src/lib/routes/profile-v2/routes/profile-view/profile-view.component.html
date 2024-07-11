@@ -622,8 +622,8 @@
           <mat-icon class="cursor-pointer" *ngIf="isCurrentUser" (click)="editName = !editName">edit</mat-icon>
         </div>
         <div class="flex flex-row gap-2 items-center make-transfer-div" (click)="viewMentorProfile()">
-          <div class="text-sm make-transer">
-            View Mentor Profile
+          <div class="text-sm blue-background-outline">
+            {{ 'profileInfo.viewMentorProfile' | translate }}
           </div>          
         </div>
       </div>

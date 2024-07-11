@@ -107,6 +107,15 @@ $border-color: rgba($color: #000000, $alpha: 0.16);
   cursor: pointer;
 }
 
+.blue-background-outline {
+  border-radius: 20px;
+  padding: 4px 16px;
+  border: 1px solid $text-primary;
+  color: white;
+  background-color: $text-primary;
+  cursor: pointer;
+}
+
 .edit-button {
   @extend .blue-outline;
   font-size: 14px;

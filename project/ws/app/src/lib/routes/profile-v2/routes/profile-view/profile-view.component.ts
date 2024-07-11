@@ -31,7 +31,7 @@ import { NotificationComponent } from '@ws/author/src/lib/modules/shared/compone
 import { DesignationRequestComponent } from '../../components/designation-request/designation-request.component'
 import { HomePageService } from 'src/app/services/home-page.service'
 import { RejectionReasonPopupComponent } from '../../components/rejection-reason-popup/rejection-reason-popup.component'
-
+import { environment } from 'src/environments/environment'
 export const MY_FORMATS = {
   parse: {
     dateInput: 'LL',
@@ -1243,7 +1243,6 @@ export class ProfileViewComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   viewMentorProfile() {
-    window.location.href = 'https://portal.karmayogi.nic.in/mentorship'
-    //this.router.navigateByUrl('mentorship')
+    window.open(`${environment.contentHost}/mentorship`,'_blank')
   }
 }
