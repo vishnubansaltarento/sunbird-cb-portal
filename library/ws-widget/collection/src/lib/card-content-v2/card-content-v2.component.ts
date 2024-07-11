@@ -418,6 +418,7 @@ export class CardContentV2Component extends WidgetBaseComponent
     }
   }
   async getRedirectUrlData(content: any,contentType?:any){
+    const contentCategory = content && content.primaryCategory ? content.primaryCategory : 'Content'
     if(contentType) {
       this.router.navigate([`/app/gyaan-karmayogi/player/${VIEWER_ROUTE_FROM_MIME(content.mimeType)}/${content.identifier}`],{
         queryParams : {
@@ -426,14 +427,19 @@ export class CardContentV2Component extends WidgetBaseComponent
         }
       })
     } else {
-      let urlData = await this.contSvc.getResourseLink(content)
-      this.router.navigate(
-        [urlData.url],
-        {
-          queryParams: urlData.queryParams
-        })
+      // if (content && content.status && content.status.toLowerCase() !== 'retired') {
+        let urlData = await this.contSvc.getResourseLink(content)
+        if (urlData && urlData.url ) {
+          this.router.navigate(
+            [urlData.url],
+            {
+              queryParams: urlData.queryParams
+            })
+    } else {
+      // const contentType = urlData;
+      this.snackBar.open(`This ${contentCategory} has been archived and is no longer available.`, 'X', { duration: 2000 });
     }
- 
+    }
     
   }
 

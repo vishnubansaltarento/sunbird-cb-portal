@@ -55,6 +55,7 @@ const API_END_POINTS = {
   READ_COURSE_KARMAPOINTS: '/apis/proxies/v8/karmapoints/user/course/read',
   CLAIM_KARMAPOINTS: '/apis/proxies/v8/claimkarmapoints',
   USER_KARMA_POINTS: '/apis/proxies/v8/user/totalkarmapoints',
+  EXT_CONTENT_READ: (contentId: any) => `/apis/proxies/v8/cios/v1/content/read/${contentId}`,
 }
 
 @Injectable({
@@ -436,6 +437,9 @@ export class WidgetContentService {
     return this.http.get<NsContent.IContent[]>(url)
     // return this.http.get<NsContent.IContent[]>(API_END_POINTS.CONTENT_READ(contentId))
   }
+  fetchExternalContent(contentId: string[]): Observable<NsContent.IContent[]> {
+    return this.http.get<NsContent.IContent[]>(API_END_POINTS.EXT_CONTENT_READ(contentId))
+  }
 
   getCourseKarmaPoints(request: any) {
     return this.http.post<any>(API_END_POINTS.READ_COURSE_KARMAPOINTS, request)
@@ -458,21 +462,22 @@ export class WidgetContentService {
   async getResourseLink(content: any) {
     const enrolledCourseData: any = this.getEnrolledData(content.identifier)
     if (enrolledCourseData) {
-      if (enrolledCourseData.content.courseCategory ===  NsContent.ECourseCategory.BLENDED_PROGRAM ||
-        enrolledCourseData.content.courseCategory ===  NsContent.ECourseCategory.INVITE_ONLY_PROGRAM ||
-        enrolledCourseData.content.courseCategory ===  NsContent.ECourseCategory.MODERATED_PROGRAM ||
-        enrolledCourseData.content.primaryCategory ===  NsContent.EPrimaryCategory.BLENDED_PROGRAM ||
-        enrolledCourseData.content.primaryCategory ===  NsContent.EPrimaryCategory.PROGRAM) {
-          if (!this.isBatchInProgress(enrolledCourseData.batch)) {
-            return this.gotoTocPage(content)
-          }
+      if (enrolledCourseData && enrolledCourseData.content && enrolledCourseData.content.status &&
+         content.status.toLowerCase() !== 'retired') {
+        if (enrolledCourseData.content.courseCategory ===  NsContent.ECourseCategory.BLENDED_PROGRAM ||
+          enrolledCourseData.content.courseCategory ===  NsContent.ECourseCategory.INVITE_ONLY_PROGRAM ||
+          enrolledCourseData.content.courseCategory ===  NsContent.ECourseCategory.MODERATED_PROGRAM ||
+          enrolledCourseData.content.primaryCategory ===  NsContent.EPrimaryCategory.BLENDED_PROGRAM ||
+          enrolledCourseData.content.primaryCategory ===  NsContent.EPrimaryCategory.PROGRAM) {
+            if (!this.isBatchInProgress(enrolledCourseData.batch)) {
+              return this.gotoTocPage(content)
+            }
+        } else {
           const data =  await this.checkForDataToFormUrl(content, enrolledCourseData)
           return data
-      }  {
-        const data =  await this.checkForDataToFormUrl(content, enrolledCourseData)
-        return data
+        }
       }
-
+      return ''
     }
     return this.gotoTocPage(content)
 

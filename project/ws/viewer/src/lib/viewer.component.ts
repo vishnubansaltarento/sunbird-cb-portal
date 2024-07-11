@@ -398,4 +398,9 @@ export class ViewerComponent implements OnInit, OnDestroy, AfterViewChecked {
     this.completedCount = event
   }
 
+  navigateToBack() {
+    this.viewerHeaderSideBarToggleService.visibilityStatus.next(true)
+    window.history.back()
+  }
+
  }

@@ -180,18 +180,32 @@
   }
 
   .right-content {
-    background-color: #FFF;
-    border-radius: 12px;
+   
     position: fixed;
     z-index: 10;
     top: 132px;
+    padding-bottom: 1rem;
+  }
+  .right-content-inner {
+    background-color: #FFF;
+    border-radius: 12px;
     width: 384px;
-    margin-bottom: 2rem;
-    box-shadow: 0 2px 6px -1px rgba(0, 0, 0, 0.5), 0 -4px 4px -2px rgba(0, 0, 0, 0.5)
+    margin-bottom: 1rem;
+    box-shadow: 0 2px 6px -1px rgba(0, 0, 0, 0.5), 0 -4px 4px -2px rgba(0, 0, 0, 0.5);
   }
 
   .border-bottom {
     border-bottom: 1px solid rgba($color: #000, $alpha: 0.2);
+  }
+  .view-more {
+    display: flex;
+    align-items: center;
+    text-align: center;
+    height: 40px;
+    justify-content: center;
+}
+  .view-more:hover {
+    background-color: #DCDFE5;
   }
 
   .info-div {
@@ -218,6 +232,7 @@
       height: 20px;
     }
   }
+  
 }
 
 .batch-info {
@@ -232,6 +247,109 @@
     color: rgba($color: #000, $alpha: 0.6);
     line-height: 1rem;
   }
+}
+.tips-container {
+  background-color: #F9CB97;
+  padding: 16px;
+  padding-bottom: 0px;
+  border-radius: 8px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  margin-bottom: 1rem;
+  overflow: hidden;
+  // position: fixed; 
+  // top: 560px; 
+  // left: 1166px;
+  width: 358px;  
+}
+ 
+.tips-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 8px;
+  z-index: 10;
+}
+ 
+.tips-header h3 {
+  margin: 0;
+  font-size: 1.2em;
+  color: #000000;
+  font-family: Montserrat;
+  font-size: 16px;
+  z-index: 10;
+}
+ 
+.tips-header button {
+  background: none;
+  border: none;
+  color: #01468f;
+  cursor: pointer;
+  font-family: Lato;
+  font-size: 14px;
+  z-index: 10;
+}
+ 
+.tip-content {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  z-index: 10;
+}
+ 
+.tip-content p {
+  margin-left: 10px;
+  color: #000000;
+  font-family: Lato;
+  font-size: 14px;
+  z-index: 10;
+  padding: 5px;
+  line-height: 16.8px;
+}
+
+.tip-count  {
+    display: flex;
+    justify-content: center; 
+    align-items: center; 
+    color: #000000;
+    font-family : Montserrat !important;
+    font-size: 16px !important;
+    padding: 10px 3px; 
+    align-self: flex-end; 
+    border-radius: 50% 0 0 50%; 
+    z-index: 10;
+    font-weight: 600;
+    line-height: 19.5px;
+}
+
+.background-circle {
+    position: absolute;
+    z-index: 1;
+    right: -6.5em;
+    top: 2.8em;
+    width: 178px;
+    height: 178px;
+    border-radius: 100%;
+    background-color: #fcd2a3;
+}
+
+.circle-box {
+    position: relative;
+    width: 100%;
+    height: 0px;
+}
+
+.book-icon{
+    width: 32px;
+    height: 32px;
+    padding: 5px;
+}
+.background{
+  background-color: white;
+  width: 56px;
+  height: 42px;
+  border-radius: 5px;
 }
 
 .button {
