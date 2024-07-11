@@ -463,7 +463,7 @@ export class WidgetContentService {
     const enrolledCourseData: any = this.getEnrolledData(content.identifier)
     if (enrolledCourseData) {
       if (enrolledCourseData && enrolledCourseData.content && enrolledCourseData.content.status &&
-         content.status.toLowerCase() !== 'retired') {
+        enrolledCourseData.content.status.toLowerCase() !== 'retired') {
         if (enrolledCourseData.content.courseCategory ===  NsContent.ECourseCategory.BLENDED_PROGRAM ||
           enrolledCourseData.content.courseCategory ===  NsContent.ECourseCategory.INVITE_ONLY_PROGRAM ||
           enrolledCourseData.content.courseCategory ===  NsContent.ECourseCategory.MODERATED_PROGRAM ||
