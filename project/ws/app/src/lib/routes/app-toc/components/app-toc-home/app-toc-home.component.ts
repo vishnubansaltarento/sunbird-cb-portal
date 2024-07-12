@@ -301,7 +301,6 @@ export class AppTocHomeComponent implements OnInit, OnDestroy, AfterViewChecked,
 
     }
 
-    
     this.getServerDateTime()
     // this.displayRandomlearnAdvisoryData()
 
