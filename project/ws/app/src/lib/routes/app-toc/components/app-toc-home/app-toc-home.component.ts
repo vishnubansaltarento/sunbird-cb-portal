@@ -323,7 +323,6 @@ export class AppTocHomeComponent implements OnInit, OnDestroy, AfterViewChecked,
     if (this.route) {
       this.skeletonLoader = true
       this.routeSubscription = this.route.data.subscribe((data: Data) => {
-        console.log(data, "data=")
         if (data && data.content && data.content.data && data.content.data.identifier) {
           this.courseID = data.content.data.identifier
           this.skeletonLoader = false
@@ -671,9 +670,10 @@ export class AppTocHomeComponent implements OnInit, OnDestroy, AfterViewChecked,
 
   get getStartDate() {
     if (this.content) {
+      const now = moment(this.serverDate).format('YYYY-MM-DD')
       const batch = _.first(_.filter(this.content['batches'], { batchId: this.currentCourseBatchId }) || [])
       if (_.get(batch, 'startDate') && moment(_.get(batch, 'startDate')).isAfter()) {
-        return moment(_.get(batch, 'startDate')).fromNow()
+        return moment(_.get(batch, 'startDate')).from(now)
       }
       if (_.get(batch, 'endDate') && moment(_.get(batch, 'endDate')).isBefore()) {
         return 'NA'

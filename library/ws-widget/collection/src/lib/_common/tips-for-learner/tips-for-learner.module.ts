@@ -2,6 +2,7 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { TipsForLearnerCardComponent } from './tips-for-learner-card/tips-for-learner-card.component';
 import { MatIconModule } from '@angular/material';
+import { TranslateModule } from '@ngx-translate/core'
 
 
 
@@ -10,6 +11,7 @@ import { MatIconModule } from '@angular/material';
   imports: [
     CommonModule,
     MatIconModule,
+    TranslateModule,
   ],
   exports: [
     TipsForLearnerCardComponent,
