@@ -92,6 +92,7 @@ import { ConfirmDialogModule } from '@sunbird-cb/collection/src/lib/_common/conf
 import { KarmaPointsModule } from '@sunbird-cb/collection/src/lib/_common/content-toc/karma-points/karma-points.module'
 import { TipsForLearnerModule } from '@sunbird-cb/collection/src/lib/_common/tips-for-learner/tips-for-learner.module'
 
+
 // Components
 import { AppTocAnalyticsComponent } from './routes/app-toc-analytics/app-toc-analytics.component'
 import { AppTocContentsComponent } from './routes/app-toc-contents/app-toc-contents.component'
