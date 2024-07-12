@@ -15,6 +15,7 @@ import { SkeletonLoaderModule } from '@sunbird-cb/collection/src/lib/_common/ske
 import { ProfileCardStatsModule } from '@sunbird-cb/collection/src/lib/_common/profile-card-stats/profile-card-stats.module'
 import { PipeRelativeTimeModule } from '@sunbird-cb/utils-v2'
 import { WeeklyClapsModule } from '@sunbird-cb/collection/src/lib/_common/weekly-claps/weekly-claps.module'
+import { TipsForLearnerModule } from '@sunbird-cb/collection/src/lib/_common/tips-for-learner/tips-for-learner.module'
 import { UpdatePostsModule } from '@sunbird-cb/collection/src/lib/_common/update-posts/update-posts.module'
 import { DiscussionsModule } from '@sunbird-cb/collection/src/lib/_common/discussions/discussions.module'
 import { RecentRequestsModule } from '@sunbird-cb/collection/src/lib/_common/recent-requests/recent-requests.module'
@@ -63,6 +64,7 @@ import { ContentStripWithTabsLibModule, ContentStripWithTabsPillsModule } from '
     UserLeaderboardModule,
     MatIconModule,
     WeeklyClapsModule,
+    TipsForLearnerModule,
     UpdatePostsModule,
     DiscussionsModule,
     RecentRequestsModule,

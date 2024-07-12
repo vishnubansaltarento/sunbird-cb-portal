@@ -29,15 +29,15 @@
             [isLoading]="clapsDataLoading"></ws-widget-weekly-claps>
     </div>
 
-    <div class="tips-container collapsible" [@collapse]="collapsed" *ngIf="randomlearnAdvisoryObj">
+    <!-- <div class="tips-container collapsible" [@collapse]="collapsed" *ngIf="randomlearnAdvisoryObj">
         <div class="circle-box">
             <div class="background-circle">
-                <!-- circle -->
+                
             </div>
         </div>
         <div class="tips-header">
             <h3>Tips for Learners</h3>
-            <!-- <button (click)="showAllTips()">Show all </button> -->
+           
             <div class="ml-4 pl-2 view-more ws-mat-default-text ng-star-inserted">
                 <a class="flex ws-mat-default-text items-center justify-center mat-body-1 cursor-pointer"
                     (click)="showAllTips()">
@@ -59,6 +59,10 @@
                 {{randomlearnAdvisoryObj.id}}/{{learnAdvisoryDataLength}}
             </div>
         </div>
+    </div> -->
+
+    <div class="collapsible" [@collapse]="collapsed" *ngIf="learnAdvisoryData">
+        <ws-widget-tips-for-learner-card [learnAdvisoryData]="learnAdvisoryData"></ws-widget-tips-for-learner-card>
     </div>
 
 
@@ -175,15 +179,17 @@
     </div>
 </section>
 <section class="block md:hidden">
-    <div class="tips-container" *ngIf="randomlearnAdvisoryObj">
+    <div *ngIf="learnAdvisoryData">
+        <ws-widget-tips-for-learner-card [learnAdvisoryData]="learnAdvisoryData"></ws-widget-tips-for-learner-card>
+    </div>
+    <!-- <div class="tips-container" *ngIf="randomlearnAdvisoryObj">
         <div class="circle-box">
             <div class="background-circle">
-                <!-- circle -->
             </div>
         </div>
         <div class="tips-header">
             <h3>Tips for Learners</h3>
-            <!-- <button (click)="showAllTips()">Show all </button> -->
+    
             <div class="ml-4 pl-2 view-more ws-mat-default-text ng-star-inserted">
                 <a class="flex ws-mat-default-text items-center justify-center mat-body-1 cursor-pointer"
                     (click)="showAllTips()">
@@ -206,5 +212,5 @@
                 {{randomlearnAdvisoryObj.id}}/{{learnAdvisoryDataLength}}
             </div>
         </div>
-    </div>
+    </div> -->
 </section>
