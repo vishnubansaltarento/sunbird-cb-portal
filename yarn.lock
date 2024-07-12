@@ -1252,7 +1252,7 @@
   version "2.0.13"
   resolved "https://registry.npmjs.org/@sunbird-cb/micro-surveys/-/micro-surveys-2.0.13.tgz#d118e4a85723cba6740a1aac517e9f374deaa150"
   integrity sha512-BkqxlU2mVT7lAHFAeU8oYm+34SZ/dNU5+j4pB84uYeZ8fehGxbrrLOEyl0HC1Zfxd3MVx4Aj8BjyuOr7mVt+xQ==
-   dependencies:
+  dependencies:
     tslib "^1.9.0"
 
 "@sunbird-cb/rain-dashboards@0.4.31":
@@ -1261,7 +1261,6 @@
   integrity sha512-OJxS7SJm4YoG5s4FeRxYaN1SxtH1Jzr96QMWfew54erBFQjKqV2uquiOmGtrA8bKgklBZttjKTwojbPhGMME/w==
   dependencies:
     tslib "^1.9.0"
-
 
 "@szmarczak/http-timer@^1.1.2":
   version "1.1.2"
