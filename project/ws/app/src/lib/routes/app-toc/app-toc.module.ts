@@ -90,6 +90,7 @@ import { ConnectionNameModule } from '@sunbird-cb/collection/src/lib/_common/con
 import { CertificateDialogModule } from '@sunbird-cb/collection/src/lib/_common/certificate-dialog/certificate-dialog.module'
 import { ConfirmDialogModule } from '@sunbird-cb/collection/src/lib/_common/confirm-dialog/confirm-dialog.module'
 import { KarmaPointsModule } from '@sunbird-cb/collection/src/lib/_common/content-toc/karma-points/karma-points.module'
+import { TipsForLearnerModule } from '@sunbird-cb/collection/src/lib/_common/tips-for-learner/tips-for-learner.module'
 
 // Components
 import { AppTocAnalyticsComponent } from './routes/app-toc-analytics/app-toc-analytics.component'
@@ -254,6 +255,7 @@ import { CommonMethodsService } from '@sunbird-cb/consumption'
     ShareTocModule,
     TocKpiValuesModule,
     KarmaPointsModule,
+    TipsForLearnerModule,
   ],
   providers: [
     AppTocResolverService,

@@ -193,6 +193,10 @@ export class AppTocHomeComponent implements OnInit, OnDestroy, AfterViewChecked,
   rootOrgId: any
   certId: any
   mobile1200: any
+  assessmentStrip: any
+  learnAdvisoryData: any
+  // randomlearnAdvisoryObj: any
+  // learnAdvisoryDataLength: any
 
   @HostListener('window:scroll', ['$event'])
   handleScroll() {
@@ -290,7 +294,16 @@ export class AppTocHomeComponent implements OnInit, OnDestroy, AfterViewChecked,
         }
       }
     })
+
+    if (this.route.snapshot.data.pageData && this.route.snapshot.data.pageData.data) {
+      this.learnAdvisoryData = this.route.snapshot.data.pageData.data.learnerAdvisory
+      // this.learnAdvisoryDataLength = this.learnAdvisoryData.length
+
+    }
+
+    
     this.getServerDateTime()
+    // this.displayRandomlearnAdvisoryData()
 
     this.selectedBatchSubscription = this.tocSvc.getSelectedBatch.subscribe(batchData => {
       this.selectedBatchData = batchData
@@ -310,6 +323,7 @@ export class AppTocHomeComponent implements OnInit, OnDestroy, AfterViewChecked,
     if (this.route) {
       this.skeletonLoader = true
       this.routeSubscription = this.route.data.subscribe((data: Data) => {
+        console.log(data, "data=")
         if (data && data.content && data.content.data && data.content.data.identifier) {
           this.courseID = data.content.data.identifier
           this.skeletonLoader = false
@@ -440,6 +454,11 @@ export class AppTocHomeComponent implements OnInit, OnDestroy, AfterViewChecked,
       }
     }
   }
+
+  // displayRandomlearnAdvisoryData(): void {
+  //   const randomIndex = Math.floor(Math.random() * this.learnAdvisoryData.length)
+  //   this.randomlearnAdvisoryObj = this.learnAdvisoryData[randomIndex]
+  // }
 
   getKarmapointsLimit() {
     if (!this.forPreview) {
