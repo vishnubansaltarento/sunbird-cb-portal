@@ -835,13 +835,19 @@ export class InitService {
 
   // for NPS user feed check
   private checkUserFeed() {
-    const npsCategory: any = localStorage.getItem('npsCategory') ? localStorage.getItem('npsCategory') : 'NPS'
     const feedId: any = []
     this.npsSvc.getFeedStatus(this.configSvc.unMappedUser.id).subscribe((res: any) => {
       if (res.result.response.userFeed && res.result.response.userFeed.length > 0) {
         const feed = res.result.response.userFeed
         feed.forEach((item: any) => {
-          if (item.category === npsCategory && item && item.data && item.data.actionData && item.data.actionData.formId) {
+          if (item.category === 'NPS' && item && item.data && item.data.actionData && item.data.actionData.formId) {
+            feedId.push(item.id)
+            // console.log(feedId, "feed id items============")
+              const currentTime = moment()
+              localStorage.platformratingTime = currentTime
+              localStorage.setItem('ratingformID', JSON.stringify(item.data.actionData.formId))
+              localStorage.setItem('ratingfeedID', JSON.stringify(feedId))
+          } else if (item.category === 'NPS2' && item && item.data && item.data.actionData && item.data.actionData.formId) {
             feedId.push(item.id)
             // console.log(feedId, "feed id items============")
               const currentTime = moment()
