@@ -962,7 +962,7 @@ const routes: Routes = [
       pageId: 'public/privacy-policy',
     },
   },
- 
+
   {
     path: 'public/google/sso',
     component: PublicLoginWGComponent,
