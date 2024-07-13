@@ -1329,6 +1329,17 @@ export class PracticeComponent implements OnInit, OnChanges, OnDestroy {
             responseQ.push(ftb)
             break
           case 'mtf':
+            let optionAll:any = []
+            optionAll = _.compact(_.map(sq.options, (_o: any) => {
+              if (_o.userSelected && this.questionAnswerHash[sq.questionId]) {
+                return {
+                  index: (_o.optionId).toString(),
+                  selectedAnswer: _o.response,
+                } as NSPractice.IResponseOptions
+              }
+              return {}
+
+            }))
             const mtf: NSPractice.IMCQ_MTF = {
               identifier: sq.questionId,
               mimeType: NsContent.EMimeTypes.QUESTION,
@@ -1340,19 +1351,7 @@ export class PracticeComponent implements OnInit, OnChanges, OnDestroy {
               timeTaken: timeSpent.toString(),
               timeSpent: timeSpent.toString(),
               editorState: {
-                options: _.compact(_.map(sq.options, (_o: NSPractice.IOption) => {
-                  if (_o.userSelected) {
-                    return {
-                      index: (_o.optionId).toString(),
-                      selectedAnswer: _o.response,
-                    } as NSPractice.IResponseOptions
-                  }
-                    return {
-                      index: (_o.optionId).toString(),
-                      selectedAnswer: _o.response,
-                    } as NSPractice.IResponseOptions
-
-                })),
+                options: optionAll,
               },
             }
             responseQ.push(mtf)
