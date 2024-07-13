@@ -1638,15 +1638,17 @@ export class PracticeComponent implements OnInit, OnChanges, OnDestroy {
         if(this.selectedAssessmentCompatibilityLevel < 6) {
           this.init()
         } else {      
-          this.quizSvc.canAttendV5(this.identifier).subscribe(response => {
-            if (response) {
-                this.canAttempt = response
-              //  this.canAttempt = {
-              //   attemptsAllowed: 1,
-              //   attemptsMade: 0,
-              // }
-            }
-          })
+          if(this.ePrimaryCategory.FINAL_ASSESSMENT == this.primaryCategory) {
+            this.quizSvc.canAttendV5(this.identifier).subscribe(response => {
+              if (response) {
+                  this.canAttempt = response
+                //  this.canAttempt = {
+                //   attemptsAllowed: 1,
+                //   attemptsMade: 0,
+                // }
+              }
+            })
+          }          
           this.retakeAssessment()
         }
         

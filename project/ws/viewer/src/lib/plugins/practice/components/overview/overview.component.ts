@@ -62,11 +62,11 @@ export class OverviewComponent implements OnInit, OnChanges, OnDestroy {
 
   ngOnChanges() {
     if (!this.forPreview) {
-      if (this.canAttempt && (this.canAttempt.attemptsMade >= this.canAttempt.attemptsAllowed)) {
+      if (this.canAttempt && (this.canAttempt.attemptsMade >= this.canAttempt.attemptsAllowed) && 
+          this.questionTYP.FINAL_ASSESSMENT === this.primaryCategory) {        
         if (!this.maxAttempPopup) {
           this.showAssessmentPopup()
         }
-
       }
     }
 
