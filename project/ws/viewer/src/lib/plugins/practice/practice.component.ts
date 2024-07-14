@@ -1337,7 +1337,7 @@ export class PracticeComponent implements OnInit, OnChanges, OnDestroy {
                   selectedAnswer: _o.response,
                 } as NSPractice.IResponseOptions
               }
-              return {}
+              return null
 
             }))
             const mtf: NSPractice.IMCQ_MTF = {
