@@ -261,12 +261,12 @@ export class ViewerComponent implements OnInit, OnDestroy, AfterViewChecked {
     })
 
     if (this.collectionId) {
-      if(!this.forPreview) {
+      if (!this.forPreview) {
         const enrollCourseData = JSON.parse((localStorage.getItem('enrollmentMapData') as any))[this.collectionId]
         if (enrollCourseData && (enrollCourseData.completionPercentage === 100 || enrollCourseData.status === 2)) {
           this.downloadCertificate(enrollCourseData)
         }
-      }      
+      }
     }
   }
 
