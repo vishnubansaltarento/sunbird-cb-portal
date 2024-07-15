@@ -1848,7 +1848,5 @@ export class AppTocHomeComponent implements OnInit, OnDestroy, AfterViewChecked,
   programEnrollCall(batchData: any) {
     this.autoEnrollCuratedProgram(NsContent.ECourseCategory.MODERATED_PROGRAM, batchData)
   }
-  showAllTips() {
-    this.router.navigate(['/learner-advisory']);
-  }
+
 }
