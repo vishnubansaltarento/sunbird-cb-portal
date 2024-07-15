@@ -193,6 +193,10 @@ export class AppTocHomeComponent implements OnInit, OnDestroy, AfterViewChecked,
   rootOrgId: any
   certId: any
   mobile1200: any
+  assessmentStrip: any
+  learnAdvisoryData: any
+  // randomlearnAdvisoryObj: any
+  // learnAdvisoryDataLength: any
 
   @HostListener('window:scroll', ['$event'])
   handleScroll() {
@@ -290,7 +294,15 @@ export class AppTocHomeComponent implements OnInit, OnDestroy, AfterViewChecked,
         }
       }
     })
+
+    if (this.route.snapshot.data.pageData && this.route.snapshot.data.pageData.data) {
+      this.learnAdvisoryData = this.route.snapshot.data.pageData.data.learnerAdvisory
+      // this.learnAdvisoryDataLength = this.learnAdvisoryData.length
+
+    }
+
     this.getServerDateTime()
+    // this.displayRandomlearnAdvisoryData()
 
     this.selectedBatchSubscription = this.tocSvc.getSelectedBatch.subscribe(batchData => {
       this.selectedBatchData = batchData
@@ -440,6 +452,11 @@ export class AppTocHomeComponent implements OnInit, OnDestroy, AfterViewChecked,
       }
     }
   }
+
+  // displayRandomlearnAdvisoryData(): void {
+  //   const randomIndex = Math.floor(Math.random() * this.learnAdvisoryData.length)
+  //   this.randomlearnAdvisoryObj = this.learnAdvisoryData[randomIndex]
+  // }
 
   getKarmapointsLimit() {
     if (!this.forPreview) {
@@ -652,9 +669,10 @@ export class AppTocHomeComponent implements OnInit, OnDestroy, AfterViewChecked,
 
   get getStartDate() {
     if (this.content) {
+      const now = moment(this.serverDate).format('YYYY-MM-DD')
       const batch = _.first(_.filter(this.content['batches'], { batchId: this.currentCourseBatchId }) || [])
       if (_.get(batch, 'startDate') && moment(_.get(batch, 'startDate')).isAfter()) {
-        return moment(_.get(batch, 'startDate')).fromNow()
+        return moment(_.get(batch, 'startDate')).from(now)
       }
       if (_.get(batch, 'endDate') && moment(_.get(batch, 'endDate')).isBefore()) {
         return 'NA'
@@ -1830,7 +1848,5 @@ export class AppTocHomeComponent implements OnInit, OnDestroy, AfterViewChecked,
   programEnrollCall(batchData: any) {
     this.autoEnrollCuratedProgram(NsContent.ECourseCategory.MODERATED_PROGRAM, batchData)
   }
-  showAllTips() {
-    this.router.navigate(['public/learner-advisory']);
-  }
+
 }

@@ -409,11 +409,18 @@
         <ws-widget-content-toc [content]="content" [componentName]="'toc'"  [pathSet]="pathSet" [tocStructure]="tocStructure" 
         [forPreview]="false" [resumeData]="resumeData" [batchData]="selectedBatchData" [skeletonLoader]="skeletonLoader" 
         [changeTab]="changeTab" [hierarchyMapData]="tocSvc?.hashmap" [selectedBatchData]="selectedBatchData" [condition]="{isPostAssessment: isPostAssessment, content: content, isAcbpCourse: isAcbpCourse, isClaimed: isClaimed, monthlyCapExceed: monthlyCapExceed, isCompletedThisMonth: isCompletedThisMonth, showTakeAssessment: showTakeAssessment, userEnrollmentList: userEnrollmentList, resumeData: resumeData, userRating: userRating, enrollBtnLoading: enrollBtnLoading, primaryCategory: primaryCategory, currentCourseBatchId: currentCourseBatchId, isAcbpClaim: isAcbpClaim}" [kparray]="kparray"></ws-widget-content-toc>
+        <div class="mob-tip-for-learner">
+          <div *ngIf="learnAdvisoryData && learnAdvisoryData?.length">
+            <ws-widget-tips-for-learner-card [learnAdvisoryData]="learnAdvisoryData"></ws-widget-tips-for-learner-card>
+        </div>
+        </div>
       </div>
     </div>
+    
 
     <div class="right-container" >
       <div class="right-content" #rightContainer>
+        <div class="right-content-inner">
         <ng-container *ngIf="skeletonLoader">
           <ws-widget-skeleton-loader [width]="'384px'" [height]="'224px'"
             [bindingClass]="'rounded'"></ws-widget-skeleton-loader>
@@ -621,27 +628,12 @@
         </div>
       </div>
 
-      <div class="tips-container" >
-        <div class="circle-box">
-            <div class="background-circle">
-                <!-- circle -->
-            </div>
-        </div>
-        <div class="tips-header">
-            <h3>Tips for Learners</h3>
-            <button (click)="showAllTips()">Show all ></button>
-        </div>
-        <div class="tip-content">
-            <div class =" background">
-            <img  class="book-icon" src="assets/icons/learner-advisory/use-gyaan-karmayogi.png"
-                alt="Use the new section Gyaan Karmayogi regularly, to go over case studies and other learning material.">
-            </div>    
-            <p>{{'learnerAdvisory.useGyaanKarmayogi' | translate}}</p>
-            <div class="tip-count">
-                1/13
-            </div>
-        </div>
-    </div>
+    <div *ngIf="learnAdvisoryData && learnAdvisoryData?.length">
+      <ws-widget-tips-for-learner-card [learnAdvisoryData]="learnAdvisoryData"></ws-widget-tips-for-learner-card>
+  </div>
+      </div>
+
+     
 
   </div>
 </div>

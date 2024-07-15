@@ -7,9 +7,13 @@ import { Component, OnInit } from '@angular/core'
 })
 export class LearnerAdvisoryComponent implements OnInit {
 
+  titles = [
+    { title: 'Tips for Learners', url: 'none', icon: '' },
+  ]
   constructor() { }
 
   ngOnInit() {
+
   }
 
 }

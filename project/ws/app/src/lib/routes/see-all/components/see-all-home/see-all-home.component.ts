@@ -176,7 +176,35 @@ export class SeeAllHomeComponent implements OnInit, OnDestroy {
                             strip: NsContentStripWithTabs.IContentStripUnit) {
     const inprogress: any[] = []
     const completed: any[] = []
-    array.forEach((e: any, idx: number, arr: any[]) => (customFilter(e, idx, arr) ? inprogress : completed).push(e))
+    array.forEach((e, idx, arr) => {
+      const status = e.status ? (e.status as string).toLowerCase() : ''
+      const statusRetired = status === 'retired'
+      if (customFilter(e, idx, arr)) {
+      if (!statusRetired) {
+        inprogress.push(e)
+      }
+     } else {
+      completed.push(e)
+     }
+      })
+    // Sort the completed array with 'live' status first and 'Retired' status second
+    completed.sort((a: any, b: any) => {
+      const statusA = a.status ? a.status.toLowerCase() : ''
+      const statusB = b.status ? b.status.toLowerCase() : ''
+      if (statusA === 'live' && statusB !== 'live') {
+        return -1
+      }
+      if (statusA !== 'live' && statusB === 'live') {
+        return 1
+      }
+      if (statusA === 'retired' && statusB !== 'retired') {
+        return 1
+      }
+      if (statusA !== 'retired' && statusB === 'retired') {
+        return -1
+      }
+      return 0
+    })
     return [
     { value: 'inprogress', widgets: this.transformContentsToWidgets(inprogress, strip) },
     { value: 'completed', widgets: this.transformContentsToWidgets(completed, strip) }]
@@ -247,10 +275,16 @@ export class SeeAllHomeComponent implements OnInit, OnDestroy {
       let contentNew: NsContent.IContent[]
       this.tabResults = []
       const queryParams = _.get(strip.request.enrollmentList, 'queryParams')
+      // if (queryParams && queryParams.batchDetails) {
+      //   if (!queryParams.batchDetails.includes('&retiredCoursesEnabled=true')) {
+      //     queryParams.batchDetails += '&retiredCoursesEnabled=true'
+      //   }
+      // }
       if (this.configSvc.userProfile) {
         userId = this.configSvc.userProfile.userId
       }
       // tslint:disable-next-line: deprecation
+      // this.userSvc.resetTime('enrollmentService')
       this.userSvc.fetchUserBatchList(userId, queryParams).subscribe(
         (result: any) => {
           const courses = result && result.courses

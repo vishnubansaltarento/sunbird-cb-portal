@@ -75,6 +75,9 @@ export class InsightSideBarComponent implements OnInit {
   assessmentsData: any
   isLeaderboardExist = false
   assessmentStrip: any
+  learnAdvisoryData: any
+  randomlearnAdvisoryObj: any
+  learnAdvisoryDataLength: any
 
   constructor(
     private homePageSvc: HomePageService,
@@ -96,11 +99,15 @@ export class InsightSideBarComponent implements OnInit {
     this.userData = this.configSvc && this.configSvc.userProfile
     if (this.activatedRoute.snapshot.data.pageData && this.activatedRoute.snapshot.data.pageData.data) {
       this.homePageData = this.activatedRoute.snapshot.data.pageData.data
+      this.learnAdvisoryData = this.activatedRoute.snapshot.data.pageData.data.learnerAdvisory
     }
+
+    // this.learnAdvisoryDataLength = this.learnAdvisoryData.length
     this.getInsights()
     this.getPendingRequestData()
     this.noDataValue = noData
     this.getDiscussionsData()
+    // this.displayRandomlearnAdvisoryData()
 
     if (this.activatedRoute.snapshot.data.pageData && this.activatedRoute.snapshot.data.pageData.data.assessmentData) {
       this.assessmentStrip = this.activatedRoute.snapshot.data.pageData.data.assessmentData
@@ -108,6 +115,11 @@ export class InsightSideBarComponent implements OnInit {
     }
     // this.getAssessmentData()
   }
+
+  // displayRandomlearnAdvisoryData(): void {
+  //   const randomIndex = Math.floor(Math.random() * this.learnAdvisoryData.length)
+  //   this.randomlearnAdvisoryObj = this.learnAdvisoryData[randomIndex]
+  // }
 
   getInsights() {
     this.profileDataLoading = true
@@ -334,7 +346,5 @@ export class InsightSideBarComponent implements OnInit {
       duration,
     })
   }
-  showAllTips() {
-    this.router.navigate(['public/learner-advisory'])
-  }
+
 }
