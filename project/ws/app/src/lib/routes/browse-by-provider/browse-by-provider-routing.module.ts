@@ -10,6 +10,7 @@ import { ProviderFormResolverService } from './services/provider-form-resolver.s
 import { ProviderCalendarComponent } from './routes/provider-calendar/provider-calendar.component'
 import { ProviderContentAllComponent } from './routes/provider-content-all/provider-content-all.component'
 import { ContentReadResolverService } from './services/content-read-resolver.service'
+import { ProviderPageV2Component } from './routes/provider-page-v2/provider-page-v2.component'
 
 const routes: Routes = [
   {
@@ -81,6 +82,17 @@ const routes: Routes = [
     component: ProviderPageComponent,
     data: {
       pageId: ':provider/:orgId/micro-sites',
+      module: 'explore',
+    },
+    resolve: {
+      formData: ProviderFormResolverService,
+    },
+  },
+  {
+    path: ':provider/:orgId/v2/micro-sites',
+    component: ProviderPageV2Component,
+    data: {
+      pageId: ':provider/:orgId/v2/micro-sites',
       module: 'explore',
     },
     resolve: {
