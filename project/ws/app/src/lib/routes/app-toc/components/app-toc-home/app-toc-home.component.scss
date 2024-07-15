@@ -40,7 +40,7 @@
       background-color: $colorGreen;
       border: 1px solid $colorGreen;
     }
-  
+
     .rating-chip {
       border: 1px solid rgba($color: #000000, $alpha: 0.6);
       border-radius: 20px;
@@ -127,7 +127,7 @@
     background-color: #ccc;
     border-top-left-radius: 12px;
     border-top-right-radius: 12px;
-    
+
     img {
       max-width: 384px;
       width: 100%;
@@ -180,12 +180,13 @@
   }
 
   .right-content {
-   
+
     position: fixed;
     z-index: 10;
     top: 132px;
     padding-bottom: 1rem;
   }
+
   .right-content-inner {
     background-color: #FFF;
     border-radius: 12px;
@@ -197,13 +198,15 @@
   .border-bottom {
     border-bottom: 1px solid rgba($color: #000, $alpha: 0.2);
   }
+
   .view-more {
     display: flex;
     align-items: center;
     text-align: center;
     height: 40px;
     justify-content: center;
-}
+  }
+
   .view-more:hover {
     background-color: #DCDFE5;
   }
@@ -214,7 +217,7 @@
     border-radius: 8px;
     padding: 8px 12px;
     font-size: 14px;
-  
+
     .mat-icon {
       width: 18px;
       height: 18px;
@@ -232,7 +235,7 @@
       height: 20px;
     }
   }
-  
+
 }
 
 .batch-info {
@@ -248,109 +251,23 @@
     line-height: 1rem;
   }
 }
-.tips-container {
-  background-color: #F9CB97;
-  padding: 16px;
-  padding-bottom: 0px;
-  border-radius: 8px;
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  margin-bottom: 1rem;
-  overflow: hidden;
-  // position: fixed; 
-  // top: 560px; 
-  // left: 1166px;
-  width: 358px;  
-}
- 
-.tips-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 8px;
-  z-index: 10;
-}
- 
-.tips-header h3 {
-  margin: 0;
-  font-size: 1.2em;
-  color: #000000;
-  font-family: Montserrat;
-  font-size: 16px;
-  z-index: 10;
-}
- 
-.tips-header button {
-  background: none;
-  border: none;
-  color: #01468f;
-  cursor: pointer;
-  font-family: Lato;
-  font-size: 14px;
-  z-index: 10;
-}
- 
-.tip-content {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  z-index: 10;
-}
- 
-.tip-content p {
-  margin-left: 10px;
-  color: #000000;
-  font-family: Lato;
-  font-size: 14px;
-  z-index: 10;
-  padding: 5px;
-  line-height: 16.8px;
+
+  
+.mob-tip-for-learner {
+  display: none;
 }
 
-.tip-count  {
-    display: flex;
-    justify-content: center; 
-    align-items: center; 
-    color: #000000;
-    font-family : Montserrat !important;
-    font-size: 16px !important;
-    padding: 10px 3px; 
-    align-self: flex-end; 
-    border-radius: 50% 0 0 50%; 
-    z-index: 10;
-    font-weight: 600;
-    line-height: 19.5px;
-}
-
-.background-circle {
-    position: absolute;
-    z-index: 1;
-    right: -6.5em;
-    top: 2.8em;
-    width: 178px;
-    height: 178px;
-    border-radius: 100%;
-    background-color: #fcd2a3;
-}
-
-.circle-box {
-    position: relative;
+@media screen and (max-width: 1000px) {
+  .mob-tip-for-learner {
+    display: block;
     width: 100%;
-    height: 0px;
+    padding: 0px 16px;
+    overflow: hidden;
+    box-sizing: border-box;
+
+  }
 }
 
-.book-icon{
-    width: 32px;
-    height: 32px;
-    padding: 5px;
-}
-.background{
-  background-color: white;
-  width: 56px;
-  height: 42px;
-  border-radius: 5px;
-}
 
 .button {
   border-radius: 64px;
@@ -409,7 +326,7 @@
 .confirmation-modal {
   max-width: 420px !important;
   width: 100% !important;
-  
+
   .mat-dialog-container {
     border-radius: 12px;
     padding: 0px;
@@ -422,7 +339,7 @@
 
   &::after {
     -webkit-backdrop-filter: blur(5px);
-      /* Use for Safari 9+, Edge 17+ (not a mistake) and iOS Safari 9.2+ */
+    /* Use for Safari 9+, Edge 17+ (not a mistake) and iOS Safari 9.2+ */
     backdrop-filter: blur(5px);
     content: "";
     display: block;
@@ -438,7 +355,9 @@
 }
 
 @media screen and (max-width: 1000px) {
-  .confirmation-modal, .enroll-modal {
+
+  .confirmation-modal,
+  .enroll-modal {
     max-width: 90vw !important;
   }
 }
@@ -480,7 +399,9 @@ a.action-button {
 }
 
 @media screen and (min-width: 1201px) {
-  .mobile-enroll-div, .mob-share {
+
+  .mobile-enroll-div,
+  .mob-share {
     display: none !important;
   }
 
@@ -500,6 +421,7 @@ a.action-button {
 }
 
 $title-line-count: 2;
+
 .sourceEllipsis {
   white-space: break-spaces;
   position: relative;
@@ -515,12 +437,13 @@ $title-line-count: 2;
 
 %container-padding {
   padding: $size-xl 2 * $size-xl;
+
   @include breakpoint-xs {
     padding: $size-m $size-l;
   }
 }
 
-.text-white{
+.text-white {
   color: #fff !important;
 }
 
@@ -600,8 +523,8 @@ mat-divider {
   }
 }
 
-.blue-border{
-  border: 2px  solid #0074b6 !important;
+.blue-border {
+  border: 2px solid #0074b6 !important;
 }
 
 .hidden-xs-inline {
@@ -636,21 +559,23 @@ mat-divider {
     width: 100%;
   }
 }
+
 .font-bold-imp {
   font-weight: 700 !important;
 }
+
 .info-section {
   width: 20%;
   min-width: 250px;
 
-  .custom-button{
+  .custom-button {
     background: #0074B6 0% 0% no-repeat padding-box !important;
     border-radius: 4px;
   }
 
   @include breakpoint-xs {
     width: 100%;
-    margin-left: 0!important;
+    margin-left: 0 !important;
   }
 
   .glance-container {
@@ -666,6 +591,7 @@ mat-divider {
           vertical-align: middle;
           font-size: 20px;
         }
+
         img {
           width: 20px;
           height: 20px;
@@ -760,7 +686,7 @@ mat-divider {
     background: transparent;
     margin-bottom: 24px;
   }
-  
+
   .author-card {
     min-width: 291px;
     width: 291px;
@@ -838,8 +764,8 @@ mat-divider {
   top: auto;
 }
 
-.actbutton{
-  border: 1px solid rgba(0,0,0,0.16);
+.actbutton {
+  border: 1px solid rgba(0, 0, 0, 0.16);
   border-radius: 4px;
   padding: 0 15px;
   width: 100%;
@@ -847,7 +773,7 @@ mat-divider {
   overflow: hidden !important;
   text-overflow: ellipsis !important;
 
-  .mat-icon{
+  .mat-icon {
     margin-right: 6px;
   }
 }
@@ -868,7 +794,7 @@ mat-divider {
 
 .cb-plan-wrap {
   opacity: 1;
-  color: rgba(27,76,161,1);
+  color: rgba(27, 76, 161, 1);
   font-family: "Lato-Regular";
   font-size: 12px;
   font-weight: 400;
@@ -882,9 +808,9 @@ mat-divider {
     padding: 4px 8px;
     border: 1px solid #d13924;
     background-color: #d13924 !important;
-    color: rgba(255,255,255,1) !important;
+    color: rgba(255, 255, 255, 1) !important;
     opacity: 1;
-    
+
   }
 
   .cb-success {
@@ -892,7 +818,7 @@ mat-divider {
     border-radius: 2px;
     border: 1px solid #1d8922;
     background-color: #1d8922 !important;
-    color: rgba(255,255,255,1) !important;
+    color: rgba(255, 255, 255, 1) !important;
     opacity: 1;
   }
 
@@ -901,10 +827,11 @@ mat-divider {
     border-radius: 2px;
     border: 1px solid #ef951e;
     background-color: #ef951e !important;
-    color: rgba(255,255,255,1) !important;
+    color: rgba(255, 255, 255, 1) !important;
     opacity: 1;
   }
 }
+
 .bg-white {
   background-color: white;
 }

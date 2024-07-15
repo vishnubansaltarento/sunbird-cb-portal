@@ -1329,6 +1329,17 @@ export class PracticeComponent implements OnInit, OnChanges, OnDestroy {
             responseQ.push(ftb)
             break
           case 'mtf':
+            let optionAll:any = []
+            optionAll = _.compact(_.map(sq.options, (_o: any) => {
+              if (_o.userSelected && this.questionAnswerHash[sq.questionId]) {
+                return {
+                  index: (_o.optionId).toString(),
+                  selectedAnswer: _o.response,
+                } as NSPractice.IResponseOptions
+              }
+              return null
+
+            }))
             const mtf: NSPractice.IMCQ_MTF = {
               identifier: sq.questionId,
               mimeType: NsContent.EMimeTypes.QUESTION,
@@ -1340,19 +1351,7 @@ export class PracticeComponent implements OnInit, OnChanges, OnDestroy {
               timeTaken: timeSpent.toString(),
               timeSpent: timeSpent.toString(),
               editorState: {
-                options: _.compact(_.map(sq.options, (_o: NSPractice.IOption) => {
-                  if (_o.userSelected) {
-                    return {
-                      index: (_o.optionId).toString(),
-                      selectedAnswer: _o.response,
-                    } as NSPractice.IResponseOptions
-                  }
-                    return {
-                      index: (_o.optionId).toString(),
-                      selectedAnswer: _o.response,
-                    } as NSPractice.IResponseOptions
-
-                })),
+                options:  optionAll.filter((o:any) => { return o.hasOwnProperty('index'); }).length > 0 ? optionAll : [],
               },
             }
             responseQ.push(mtf)
@@ -1406,28 +1405,51 @@ export class PracticeComponent implements OnInit, OnChanges, OnDestroy {
     } else {
       this.viewState = 'answer'
     }
-    if (this.selectedAssessmentCompatibilityLevel < 6) {
-      const quizV4Res: any = await this.quizSvc.submitQuizV4(this.generateRequest).toPromise().catch(_error => {})
-      if (quizV4Res && quizV4Res.params && quizV4Res.params.status.toLowerCase() === 'success') {
-        if (quizV4Res.result.primaryCategory === 'Course Assessment') {
-          setTimeout(() => {
-            this.getQuizResult()
-          },         environment.quizResultTimeout)
-        } else if (quizV4Res.result.primaryCategory === 'Practice Question Set') {
-          this.assignQuizResult(quizV4Res.result)
-        }
+    
+    let allPromiseResolvedCount = 0
+    if(this.paperSections && this.paperSections.length) {
+      for(let i =0 ; i< this.paperSections.length;i++) {
+        let section = this.paperSections[i];
+        const lst = _.chunk(section.childNodes || [], 1000)
+        const prom: any[] = []
+        _.each(lst, l => {
+          prom.push(this.getMultiQuestions(l))
+        })
+        Promise.all(prom).then(qqr => {
+          console.log('qqr', qqr)
+          allPromiseResolvedCount++;
+          const question = { questions: _.flatten(_.map(qqr, 'result.questions')) }
+          const codes = _.compact(_.map(this.quizJson.questions, 'section') || [])
+          // console.log(this.quizSvc.secAttempted.value)
+          _.eachRight(question.questions, q => {
+            // const qHtml = document.createElement('div')
+            // qHtml.innerHTML = q.editorState.question
+            if (codes.indexOf(section.identifier) === -1) {
+              this.quizJson.questions.push({
+                section: section.identifier,
+                question: q.body, // qHtml.textContent || qHtml.innerText || '',
+                multiSelection: ((q.qType || '').toLowerCase() === 'mcq-mca' ? true : false),
+                questionType: (q.qType || '').toLowerCase(),
+                questionId: q.identifier,
+                instructions: null,
+                options: this.getOptions(q),
+                editorState: q.editorState,
+                questionLevel: q.questionLevel,
+                marks: q.totalMarks,
+                rhsChoices: this.getRhsValue(q),
+              })
+            }
+          })
+         
+          
+          if(this.paperSections && this.paperSections.length === allPromiseResolvedCount) {
+            // console.log('this.quizJson',this.quizJson)
+            // console.log('this.generateRequest',this.generateRequest)
+            this.submitAfterAllPromiseResolved();
+          }
+        })
       }
-    } else {
-      const quizV4Res: any = await this.quizSvc.submitQuizV5(this.generateRequest).toPromise().catch(_error => {})
-      if (quizV4Res && quizV4Res.params && quizV4Res.params.status.toLowerCase() === 'success') {
-        if (quizV4Res.result.primaryCategory === 'Course Assessment') {
-          setTimeout(() => {
-            this.getQuizResult()
-          },         environment.quizResultTimeout)
-        } else if (quizV4Res.result.primaryCategory === 'Practice Question Set') {
-          this.assignQuizResult(quizV4Res.result)
-        }
-      }
+           
     }
 
     // this.quizSvc.submitQuizV3(this.generateRequest).subscribe(
@@ -1459,6 +1481,32 @@ export class PracticeComponent implements OnInit, OnChanges, OnDestroy {
     //     this.snackbar.open(_error.error.params.errmsg)
     //   },
     // )
+  }
+
+  async submitAfterAllPromiseResolved() {
+    if (this.selectedAssessmentCompatibilityLevel < 6) {
+      const quizV4Res: any = await this.quizSvc.submitQuizV4(this.generateRequest).toPromise().catch(_error => {})
+      if (quizV4Res && quizV4Res.params && quizV4Res.params.status.toLowerCase() === 'success') {
+        if (quizV4Res.result.primaryCategory === 'Course Assessment') {
+          setTimeout(() => {
+            this.getQuizResult()
+          },         environment.quizResultTimeout)
+        } else if (quizV4Res.result.primaryCategory === 'Practice Question Set') {
+          this.assignQuizResult(quizV4Res.result)
+        }
+      }
+    } else {
+      const quizV4Res: any = await this.quizSvc.submitQuizV5(this.generateRequest).toPromise().catch(_error => {})
+      if (quizV4Res && quizV4Res.params && quizV4Res.params.status.toLowerCase() === 'success') {
+        if (quizV4Res.result.primaryCategory === 'Course Assessment') {
+          setTimeout(() => {
+            this.getQuizResult()
+          },         environment.quizResultTimeout)
+        } else if (quizV4Res.result.primaryCategory === 'Practice Question Set') {
+          this.assignQuizResult(quizV4Res.result)
+        }
+      }
+    }
   }
   showAnswers() {
     this.showMtfAnswers()
@@ -1639,15 +1687,17 @@ export class PracticeComponent implements OnInit, OnChanges, OnDestroy {
         if(this.selectedAssessmentCompatibilityLevel < 6) {
           this.init()
         } else {      
-          this.quizSvc.canAttendV5(this.identifier).subscribe(response => {
-            if (response) {
-                this.canAttempt = response
-              //  this.canAttempt = {
-              //   attemptsAllowed: 1,
-              //   attemptsMade: 0,
-              // }
-            }
-          })
+          if(this.ePrimaryCategory.FINAL_ASSESSMENT == this.primaryCategory) {
+            this.quizSvc.canAttendV5(this.identifier).subscribe(response => {
+              if (response) {
+                  this.canAttempt = response
+                //  this.canAttempt = {
+                //   attemptsAllowed: 1,
+                //   attemptsMade: 0,
+                // }
+              }
+            })
+          }          
           this.retakeAssessment()
         }
         
