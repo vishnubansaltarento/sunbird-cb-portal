@@ -55,35 +55,73 @@ export class GridLayoutComponent extends WidgetBaseComponent
   feedID: any
   formFields: any
   submitBtnClick = false
+  npsCategory: any = 'NPS'
   ratingList = [
     {
+      value: 0,
+      image: '/assets/images/nps/0.svg',
+      showImage: false,
+    },
+    {
       value: 1,
-      image: '/assets/images/nps/Rating_1@2x.svg',
+      image: '/assets/images/nps/1.svg',
       showImage: false,
     },
     {
       value: 2,
-      image: '/assets/images/nps/Rating_2@2x.svg',
+      image: '/assets/images/nps/2.svg',
       showImage: false,
     },
     {
       value: 3,
-      image: '/assets/images/nps/Rating_3@2x.svg',
+      image: '/assets/images/nps/3.svg',
       showImage: false,
     },
     {
       value: 4,
-      image: '/assets/images/nps/Rating_4@2x.svg',
+      image: '/assets/images/nps/4.svg',
       showImage: false,
     },
     {
       value: 5,
-      image: '/assets/images/nps/Rating_5@2x.svg',
+      image: '/assets/images/nps/5.svg',
+      showImage: false,
+    },
+    {
+      value: 6,
+      image: '/assets/images/nps/6.svg',
+      showImage: false,
+    },
+    {
+      value: 7,
+      image: '/assets/images/nps/7.svg',
+      showImage: false,
+    },
+    {
+      value: 8,
+      image: '/assets/images/nps/8.svg',
+      showImage: false,
+    },
+    {
+      value: 9,
+      image: '/assets/images/nps/9.svg',
+      showImage: false,
+    },
+    {
+      value: 10,
+      image: '/assets/images/nps/10.svg',
       showImage: false,
     },
   ]
   fullMenuHeight = false
+  isMobile = false
   ngOnInit() {
+    this.npsCategory = localStorage.getItem('npsCategory') ? localStorage.getItem('npsCategory') : 'NPS'
+    if (window.innerWidth < 540) {
+      this.isMobile = true
+    } else {
+      this.isMobile = false
+    }
     this.configSvc.changeNavBarFullView.subscribe((data: any) => {
       // console.log('data-->', data)
       this.fullMenuHeight = data
@@ -98,6 +136,94 @@ export class GridLayoutComponent extends WidgetBaseComponent
           this.isNudgeOpen = false
         }
       })
+    }
+
+    if (this.npsCategory === 'NPS') {
+      this.ratingList = [
+        {
+          value: 1,
+          image: '/assets/images/nps/Rating_1@2x.svg',
+          showImage: false,
+        },
+        {
+          value: 2,
+          image: '/assets/images/nps/Rating_2@2x.svg',
+          showImage: false,
+        },
+        {
+          value: 3,
+          image: '/assets/images/nps/Rating_3@2x.svg',
+          showImage: false,
+        },
+        {
+          value: 4,
+          image: '/assets/images/nps/Rating_4@2x.svg',
+          showImage: false,
+        },
+        {
+          value: 5,
+          image: '/assets/images/nps/Rating_5@2x.svg',
+          showImage: false,
+        },
+      ]
+    } else {
+      this. ratingList = [
+        {
+          value: 0,
+          image: '/assets/images/nps/0.svg',
+          showImage: false,
+        },
+        {
+          value: 1,
+          image: '/assets/images/nps/1.svg',
+          showImage: false,
+        },
+        {
+          value: 2,
+          image: '/assets/images/nps/2.svg',
+          showImage: false,
+        },
+        {
+          value: 3,
+          image: '/assets/images/nps/3.svg',
+          showImage: false,
+        },
+        {
+          value: 4,
+          image: '/assets/images/nps/4.svg',
+          showImage: false,
+        },
+        {
+          value: 5,
+          image: '/assets/images/nps/5.svg',
+          showImage: false,
+        },
+        {
+          value: 6,
+          image: '/assets/images/nps/6.svg',
+          showImage: false,
+        },
+        {
+          value: 7,
+          image: '/assets/images/nps/7.svg',
+          showImage: false,
+        },
+        {
+          value: 8,
+          image: '/assets/images/nps/8.svg',
+          showImage: false,
+        },
+        {
+          value: 9,
+          image: '/assets/images/nps/9.svg',
+          showImage: false,
+        },
+        {
+          value: 10,
+          image: '/assets/images/nps/10.svg',
+          showImage: false,
+        },
+      ]
     }
 
     if (localStorage.getItem('platformRatingSubmit')) {
@@ -290,7 +416,9 @@ export class GridLayoutComponent extends WidgetBaseComponent
         formId: Number(this.formID),
         timestamp: currenttimestamp,
         version: 1,
-        dataObject: {},
+        dataObject: this.npsCategory === 'NPS' ? {} : {
+          'Please rate your experience with the platform': -1,
+        },
       }
       this.npsService.submitPlatformRating(reqbody).subscribe((resp: any) => {
         this.isNPSOpen = false

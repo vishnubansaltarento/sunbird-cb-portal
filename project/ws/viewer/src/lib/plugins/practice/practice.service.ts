@@ -163,11 +163,16 @@ export class PracticeService {
                 const stringRemoveSlashN =  this.extractContent(question.options[i].text.replace(/\n/g, '').replace(/\&lt;/g, '<').replace(/\&gt;/g, '>'))
                 const idxOfSource = _.indexOf(mtfSrc[question.questionId].source, stringRemoveSlashN.replace(/<(.|\n)*?>/g, ''))
                 const targetId = mtfSrc[question.questionId].target[idxOfSource]
-                const lastChar = targetId.slice(-1)
-                if (question) {
-                  question.options[i].response = question.rhsChoices && question.rhsChoices[Number(lastChar) - 1]
+                if (targetId) {
+                  const lastChar = targetId.slice(-1)
+                  if (question && lastChar) {
+                    question.options[i].response = question.rhsChoices && question.rhsChoices[Number(lastChar) - 1]
+                  }
+                  question.options[i].userSelected = true
+                } else {
+                  question.options[i].userSelected = false
                 }
-                question.options[i].userSelected = true
+
               // }
             // }
           } else {
