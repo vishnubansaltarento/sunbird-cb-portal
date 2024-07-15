@@ -653,7 +653,7 @@ export class InitService {
       .toPromise()
     // if (publicConfig.npsCategory) {
     //   localStorage.setItem('npsCategory', publicConfig.npsCategory)
-    // }
+    // } 
 
     this.configSvc.instanceConfig = publicConfig
     this.configSvc.rootOrg = publicConfig.rootOrg
