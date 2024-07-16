@@ -2,7 +2,6 @@ import { Component, Input, OnInit } from '@angular/core'
 import { ActivatedRoute } from '@angular/router'
 import { UtilityService, EventService, WsEvents  } from '@sunbird-cb/utils-v2'
 
-
 /* tslint:disable */
 import _ from 'lodash'
 /* tslint:enable */

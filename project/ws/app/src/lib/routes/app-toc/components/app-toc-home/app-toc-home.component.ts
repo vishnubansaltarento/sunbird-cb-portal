@@ -1,6 +1,6 @@
 import {
   Component, OnDestroy, OnInit, AfterViewInit, AfterViewChecked,
-  HostListener, ElementRef, ViewChild, ViewEncapsulation, Input
+  HostListener, ElementRef, ViewChild, ViewEncapsulation, Input,
 } from '@angular/core'
 import { SafeHtml, DomSanitizer, SafeStyle } from '@angular/platform-browser'
 import { ActivatedRoute, Event, Data, Router, NavigationEnd } from '@angular/router'
@@ -19,14 +19,14 @@ import isSameOrBefore from 'dayjs/plugin/isSameOrBefore'
 
 import {
   NsContent, WidgetContentService, WidgetUserService,
-  viewerRouteGenerator, NsPlaylist, NsGoal
+  viewerRouteGenerator, NsPlaylist, NsGoal,
 } from '@sunbird-cb/collection'
 import { NsWidgetResolver } from '@sunbird-cb/resolver'
 import {
   ConfigurationsService, EventService,
   LoggerService, MultilingualTranslationsService,
   NsPage, TFetchStatus, TelemetryService,
-  UtilityService, WsEvents
+  UtilityService, WsEvents,
 } from '@sunbird-cb/utils-v2'
 
 import { NsAppToc } from '../../models/app-toc.model'
@@ -278,7 +278,7 @@ export class AppTocHomeComponent implements OnInit, OnDestroy, AfterViewChecked,
           if (ratingsDiv) {
             this.scrollLimit = ratingsDiv.getBoundingClientRect().bottom as any
           }
-        }, 500)
+        },         500)
       }
 
       if (document.getElementById('contentContainer')) {
@@ -338,7 +338,7 @@ export class AppTocHomeComponent implements OnInit, OnDestroy, AfterViewChecked,
           this.skeletonLoader = false
           this.tocSvc.fetchGetContentData(data.content.data.identifier).subscribe(res => {
             this.contentReadData = res.result.content
-          }, (error: HttpErrorResponse) => {
+          },                                                                      (error: HttpErrorResponse) => {
             if (!error.ok) {
               this.matSnackBar.open('Unable to fetch content data, due to some error!')
             }
@@ -597,7 +597,7 @@ export class AppTocHomeComponent implements OnInit, OnDestroy, AfterViewChecked,
       this.isClaimed = true
       this.openSnackbar('Karma points are successfully claimed.')
       this.getUserEnrollmentList()
-    }, (error: any) => {
+    },                                                  (error: any) => {
       // tslint:disable:no-console
       console.log(error)
       this.openSnackbar('something went wrong.')
@@ -679,7 +679,6 @@ export class AppTocHomeComponent implements OnInit, OnDestroy, AfterViewChecked,
   }
 
   get getStartDate() {
-    // debugger
     if (this.enrolledCourseData) {
       const now = new Date().getTime()
       // const batch = _.first(_.filter(this.content['batches'], { batchId: this.currentCourseBatchId }) || [])
@@ -692,17 +691,14 @@ export class AppTocHomeComponent implements OnInit, OnDestroy, AfterViewChecked,
         const startDateTime = this.startDate && new Date(this.startDate).getTime()
         this.startDateDifference = startDateTime - now
         if (this.startDateDifference && this.startDateDifference > 0) {
-          const days = Math.floor(this.startDateDifference / (1000 * 60 * 60 * 24));
-          const hours = Math.floor((this.startDateDifference % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-          const minutes = Math.floor((this.startDateDifference % (1000 * 60 * 60)) / (1000 * 60));
+          const days = Math.floor(this.startDateDifference / (1000 * 60 * 60 * 24))
+          const hours = Math.floor((this.startDateDifference % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60))
+          const minutes = Math.floor((this.startDateDifference % (1000 * 60 * 60)) / (1000 * 60))
           return (`${days} Days : ${hours} Hours : ${minutes} Minutes`)
-        } else {
-          return 'NA'
         }
-      }  else {
-        return 'NA'
+          return 'NA'
       }
-
+        return 'NA'
       // if (_.get(batch, 'startDate') && moment(_.get(batch, 'startDate')).isAfter()) {
       //   return moment(_.get(batch, 'startDate')).from(now)
       // }
@@ -740,10 +736,8 @@ export class AppTocHomeComponent implements OnInit, OnDestroy, AfterViewChecked,
     //       const endDateTime = new Date(this.endDate).getTime()
     //       this.endDateDifference = endDateTime - now
     //       if(this.endDateDifference > 0) {
-    //       return  batch.status 
-
+    //       return  batch.status
     //       }
-
     //     }
     //     return false
     //   }
@@ -773,7 +767,6 @@ export class AppTocHomeComponent implements OnInit, OnDestroy, AfterViewChecked,
   private initData(data: Data) {
     const initData = this.tocSvc.initData(data, true)
     this.content = initData.content
-
     this.errorCode = initData.errorCode
     switch (this.errorCode) {
       case NsAppToc.EWsTocErrorCode.API_FAILURE: {
@@ -933,7 +926,7 @@ export class AppTocHomeComponent implements OnInit, OnDestroy, AfterViewChecked,
       if (this.contentSource && this.contentSource.nativeElement.offsetHeight > 44) {
         this.sourceEllipsis = true
       }
-    }, 250)
+    },         250)
   }
 
   private getUserEnrollmentList() {
@@ -1178,7 +1171,7 @@ export class AppTocHomeComponent implements OnInit, OnDestroy, AfterViewChecked,
                 })
               setTimeout(() => {
                 this.getUserEnrollmentList()
-              }, 2000)
+              },         2000)
             } else {
               this.navigateToPlayerPage(req.request.batchId)
             }
@@ -1750,7 +1743,7 @@ export class AppTocHomeComponent implements OnInit, OnDestroy, AfterViewChecked,
       }
       this.findACPB()
       this.getKarmapointsLimit()
-    }, (_err: any) => {
+    },                                    (_err: any) => {
       this.tocSvc.changeServerDate(new Date().getTime())
     })
   }
