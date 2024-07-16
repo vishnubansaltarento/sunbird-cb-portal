@@ -19,7 +19,6 @@ export class FeedListComponent implements OnInit {
   constructor(private activatedRoute: ActivatedRoute,
               private events: EventService, private utilitySvc: UtilityService) { }
 
-
   ngOnInit() {
     if (this.activatedRoute.snapshot.data.pageData && this.activatedRoute.snapshot.data.pageData.data) {
       this.contentStripData = this.activatedRoute.snapshot.data.pageData.data || []
