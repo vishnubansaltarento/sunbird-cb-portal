@@ -2,6 +2,7 @@ import { Component, Input, OnInit } from '@angular/core'
 import { ActivatedRoute } from '@angular/router'
 import { UtilityService, EventService, WsEvents  } from '@sunbird-cb/utils-v2'
 
+
 /* tslint:disable */
 import _ from 'lodash'
 /* tslint:enable */
@@ -17,6 +18,7 @@ export class FeedListComponent implements OnInit {
   isTelemetryRaised = false
   constructor(private activatedRoute: ActivatedRoute,
               private events: EventService, private utilitySvc: UtilityService) { }
+
 
   ngOnInit() {
     if (this.activatedRoute.snapshot.data.pageData && this.activatedRoute.snapshot.data.pageData.data) {
@@ -63,4 +65,5 @@ export class FeedListComponent implements OnInit {
       }
     )
   }
+
 }
