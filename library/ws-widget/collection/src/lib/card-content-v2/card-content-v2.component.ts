@@ -379,7 +379,7 @@ export class CardContentV2Component extends WidgetBaseComponent
         id: certificateData.issuedCertificates[0].identifier,   // id of the certificate
         type: WsEvents.EnumInteractSubTypes.CERTIFICATE,
       })
-    if(certificateData.issuedCertificates.length > 0) {
+    if(certificateData && certificateData.issuedCertificates && certificateData.issuedCertificates.length && certificateData.issuedCertificates.length > 0) {
       this.downloadCertificateLoading = true
       let certData: any = certificateData.issuedCertificates
       certData.sort((a: any, b: any) => new Date(b.lastIssuedOn).getTime() - new Date(a.lastIssuedOn).getTime())
