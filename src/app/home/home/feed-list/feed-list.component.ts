@@ -1,6 +1,8 @@
 import { Component, Input, OnInit } from '@angular/core'
 import { ActivatedRoute } from '@angular/router'
-import { EventService, WsEvents  } from '@sunbird-cb/utils-v2'
+import { UtilityService, EventService, WsEvents  } from '@sunbird-cb/utils-v2'
+
+
 /* tslint:disable */
 import _ from 'lodash'
 /* tslint:enable */
@@ -11,17 +13,20 @@ import _ from 'lodash'
 })
 export class FeedListComponent implements OnInit {
   contentStripData = {}
+  isMobile = false
   @Input() widgetData: any
   isTelemetryRaised = false
   constructor(private activatedRoute: ActivatedRoute,
-              private events: EventService,
-  ) { }
+              private events: EventService, private utilitySvc: UtilityService) { }
+
 
   ngOnInit() {
     if (this.activatedRoute.snapshot.data.pageData && this.activatedRoute.snapshot.data.pageData.data) {
       this.contentStripData = this.activatedRoute.snapshot.data.pageData.data || []
     }
+    this.isMobile = this.utilitySvc.isMobile
   }
+
   raiseTelemetryInteratEvent(event: any) {
     if (event && event.viewMoreUrl) {
       this.raiseTelemetry(`${event.stripTitle} ${event.viewMoreUrl.viewMoreText}`, event.typeOfTelemetry)

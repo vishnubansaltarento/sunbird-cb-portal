@@ -98,7 +98,7 @@ export class HomeComponent implements OnInit, AfterViewInit {
     if (this.activatedRoute.snapshot.data.pageData && this.activatedRoute.snapshot.data.pageData.data) {
       this.contentStripData = this.activatedRoute.snapshot.data.pageData.data || []
       // tslint:disable-next-line: prefer-template
-      this.contentStripData = (this.contentStripData.homeStrips || []).sort((a: any, b: any) => a.order - b.order)
+      this.contentStripData = (this.contentStripData.newHomeStrip || []).sort((a: any, b: any) => a.order - b.order)
       // tslint:disable-next-line
       for (let i = 0; i < this.contentStripData.length; i++) {
         if (this.contentStripData[i] &&
