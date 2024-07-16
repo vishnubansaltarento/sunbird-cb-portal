@@ -1,4 +1,5 @@
 import { Component, Input, OnInit } from '@angular/core'
+import { Router } from '@angular/router'
 
 @Component({
   selector: 'ws-widget-tips-for-learner-card',
@@ -9,7 +10,7 @@ export class TipsForLearnerCardComponent implements OnInit {
   randomlearnAdvisoryObj: any
   learnAdvisoryDataLength: any
   @Input() learnAdvisoryData: any
-  constructor() { }
+  constructor(private router: Router) { }
 
   ngOnInit() {
     this.displayRandomlearnAdvisoryData()
@@ -21,6 +22,10 @@ export class TipsForLearnerCardComponent implements OnInit {
       this.randomlearnAdvisoryObj = this.learnAdvisoryData[randomIndex]
     }
 
+  }
+
+  showAllTips() {
+    this.router.navigate(['/learner-advisory'])
   }
 
 }
