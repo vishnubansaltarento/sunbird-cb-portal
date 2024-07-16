@@ -9,7 +9,9 @@
     </div>
     <ws-widget-content-strip-with-tabs [widgetData]="widgetData"></ws-widget-content-strip-with-tabs>
 </div> -->
+
 <!-- <ws-widget-content-strip-with-tabs [widgetData]="widgetData"></ws-widget-content-strip-with-tabs> -->
+
  <ng-container *ngIf="widgetData?.stripType === 'withOutPils'  && (widgetData?.stripVisable === 'mobile' &&  isMobile)">
     <sb-uic-content-strip-with-tabs 
     (telemtryResponse)="raiseTelemetryInteratEvent($event)"
