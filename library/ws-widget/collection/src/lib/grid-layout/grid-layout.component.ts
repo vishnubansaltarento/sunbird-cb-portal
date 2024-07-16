@@ -374,6 +374,7 @@ export class GridLayoutComponent extends WidgetBaseComponent
     } else {
       this.npsService.submitPlatformRating(reqbody).subscribe((resp: any) => {
         // tslint:disable-next-line
+        console.log(resp)
         localStorage.setItem('platformRatingSubmit', 'true')
         this.isNPSOpen = false
           const feedIDN = JSON.parse(this.feedID).map((item: any) => {
