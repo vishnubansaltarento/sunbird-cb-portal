@@ -154,7 +154,13 @@
         </ng-container>
 
         <div class="flex flex-col gap-4 p-5 border-bottom">
-            <ng-container *ngIf="extContentReadData?.redirectUrl">
+            <ng-container *ngIf="(userExtCourseEnroll | json) === '{}'">
+                <button class="flex action-button justify-center resume" type="button" (click)="enRollToExtCourse(extContentReadData?.contentId)">
+                  <ng-container >{{ 'apptochome.enroll' | translate }}
+                  </ng-container>
+                </button>
+              </ng-container>
+            <ng-container *ngIf="(userExtCourseEnroll | json) !== '{}' && extContentReadData?.redirectUrl">
                 <a class="flex action-button justify-center resume" target="_blank" [href]="redirectToContent(extContentReadData)">
                   <ng-container >{{ 'apptochome.redirect' | translate }}
                     <mat-icon class="ml-2 ws-mat-white-text">open_in_new</mat-icon>
