@@ -651,9 +651,9 @@ export class InitService {
     const publicConfig = await this.http
       .get<NsInstanceConfig.IConfig>(`${this.configSvc.sitePath}/site.config.json`)
       .toPromise()
-    // if (publicConfig.npsCategory) {
-    //   localStorage.setItem('npsCategory', publicConfig.npsCategory)
-    // }
+    if (publicConfig.npsCategory) {
+      localStorage.setItem('npsCategory', publicConfig.npsCategory)
+    }
 
     this.configSvc.instanceConfig = publicConfig
     this.configSvc.rootOrg = publicConfig.rootOrg
