@@ -80,6 +80,14 @@ export class MdoChannelsAllContentComponent implements OnInit {
   }
 
   callApi(query?: any) {
+    let tabData: any
+    if(this.seeAllPageConfig.viewMoreUrl.queryParams && this.seeAllPageConfig.viewMoreUrl.queryParams.tabSelected) {
+      tabData = this.seeAllPageConfig.tabs.find((el: any) => el.label.toLowerCase() === this.seeAllPageConfig.viewMoreUrl.queryParams.tabSelected.toLowerCase()) 
+      this.seeAllPageConfig.request = tabData.request
+    } else {
+      tabData = this.seeAllPageConfig.tabs[0]
+      this.seeAllPageConfig.request = tabData.request
+    }
     if (this.seeAllPageConfig.request && this.seeAllPageConfig.request.topContent) {
       this.fetchAllTopContent(this.seeAllPageConfig, query)
     } else if (this.seeAllPageConfig.request && this.seeAllPageConfig.request.featureContent) {
@@ -248,6 +256,7 @@ export class MdoChannelsAllContentComponent implements OnInit {
     const filteredData = data.filter((p: any) => p &&  p.name && p.name.toLowerCase().includes(filterValue))
     this.contentDataList  = this.commonSvc.transformContentsToWidgets(filteredData, this.seeAllPageConfig)
   }
+
 
   getFullUrl(apiUrl: any, id: string) {
     let formedUrl: string = apiUrl
