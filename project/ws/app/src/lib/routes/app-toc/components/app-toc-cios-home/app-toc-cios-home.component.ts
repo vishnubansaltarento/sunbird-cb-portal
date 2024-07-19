@@ -17,7 +17,7 @@ export class AppTocCiosHomeComponent implements OnInit, AfterViewInit {
   skeletonLoader = true
   extContentReadData: any = {}
   userExtCourseEnroll: any = {}
-  downloadCertificateLoading: boolean = false
+  downloadCertificateLoading = false
 
   rcElem = {
     offSetTop: 0,
@@ -128,14 +128,14 @@ export class AppTocCiosHomeComponent implements OnInit, AfterViewInit {
   async downloadCert() {
     this.downloadCertificateLoading = true
     const certData = this.userExtCourseEnroll.issued_certificates
-    const certRes : any = await this.certSvc.downloadCertificate_v2(certData[0].identifier).toPromise().catch(_error => {})
+    const certRes: any = await this.certSvc.downloadCertificate_v2(certData[0].identifier).toPromise().catch(_error => {})
     if (certRes && Object.keys(certRes.result).length > 0) {
       this.downloadCertificateLoading = false
       this.dialog.open(CertificateDialogComponent, {
         width: '1300px',
         data: { cet: certRes.result.printUri , certId: certData[0].identifier },
       })
-    }else {
+    } else {
       this.downloadCertificateLoading = false
       this.snackBar.open('Unable to get the certificate. Try again after sometime.')
     }
