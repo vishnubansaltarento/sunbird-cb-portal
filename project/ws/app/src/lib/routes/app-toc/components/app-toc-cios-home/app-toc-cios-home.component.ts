@@ -3,6 +3,9 @@ import { ActivatedRoute } from '@angular/router'
 import { TranslateService } from '@ngx-translate/core'
 import { CommonMethodsService } from '@sunbird-cb/consumption'
 import { ConfigurationsService, MultilingualTranslationsService } from '@sunbird-cb/utils-v2'
+import { WidgetContentService } from '@sunbird-cb/collection/src/lib/_services/widget-content.service'
+import { LoaderService } from '@ws/author/src/public-api'
+import { MatSnackBar } from '@angular/material'
 
 @Component({
   selector: 'ws-app-app-toc-cios-home',
@@ -12,6 +15,7 @@ import { ConfigurationsService, MultilingualTranslationsService } from '@sunbird
 export class AppTocCiosHomeComponent implements OnInit, AfterViewInit {
   skeletonLoader = true
   extContentReadData: any = {}
+  userExtCourseEnroll: any = {}
 
   rcElem = {
     offSetTop: 0,
@@ -44,11 +48,17 @@ export class AppTocCiosHomeComponent implements OnInit, AfterViewInit {
               private translate: TranslateService,
               private configSvc: ConfigurationsService,
               private langtranslations: MultilingualTranslationsService,
+              private contentSvc: WidgetContentService,
+              public loader: LoaderService,
+              public snackBar: MatSnackBar
   ) {
     this.route.data.subscribe((data: any) => {
       if (data && data.extContent && data.extContent.data && data.extContent.data.content) {
         this.extContentReadData = data.extContent.data.content
         this.skeletonLoader = false
+      }
+      if (data && data.userEnrollContent && data.userEnrollContent.data && data.userEnrollContent.data.result) {
+        this.userExtCourseEnroll = data.userEnrollContent.data.result
       }
     })
 
@@ -83,5 +93,31 @@ export class AppTocCiosHomeComponent implements OnInit, AfterViewInit {
   }
   replaceText(str: any, replaceTxt: any) {
     return str.replaceAll(replaceTxt, '')
+  }
+
+  async enRollToExtCourse(contentId: any) {
+    this.loader.changeLoad.next(true)
+    const reqbody = {
+      courseId: contentId,
+    }
+    const enrollRes = await this.contentSvc.extContentEnroll(reqbody).toPromise().catch(_error => {})
+    if (enrollRes && enrollRes.result && Object.keys(enrollRes.result).length > 0) {
+      this.getUserContentEnroll(contentId)
+    } else {
+      this.loader.changeLoad.next(false)
+      this.snackBar.open('Unable to enroll to the content')
+    }
+  }
+
+  async getUserContentEnroll(contentId: any) {
+    const enrollRes = await this.contentSvc.fetchExtUserContentEnroll(contentId).toPromise().catch(_error => {})
+    if (enrollRes && enrollRes.result  && Object.keys(enrollRes.result).length > 0) {
+      this.userExtCourseEnroll = enrollRes.result
+      this.loader.changeLoad.next(false)
+      this.snackBar.open('Successfully enrolled to the content')
+    } else {
+      this.loader.changeLoad.next(false)
+      this.snackBar.open('Unable to get the enrolled details')
+    }
   }
 }
