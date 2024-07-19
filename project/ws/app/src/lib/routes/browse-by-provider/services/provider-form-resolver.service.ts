@@ -22,7 +22,7 @@ resolve(
     const orgId = _route.params && _route.params.orgId || ''
     const provider = _route.params && _route.params.provider || ''
     let subTypeValue: any = 'microsite'
-    if(_route && _route.data && _route.data.pageId && _route.data.pageId.includes('v2')){
+    if (_route && _route.data && _route.data.pageId && _route.data.pageId.includes('v2')) {
       subTypeValue = 'microsite-v2'
     }
     const requestData: any = {

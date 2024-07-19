@@ -44,7 +44,7 @@ import {
   ContentStripWithTabsLibModule,
   DataPointsModule,
   SlidersLibModule,
-  MDOChannelModule
+  MDOChannelModule,
 } from '@sunbird-cb/consumption'
 import { MdoChannelsComponent } from './mdo-channels/mdo-channels.component'
 import { MdoChannelsMicrositeComponent } from './mdo-channels-microsite/mdo-channels-microsite.component'
@@ -54,7 +54,7 @@ import { MdoChannelFormService } from './service/mdo-channel-form.service'
 import { FormsModule, ReactiveFormsModule } from '@angular/forms'
 import { MdoChannelDataService } from './service/mdo-channel-data.service'
 import { MdoChannelsAllContentComponent } from './mdo-channels-all-content/mdo-channels-all-content.component'
-import { AllContentService } from './service/all-content.service';
+import { AllContentService } from './service/all-content.service'
 import { MdoChannelsMicrositeV2Component } from './mdo-channels-microsite-v2/mdo-channels-microsite-v2.component'
 
 @NgModule({

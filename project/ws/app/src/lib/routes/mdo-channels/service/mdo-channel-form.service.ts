@@ -19,7 +19,7 @@ resolve(
 ): Observable<IResolveResponse<any>> {
     const orgId = _route.params && _route.params.orgId || ''
     let subTypeValue: any = 'microsite'
-    if(_route && _route.data && _route.data.pageId && _route.data.pageId.includes('v2')){
+    if (_route && _route.data && _route.data.pageId && _route.data.pageId.includes('v2')) {
       subTypeValue = 'microsite-v2'
     }
     const requestData: any = {
