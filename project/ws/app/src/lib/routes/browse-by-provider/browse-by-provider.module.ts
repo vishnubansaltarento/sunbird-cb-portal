@@ -51,7 +51,7 @@ import { CalenderModule, CardsModule, CommonStripModule, CompetencyPassbookModul
 import { ProviderFormResolverService } from './services/provider-form-resolver.service'
 import { FormExtService } from 'src/app/services/form-ext.service'
 import { ProviderCalendarComponent } from './routes/provider-calendar/provider-calendar.component'
-import { ProviderContentAllComponent } from './routes/provider-content-all/provider-content-all.component';
+import { ProviderContentAllComponent } from './routes/provider-content-all/provider-content-all.component'
 import { ProviderPageV2Component } from './routes/provider-page-v2/provider-page-v2.component'
 
 @NgModule({
@@ -76,7 +76,7 @@ import { ProviderPageV2Component } from './routes/provider-page-v2/provider-page
     FormsModule,
     RouterModule,
     MatGridListModule,
-    MatExpansionModule,ProvidersModule,
+    MatExpansionModule, ProvidersModule,
     MatFormFieldModule,
     MatDividerModule,
     MatIconModule,

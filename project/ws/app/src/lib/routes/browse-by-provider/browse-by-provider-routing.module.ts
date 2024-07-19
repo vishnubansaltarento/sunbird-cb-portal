@@ -5,7 +5,7 @@ import { ProviderDetailsComponent } from './routes/provider-details/provider-det
 // import { ProviderOverviewComponent } from './routes/provider-overview/provider-overview.component'
 import { ProviderAllCbpComponent } from './routes/provider-all-cbp/provider-all-cbp.component'
 // import { InsightsComponent } from './routes/insights/insights.component'
-import { ProviderPageComponent } from './routes/provider-page/provider-page.component'
+// import { ProviderPageComponent } from './routes/provider-page/provider-page.component'
 import { ProviderFormResolverService } from './services/provider-form-resolver.service'
 import { ProviderCalendarComponent } from './routes/provider-calendar/provider-calendar.component'
 import { ProviderContentAllComponent } from './routes/provider-content-all/provider-content-all.component'
@@ -77,19 +77,19 @@ const routes: Routes = [
       module: 'explore',
     },
   },
+  // {
+  //   path: ':provider/:orgId/micro-sites',
+  //   component: ProviderPageComponent,
+  //   data: {
+  //     pageId: ':provider/:orgId/micro-sites',
+  //     module: 'explore',
+  //   },
+  //   resolve: {
+  //     formData: ProviderFormResolverService,
+  //   },
+  // },
   {
     path: ':provider/:orgId/micro-sites',
-    component: ProviderPageComponent,
-    data: {
-      pageId: ':provider/:orgId/micro-sites',
-      module: 'explore',
-    },
-    resolve: {
-      formData: ProviderFormResolverService,
-    },
-  },
-  {
-    path: ':provider/:orgId/v2/micro-sites',
     component: ProviderPageV2Component,
     data: {
       pageId: ':provider/:orgId/v2/micro-sites',

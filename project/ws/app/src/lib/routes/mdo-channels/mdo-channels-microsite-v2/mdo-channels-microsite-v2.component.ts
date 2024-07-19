@@ -1,10 +1,10 @@
-import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { Component, OnInit } from '@angular/core'
+import { ActivatedRoute } from '@angular/router'
 
 @Component({
   selector: 'ws-app-mdo-channels-microsite-v2',
   templateUrl: './mdo-channels-microsite-v2.component.html',
-  styleUrls: ['./mdo-channels-microsite-v2.component.scss']
+  styleUrls: ['./mdo-channels-microsite-v2.component.scss'],
 })
 export class MdoChannelsMicrositeV2Component implements OnInit {
   titles = [
@@ -19,7 +19,7 @@ export class MdoChannelsMicrositeV2Component implements OnInit {
   orgId = ''
   sectionList: any = []
   constructor(
-    private route: ActivatedRoute) { 
+    private route: ActivatedRoute) {
 
   }
 
