@@ -2,10 +2,11 @@ import { AfterViewInit, Component, ElementRef, HostListener, OnInit, ViewChild }
 import { ActivatedRoute } from '@angular/router'
 import { TranslateService } from '@ngx-translate/core'
 import { CommonMethodsService } from '@sunbird-cb/consumption'
-import { ConfigurationsService, MultilingualTranslationsService } from '@sunbird-cb/utils-v2'
-import { WidgetContentService } from '@sunbird-cb/collection/src/lib/_services/widget-content.service'
+import { ConfigurationsService, MultilingualTranslationsService, WidgetContentService } from '@sunbird-cb/utils-v2'
 import { LoaderService } from '@ws/author/src/public-api'
-import { MatSnackBar } from '@angular/material'
+import { MatDialog, MatSnackBar } from '@angular/material'
+import { CertificateService } from '../../../certificate/services/certificate.service'
+import { CertificateDialogComponent } from '@sunbird-cb/collection/src/lib/_common/certificate-dialog/certificate-dialog.component'
 
 @Component({
   selector: 'ws-app-app-toc-cios-home',
@@ -16,6 +17,7 @@ export class AppTocCiosHomeComponent implements OnInit, AfterViewInit {
   skeletonLoader = true
   extContentReadData: any = {}
   userExtCourseEnroll: any = {}
+  downloadCertificateLoading: boolean = false
 
   rcElem = {
     offSetTop: 0,
@@ -49,6 +51,8 @@ export class AppTocCiosHomeComponent implements OnInit, AfterViewInit {
               private configSvc: ConfigurationsService,
               private langtranslations: MultilingualTranslationsService,
               private contentSvc: WidgetContentService,
+              private certSvc: CertificateService,
+              private dialog: MatDialog,
               public loader: LoaderService,
               public snackBar: MatSnackBar
   ) {
@@ -118,6 +122,22 @@ export class AppTocCiosHomeComponent implements OnInit, AfterViewInit {
     } else {
       this.loader.changeLoad.next(false)
       this.snackBar.open('Unable to get the enrolled details')
+    }
+  }
+
+  async downloadCert() {
+    this.downloadCertificateLoading = true
+    const certData = this.userExtCourseEnroll.issued_certificates
+    const certRes : any = await this.certSvc.downloadCertificate_v2(certData[0].identifier).toPromise().catch(_error => {})
+    if (certRes && Object.keys(certRes.result).length > 0) {
+      this.downloadCertificateLoading = false
+      this.dialog.open(CertificateDialogComponent, {
+        width: '1300px',
+        data: { cet: certRes.result.printUri , certId: certData[0].identifier },
+      })
+    }else {
+      this.downloadCertificateLoading = false
+      this.snackBar.open('Unable to get the certificate. Try again after sometime.')
     }
   }
 }
