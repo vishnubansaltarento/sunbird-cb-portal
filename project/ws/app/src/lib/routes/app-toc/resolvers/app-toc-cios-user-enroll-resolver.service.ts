@@ -1,9 +1,9 @@
 import { Injectable } from '@angular/core'
 import { ActivatedRouteSnapshot, Resolve, RouterStateSnapshot } from '@angular/router'
+import { WidgetContentService } from '@sunbird-cb/collection/src/public-api'
 import { IResolveResponse } from '@sunbird-cb/utils-v2'
 import { Observable, of } from 'rxjs'
 import { catchError, map, tap } from 'rxjs/operators'
-import { WidgetContentService } from '@sunbird-cb/collection/src/lib/_services/widget-content.service'
 
 @Injectable({
   providedIn: 'root',

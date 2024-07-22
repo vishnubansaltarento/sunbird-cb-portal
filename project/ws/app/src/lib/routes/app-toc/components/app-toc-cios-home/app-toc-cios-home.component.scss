@@ -748,6 +748,10 @@ mat-divider {
 //   }
 // }
 
+.certificate-loader ::ng-deep .mat-progress-spinner circle, .mat-spinner circle {
+  stroke: #ffffff;
+}
+
 .cb-plan-wrap {
   opacity: 1;
   color: rgba(27,76,161,1);
