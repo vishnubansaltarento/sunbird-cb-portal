@@ -338,7 +338,7 @@ export class PublicWelcomeComponent implements OnInit, OnDestroy {
                 },
             }
         }
-        
+
         this.welcomeSignupSvc.register(req).subscribe(
             (_res: any) => {
                 this.disableBtn = false
