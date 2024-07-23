@@ -109,7 +109,7 @@ export class AppTocAboutComponent implements OnInit, OnChanges, AfterViewInit, O
   @ViewChild('descElem', { static: false }) descElem !: ElementRef
   @ViewChild('tagsElem', { static: false }) tagsElem !: ElementRef
   @ViewChild('searchTagElem', { static: false }) searchTagElem !: ElementRef
-  
+
   primaryCategory = NsContent.EPrimaryCategory
   stripsResultDataMap!: { [key: string]: IStripUnitContentData }
   summary = {
@@ -217,9 +217,9 @@ export class AppTocAboutComponent implements OnInit, OnChanges, AfterViewInit, O
           if (this.descElem.nativeElement.offsetHeight > 72) {
             this.description.ellipsis = true
           }
-          if(this.objectivesElem.nativeElement.offsetHeight > 72) {
+          if (this.objectivesElem.nativeElement.offsetHeight > 72) {
             this.objectives.ellipsis = true
-          } 
+          }
         } else {
           if (this.summaryElem.nativeElement.offsetHeight > 48) {
             this.summary.ellipsis = true
@@ -228,9 +228,9 @@ export class AppTocAboutComponent implements OnInit, OnChanges, AfterViewInit, O
           if (this.descElem.nativeElement.offsetHeight > 48) {
             this.description.ellipsis = true
           }
-          if(this.objectivesElem.nativeElement.offsetHeight > 48) {
+          if (this.objectivesElem.nativeElement.offsetHeight > 48) {
             this.objectives.ellipsis = true
-          } 
+          }
         }
 
         if (this.tagsElem && this.tagsElem.nativeElement.offsetHeight > 64) {
@@ -577,16 +577,17 @@ export class AppTocAboutComponent implements OnInit, OnChanges, AfterViewInit, O
   }
 
   handleCapitalize(str: string, type?: string): string {
-    if(str) {
-      str = str.split('_x000D_,').join('')
+    let tempStr = str
+    if (tempStr) {
+      tempStr = tempStr.split('_x000D_,').join('')
     }
     let returnValue = ''
-    if (str && type === 'name') {
-      returnValue = str.split(' ').map(_str => {
+    if (tempStr && type === 'name') {
+      returnValue = tempStr.split(' ').map(_str => {
         return _str.charAt(0).toUpperCase() + _str.slice(1)
       }).join(' ')
     } else {
-      returnValue = str && (str.charAt(0).toUpperCase() + str.slice(1))
+      returnValue = tempStr && (tempStr.charAt(0).toUpperCase() + tempStr.slice(1))
     }
     return returnValue
   }

@@ -35,7 +35,7 @@ export class SeeAllHomeComponent implements OnInit, OnDestroy {
   tabResults: any[] = []
   tabSelected: any
   dynamicTabIndex = 0
-  isCoisContent: boolean = false
+  isCoisContent = false
 
   constructor(
     private activated: ActivatedRoute,
@@ -340,7 +340,7 @@ export class SeeAllHomeComponent implements OnInit, OnDestroy {
           if (response.results.data && response.results.data.length) {
             this.contentDataList = this.transformContentsToWidgets(response.results.data, strip)
           }
-        } 
+        }
       } catch (error) {
         // this.emptyResponse.emit(true)
         // Handle errors
@@ -611,9 +611,9 @@ export class SeeAllHomeComponent implements OnInit, OnDestroy {
     return this.langtranslations.translateLabel(label.toLowerCase(), type, '')
   }
   async postRequestMethod(strip: NsContentStripWithTabs.IContentStripUnit,
-    request: NsContentStripWithTabs.IContentStripUnit['request'],
-    apiUrl: string,
-    _calculateParentStatus: boolean
+                          request: NsContentStripWithTabs.IContentStripUnit['request'],
+                          apiUrl: string,
+                          _calculateParentStatus: boolean
   ): Promise<any> {
     return new Promise<any>((resolve, reject) => {
       if (request && request) {
@@ -621,7 +621,7 @@ export class SeeAllHomeComponent implements OnInit, OnDestroy {
           if (results && results.data) {
             const showViewMore = Boolean(
               results.data && results.data.length > 5 && strip.stripConfig && strip.stripConfig.postCardForSearch,
-            );
+            )
             const viewMoreUrl = showViewMore ? {
               path: strip.viewMoreUrl && strip.viewMoreUrl.path || '',
               queryParams: {
@@ -630,20 +630,20 @@ export class SeeAllHomeComponent implements OnInit, OnDestroy {
                 f: {},
               },
             }
-              : null;
-            resolve({ results, viewMoreUrl });
-          } 
-        }, (error: any) => {
+              : null
+            resolve({ results, viewMoreUrl })
+          }
+        },                                                            (error: any) => {
           // this.processStrip(strip, [], 'error', calculateParentStatus, null);
-          reject(error);
+          reject(error)
         },
-        );
+        )
       }
-    });
+    })
   }
 
-  takeExtClickAction(_item:any) {
-    if(_item.externalId) {
+  takeExtClickAction(_item: any) {
+    if (_item.externalId) {
       this.router.navigate(
         [`app/toc/ext/${_item.contentId}`])
     }
