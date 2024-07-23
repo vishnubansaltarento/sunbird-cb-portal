@@ -118,7 +118,7 @@ export class AppTocCiosHomeComponent implements OnInit, AfterViewInit {
     if (enrollRes && enrollRes.result  && Object.keys(enrollRes.result).length > 0) {
       this.userExtCourseEnroll = enrollRes.result
       this.loader.changeLoad.next(false)
-      this.snackBar.open('Successfully enrolled to the content')
+      this.snackBar.open('Successfully enrolled in the course.')
     } else {
       this.loader.changeLoad.next(false)
       this.snackBar.open('Unable to get the enrolled details')

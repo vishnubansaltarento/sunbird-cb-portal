@@ -99,13 +99,17 @@ export class AppTocAboutComponent implements OnInit, OnChanges, AfterViewInit, O
   @Input() config: any
   @Input() resumeData: any
   @Input() forPreview = false
+  @Input() showReviews = false
   @Input() batchData: any
   @Input() fromViewer = false
   @Input() selectedBatchData: any
   @Input() selectedTabValue = 0
   @ViewChild('summaryElem', { static: false }) summaryElem !: ElementRef
+  @ViewChild('objectivesElem', { static: false }) objectivesElem !: ElementRef
   @ViewChild('descElem', { static: false }) descElem !: ElementRef
   @ViewChild('tagsElem', { static: false }) tagsElem !: ElementRef
+  @ViewChild('searchTagElem', { static: false }) searchTagElem !: ElementRef
+  
   primaryCategory = NsContent.EPrimaryCategory
   stripsResultDataMap!: { [key: string]: IStripUnitContentData }
   summary = {
@@ -116,7 +120,12 @@ export class AppTocAboutComponent implements OnInit, OnChanges, AfterViewInit, O
     ellipsis: false,
     viewLess: false,
   }
+  objectives = {
+    ellipsis: false,
+    viewLess: false,
+  }
   tagsEllipsis = false
+  searchTagsEllipsis = false
   competencySelected = ''
   ratingSummary: any
   authReplies: any
@@ -175,9 +184,12 @@ export class AppTocAboutComponent implements OnInit, OnChanges, AfterViewInit, O
     } else {
       this.isMobile = false
     }
-
     if (this.content && this.content.identifier) {
       this.fetchRatingSummary()
+      this.loadCompetencies()
+    }
+
+    if (this.content && this.content.contentId.includes('ext_')) {
       this.loadCompetencies()
     }
 
@@ -205,6 +217,9 @@ export class AppTocAboutComponent implements OnInit, OnChanges, AfterViewInit, O
           if (this.descElem.nativeElement.offsetHeight > 72) {
             this.description.ellipsis = true
           }
+          if(this.objectivesElem.nativeElement.offsetHeight > 72) {
+            this.objectives.ellipsis = true
+          } 
         } else {
           if (this.summaryElem.nativeElement.offsetHeight > 48) {
             this.summary.ellipsis = true
@@ -213,10 +228,17 @@ export class AppTocAboutComponent implements OnInit, OnChanges, AfterViewInit, O
           if (this.descElem.nativeElement.offsetHeight > 48) {
             this.description.ellipsis = true
           }
+          if(this.objectivesElem.nativeElement.offsetHeight > 48) {
+            this.objectives.ellipsis = true
+          } 
         }
 
         if (this.tagsElem && this.tagsElem.nativeElement.offsetHeight > 64) {
           this.tagsEllipsis = true
+        }
+
+        if (this.searchTagElem && this.searchTagElem.nativeElement.offsetHeight > 64) {
+          this.searchTagsEllipsis = true
         }
       },         500)
     }
@@ -555,6 +577,9 @@ export class AppTocAboutComponent implements OnInit, OnChanges, AfterViewInit, O
   }
 
   handleCapitalize(str: string, type?: string): string {
+    if(str) {
+      str = str.split('_x000D_,').join('')
+    }
     let returnValue = ''
     if (str && type === 'name') {
       returnValue = str.split(' ').map(_str => {
