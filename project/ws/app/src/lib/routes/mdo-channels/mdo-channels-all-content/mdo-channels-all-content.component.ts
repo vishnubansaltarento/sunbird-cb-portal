@@ -64,7 +64,7 @@ export class MdoChannelsAllContentComponent implements OnInit {
     })
     this.titles = [
       { title: 'Learn', url: '/page/learn', icon: 'school', disableTranslate: false },
-      { title: `MDO channel`, url: `/app/learn/mdo-channels/all-channels`, icon: '', disableTranslate: true },
+      { title: `MDO Channel`, url: `/app/learn/mdo-channels/all-channels`, icon: '', disableTranslate: true },
       {
         title: this.orgName,
         url: `/app/learn/mdo-channels/${this.orgName}/${this.orgId}/micro-sites`,
