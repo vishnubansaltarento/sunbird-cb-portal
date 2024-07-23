@@ -64,7 +64,7 @@ export class MdoChannelsAllContentComponent implements OnInit {
     })
     this.titles = [
       { title: 'Learn', url: '/page/learn', icon: 'school', disableTranslate: false },
-      { title: `MDO channel`, url: `/app/learn/mdo-channels/all-channels`, icon: '', disableTranslate: true },
+      { title: `MDO Channel`, url: `/app/learn/mdo-channels/all-channels`, icon: '', disableTranslate: true },
       {
         title: this.orgName,
         url: `/app/learn/mdo-channels/${this.orgName}/${this.orgId}/micro-sites`,
@@ -80,6 +80,16 @@ export class MdoChannelsAllContentComponent implements OnInit {
   }
 
   callApi(query?: any) {
+    let tabData: any
+    if (this.seeAllPageConfig.viewMoreUrl.queryParams && this.seeAllPageConfig.viewMoreUrl.queryParams.tabSelected) {
+      tabData = this.seeAllPageConfig.tabs.find((
+        el: any
+      ) => el.label.toLowerCase() === this.seeAllPageConfig.viewMoreUrl.queryParams.tabSelected.toLowerCase())
+      this.seeAllPageConfig.request = tabData.request
+    } else {
+      tabData = this.seeAllPageConfig.tabs[0]
+      this.seeAllPageConfig.request = tabData.request
+    }
     if (this.seeAllPageConfig.request && this.seeAllPageConfig.request.topContent) {
       this.fetchAllTopContent(this.seeAllPageConfig, query)
     } else if (this.seeAllPageConfig.request && this.seeAllPageConfig.request.featureContent) {
