@@ -38,8 +38,8 @@
             <div class="banner-text text-base sm:text-4xl leading-6 sm:leading-10 font-bold">{{ handleCapitalize(extContentReadData?.name) }}</div>
             <div class="text-sm sm:text-base source-text font-semibold break-words" #contentSource [ngClass]="{'sourceEllipsis': sourceEllipsis}" title="{{content?.source}}">
                 {{ 'cardcontentv2.by' | translate }} 
-                <span *ngIf="extContentReadData?.source">{{ extContentReadData?.source }}</span>
-                <span *ngIf="!extContentReadData?.source">{{ 'common.karmayogiBharat' | translate }}</span>
+                <span *ngIf="extContentReadData?.contentPartner?.contentPartnerName">{{ extContentReadData?.contentPartner?.contentPartnerName }}</span>
+                <span *ngIf="!extContentReadData?.contentPartner?.contentPartnerName">{{ 'common.karmayogiBharat' | translate }}</span>
             </div>
             </ng-container>
         </div>
@@ -80,8 +80,8 @@
     </div>
 </div>
 <div class="flex flex-row gap-6 fixed-width">
-    <div class="toc-content mt-8">
-        <div class="flex flex-col">
+    <div class="toc-content mt-8 mb-8">
+        <div class="flex flex-col mt-8 mb-8">
             <ng-container *ngIf="skeletonLoader">
                 <ws-widget-skeleton-loader [width]="'80px'" [height]="'16px'"
                     [bindingClass]="'rounded'"></ws-widget-skeleton-loader>
@@ -95,31 +95,9 @@
                 </div>
             </ng-container>
             <ng-container *ngIf="!skeletonLoader">
-                <div class="mat-subheading-1">{{ 'apptocsinglepage.description' | translate }}</div>
-                <div class="desc"   >
-                    <span [innerHTML]="extContentReadData?.description" class="mob-text"></span>
-                </div>
+                <ws-widget-app-toc-about [content]="extContentReadData"></ws-widget-app-toc-about>
             </ng-container>
-        </div>
-        <div class="flex flex-col mt-8">
-            <ng-container *ngIf="skeletonLoader">
-                <ws-widget-skeleton-loader [width]="'80px'" [height]="'16px'"
-                    [bindingClass]="'rounded'"></ws-widget-skeleton-loader>
-                <div class="flex flex-col gap-2 mt-4">
-                    <ws-widget-skeleton-loader [width]="'80%'" [height]="'16px'"
-                        [bindingClass]="'rounded'"></ws-widget-skeleton-loader>
-                    <ws-widget-skeleton-loader [width]="'95%'" [height]="'16px'"
-                        [bindingClass]="'rounded'"></ws-widget-skeleton-loader>
-                    <ws-widget-skeleton-loader [width]="'65%'" [height]="'16px'"
-                        [bindingClass]="'rounded'"></ws-widget-skeleton-loader>
-                </div>
-            </ng-container>
-            <ng-container *ngIf="!skeletonLoader">
-                <div class="mat-subheading-1">{{ 'apptochome.objectives' | translate }}</div>
-                <div class="desc"   >
-                    <span [innerHTML]="replaceText(extContentReadData?.objectives, '_x000D_,')" class="mob-text"></span>
-                </div>
-            </ng-container>
+            
         </div>
     </div>
     <div class="right-container">
@@ -145,8 +123,8 @@
                 </div>
                 <div class="text-sm source-text font-semibold break-words" #contentSource [ngClass]="{'sourceEllipsis': sourceEllipsis}" title="{{content?.source}}">
                     {{ 'cardcontentv2.by' | translate }} 
-                    <span *ngIf="extContentReadData?.source">{{ extContentReadData?.source }}</span>
-                    <span *ngIf="!extContentReadData?.source">{{ 'common.karmayogiBharat' | translate }}</span>
+                    <span *ngIf="extContentReadData?.contentPartner?.contentPartnerName">{{ extContentReadData?.contentPartner?.contentPartnerName }}</span>
+                    <span *ngIf="!extContentReadData?.contentPartner?.contentPartnerName">{{ 'common.karmayogiBharat' | translate }}</span>
                 </div>
                 </div>
             </div>
@@ -154,7 +132,7 @@
         </ng-container>
 
         <div class="flex flex-col gap-4 p-5 border-bottom">
-            <ng-container *ngIf="(userExtCourseEnroll | json) !== '{}'">
+            <!-- <ng-container *ngIf="(userExtCourseEnroll | json) !== '{}'">
                 <div class="flex flex-row justify-end w-full ws-mat-black-text">
                     <span class="mat-body-2  ws-mat-black-text">
                         {{userExtCourseEnroll.progress}}%</span>
@@ -163,7 +141,7 @@
                                             [progress]="userExtCourseEnroll.progress"
                                             [progressType]="'percentage'" [customClassName]="'viewer-progress'">
                                         </ws-widget-content-progress>
-              </ng-container>  
+              </ng-container>   -->
             <ng-container *ngIf="(userExtCourseEnroll | json) === '{}'">
                 <button class="flex action-button justify-center flex-middle resume" type="button" (click)="enRollToExtCourse(extContentReadData?.contentId)">
                   <ng-container >{{ 'apptochome.enroll' | translate }}
@@ -171,7 +149,7 @@
                 </button>
               </ng-container>
             <ng-container *ngIf="(userExtCourseEnroll | json) !== '{}' && extContentReadData?.redirectUrl">
-                <a class="flex action-button justify-center flex-middle resume" target="_blank" [href]="redirectToContent(extContentReadData)">
+                <a class="flex action-button justify-center flex-middle resume" target="_blank" [href]="extContentReadData?.redirectUrl">
                   <ng-container >{{ 'apptochome.redirect' | translate }}
                     <mat-icon class="ml-2 ws-mat-white-text">open_in_new</mat-icon>
                   </ng-container>
@@ -192,7 +170,7 @@
         <div>
             <div class="flex flex-col kpi-values items-center gap-2" *ngIf="extContentReadData?.duration > 0">
                 <img src="/assets/icons/toc/timer.svg" width="20px" alt="web image" />
-                <div class="text-xs">{{ extContentReadData?.duration | pipeDurationTransform: 'hms' }}</div>
+                <div class="text-xs">{{ extContentReadData?.duration * 60 | pipeDurationTransform: 'hms' }}</div>
             </div>
         </div>
         </div>
