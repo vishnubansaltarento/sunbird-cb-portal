@@ -3,7 +3,8 @@
 @import 'ws-mixins';
 
 .backgroud-image {
-  width: 100%;
+  // width: 100%;
+  height: 280px;
 }
 
 .republic-wrapper {
@@ -78,17 +79,18 @@
 .profile-details-wrapper {
   z-index: 11;
   position: relative;
+  background-color: #ffff;
+  // height: 200px;
+  border-radius: 12px;
+  // padding: 16px;
+  position: relative;
+  border: 1px solid rgba(0, 0, 0, 0.08);
+ 
+  box-sizing: border-box;
 }
 .profile-wrapper {
-    background-color: #ffff;
-    // height: 200px;
-    border-radius: 12px;
-    // padding: 16px;
-    position: relative;
-    border: 1px solid rgba(0, 0, 0, 0.08);
-    margin-top: 32px;
-    z-index: 10;
-    box-sizing: border-box;
+  margin-top: 32px;
+  z-index: 10;
 
     @include breakpoint-xs {
       margin-top: 0px;
@@ -396,8 +398,9 @@
 
 .default-public-banner {
   z-index: 10;
-  height:285px;
+  height:225px;
   opacity: 1;
+  margin-bottom: 8px;
 }
 
 
@@ -407,7 +410,13 @@
 }
 
 .position-absolute {
-  position: absolute;
+  // position: absolute;
+  height: 330px;
+  position: relative;
+
+  @media screen and (max-width: 768px) {
+    height: 360px;
+  }
 }
 
 .padding-12 {
@@ -421,11 +430,12 @@
 .mobile-backgroud-image {
   transform: scaleY(1.06);
   transform-origin: top;
-  width: 100%;
+  // width: 100%;
 }
 .profile-details-wrapper-with-nudge {
   position: relative;
   z-index: 9;
+  display: none;
 }
 
 .weekly-caps-section {
@@ -539,12 +549,43 @@
 @media screen and (max-width: 768px) {
   .mobile-backgroud-image {
     transform: scaleY(1.1);
+    // width: 285px;
   }
 }
-@media screen and (min-width: 360px) and (max-width: 576px) {
+@media screen and (min-width: 360px) and (max-width: 419px) {
   .mobile-backgroud-image {
-    transform: scaleY(1.15);
+    width: 100%;
+    transform: none;
   }
+  .position-absolute {
+    height: 300px;
+}
+}
+@media screen and (min-width: 420px) and (max-width: 576px) {
+  .mobile-backgroud-image {
+    // transform: scaleY(1.15);
+    width: 100%;
+    transform: none;
+  }
+  .position-absolute {
+    height: 340px;
+}
+}
+@media screen and (min-width: 541px) and (max-width: 620px) {
+  .mobile-backgroud-image {
+    // transform: scaleY(1.15);
+    width: 100%;
+    transform: none;
+  }
+  .position-absolute {
+    height: 420px;
+}
+}
+
+@media screen and (min-width: 1024px) and (max-width: 1280px) {
+  .position-absolute{
+    height: 395px;
+}
 }
 
 @media screen and (min-width: 768px) {
@@ -557,7 +598,9 @@
   and (min-device-width: 820px)
   and (max-device-width: 1180px) {
   .backgroud-image {
-    transform: scaleY(1.77);
+    // transform: scaleY(1.77);
+    transform: scaleY(1.6);
+    height: 260px;
   }
 
   .republic-details .center-image {
@@ -574,23 +617,26 @@
   and (max-device-width: 819px) {
   .backgroud-image {
     transform: scale(1.92, 1.14);
-    transform-origin: left;
-    margin-top: 19px;
+    // transform-origin: left;
+    margin-top: 90px;
   }
+  .position-absolute {
+    height: 400px;
+}
 
-  .aligncenter {
-    margin-left: 83%;
-  }
+  // .aligncenter {
+  //   margin-left: 83%;
+  // }
 
   .republic-details .greet-text {
     width: 100%;
   }
   .republic-details .info-text {
-    width: 100%;
+    width: 85%;
     bottom: 0;
   }
   .republic-details .center-image {
-    left: 90%;
+    // left: 90%;
   }
 }
 
