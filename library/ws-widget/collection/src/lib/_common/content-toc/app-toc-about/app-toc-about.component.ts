@@ -104,6 +104,7 @@ export class AppTocAboutComponent implements OnInit, OnChanges, AfterViewInit, O
   @Input() fromViewer = false
   @Input() selectedBatchData: any
   @Input() selectedTabValue = 0
+  @Input() fromMarketPlace? = false
   @ViewChild('summaryElem', { static: false }) summaryElem !: ElementRef
   @ViewChild('objectivesElem', { static: false }) objectivesElem !: ElementRef
   @ViewChild('descElem', { static: false }) descElem !: ElementRef

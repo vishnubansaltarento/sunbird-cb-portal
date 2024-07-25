@@ -26,7 +26,7 @@ export class AppTocCiosHomeComponent implements OnInit, AfterViewInit {
   @ViewChild('rightContainer', { static: false }) rcElement!: ElementRef
   scrollLimit: any
   scrolled: boolean | undefined
-
+  isMobile = false
   @HostListener('window:scroll', ['$event'])
   handleScroll() {
 
@@ -74,6 +74,11 @@ export class AppTocCiosHomeComponent implements OnInit, AfterViewInit {
   }
 
   ngOnInit() {
+    if (window.innerWidth <= 1200) {
+      this.isMobile = true
+    } else {
+      this.isMobile = false
+    }
   }
 
   handleCapitalize(str: string, type?: string): string {
