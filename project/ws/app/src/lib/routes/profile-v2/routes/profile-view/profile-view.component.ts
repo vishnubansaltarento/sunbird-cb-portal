@@ -243,7 +243,7 @@ export class ProfileViewComponent implements OnInit, AfterViewInit, OnDestroy {
 
     this.pageData = this.route.parent && this.route.parent.snapshot.data.pageData.data
     this.currentUser = this.configService && this.configService.userProfile
-    if(this.configService && this.configService.userRoles) {
+    if (this.configService && this.configService.userRoles) {
       this.isMentor = this.configService.userRoles.has('MENTOR') ? true : false
     }
     this.route.queryParams.subscribe((params: Params) => {
@@ -1246,6 +1246,6 @@ export class ProfileViewComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   viewMentorProfile() {
-    window.open(`${environment.contentHost}/mentorship`,'_blank')
+    window.open(`${environment.contentHost}/mentorship`, '_blank')
   }
 }

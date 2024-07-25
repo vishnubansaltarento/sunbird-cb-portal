@@ -258,7 +258,7 @@ export class CardHubsListComponent extends WidgetBaseComponent
   }
 
   routeToMentorship() {
-    window.open(`${environment.contentHost}/mentorship`,'_blank')
+    window.open(`${environment.contentHost}/mentorship`, '_blank')
   }
 
   raiseTelemetry(name: any) {
