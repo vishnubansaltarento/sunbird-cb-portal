@@ -10,17 +10,17 @@
             </ng-container>
 
             <ng-container *ngIf="!skeletonLoader">
-            <div class="flex flex-row gap-2">
+            <!-- <div class="flex flex-row gap-2">
                 <div class="flex flex-row tag-div rounded-2xl gap-1 items-center p-2">
                 <mat-icon class="ws-mat-orange-text">video_library</mat-icon>
                 <!-- <ng-container *ngIf="content?.courseCategory">
                     <div class="text-xs font-bold text-white leading-3">{{ translateLabel(content?.courseCategory, 'searchfilters') }}</div>
-                </ng-container> -->
+                </ng-container> 
                 <ng-container *ngIf="extContentReadData?.topic">
                     <div class="text-xs font-bold text-white leading-3">{{ 'External Course' }}</div>
                 </ng-container>
                 </div>
-            </div>
+            </div> -->
             </ng-container>
 
             <!-- <div class="flex items-center text-white mob-share" *ngIf="canShare">
@@ -154,14 +154,14 @@
             <div class="flex flex-col image-div" [ngStyle]="{
         'background-image': 'url(' + extContentReadData?.appIcon + ')', 'background-repeat': 'no-repeat', 'background-size': 'cover'}" [ngClass]="{'image-backdrop': scrolled}">
             <div class="flex flex-col justify-between text-container">
-                <div class="flex items-center gap-4 justify-between" [ngClass]="{'justify-between': scrolled, 'justify-end': !scrolled}">
+                <!-- <div class="flex items-center gap-4 justify-between" [ngClass]="{'justify-between': scrolled, 'justify-end': !scrolled}">
                     <div class="flex flex-row tag-div rounded-2xl gap-1 items-center p-2" *ngIf="scrolled">
                         <mat-icon class="ws-mat-orange-text">video_library</mat-icon>
                         <ng-container *ngIf="!extContentReadData?.courseCategory">
                         <div class="text-xs font-bold text-white leading-3">{{ 'External Course'  }}</div>
                         </ng-container>
                     </div>
-                </div>
+                </div> -->
                 <div class="flex flex-col gap-1" *ngIf="scrolled">
                 <div class="text-xl leading-6 text-white font-bold">{{ handleCapitalize(extContentReadData?.name) }}
                 </div>
