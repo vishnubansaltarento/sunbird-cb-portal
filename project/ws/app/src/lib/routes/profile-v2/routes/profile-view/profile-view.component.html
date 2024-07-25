@@ -620,8 +620,11 @@
           <div class="name">{{ portalProfile?.personalDetails?.firstname | titlecase}}</div>
           <mat-icon class="profile-verified-check" *ngIf="portalProfile?.profileStatus === 'VERIFIED'">check_circle</mat-icon>
           <mat-icon class="cursor-pointer" *ngIf="isCurrentUser" (click)="editName = !editName">edit</mat-icon>
+          <div *ngIf="isMentor" class="blue-bg-mentor">
+            Mentor
+          </div>
         </div>
-        <div class="flex flex-row gap-2 items-center make-transfer-div" (click)="viewMentorProfile()">
+        <div *ngIf="isMentor" class="flex flex-row gap-2 items-center view-mentor-profile" (click)="viewMentorProfile()">
           <div class="text-sm blue-background-outline">
             {{ 'profileInfo.viewMentorProfile' | translate }}
           </div>          
@@ -671,7 +674,14 @@
                     <!-- <mat-icon [matTooltipPosition]="'below'" #wTooltip="matTooltip"  matTooltip="If you choose to withdraw your transfer request, your transfer request will get cancelled" (click)="wTooltip.toggle()">info_outline</mat-icon> -->
                   </div>
                 </ng-container>
+                
               </ng-container>
+             
+            </div>
+            <div *ngIf="isMentor" class="flex flex-row gap-2 items-center view-mentor-profile-mob" (click)="viewMentorProfile()">
+              <div class="text-sm blue-background-outline">
+                {{ 'profileInfo.viewMentorProfile' | translate }}
+              </div>          
             </div>
           </div>
         </ng-container>
