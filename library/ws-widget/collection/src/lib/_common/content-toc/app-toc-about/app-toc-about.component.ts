@@ -210,22 +210,22 @@ export class AppTocAboutComponent implements OnInit, OnChanges, AfterViewInit, O
     if (changes.selectedTabValue && changes.selectedTabValue.currentValue === 0) {
       setTimeout(() => {
         if (!this.isMobile) {
-          if (this.summaryElem.nativeElement.offsetHeight > 72) {
+          if (this.summaryElem && this.summaryElem.nativeElement.offsetHeight > 72) {
             this.summary.ellipsis = true
           }
 
-          if (this.descElem.nativeElement.offsetHeight > 72) {
+          if (this.descElem && this.descElem.nativeElement.offsetHeight > 72) {
             this.description.ellipsis = true
           }
           if (this.objectivesElem && this.objectivesElem.nativeElement.offsetHeight > 72) {
             this.objectives.ellipsis = true
           }
         } else {
-          if (this.summaryElem.nativeElement.offsetHeight > 48) {
+          if (this.summaryElem && this.summaryElem.nativeElement.offsetHeight > 48) {
             this.summary.ellipsis = true
           }
 
-          if (this.descElem.nativeElement.offsetHeight > 48) {
+          if (this.descElem && this.descElem.nativeElement.offsetHeight > 48) {
             this.description.ellipsis = true
           }
           if (this.objectivesElem && this.objectivesElem.nativeElement.offsetHeight > 48) {
