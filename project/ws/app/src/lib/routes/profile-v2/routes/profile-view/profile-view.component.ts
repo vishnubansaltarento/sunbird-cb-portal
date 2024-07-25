@@ -648,8 +648,6 @@ export class ProfileViewComponent implements OnInit, AfterViewInit, OnDestroy {
             const dialogRef = this.dialog.open(ConfirmDialogComponent, {
               data: {
                 title: ' ',
-                message: 'Only whitelisted government email domains are allowed for Email ID Changes.',
-                subMessage: 'Please reach out to the MDO Admin, if you are not able to change the Email ID.',
                 from: 'approvedDomain',
                 acceptButton: 'OK',
                 width: '60%',
