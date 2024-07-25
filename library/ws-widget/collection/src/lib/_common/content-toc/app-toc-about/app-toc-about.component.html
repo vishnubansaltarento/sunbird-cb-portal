@@ -338,7 +338,7 @@
         </div>
     </ng-container>
 
-    <ng-container *ngIf="!skeletonLoader && content?.searchTags">
+    <!-- <ng-container *ngIf="!skeletonLoader && content?.searchTags">
         <div class="flex flex-col" *ngIf="content?.searchTags.length">
             <div class="mat-subheading-1">{{ 'userProfile.tags' | translate }}</div>
             <ng-container *ngIf="content?.searchTags.length">
@@ -358,7 +358,7 @@
                 {{ 'userProfile.noTags' | translate }}
             </div>
         </div>
-    </ng-container>
+    </ng-container> -->
 
     <div class="mobile-karma-points">
         <ws-widget-karma-points [btnCategory]="" [condition]="condition" (clickClaimKarmaPoints)="handleClickOfClaim($event)" [data]="kparray">
