@@ -299,7 +299,12 @@
             </div>
           </div>
         </div>
-  
+        <div class="flex flex-col info-div note-value" *ngIf="editDetails">
+          <span class="info-value">{{'Note' }}</span>
+          <div class="label">{{'1. Email Id update is allowed for whitelisted goverment email IDs only. If user is not able to update, please rech out to MDO Admin.'}}</div>
+          <div class="label">{{'2. If a user want to access their Certificates on Digilocker, please make sure the Mobile Number matches on both platform.'}}</div>
+        </div>
+
         <form [formGroup]="otherDetailsForm">
           <div class="flex flex-col gap-6 sm:gap-8">
             <div class="grid-container">
