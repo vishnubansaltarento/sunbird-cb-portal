@@ -76,7 +76,7 @@
     </div>
 </ng-template>
 
-<div class="flex flex-col gap-10 my-4 px-4" [class.mt60]="sticky">
+<div class="flex flex-col my-4 px-4" [class.mt60]="sticky" [ngClass]="isMobile ? '' : 'gap-10'">
     
     <ng-container *ngIf="content?.completionStatus === 2 || content?.certificateObj?.certData">
         <div class="certificate-container" *ngIf="!skeletonLoader">
@@ -181,7 +181,7 @@
                 <ws-widget-skeleton-loader [width]="'60px'" [height]="'60px'" [bindingClass]="'rounded'"></ws-widget-skeleton-loader>
             </div>
         </ng-container>
-        <ng-container *ngIf="!skeletonLoader">
+        <ng-container *ngIf="!skeletonLoader && !fromMarketPlace">
             <ws-widget-toc-kpi-values [content]="content" [tocStructure]="tocStructure"
                 [isMobile]="isMobile"></ws-widget-toc-kpi-values>
         </ng-container>
@@ -403,7 +403,7 @@
         </div>
     </ng-container>
 
-    <ng-container *ngIf="!skeletonLoader">
+    <ng-container *ngIf="!skeletonLoader && !fromMarketPlace">
         <div class="flex flex-column gap-3" [ngClass]="{'hideAbove1200': !router.url.includes('/viewer/')}" >
             <div class="text-base font-bold">{{ 'apptocsinglepage.authorsAndCurators' | translate }}</div>
             <div class="flex flex-col gap-4">
