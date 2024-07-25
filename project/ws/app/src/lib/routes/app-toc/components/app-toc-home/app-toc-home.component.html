@@ -219,8 +219,8 @@
       <!-- INVITE ONLY STANDALONE ASSESSMENT block-->      
       <ng-container
         *ngIf="content?.primaryCategory === primaryCategory.STANDALONE_ASSESSMENT && !batchData?.enrolled && !enrollBtnLoading && content?.courseCategory === 'Invite-Only Assessment'">
-        
-          <ng-container *ngIf="!forPreview || isInIFrame; else authView" i18n>
+    
+          <ng-container *ngIf="!forPreview || isInIFrame; else authViewForInviteOnlyAssessment" i18n>
             <span class="font-bold shadow-lg text-info-div" i18n>{{ 'apptochome.youAreNotInvitedForAssessment' | translate }} </span>
           </ng-container>
       </ng-container>
@@ -409,8 +409,14 @@
         <ws-widget-content-toc [content]="content" [componentName]="'toc'"  [pathSet]="pathSet" [tocStructure]="tocStructure" 
         [forPreview]="false" [resumeData]="resumeData" [batchData]="selectedBatchData" [skeletonLoader]="skeletonLoader" 
         [changeTab]="changeTab" [hierarchyMapData]="tocSvc?.hashmap" [selectedBatchData]="selectedBatchData" [condition]="{isPostAssessment: isPostAssessment, content: content, isAcbpCourse: isAcbpCourse, isClaimed: isClaimed, monthlyCapExceed: monthlyCapExceed, isCompletedThisMonth: isCompletedThisMonth, showTakeAssessment: showTakeAssessment, userEnrollmentList: userEnrollmentList, resumeData: resumeData, userRating: userRating, enrollBtnLoading: enrollBtnLoading, primaryCategory: primaryCategory, currentCourseBatchId: currentCourseBatchId, isAcbpClaim: isAcbpClaim}" [kparray]="kparray"></ws-widget-content-toc>
+        <div class="mob-tip-for-learner">
+          <div *ngIf="learnAdvisoryData && learnAdvisoryData?.length">
+            <ws-widget-tips-for-learner-card [learnAdvisoryData]="learnAdvisoryData"></ws-widget-tips-for-learner-card>
+        </div>
+        </div>
       </div>
     </div>
+    
 
     <div class="right-container" >
       <div class="right-content" #rightContainer>
@@ -621,33 +627,10 @@
           </ng-container>
         </div>
       </div>
-      <div class="tips-container" >
-        <div class="circle-box">
-            <div class="background-circle">
-                <!-- circle -->
-            </div>
-        </div>
-        <div class="tips-header">
-            <h3>Tips for Learners</h3>
-            <!-- <button (click)="showAllTips()">Show all ></button> -->
-            <div class="ml-4 pl-2 view-more ws-mat-default-text ng-star-inserted">
-              <a class="flex ws-mat-default-text items-center justify-center mat-body-1 cursor-pointer" (click)="showAllTips()">
-                  <span class="ws-mat-default-text">{{ 'msg.showAll' | translate }}</span>
-                  <mat-icon class="ws-mat-default-text mat-icon" color="accent" role="img" aria-hidden="true">navigate_next</mat-icon>
-              </a>
-          </div>
-        </div>
-        <div class="tip-content">
-            <div class ="background">
-            <img  class="book-icon" src="assets/icons/learner-advisory/use-gyaan-karmayogi.png"
-                alt="Use the new section Gyaan Karmayogi regularly, to go over case studies and other learning material.">
-            </div>    
-            <p>{{'learnerAdvisory.useGyaanKarmayogi' | translate}}</p>
-            <div class="tip-count">
-                1/13
-            </div>
-        </div>
-    </div>
+
+    <div *ngIf="learnAdvisoryData && learnAdvisoryData?.length">
+      <ws-widget-tips-for-learner-card [learnAdvisoryData]="learnAdvisoryData"></ws-widget-tips-for-learner-card>
+  </div>
       </div>
 
      
@@ -685,3 +668,12 @@
 </ng-template>
 
 <ng-template #authView i18n>{{'apptochome.view' | translate}}</ng-template>
+<ng-template #authViewForInviteOnlyAssessment i18n>
+  <ng-container
+        *ngIf="forPreview && content?.courseCategory === 'Invite-Only Assessment'">        
+        <a class="flex action-button justify-center resume" [routerLink]="firstResourceLink?.url"
+          [queryParams]="(resumeData && !certData) ? generateQuery('RESUME') : generateQuery('START')">          
+          <ng-container>{{ 'apptochome.takeTest' | translate }}</ng-container>
+        </a>
+      </ng-container>
+</ng-template>

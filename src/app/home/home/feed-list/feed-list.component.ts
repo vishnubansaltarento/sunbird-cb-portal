@@ -63,4 +63,5 @@ export class FeedListComponent implements OnInit {
       }
     )
   }
+
 }
