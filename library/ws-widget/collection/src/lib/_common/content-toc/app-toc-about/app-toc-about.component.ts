@@ -189,7 +189,7 @@ export class AppTocAboutComponent implements OnInit, OnChanges, AfterViewInit, O
       this.loadCompetencies()
     }
 
-    if (this.content && this.content.contentId.includes('ext_')) {
+    if (this.content && this.content.contentId && this.content.contentId.includes('ext_')) {
       this.loadCompetencies()
     }
 
@@ -217,7 +217,7 @@ export class AppTocAboutComponent implements OnInit, OnChanges, AfterViewInit, O
           if (this.descElem.nativeElement.offsetHeight > 72) {
             this.description.ellipsis = true
           }
-          if (this.objectivesElem.nativeElement.offsetHeight > 72) {
+          if (this.objectivesElem && this.objectivesElem.nativeElement.offsetHeight > 72) {
             this.objectives.ellipsis = true
           }
         } else {
@@ -228,7 +228,7 @@ export class AppTocAboutComponent implements OnInit, OnChanges, AfterViewInit, O
           if (this.descElem.nativeElement.offsetHeight > 48) {
             this.description.ellipsis = true
           }
-          if (this.objectivesElem.nativeElement.offsetHeight > 48) {
+          if (this.objectivesElem && this.objectivesElem.nativeElement.offsetHeight > 48) {
             this.objectives.ellipsis = true
           }
         }
