@@ -68,7 +68,6 @@ export class AppTocCiosHomeComponent implements OnInit, AfterViewInit {
         this.userExtCourseEnroll = data.userEnrollContent.data.result
         if (this.userExtCourseEnroll.completionpercentage === 100) {
           this.extContentReadData['completionStatus'] = 2
-          console.log('userExtCourseEnroll', this.userExtCourseEnroll)
           this.downloadCert()
         }
       }
@@ -129,7 +128,7 @@ export class AppTocCiosHomeComponent implements OnInit, AfterViewInit {
   async getUserContentEnroll(contentId: any) {
     const enrollRes = await this.contentSvc.fetchExtUserContentEnroll(contentId).toPromise().catch(_error => {})
     if (enrollRes && enrollRes.result  && Object.keys(enrollRes.result).length > 0) {
-      this.userExtCourseEnroll = enrollRes.result      
+      this.userExtCourseEnroll = enrollRes.result
       this.loader.changeLoad.next(false)
       this.snackBar.open('Successfully enrolled in the course.')
     } else {
@@ -144,13 +143,13 @@ export class AppTocCiosHomeComponent implements OnInit, AfterViewInit {
     this.certSvc.downloadCertificate_v2(this.userExtCourseEnroll.issued_certificates[0].identifier).toPromise().catch(_error => {})
     if (certRes && Object.keys(certRes.result).length > 0) {
       this.downloadCertificateLoading = false
-      if(this.userExtCourseEnroll.issued_certificates[0]) {
+      if (this.userExtCourseEnroll.issued_certificates[0]) {
         this.extContentReadData['certificateObj'] = {
           data: this.userExtCourseEnroll.issued_certificates[0],
           certData: certRes.result.printUri,
           certId: this.userExtCourseEnroll.issued_certificates[0].identifier,
         }
-      }     
+      }
     } else {
       this.downloadCertificateLoading = false
     }
