@@ -104,17 +104,17 @@
               </ng-container>
             </a>
           </ng-container>
-          <ng-container *ngIf="(userExtCourseEnroll | json) !== '{}' && userExtCourseEnroll.issued_certificates?.length > 0 
+          <!-- <ng-container *ngIf="(userExtCourseEnroll | json) !== '{}' && userExtCourseEnroll.issued_certificates?.length > 0 
             && userExtCourseEnroll.progress === 100">
             <button class="flex action-button justify-center flex-middle resume" type="button" (click)="downloadCert()">
-                <!-- <img src="fusion-assets/images/certificate-ico.svg" width="24" height="24"> -->
+                <!-- <img src="fusion-assets/images/certificate-ico.svg" width="24" height="24"> 
                 <span>Certificate</span>
                 <mat-icon  *ngIf="!downloadCertificateLoading" class="ml-2">arrow_downward</mat-icon>
                 <div class="center flex flex-middle certificate-loader margin-left-s" *ngIf="downloadCertificateLoading">
                     <mat-spinner strokeWidth="2" stroke="'white'" class="white-spinner" [diameter]="24"></mat-spinner>
                   </div>
             </button>
-        </ng-container> 
+        </ng-container>  -->
     </div>
     <div>
         <div class="flex flex-col px-8 py-4 gap-2" *ngIf="extContentReadData?.duration > 0">
@@ -139,7 +139,7 @@
                 </div>
             </ng-container>
             <ng-container *ngIf="!skeletonLoader">
-                <ws-widget-app-toc-about [content]="extContentReadData" [fromMarketPlace]="true"></ws-widget-app-toc-about>
+                <ws-widget-app-toc-about [content]="extContentReadData" [fromMarketPlace]="true" [skeletonLoader]="skeletonLoader"></ws-widget-app-toc-about>
             </ng-container>
             
         </div>
@@ -199,17 +199,17 @@
                   </ng-container>
                 </a>
               </ng-container>
-              <ng-container *ngIf="(userExtCourseEnroll | json) !== '{}' && userExtCourseEnroll.issued_certificates?.length > 0 
+              <!-- <ng-container *ngIf="(userExtCourseEnroll | json) !== '{}' && userExtCourseEnroll.issued_certificates?.length > 0 
                 && userExtCourseEnroll.progress === 100">
                 <button class="flex action-button justify-center flex-middle resume" type="button" (click)="downloadCert()">
-                    <!-- <img src="fusion-assets/images/certificate-ico.svg" width="24" height="24"> -->
+                    <!-- <img src="fusion-assets/images/certificate-ico.svg" width="24" height="24"> 
                     <span>Certificate</span>
                     <mat-icon  *ngIf="!downloadCertificateLoading" class="ml-2">arrow_downward</mat-icon>
                     <div class="center flex flex-middle certificate-loader margin-left-s" *ngIf="downloadCertificateLoading">
                         <mat-spinner strokeWidth="2" stroke="'white'" class="white-spinner" [diameter]="24"></mat-spinner>
                       </div>
                 </button>
-            </ng-container> 
+            </ng-container>  -->
         </div>
         <div>
             <div class="flex flex-col kpi-values items-center gap-2" *ngIf="extContentReadData?.duration > 0">
