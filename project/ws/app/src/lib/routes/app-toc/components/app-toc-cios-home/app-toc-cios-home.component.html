@@ -81,7 +81,7 @@
 </div>
 <div *ngIf="isMobile">
     <ng-container  *ngIf="(userExtCourseEnroll | json) !== '{}' && userExtCourseEnroll.issued_certificates?.length ===  0 
-    && userExtCourseEnroll.progress === 100">
+    && userExtCourseEnroll?.progress === 100">
     <div class="no-certificate-found mt-2 mb-2 mx-2">
      <div> 
       <p>Progress and certificates for Cornell courses are visible only after you complete the course and pass the assessment.</p></div>
@@ -114,7 +114,7 @@
           <!-- <ng-container *ngIf="(userExtCourseEnroll | json) !== '{}' && userExtCourseEnroll.issued_certificates?.length > 0 
             && userExtCourseEnroll.progress === 100">
             <button class="flex action-button justify-center flex-middle resume" type="button" (click)="downloadCert()">
-                <!-- <img src="fusion-assets/images/certificate-ico.svg" width="24" height="24"> 
+                 <img src="fusion-assets/images/certificate-ico.svg" width="24" height="24"> 
                 <span>Certificate</span>
                 <mat-icon  *ngIf="!downloadCertificateLoading" class="ml-2">arrow_downward</mat-icon>
                 <div class="center flex flex-middle certificate-loader margin-left-s" *ngIf="downloadCertificateLoading">
@@ -207,7 +207,7 @@
                 </a>
               </ng-container>
               <ng-container  *ngIf="(userExtCourseEnroll | json) !== '{}' && userExtCourseEnroll.issued_certificates?.length ===  0 
-              && userExtCourseEnroll.progress === 100">
+              && userExtCourseEnroll?.progress === 100">
               <div class="no-certificate-found">
                <div> 
                 <p>Progress and certificates for Cornell courses are visible only after you complete the course and pass the assessment.</p></div>
@@ -216,7 +216,7 @@
               <!-- <ng-container *ngIf="(userExtCourseEnroll | json) !== '{}' && userExtCourseEnroll.issued_certificates?.length > 0 
                 && userExtCourseEnroll.progress === 100">
                 <button class="flex action-button justify-center flex-middle resume" type="button" (click)="downloadCert()">
-                    <!-- <img src="fusion-assets/images/certificate-ico.svg" width="24" height="24"> 
+                    <img src="fusion-assets/images/certificate-ico.svg" width="24" height="24"> 
                     <span>Certificate</span>
                     <mat-icon  *ngIf="!downloadCertificateLoading" class="ml-2">arrow_downward</mat-icon>
                     <div class="center flex flex-middle certificate-loader margin-left-s" *ngIf="downloadCertificateLoading">
