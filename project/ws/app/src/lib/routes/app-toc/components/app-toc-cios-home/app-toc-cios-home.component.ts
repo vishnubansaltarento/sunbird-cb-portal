@@ -143,7 +143,8 @@ export class AppTocCiosHomeComponent implements OnInit, AfterViewInit {
     this.certSvc.downloadCertificate_v2(this.userExtCourseEnroll.issued_certificates[0].identifier).toPromise().catch(_error => {})
     if (certRes && Object.keys(certRes.result).length > 0) {
       this.downloadCertificateLoading = false
-      if (this.userExtCourseEnroll.issued_certificates && this.userExtCourseEnroll.issued_certificates.length && this.userExtCourseEnroll.issued_certificates[0]) {
+      if (this.userExtCourseEnroll.issued_certificates && this.userExtCourseEnroll.issued_certificates.length
+        && this.userExtCourseEnroll.issued_certificates[0]) {
         this.extContentReadData['certificateObj'] = {
           data: this.userExtCourseEnroll.issued_certificates[0],
           certData: certRes.result.printUri,
