@@ -4,9 +4,8 @@ import { TranslateService } from '@ngx-translate/core'
 import { CommonMethodsService } from '@sunbird-cb/consumption'
 import { ConfigurationsService, MultilingualTranslationsService, WidgetContentService } from '@sunbird-cb/utils-v2'
 import { LoaderService } from '@ws/author/src/public-api'
-import { MatDialog, MatSnackBar } from '@angular/material'
+import { MatSnackBar } from '@angular/material'
 import { CertificateService } from '../../../certificate/services/certificate.service'
-import { CertificateDialogComponent } from '@sunbird-cb/collection/src/lib/_common/certificate-dialog/certificate-dialog.component'
 
 @Component({
   selector: 'ws-app-app-toc-cios-home',
@@ -52,17 +51,25 @@ export class AppTocCiosHomeComponent implements OnInit, AfterViewInit {
               private langtranslations: MultilingualTranslationsService,
               private contentSvc: WidgetContentService,
               private certSvc: CertificateService,
-              private dialog: MatDialog,
               public loader: LoaderService,
               public snackBar: MatSnackBar
   ) {
     this.route.data.subscribe((data: any) => {
       if (data && data.extContent && data.extContent.data && data.extContent.data.content) {
         this.extContentReadData = data.extContent.data.content
+        this.extContentReadData['certificateObj'] = {
+          data: {},
+        }
         this.skeletonLoader = false
       }
-      if (data && data.userEnrollContent && data.userEnrollContent.data && data.userEnrollContent.data.result) {
+      if (data && data.userEnrollContent && data.userEnrollContent.data && data.userEnrollContent.data.result &&
+        Object.keys(data.userEnrollContent.data.result).length > 0
+      ) {
         this.userExtCourseEnroll = data.userEnrollContent.data.result
+        if (this.userExtCourseEnroll.completionpercentage === 100) {
+          this.extContentReadData['completionStatus'] = 2
+          this.downloadCert()
+        }
       }
     })
 
@@ -132,17 +139,17 @@ export class AppTocCiosHomeComponent implements OnInit, AfterViewInit {
 
   async downloadCert() {
     this.downloadCertificateLoading = true
-    const certData = this.userExtCourseEnroll.issued_certificates
-    const certRes: any = await this.certSvc.downloadCertificate_v2(certData[0].identifier).toPromise().catch(_error => {})
+    const certRes: any = await
+    this.certSvc.downloadCertificate_v2(this.userExtCourseEnroll.issued_certificates[0].identifier).toPromise().catch(_error => {})
     if (certRes && Object.keys(certRes.result).length > 0) {
       this.downloadCertificateLoading = false
-      this.dialog.open(CertificateDialogComponent, {
-        width: '1300px',
-        data: { cet: certRes.result.printUri , certId: certData[0].identifier },
-      })
+      this.extContentReadData['certificateObj'] = {
+        data: this.userExtCourseEnroll.issued_certificates[0],
+        certData: certRes.result.printUri,
+        certId: this.userExtCourseEnroll.issued_certificates[0].identifier,
+      }
     } else {
       this.downloadCertificateLoading = false
-      this.snackBar.open('Unable to get the certificate. Try again after sometime.')
     }
   }
 }
