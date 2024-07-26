@@ -251,7 +251,7 @@
             </div>
         </ng-container>
         <ng-container *ngIf="!skeletonLoader">
-            <div class="mat-subheading-1 font-bold">{{ 'apptocsinglepage.objectives' | translate }}</div>
+            <div class="mat-subheading-1 font-bold py-2">{{ 'apptocsinglepage.objectives' | translate }}</div>
             <div [ngClass]="{'mob-desc-ellipsis': objectives.ellipsis && isMobile, 'desc-ellipsis': objectives.ellipsis && !isMobile}" #objectivesElem>
                 <span class="mob-text" [innerHtml]="handleCapitalize(content?.objectives)"></span>
                 <div class="ws-mat-default-text font-bold cursor-pointer text-sm" *ngIf="objectives.viewLess" (click)="objectives.ellipsis = !objectives.ellipsis; objectives.viewLess = !objectives.viewLess">&nbsp;{{ 'apptocsinglepage.viewLess' | translate }}</div>

@@ -80,6 +80,13 @@
     </div>
 </div>
 <div *ngIf="isMobile">
+    <ng-container  *ngIf="(userExtCourseEnroll | json) !== '{}' && userExtCourseEnroll.issued_certificates?.length ===  0 
+    && userExtCourseEnroll.progress === 100">
+    <div class="no-certificate-found mt-2 mb-2 mx-2">
+     <div> 
+      <p>Progress and certificates for Cornell courses are visible only after you complete the course and pass the assessment.</p></div>
+    </div>
+  </ng-container>
     <div class="flex flex-col gap-4 p-5 border-bottom position-bottom">
         <!-- <ng-container *ngIf="(userExtCourseEnroll | json) !== '{}'">
             <div class="flex flex-row justify-end w-full ws-mat-black-text">
@@ -103,7 +110,8 @@
                 <mat-icon class="ml-2 ws-mat-white-text">open_in_new</mat-icon>
               </ng-container>
             </a>
-          </ng-container>
+          </ng-container>  
+               
           <ng-container *ngIf="(userExtCourseEnroll | json) !== '{}' && userExtCourseEnroll.issued_certificates?.length > 0 
             && userExtCourseEnroll.progress === 100">
             <button class="flex action-button justify-center flex-middle resume" type="button" (click)="downloadCert()">
@@ -199,6 +207,13 @@
                   </ng-container>
                 </a>
               </ng-container>
+              <ng-container  *ngIf="(userExtCourseEnroll | json) !== '{}' && userExtCourseEnroll.issued_certificates?.length ===  0 
+              && userExtCourseEnroll.progress === 100">
+              <div class="no-certificate-found">
+               <div> 
+                <p>Progress and certificates for Cornell courses are visible only after you complete the course and pass the assessment.</p></div>
+              </div>
+            </ng-container>
               <ng-container *ngIf="(userExtCourseEnroll | json) !== '{}' && userExtCourseEnroll.issued_certificates?.length > 0 
                 && userExtCourseEnroll.progress === 100">
                 <button class="flex action-button justify-center flex-middle resume" type="button" (click)="downloadCert()">
