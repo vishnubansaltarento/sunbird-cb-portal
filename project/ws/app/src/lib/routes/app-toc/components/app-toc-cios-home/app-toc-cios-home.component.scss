@@ -835,4 +835,27 @@ ul{
   position: fixed;
   width: 88%;
   bottom: 0;
+  z-index: 99;
+}
+
+.no-certificate-found {
+  border: 1px solid #ccc;
+  border-color: rgb(243, 150, 47);
+  background-color: rgb(252, 238, 219);
+  border-radius: 12px;
+}
+
+.no-certificate-found {
+  padding: 16px;
+ 
+  min-height: 56px;
+}
+
+.truncate-5 {
+  -webkit-line-clamp: 1;
+  text-overflow: ellipsis;
+  overflow: hidden;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  word-wrap: break-word;
 }
