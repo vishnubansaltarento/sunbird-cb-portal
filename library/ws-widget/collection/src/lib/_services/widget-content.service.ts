@@ -470,6 +470,7 @@ export class WidgetContentService {
   }
 
   async getResourseLink(content: any) {
+    debugger
     const enrolledCourseData: any = this.getEnrolledData(content.identifier)
     if (enrolledCourseData) {
       if (enrolledCourseData && enrolledCourseData.content && enrolledCourseData.content.status &&
@@ -560,6 +561,10 @@ export class WidgetContentService {
     }
     if (content.endDate) {
       urlData.queryParams = { ...urlData.queryParams, planType: 'cbPlan', endDate: content.endDate }
+    }
+    if (content.contentId && content.contentId.includes('ext_')) {
+      urlData.url = `/app/toc/ext/${content.contentId}`
+      urlData.queryParams = {}
     }
     return urlData
   }
