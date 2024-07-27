@@ -142,7 +142,7 @@
                                         {{ content?.lastUpdatedOn | date: 'dd-MMM-yyyy' }}
                                     </li>
                                     <li *ngIf="content?.duration">
-                                        <img src="/assets/icons/content/separator.svg"> {{ content?.duration | pipeDurationTransform: 'hms' }}
+                                        <img src="/assets/icons/content/separator.svg"> {{ checkForCiosDuration(content) | pipeDurationTransform: 'hms' }}
                                     </li>
                                     <!-- <li><img src="/assets/icons/content/separator.svg">  Ratings</li> -->
                                 </ul>
