@@ -8,6 +8,7 @@ import { SearchApiService } from '../../search/apis/search-api.service'
 const API_END_POINTS = {
   SEARCH_V6: `/apis/proxies/v8/sunbirdigot/search`,
   SEARCH_V4: `/apis/proxies/v8/sunbirdigot/v4/search`,
+  SEARCH_EXT_CONTENT: `/apis/proxies/v8/cios/v1/search/content`,
 }
 
 @Injectable({
@@ -32,6 +33,9 @@ export class GbSearchService {
   }
   fetchSearchDataByCategory(request: any): Observable<any> {
     return this.http.post<any>(API_END_POINTS.SEARCH_V4, request)
+  }
+  fetchSearchDataforCios(request: any): Observable<any> {
+    return this.http.post<any>(API_END_POINTS.SEARCH_EXT_CONTENT, request)
   }
   public notifyOther(data: any) {
     if (data) {

@@ -38,6 +38,19 @@ export class LearnSearchComponent implements OnInit, OnChanges, OnDestroy {
       fuzzy: false,
     },
   }
+  extSearchRequestObject = {
+    filterCriteriaMap: {
+    },
+    requestedFields: [],
+    pageNumber: 0,
+    pageSize: 50,
+    facets: [
+      'topic',
+    ],
+    orderBy: 'createdOn',
+    orderDirection: 'desc',
+    searchString: '',
+  }
   totalResults: any
   defaultThumbnail = ''
   myFilters: any = []
@@ -374,7 +387,7 @@ export class LearnSearchComponent implements OnInit, OnChanges, OnDestroy {
         data.request.filters = { ...data.request.filters, 'secureSettings.organisation': orgId }
     }
     this.searchResults = []
-    this.searchSrvc.fetchSearchDataByCategory(data).subscribe((response: any) => {
+    this.searchSrvc.fetchSearchDataByCategory(data).subscribe(async (response: any) => {
       if (response && response.result && response.result.count) {
         response.result.content.forEach((res: any) => {
           if (res.courseCategory === NsContent.ECourseCategory.MODERATED_COURSE ||
@@ -396,7 +409,14 @@ export class LearnSearchComponent implements OnInit, OnChanges, OnDestroy {
         })
         this.searchResults = response.result.content
       }
-      this.totalResults = response.result.count
+      this.extSearchRequestObject.searchString = data.request.query
+      const resExtSearch = await this.searchSrvc.fetchSearchDataforCios(this.extSearchRequestObject).toPromise().catch(_error => {})
+        if (resExtSearch && resExtSearch.data && resExtSearch.data.length > 0) {
+          resExtSearch.data.forEach((ele: any) => {
+            this.searchResults.unshift(ele)
+          })
+        }
+      this.totalResults = (response.result.count) ? response.result.count : this.searchResults.length
       // this.facets = response.result.facets
       this.primaryCategoryType = []
       this.contentType = []
@@ -464,5 +484,12 @@ export class LearnSearchComponent implements OnInit, OnChanges, OnDestroy {
       {
         queryParams: urlData.queryParams,
       })
+  }
+
+  checkForCiosDuration(item: any) {
+    if (item && item.contentId && item.contentId.includes('ext_')) {
+      return item.duration * 60
+    }
+    return item.duration
   }
 }

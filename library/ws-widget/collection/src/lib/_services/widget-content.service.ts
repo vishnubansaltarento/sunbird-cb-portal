@@ -561,6 +561,10 @@ export class WidgetContentService {
     if (content.endDate) {
       urlData.queryParams = { ...urlData.queryParams, planType: 'cbPlan', endDate: content.endDate }
     }
+    if (content.contentId && content.contentId.includes('ext_')) {
+      urlData.url = `/app/toc/ext/${content.contentId}`
+      urlData.queryParams = {}
+    }
     return urlData
   }
   isBatchInProgress(batchData: any) {

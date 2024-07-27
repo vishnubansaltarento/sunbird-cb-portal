@@ -320,6 +320,11 @@
   }
 }
 
+.text-scrol-custom {
+  height: 200px;
+  overflow-y: auto;
+}
+
 @media screen and (max-width: 1000px) {
   .confirmation-modal, .enroll-modal {
     max-width: 90vw !important;
