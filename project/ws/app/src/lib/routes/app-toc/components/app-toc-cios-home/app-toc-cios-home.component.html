@@ -81,7 +81,7 @@
 </div>
 <div *ngIf="isMobile">
     <ng-container  *ngIf="(userExtCourseEnroll | json) !== '{}' && userExtCourseEnroll.issued_certificates?.length ===  0 
-    && userExtCourseEnroll?.progress === 100">
+    && userExtCourseEnroll?.progress <= 100">
     <div class="no-certificate-found mt-2 mb-2 mx-2">
      <div> 
       <p>Progress and certificates for Cornell courses are visible only after you complete the course and pass the assessment.</p></div>
@@ -146,7 +146,8 @@
                 </div>
             </ng-container>
             <ng-container *ngIf="!skeletonLoader">
-                <ws-widget-app-toc-about [content]="extContentReadData" [fromMarketPlace]="true" [skeletonLoader]="skeletonLoader"></ws-widget-app-toc-about>
+                <ws-widget-app-toc-about [showMarketPlaceCertificate]="(userExtCourseEnroll | json) !== '{}' && userExtCourseEnroll.issued_certificates?.length >  0 
+                && userExtCourseEnroll?.progress === 100" [content]="extContentReadData" [fromMarketPlace]="true" [skeletonLoader]="skeletonLoader"></ws-widget-app-toc-about>
             </ng-container>
             
         </div>
@@ -207,7 +208,7 @@
                 </a>
               </ng-container>
               <ng-container  *ngIf="(userExtCourseEnroll | json) !== '{}' && userExtCourseEnroll.issued_certificates?.length ===  0 
-              && userExtCourseEnroll?.progress === 100">
+              && userExtCourseEnroll?.progress <= 100">
               <div class="no-certificate-found">
                <div> 
                 <p>Progress and certificates for Cornell courses are visible only after you complete the course and pass the assessment.</p></div>

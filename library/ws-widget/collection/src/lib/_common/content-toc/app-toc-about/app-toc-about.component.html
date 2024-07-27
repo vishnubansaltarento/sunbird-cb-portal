@@ -77,8 +77,35 @@
 </ng-template>
 
 <div class="flex flex-col my-4 px-4" [class.mt60]="sticky" [ngClass]="isMobile ? '' : 'gap-10'">
+    <ng-container *ngIf="(content?.completionStatus === 2 || content?.certificateObj?.certData) && !fromMarketPlace">
+        <div class="certificate-container" *ngIf="!skeletonLoader">
+            <div class="flex flex-row earned-certificate-container">
+                <div class="ribbon"></div>
+                <div class="certificate-background">
+                    <div class="p-4">
+                        <div class="earned-certificate">{{ 'apptocsinglepage.certificateEarned' | translate }}</div>
+                    </div>
+                    <div class="flex flex-col items-end">
+                        <ng-container [ngTemplateOutlet]="certificateCard"></ng-container>
+                    </div>
+                </div>
+            </div>
+        </div>
     
-    <ng-container *ngIf="content?.completionStatus === 2 || content?.certificateObj?.certData">
+        <div class="mobile-certificate-container" *ngIf="!skeletonLoader">
+            <div class="earned-certificate-container">
+                <div class="flex flex-row">
+                    <div class="ribbon"></div>
+                    <div class="earned-certificate">{{ 'apptocsinglepage.certificateEarned' | translate }}</div>
+                </div>
+               
+                <div class="certificate-background">
+                    <ng-container [ngTemplateOutlet]="certificateCard"></ng-container>
+                </div>
+            </div>
+        </div>
+    </ng-container>
+    <ng-container *ngIf="showMarketPlaceCertificate && fromMarketPlace">
         <div class="certificate-container" *ngIf="!skeletonLoader">
             <div class="flex flex-row earned-certificate-container">
                 <div class="ribbon"></div>
