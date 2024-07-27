@@ -470,7 +470,6 @@ export class WidgetContentService {
   }
 
   async getResourseLink(content: any) {
-    debugger
     const enrolledCourseData: any = this.getEnrolledData(content.identifier)
     if (enrolledCourseData) {
       if (enrolledCourseData && enrolledCourseData.content && enrolledCourseData.content.status &&
