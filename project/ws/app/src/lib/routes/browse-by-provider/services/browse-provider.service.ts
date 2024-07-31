@@ -52,5 +52,4 @@ export class BrowseProviderService {
     return this.http.get<NsContent.IContent>(apiUrl)
   }
 
-
 }
