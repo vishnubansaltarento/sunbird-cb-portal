@@ -9,6 +9,7 @@ export class TruncatePipe implements PipeTransform {
       return ''
     }
     const words = value.split(' ')
-    return words.length > limit ? (`${words.slice(0, limit).join(' ')}...`): value
+    const newWord = words.slice(0, limit).join(' ')
+    return words.length > limit ? (`${newWord}...`) : value
   }
 }
