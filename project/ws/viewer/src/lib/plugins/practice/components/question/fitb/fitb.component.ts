@@ -38,7 +38,7 @@ export class FillInTheBlankComponent implements OnInit, OnChanges, AfterViewInit
                 isCorrect: false,
             },
         ],
-        choices: {options: []}
+        choices: { options: [] },
     }
     @Input() primaryCategory = NsContent.EPrimaryCategory.PRACTICE_RESOURCE
     localQuestion: string = this.question.question
@@ -59,7 +59,7 @@ export class FillInTheBlankComponent implements OnInit, OnChanges, AfterViewInit
     ngOnInit() {
 
         this.practiceSvc.clearResponse.subscribe((questionId: any) => {
-            if(this.question.choices && this.question.choices.options && this.question.choices.options.length) {
+            if (this.question.choices && this.question.choices.options && this.question.choices.options.length > 1) {
                 for (let i = 0; i < (this.localQuestion.match(/select/g) || []).length; i += 1) {
                     if (questionId === this.question.questionId) {
                         const blank: HTMLInputElement = this.elementRef.nativeElement.querySelector(`#${this.question.questionId}${i}`)
@@ -74,7 +74,7 @@ export class FillInTheBlankComponent implements OnInit, OnChanges, AfterViewInit
                     }
                 }
             }
-            
+
         })
         if (this.primaryCategory === NsContent.EPrimaryCategory.PRACTICE_RESOURCE) {
             if (this.shCorrectAnsSubscription) {
@@ -97,10 +97,12 @@ export class FillInTheBlankComponent implements OnInit, OnChanges, AfterViewInit
     }
     onEntryInBlank(id: any) {
         const arr = []
-        if(this.question.choices && this.question.choices.options && this.question.choices.options.length) {
+        if (this.question.choices && this.question.choices.options && this.question.choices.options.length > 1) {
             for (let i = 0; i < (this.localQuestion.match(/select/g) || []).length; i += 1) {
                 const blank: HTMLInputElement = this.elementRef.nativeElement.querySelector(`#${this.question.questionId}${i}`)
-                arr.push(blank.value.trim())
+                if (blank && blank.value) {
+                    arr.push(blank.value.trim())
+                }
             }
         } else {
             for (let i = 0; i < (this.localQuestion.match(/matInput/g) || []).length; i += 1) {
@@ -109,7 +111,7 @@ export class FillInTheBlankComponent implements OnInit, OnChanges, AfterViewInit
             }
 
         }
-        
+
         this.update.emit(arr.join())
         if (this.primaryCategory === NsContent.EPrimaryCategory.PRACTICE_RESOURCE) {
             this.ifFillInTheBlankCorrect(id)
@@ -137,12 +139,15 @@ export class FillInTheBlankComponent implements OnInit, OnChanges, AfterViewInit
     }
     ngAfterViewInit(): void {
         if (this.question.questionType === 'ftb') {
-            if(this.question.choices && this.question.choices.options && this.question.choices.options.length) {
+            if (this.question.choices && this.question.choices.options && this.question.choices.options.length > 1) {
                 for (let i = 0; i < (this.localQuestion.match(/select/g) || []).length; i += 1) {
-                    console.log(this.question.questionId, i)
-                    this.elementRef.nativeElement
+                    if (this.elementRef.nativeElement
+                        .querySelector(`#${this.question.questionId}${i}`)) {
+                            this.elementRef.nativeElement
                         .querySelector(`#${this.question.questionId}${i}`)
                         .addEventListener('change', this.onChange.bind(this, this.question.questionId + i))
+                    }
+
                 }
             } else {
                 for (let i = 0; i < (this.localQuestion.match(/matInput/g) || []).length; i += 1) {
@@ -151,13 +156,12 @@ export class FillInTheBlankComponent implements OnInit, OnChanges, AfterViewInit
                         .addEventListener('change', this.onChange.bind(this, this.question.questionId + i))
                 }
             }
-            
+
         }
     }
 
     init() {
         if (this.question.questionType === 'ftb') {
-            console.log('this.localQuestion--', this.question.choices)
             // if (this.practiceSvc.questionAnswerHash.value && this.practiceSvc.questionAnswerHash.value[this.question.questionId]) {
             //     needToModify = false
             //     let value = this.practiceSvc.questionAnswerHash.value[this.question.questionId]
@@ -166,10 +170,10 @@ export class FillInTheBlankComponent implements OnInit, OnChanges, AfterViewInit
             // if (needToModify) {
             let value = (this.practiceSvc.questionAnswerHash.value[this.question.questionId] || '')
             value = value.toString().split(',')
-            console.log('value--', value)
             // tslint:disable-next-line
             let iterationNumber = (this.localQuestion.match(/_______________/g) || []).length
             let fromRichTextEditor = false
+            /* tslint:disable */
             for (let i = 0; i < iterationNumber; i += 1) {
                 // tslint:disable-next-line
                 if(this.localQuestion.includes('_______________') ) {
@@ -177,37 +181,38 @@ export class FillInTheBlankComponent implements OnInit, OnChanges, AfterViewInit
                 } else if (this.localQuestion.includes('input style="border-style:none none solid none"')) {
                     // tslint:disable-next-line
                     let totalBlank = (this.localQuestion.match(/input style="border-style:none none solid none"/g) || []).length
-                    if(this.question && this.question.choices && this.question.choices.options && this.question.choices.options.length) {
-                        for(let j=0; j< totalBlank;j++) {
-                            let selectBox = "<select id='select'"+j+"'>";
-                            for (var sel=0; sel<this.question.choices.options.length;sel++) {
-                                selectBox = selectBox + "<option value='"+this.question.choices.options[sel]['value']['value']+"'>"+this.question.choices.options[sel]['value']['body']+"</option>"
+                    if (this.question && this.question.choices &&
+                        this.question.choices.options && this.question.choices.options.length > 1) {
+                            /* tslint:disable */
+                        for (let j = 0; j < totalBlank; j++) {
+                            let selectBox = '<select id=\'select\'' + j + '\'>'
+                            /* tslint:disable */
+                            for (let sel = 0; sel < this.question.choices.options.length; sel++) {
+                                selectBox = selectBox + '<option value=\'' + this.question.choices.options[sel]['value']['body'] + '\'>' + this.question.choices.options[sel]['value']['body'] + '</option>'
                             }
-                            selectBox = selectBox+"</select>"
-                            console.log('selectBox', selectBox)      
-                        }     
+                            selectBox = selectBox + '</select>'
+                        }
                     }
-                    
+
                     this.localQuestion = this.localQuestion.replace('<input style="border-style:none none solid none" />', 'idMarkerForReplacement')
                 }
 
             }
             if (iterationNumber === 0) {
                 // replacing input tag forom richtext. new courses
-                console.log('this.localQuestion', this.localQuestion)
-                let totalBlank = (this.localQuestion.match(/input style="border-style:none none solid none"/g) || []).length
+                const totalBlank = (this.localQuestion.match(/input style="border-style:none none solid none"/g) || []).length
                 this.localQuestion = this.localQuestion.split('<input style="border-style:none none solid none" />')
                     .join('idMarkerForReplacement')
-                
-                if(this.question && this.question.choices && this.question.choices.options && this.question.choices.options.length) {
-                    for(let j=0; j< totalBlank;j++) {
-                    let selectBox = "<select id='select'"+j+"'>";
-                        for (var sel=0; sel<this.question.choices.options.length;sel++) {
-                            selectBox = selectBox + "<option value='"+this.question.choices.options[sel]['value']['value']+"'>"+this.question.choices.options[sel]['value']['body']+"</option>"
+
+                if (this.question && this.question.choices && this.question.choices.options && this.question.choices.options.length > 1) {
+                    for (let j = 0; j < totalBlank; j++) {
+                    let selectBox = '<select id=\'select\'' + j + '\'>'
+                        for (let sel = 0; sel < this.question.choices.options.length; sel++) {
+                            selectBox = selectBox + '<option value=\'' + this.question.choices.options[sel]['value']['body'] + '\'>' + this.question.choices.options[sel]['value']['body'] + '</option>'
                         }
-                        selectBox = selectBox+"</select>"
-                        console.log('selectBox', selectBox)      
-                    }  
+                        selectBox = selectBox + '</select>'
+                        // console.log('selectBox', selectBox)
+                    }
                 }
                 iterationNumber = (this.localQuestion.match(/idMarkerForReplacement/g) || []).length
                 fromRichTextEditor = true
@@ -222,23 +227,36 @@ export class FillInTheBlankComponent implements OnInit, OnChanges, AfterViewInit
                 }
             }
             let selectBox = ''
-            
+
             for (let i = 0; i < iterationNumber; i += 1) {
                 if (this.question.options.length > 0 || (fromRichTextEditor && iterationNumber > 0)) {
-                    if(this.question && this.question.choices && this.question.choices.options && this.question.choices.options.length) {                        
-                        selectBox = `<select id=${this.question.questionId}${i}>`;
-                        for (var sel=0; sel<this.question.choices.options.length;sel++) {
-                            let optionString = '';
-                            let selvalue = this.question.choices.options[sel]['value']['value']
-                            let label = this.question.choices.options[sel]['value']['body']
-                            let selected = value[i] && value[i] === this.question.choices.options[sel]['value']['value'] ? 'selected' : ''
-                            optionString = `<option value=${selvalue} selected=${selected}>${label}</option>`                            
-                            selectBox = selectBox + optionString
-                            // "<option value='"+this.question.choices.options[sel]['value']['value']+"'>"+this.question.choices.options[sel]['value']['body']+"</option>"
+                    if (this.question && this.question.choices && this.question.choices.options && this.question.choices.options.length > 1) {
+                        selectBox = `<mat-form-field appearance="none"><select matNativeControl style='padding: 8px 16px;
+                        margin: 5px;
+                        border-radius: 63px;
+                        border-color: #1b4ca1;
+                        width: auto;
+                        background: #fff;
+                        font-size: 14px; font-weight:700;
+                        font-family: 'Montserrat';' id=${this.question.questionId}${i}><option value=''>Choose Option</option>`
+                        for (let sel = 0; sel < this.question.choices.options.length; sel++) {
+                            let optionString = ''
+                            const selvalue = this.question.choices.options[sel]['value']['body']
+                            const label = this.question.choices.options[sel]['value']['body']
+                            const selected = (value[i] && value[i].toString() === selvalue.toString()) ? 'selected' : ''
+                            if (selected) {
+                                optionString = `<option value=${selvalue} selected=${selected}>${label}</option>`
+                                selectBox = selectBox + optionString
+                                break
+                            } else {
+                                optionString = `<option value=${selvalue}>${label}</option>`
+                                selectBox = selectBox + optionString
+                            }
+                            // "<option value='"+this.question.choices.options[sel]['value']['body']+"'>"+this.question.choices.options[sel]['value']['body']+"</option>"
                         }
-                        selectBox = selectBox+"</select>"
+                        selectBox = selectBox + '</select></mat-form-field>'
                         selectBox = selectBox.toString()
-                        console.log('selectBox', selectBox)
+                        // console.log('selectBox', selectBox)
                     }
                     // console.log('============>', i, this.question.options[i].text)
                     if (value[i]) {
@@ -277,7 +295,7 @@ export class FillInTheBlankComponent implements OnInit, OnChanges, AfterViewInit
                         )
                     }
                 }
-                console.log('this.localQuestion--', this.localQuestion)
+                // console.log('this.localQuestion--', this.localQuestion)
             }
         } else {
             for (let i = 0; i < (this.localQuestion.match(/matInput/g) ||

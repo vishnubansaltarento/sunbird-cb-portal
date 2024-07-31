@@ -44,7 +44,7 @@ export class QuestionComponent implements OnInit, OnChanges, AfterViewInit {
         isCorrect: false,
       },
     ],
-    choices: {options: []}
+    choices: { options: [] },
   }
   @Input() itemSelectedList: string[] = []
   @Input() markedQuestions: Set<string> = new Set()
