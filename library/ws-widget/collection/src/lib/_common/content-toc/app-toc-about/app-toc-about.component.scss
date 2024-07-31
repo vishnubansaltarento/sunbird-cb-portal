@@ -19,7 +19,7 @@
     font-size: 16px;
 }
 
-.desc { 
+.desc {
     ::ng-deep span {
         p {
             margin: 0px !important;
@@ -76,6 +76,15 @@
     }
 }
 
+.mob-text {
+    word-break: break-word;
+    white-space: normal;
+    //   word-wrap: break-word;
+    overflow-wrap: break-word;
+    text-align: left;
+    //   hyphens: auto;
+}
+
 .ratings-div {
     background-color: rgba(27, 76, 161, 0.08);
     padding: 24px;
@@ -112,7 +121,7 @@
         border-top: 1.5px solid rgba($color: #000000, $alpha: 0.16);
         margin: 16px 0px;
     }
-    
+
     .timer-label {
         font-size: 12px;
         padding: 4px 8px;
@@ -148,6 +157,7 @@
 }
 
 $title-line-count: 3;
+
 .text-ellipsis {
     white-space: break-spaces;
     position: relative;
@@ -165,6 +175,7 @@ $title-line-count: 3;
 }
 
 $mob-title-line-count: 2;
+
 .mob-desc-ellipsis {
     @extend .text-ellipsis;
     min-height: $mob-title-line-count * 24px;
@@ -283,7 +294,7 @@ $mob-title-line-count: 2;
         .ribbon {
             width: 52px;
             height: 56px;
-    
+
             &::after {
                 border-width: 4px 28px 24px 24px;
             }
@@ -354,7 +365,7 @@ $mob-title-line-count: 2;
     }
 
     .mobile-karma-points {
-        display: none;    
+        display: none;
     }
 }
 
@@ -403,7 +414,7 @@ $mob-title-line-count: 2;
         --mask: radial-gradient(16px at 16px 100%, #0000 98%, #000) -16px;
         -webkit-mask: var(--mask);
         mask: var(--mask);
-    
+
         .ceritificate-image {
             display: flex;
             max-width: 248px;
@@ -411,14 +422,14 @@ $mob-title-line-count: 2;
             width: 100%;
             border-radius: 8px;
         }
-    
+
         .icon {
             width: 20px;
             height: 20px;
             font-size: 20px;
             color: $text-primary;
         }
-    
+
         .certificate-info {
             border-bottom: 1px dashed rgba($color: #000000, $alpha: 0.08);
         }
