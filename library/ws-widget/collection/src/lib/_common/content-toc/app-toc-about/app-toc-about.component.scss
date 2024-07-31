@@ -73,6 +73,8 @@
 
     .mob-text {
         color: rgba($color: #000000, $alpha: 0.6);
+        word-wrap: break-word;
+        width: 100%;
     }
 }
 
@@ -283,8 +285,8 @@ $mob-title-line-count: 2;
 }
 
 .mobile-certificate-container {
-    margin-top: 20px;
-
+    margin-top: 10px;
+    margin-bottom: 20px;
     .earned-certificate-container {
         display: flex;
         flex-direction: column;
@@ -471,4 +473,13 @@ $mob-title-line-count: 2;
 
 .download-section {
     z-index: 99999;
+}
+
+.truncate-3 {
+    -webkit-line-clamp: 3;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    word-wrap: break-word;
 }

@@ -5,6 +5,7 @@ import { NsContentStripWithTabs } from '@sunbird-cb/consumption/lib/_common/cont
 
 import { BrowseProviderService } from '../../services/browse-provider.service'
 import { UtilityService } from '@sunbird-cb/utils-v2'
+import { environment } from 'src/environments/environment'
 
 @Component({
   selector: 'ws-app-provider-content-all',
@@ -21,6 +22,7 @@ export class ProviderContentAllComponent implements OnInit {
   originalContentlist: any = []
   isMobile = false
   requestData: any
+  selectedTab: any
   titles = [
     { title: 'Learn', url: '/page/learn', icon: 'school', disableTranslate: false },
     { title: `All Providers`, url: `/app/learn/browse-by/provider/all-providers`, icon: '', disableTranslate: false },
@@ -39,7 +41,6 @@ export class ProviderContentAllComponent implements OnInit {
     this.activatedRoute.params.subscribe(params => {
       this.providerName = params['provider']
       this.providerId = params['orgId']
-
       if (this.activatedRoute.snapshot.queryParams && this.activatedRoute.snapshot.queryParams.stripData) {
         const data  = JSON.parse(this.activatedRoute.snapshot.queryParams.stripData)
         this.isMobile = this.utilitySvc.isMobile || false
@@ -61,10 +62,82 @@ export class ProviderContentAllComponent implements OnInit {
   }
 
   callApi(query?: any) {
+    let tabData: any
+    if (this.seeAllPageConfig.viewMoreUrl.queryParams && this.seeAllPageConfig.viewMoreUrl.queryParams.tabSelected) {
+      tabData = this.seeAllPageConfig.tabs.find((
+        el: any
+      ) => el.label.toLowerCase() === this.seeAllPageConfig.viewMoreUrl.queryParams.tabSelected.toLowerCase())
+      this.seeAllPageConfig.request = tabData.request
+      this.selectedTab = tabData
+    } else {
+      tabData = this.seeAllPageConfig.tabs[0]
+      this.seeAllPageConfig.request = tabData.request
+      this.selectedTab = tabData
+    }
     if (this.seeAllPageConfig.request && this.seeAllPageConfig.request.topContent) {
       this.fetchAllTopContent(this.seeAllPageConfig, query)
     } else if (this.seeAllPageConfig.request && this.seeAllPageConfig.request.featureContent) {
       this.fetchAllFeaturedContent(this.seeAllPageConfig, query)
+    } else if (this.seeAllPageConfig.request && this.seeAllPageConfig.request.playlistRead) {
+      this.fetchPlaylistReadData(this.seeAllPageConfig, query)
+    }
+  }
+
+  getFullUrl(apiUrl: any, id: string) {
+    let formedUrl: string = apiUrl
+    if (apiUrl.indexOf('<bookmarkId>') >= 0) {
+      formedUrl = apiUrl.replace('<bookmarkId>', environment.mdoChannelsBookmarkId)
+    } else if (apiUrl.indexOf('<playlistKey>') >= 0 && apiUrl.indexOf('<orgID>') >= 0) {
+      formedUrl = apiUrl.replace('<playlistKey>', this.providerId + id)
+      formedUrl = formedUrl.replace('<orgID>', this.providerId)
+    }
+    return formedUrl
+  }
+
+  async getRequestMethod(strip: NsContentStripWithTabs.IContentStripUnit,
+                         request: NsContentStripWithTabs.IContentStripUnit['request'],
+                         apiUrl: string
+  ): Promise<any> {
+    return new Promise<any>((resolve, reject) => {
+      if (request && request) {
+        this.contentSvc.getApiMethod(apiUrl).subscribe(results => {
+        const showViewMore = Boolean(
+        results.result.data && results.result.data.orgList.length > 5 && strip.stripConfig && strip.stripConfig.postCardForSearch,
+        )
+        const viewMoreUrl = showViewMore
+        ? {
+        path: strip.viewMoreUrl && strip.viewMoreUrl.path || '',
+        }
+        : null
+        resolve({ results, viewMoreUrl })
+        },                                             (error: any) => {
+        reject(error)
+        },
+        )
+      }
+    })
+  }
+
+  async fetchPlaylistReadData(strip: NsContentStripWithTabs.IContentStripUnit, _querydata?: any) {
+    if (strip.request && strip.request.playlistRead && Object.keys(strip.request.playlistRead).length) {
+      if (strip.request &&
+        strip.request.playlistRead &&
+        strip.request.playlistRead.type) {
+        strip.request.apiUrl = this.getFullUrl(strip.request.apiUrl, strip.request.playlistRead.type)
+      }
+      try {
+        const response = await this.getRequestMethod(strip, strip.request.playlistRead, strip.request.apiUrl)
+        if (response && response.results.result.content) {
+          const content  = response.results.result.content
+          this.originalContentlist = content
+          this.contentDataList = this.commonSvc.transformContentsToWidgets(content, strip)
+        } else {
+          this.contentDataList = []
+        }
+      } catch (error) {
+        // Handle errors
+        // console.error('Error:', error);
+      }
     }
   }
 
