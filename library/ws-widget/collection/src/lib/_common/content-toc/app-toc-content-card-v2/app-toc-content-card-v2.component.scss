@@ -560,26 +560,35 @@ span.optional-span {
 .collection-wrapper.module,
 .resource-container .resource  {
   padding-left: 16px;
+  box-sizing: border-box;
+  width: 100%;
+  overflow: hidden;
 }
 
 // resource in module
 .children-container.module  .resource-container .resource {
   padding-left: 24px;
+  box-sizing: border-box;
+  width: 100%;
 }
 
 // module in course
 .course .collection-wrapper.module  {
   padding-left: 24px;
+  box-sizing: border-box;
+  width: 100%;
 }
 
 // resource in module in course
 .course .children-container.module  .resource-container .resource{
-  padding-left: 32px
+  padding-left: 32px;
+  box-sizing: border-box;
+  width: 100%;
 }
 
 // resource in course
 .course  .resource-container .resource{
-  padding-left: 24px
+  padding-left: 24px;
 }
 
 

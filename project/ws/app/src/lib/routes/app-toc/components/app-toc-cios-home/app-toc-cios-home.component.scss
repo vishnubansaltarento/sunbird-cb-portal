@@ -63,6 +63,7 @@
 
     .banner-text {
       color: rgba(255, 255, 255, 0.95);
+      word-wrap: break-word;
     }
   }
 
@@ -317,6 +318,11 @@
     border-top-left-radius: 12px;
     border-top-right-radius: 12px;
   }
+}
+
+.text-scrol-custom {
+  height: 200px;
+  overflow-y: auto;
 }
 
 @media screen and (max-width: 1000px) {
@@ -748,6 +754,10 @@ mat-divider {
 //   }
 // }
 
+.certificate-loader ::ng-deep .mat-progress-spinner circle, .mat-spinner circle {
+  stroke: #ffffff;
+}
+
 .cb-plan-wrap {
   opacity: 1;
   color: rgba(27,76,161,1);
@@ -816,7 +826,36 @@ ul{
   text-align: center;
 }
 
-.kpi-values[_ngcontent-feq-c30] img[_ngcontent-feq-c30] {
+.kpi-values img {
   height: 24px;
   width: 24px;
+}
+
+.position-bottom {
+  position: fixed;
+  width: 88%;
+  bottom: 0;
+  z-index: 99;
+}
+
+.no-certificate-found {
+  border: 1px solid #ccc;
+  border-color: rgb(243, 150, 47);
+  background-color: rgb(252, 238, 219);
+  border-radius: 12px;
+}
+
+.no-certificate-found {
+  padding: 16px;
+ 
+  min-height: 56px;
+}
+
+.truncate-5 {
+  -webkit-line-clamp: 1;
+  text-overflow: ellipsis;
+  overflow: hidden;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  word-wrap: break-word;
 }

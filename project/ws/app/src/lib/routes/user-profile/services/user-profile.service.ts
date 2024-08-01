@@ -35,6 +35,7 @@ const API_ENDPOINTS = {
   getApprovalReqs: '/apis/protected/v8/workflowhandler/applicationsSearch',
   ehrmsDataRequest: '/apis/proxies/v8/ehrms/details',
   withDrawRequest: '/apis/protected/v8/workflowhandler/transition',
+  approvedDomains: 'apis/proxies/v8/user/v1/email/approvedDomains',
 }
 
 @Injectable()
@@ -170,5 +171,8 @@ export class UserProfileService {
           (result: any) => result
         )
       )
+  }
+  getWhiteListDomain(): Observable<any> {
+    return this.http.get<any>(API_ENDPOINTS.approvedDomains)
   }
 }

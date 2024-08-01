@@ -31,6 +31,7 @@ import { NotificationComponent } from '@ws/author/src/lib/modules/shared/compone
 import { DesignationRequestComponent } from '../../components/designation-request/designation-request.component'
 import { HomePageService } from 'src/app/services/home-page.service'
 import { RejectionReasonPopupComponent } from '../../components/rejection-reason-popup/rejection-reason-popup.component'
+import { ConfirmDialogComponent } from '@sunbird-cb/collection/src/lib/_common/confirm-dialog/confirm-dialog.component'
 
 export const MY_FORMATS = {
   parse: {
@@ -43,7 +44,8 @@ export const MY_FORMATS = {
     monthYearA11yLabel: 'YYYY',
   },
 }
-const EMAIL_PATTERN = /^[a-zA-Z0-9](\.?[a-zA-Z0-9_]+)*@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/
+const EMAIL_PATTERN = /^[a-zA-Z0-9]+[a-zA-Z0-9._-]*[a-zA-Z0-9]+@[a-zA-Z0-9]+(\.[a-zA-Z0-9-]+)*\.[a-zA-Z]{2,4}$/
+// const EMAIL_PATTERN = /^[a-zA-Z0-9](\.?[a-zA-Z0-9_]+)*@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/
 const MOBILE_PATTERN = /^[0]?[6789]\d{9}$/
 const PIN_CODE_PATTERN = /^[1-9][0-9]{5}$/
 const EMP_ID_PATTERN = /^[a-z0-9]+$/i
@@ -115,6 +117,7 @@ export class ProfileViewComponent implements OnInit, AfterViewInit, OnDestroy {
   enableWR = false
   // feedbackInfo = ''
   skeletonLoader = false
+  approvedDomainList: any = []
   otherDetailsForm = new FormGroup({
     employeeCode: new FormControl('', [Validators.pattern(EMP_ID_PATTERN)]),
     primaryEmail: new FormControl('', [Validators.pattern(EMAIL_PATTERN)]),
@@ -180,64 +183,64 @@ export class ProfileViewComponent implements OnInit, AfterViewInit, OnDestroy {
 
     if (this.otherDetailsForm.get('domicileMedium')) {
       this.otherDetailsForm.get('domicileMedium')!.valueChanges
-      .pipe(
-        debounceTime(250),
-        distinctUntilChanged(),
-        startWith(''),
-      )
-      .subscribe(res => {
-        if (this.masterLanguageBackup) {
-          this.masterLanguages = this.masterLanguageBackup.filter(item => item.name.toLowerCase().includes(res && res.toLowerCase()))
-        }
-      })
+        .pipe(
+          debounceTime(250),
+          distinctUntilChanged(),
+          startWith(''),
+        )
+        .subscribe(res => {
+          if (this.masterLanguageBackup) {
+            this.masterLanguages = this.masterLanguageBackup.filter(item => item.name.toLowerCase().includes(res && res.toLowerCase()))
+          }
+        })
     }
 
     if (this.otherDetailsForm.get('countryCode')) {
       this.otherDetailsForm.get('countryCode')!.valueChanges
-      .pipe(
-        debounceTime(100),
-        distinctUntilChanged(),
-        startWith('')
-      )
-      .subscribe(res => {
-        if (this.countryCodesBackUp) {
-          this.countryCodes = this.countryCodesBackUp.filter(item => item.includes(res))
-        }
-      })
+        .pipe(
+          debounceTime(100),
+          distinctUntilChanged(),
+          startWith('')
+        )
+        .subscribe(res => {
+          if (this.countryCodesBackUp) {
+            this.countryCodes = this.countryCodesBackUp.filter(item => item.includes(res))
+          }
+        })
     }
 
     // To check the email entered by the user is same or not, validating the email to show the Get OTP.
     if (this.otherDetailsForm.get('primaryEmail')) {
       this.otherDetailsForm.get('primaryEmail')!.valueChanges
-      .subscribe(res => {
-        if (res && res !== this.portalProfile.personalDetails.primaryEmail) {
-          if (EMAIL_PATTERN.test(res)) {
-            this.verifyEmail = true
-            this.otherDetailsForm.setErrors({ invalid: false })
+        .subscribe(res => {
+          if (res && res !== this.portalProfile.personalDetails.primaryEmail) {
+            if (EMAIL_PATTERN.test(res)) {
+              this.verifyEmail = true
+              this.otherDetailsForm.setErrors({ invalid: false })
+            } else {
+              this.verifyEmail = false
+              this.otherDetailsForm.setErrors({ invalid: false })
+            }
           } else {
             this.verifyEmail = false
             this.otherDetailsForm.setErrors({ invalid: false })
           }
-        } else {
-          this.verifyEmail = false
-          this.otherDetailsForm.setErrors({ invalid: false })
-        }
-      })
+        })
     }
 
     if (this.otherDetailsForm.get('mobile')) {
       this.otherDetailsForm.get('mobile')!.valueChanges
-      .subscribe(res => {
-        if (res && res !== this.portalProfile.personalDetails.mobile ||  !this.portalProfile.personalDetails.phoneVerified) {
-          if (MOBILE_PATTERN.test(res)) {
-            this.verifyMobile = true
+        .subscribe(res => {
+          if (res && res !== this.portalProfile.personalDetails.mobile || !this.portalProfile.personalDetails.phoneVerified) {
+            if (MOBILE_PATTERN.test(res)) {
+              this.verifyMobile = true
+            } else {
+              this.verifyMobile = false
+            }
           } else {
             this.verifyMobile = false
           }
-        } else {
-          this.verifyMobile = false
-        }
-      })
+        })
     }
 
     this.pageData = this.route.parent && this.route.parent.snapshot.data.pageData.data
@@ -297,26 +300,26 @@ export class ProfileViewComponent implements OnInit, AfterViewInit, OnDestroy {
   fetchDiscussionsData(): void {
     this.discussion.loadSkeleton = true
     this.homeService.getDiscussionsData(this.currentUser.userName)
-    .pipe(takeUntil(this.destroySubject$))
-    .subscribe(
-      (res: any) => {
-        this.discussion.loadSkeleton = false
-        this.updatesPosts.loadSkeleton = false
-        this.discussion.data = res && res.latestPosts
-        this.updatesPosts.data = res && res.latestPosts && res.latestPosts.sort((x: any, y: any) => {
-          return y.timestamp - x.timestamp
-        })
-      },
-      (error: HttpErrorResponse) => {
-        if (!error.ok) {
+      .pipe(takeUntil(this.destroySubject$))
+      .subscribe(
+        (res: any) => {
           this.discussion.loadSkeleton = false
           this.updatesPosts.loadSkeleton = false
-          this.discussion.error = true
-          this.updatesPosts.error = true
-          this.matSnackBar.open(this.handleTranslateTo('discussionsDataFail'))
+          this.discussion.data = res && res.latestPosts
+          this.updatesPosts.data = res && res.latestPosts && res.latestPosts.sort((x: any, y: any) => {
+            return y.timestamp - x.timestamp
+          })
+        },
+        (error: HttpErrorResponse) => {
+          if (!error.ok) {
+            this.discussion.loadSkeleton = false
+            this.updatesPosts.loadSkeleton = false
+            this.discussion.error = true
+            this.updatesPosts.error = true
+            this.matSnackBar.open(this.handleTranslateTo('discussionsDataFail'))
+          }
         }
-      }
-    )
+      )
   }
 
   ngAfterViewInit(): void {
@@ -346,22 +349,22 @@ export class ProfileViewComponent implements OnInit, AfterViewInit, OnDestroy {
       },
     }
     this.homeService.getInsightsData(request)
-    .pipe(takeUntil(this.destroySubject$))
-    .subscribe((res: any) => {
-      if (res.result.response) {
-        this.insightsData = res.result.response
+      .pipe(takeUntil(this.destroySubject$))
+      .subscribe((res: any) => {
+        if (res.result.response) {
+          this.insightsData = res.result.response
 
-        this.constructNudgeData()
-        if (this.insightsData && this.insightsData['weekly-claps']) {
-          this.insightsData['weeklyClaps'] = this.insightsData['weekly-claps']
+          this.constructNudgeData()
+          if (this.insightsData && this.insightsData['weekly-claps']) {
+            this.insightsData['weeklyClaps'] = this.insightsData['weekly-claps']
+          }
+        } else {
+          this.insightsDataLoading = false
         }
-      } else {
+      },         (_error: HttpErrorResponse) => {
         this.insightsDataLoading = false
-      }
-    },         (_error: HttpErrorResponse) => {
-      this.insightsDataLoading = false
-      this.matSnackBar.open(this.handleTranslateTo('insightsDataFail'))
-    })
+        this.matSnackBar.open(this.handleTranslateTo('insightsDataFail'))
+      })
   }
 
   constructNudgeData() {
@@ -381,7 +384,7 @@ export class ProfileViewComponent implements OnInit, AfterViewInit, OnDestroy {
       if (ele) {
         const data = {
           title: ele.label,
-          icon: ele.growth === 'positive' ?  'arrow_upward' : 'arrow_downward',
+          icon: ele.growth === 'positive' ? 'arrow_upward' : 'arrow_downward',
           data: ele.growth === 'positive' && ele.progress > 1 ? `+${Math.round(ele.progress)}%` : '',
           colorData: ele.growth === 'positive' ? 'color-green' : 'color-red',
         }
@@ -414,19 +417,19 @@ export class ProfileViewComponent implements OnInit, AfterViewInit, OnDestroy {
 
   getAssessmentData() {
     this.homeService.getAssessmentinfo()
-    .pipe(takeUntil(this.destroySubject$))
-    .subscribe(
-      (res: any) => {
-        if (res && res.result && res.result.response) {
-          this.assessmentsData = res.result.response
+      .pipe(takeUntil(this.destroySubject$))
+      .subscribe(
+        (res: any) => {
+          if (res && res.result && res.result.response) {
+            this.assessmentsData = res.result.response
+          }
+        },
+        (error: HttpErrorResponse) => {
+          if (!error.ok) {
+            this.matSnackBar.open(this.handleTranslateTo('assessmentDataFail'))
+          }
         }
-      },
-      (error: HttpErrorResponse) => {
-        if (!error.ok) {
-          this.matSnackBar.open(this.handleTranslateTo('assessmentDataFail'))
-        }
-      }
-    )
+      )
   }
 
   private openSnackbar(primaryMsg: string, duration: number = 5000) {
@@ -439,7 +442,7 @@ export class ProfileViewComponent implements OnInit, AfterViewInit, OnDestroy {
     if (this.portalProfile.personalDetails.primaryEmail) {
       if (this.otherDetailsForm.get('primaryEmail')) {
         this.otherDetailsForm.get('primaryEmail')!.setValidators([Validators.required,
-          Validators.pattern(EMAIL_PATTERN)])
+        Validators.pattern(EMAIL_PATTERN)])
         this.otherDetailsForm.get('primaryEmail')!.updateValueAndValidity()
 
       }
@@ -475,40 +478,40 @@ export class ProfileViewComponent implements OnInit, AfterViewInit, OnDestroy {
 
   getMasterNationality(): void {
     this.userProfileService.getMasterNationality()
-    .pipe(takeUntil(this.destroySubject$))
-    .subscribe((res: any) => {
-      if (res.nationality) {
-        res.nationality.forEach((item: any) => {
-          this.countryCodes.push(item.countryCode)
-          this.countryCodesBackUp.push(item.countryCode)
-          this.nationalityData.push(item.name)
-        })
-      }
-    },         (error: HttpErrorResponse) => {
-      if (!error.ok) {
-        this.matSnackBar.open(this.handleTranslateTo('unableFetchMasterNation'))
-      }
-    })
+      .pipe(takeUntil(this.destroySubject$))
+      .subscribe((res: any) => {
+        if (res.nationality) {
+          res.nationality.forEach((item: any) => {
+            this.countryCodes.push(item.countryCode)
+            this.countryCodesBackUp.push(item.countryCode)
+            this.nationalityData.push(item.name)
+          })
+        }
+      },         (error: HttpErrorResponse) => {
+        if (!error.ok) {
+          this.matSnackBar.open(this.handleTranslateTo('unableFetchMasterNation'))
+        }
+      })
   }
 
   getMasterLanguage(): void {
     this.userProfileService.getMasterLanguages()
-    .pipe(takeUntil(this.destroySubject$))
-    .subscribe((res: any) => {
-      this.masterLanguages = res.languages
-      this.masterLanguageBackup = res.languages
-    },         (error: HttpErrorResponse) => {
-      if (!error.ok) {
-        this.matSnackBar.open(this.handleTranslateTo('unableFetchMasterLanguageData'))
-      }
-    })
+      .pipe(takeUntil(this.destroySubject$))
+      .subscribe((res: any) => {
+        this.masterLanguages = res.languages
+        this.masterLanguageBackup = res.languages
+      },         (error: HttpErrorResponse) => {
+        if (!error.ok) {
+          this.matSnackBar.open(this.handleTranslateTo('unableFetchMasterLanguageData'))
+        }
+      })
   }
 
   handleTranslateTo(menuName: string): string {
     return this.userProfileService.handleTranslateTo(menuName)
   }
 
-  prefillForm(data ?: any): void {
+  prefillForm(data?: any): void {
     if (data) {
       this.portalProfile.personalDetails.gender = data.dataToSubmit.gender
       this.portalProfile.personalDetails.dob = data.dataToSubmit.dob
@@ -608,47 +611,76 @@ export class ProfileViewComponent implements OnInit, AfterViewInit, OnDestroy {
     }
 
     otpValue$.pipe(takeUntil(this.destroySubject$))
-    .subscribe((_res: any) => {
-      if (data.type === 'email') {
-        this.matSnackBar.open(this.handleTranslateTo('otpSentEmail'))
-      } else {
-        this.matSnackBar.open(this.handleTranslateTo('otpSentMobile'))
-      }
-    },         (error: any) => {
-      if (!error.ok) {
-        this.matSnackBar.open(_.get(error, 'error.params.errmsg') ||  'Unable to resend OTP, please try again later!')
+      .subscribe((_res: any) => {
+        if (data.type === 'email') {
+          this.matSnackBar.open(this.handleTranslateTo('otpSentEmail'))
+        } else {
+          this.matSnackBar.open(this.handleTranslateTo('otpSentMobile'))
+        }
+      },         (error: any) => {
+        if (!error.ok) {
+          this.matSnackBar.open(_.get(error, 'error.params.errmsg') || 'Unable to resend OTP, please try again later!')
+        }
+      })
+  }
+
+  handleGenerateEmailOTP(verifyType?: any): void {
+    this.userProfileService.getWhiteListDomain().subscribe((response: any) => {
+      if (response && response.result && response.result.domains && response.result.domains.length > 0) {
+        this.approvedDomainList = response.result.domains
+
+        if (this.approvedDomainList && this.approvedDomainList.length && this.approvedDomainList.length > 0) {
+
+          if (this.isEmailAllowed(this.otherDetailsForm.value['primaryEmail'])) {
+            this.otpService.sendEmailOtp(this.otherDetailsForm.value['primaryEmail'])
+              .pipe(takeUntil(this.destroySubject$))
+              .subscribe((_res: any) => {
+                this.matSnackBar.open(this.handleTranslateTo('otpSentEmail'))
+                if (verifyType) {
+                  this.handleVerifyOTP(verifyType, this.otherDetailsForm.value['primaryEmail'])
+                }
+              },         (error: HttpErrorResponse) => {
+                if (!error.ok) {
+                  this.matSnackBar.open(this.handleTranslateTo('emailOTPSentFail'))
+                }
+              })
+          } else {
+            const dialogRef = this.dialog.open(ConfirmDialogComponent, {
+              data: {
+                title: ' ',
+                from: 'approvedDomain',
+                acceptButton: 'OK',
+                width: '60%',
+              },
+            })
+            dialogRef.afterClosed().subscribe(result => {
+              if (result) {
+              }
+            })
+          }
+        }
       }
     })
   }
 
-  handleGenerateEmailOTP(verifyType?: any): void {
-    this.otpService.sendEmailOtp(this.otherDetailsForm.value['primaryEmail'])
-    .pipe(takeUntil(this.destroySubject$))
-    .subscribe((_res: any) => {
-      this.matSnackBar.open(this.handleTranslateTo('otpSentEmail'))
-      if (verifyType) {
-        this.handleVerifyOTP(verifyType, this.otherDetailsForm.value['primaryEmail'])
-      }
-    },         (error: HttpErrorResponse) => {
-      if (!error.ok) {
-        this.matSnackBar.open(this.handleTranslateTo('emailOTPSentFail'))
-      }
-    })
+  isEmailAllowed(email: string): boolean {
+    const domain = email.split('@')[1]
+    return domain ? this.approvedDomainList.includes(domain) : false
   }
 
   handleGenerateOTP(verifyType?: string): void {
     this.otpService.sendOtp(this.otherDetailsForm.value['mobile'])
-    .pipe(takeUntil(this.destroySubject$))
-    .subscribe((_res: any) => {
-      this.matSnackBar.open(this.handleTranslateTo('otpSentMobile'))
-      if (verifyType) {
-        this.handleVerifyOTP(verifyType, this.otherDetailsForm.value['mobile'])
-      }
-    },         (error: HttpErrorResponse) => {
-      if (!error.ok) {
-        this.matSnackBar.open(this.handleTranslateTo('mobileOTPSentFail'))
-      }
-    })
+      .pipe(takeUntil(this.destroySubject$))
+      .subscribe((_res: any) => {
+        this.matSnackBar.open(this.handleTranslateTo('otpSentMobile'))
+        if (verifyType) {
+          this.handleVerifyOTP(verifyType, this.otherDetailsForm.value['mobile'])
+        }
+      },         (error: HttpErrorResponse) => {
+        if (!error.ok) {
+          this.matSnackBar.open(this.handleTranslateTo('mobileOTPSentFail'))
+        }
+      })
   }
 
   updateEmail(email: string): void {
@@ -665,15 +697,15 @@ export class ProfileViewComponent implements OnInit, AfterViewInit, OnDestroy {
     }
 
     this.userProfileService.updatePrimaryEmailDetails(postData)
-    .pipe(takeUntil(this.destroySubject$))
-    .subscribe((_res: any) => {
-      this.portalProfile.personalDetails.primaryEmail = email
-      this.matSnackBar.open(this.handleTranslateTo('emailUpdated'))
-    },         (error: HttpErrorResponse) => {
-      if (!error.ok) {
-        this.matSnackBar.open(this.handleTranslateTo('updateEmailFailed'))
-      }
-    })
+      .pipe(takeUntil(this.destroySubject$))
+      .subscribe((_res: any) => {
+        this.portalProfile.personalDetails.primaryEmail = email
+        this.matSnackBar.open(this.handleTranslateTo('emailUpdated'))
+      },         (error: HttpErrorResponse) => {
+        if (!error.ok) {
+          this.matSnackBar.open(this.handleTranslateTo('updateEmailFailed'))
+        }
+      })
   }
 
   handleSaveOtherDetails(): void {
@@ -684,7 +716,7 @@ export class ProfileViewComponent implements OnInit, AfterViewInit, OnDestroy {
     const dataToSubmit = { ...this.otherDetailsForm.value }
     if (dataToSubmit.dob) {
       dataToSubmit.dob =
-      `${new Date(dataToSubmit.dob).getDate()}-${new Date(dataToSubmit.dob).getMonth() + 1}-${new Date(dataToSubmit.dob).getFullYear()}`
+        `${new Date(dataToSubmit.dob).getDate()}-${new Date(dataToSubmit.dob).getMonth() + 1}-${new Date(dataToSubmit.dob).getFullYear()}`
     }
     delete dataToSubmit.countryCode
     delete dataToSubmit.employeeCode
@@ -706,23 +738,23 @@ export class ProfileViewComponent implements OnInit, AfterViewInit, OnDestroy {
     payload.request.profileDetails.personalDetails = dataToSubmit
 
     this.userProfileService.editProfileDetails(payload)
-    .pipe(takeUntil(this.destroySubject$))
-    .subscribe((_res: any) => {
-      this.matSnackBar.open(this.handleTranslateTo('userDetailsUpdated'))
-      this.editDetails = !this.editDetails
-      this.prefillForm({ dataToSubmit, ...{ 'employeeCode': this.otherDetailsForm.value['employeeCode'] } })
-    },         (error: HttpErrorResponse) => {
-      if (!error.ok) {
-        this.matSnackBar.open(this.handleTranslateTo('userDetailsUpdateFailed'))
+      .pipe(takeUntil(this.destroySubject$))
+      .subscribe((_res: any) => {
+        this.matSnackBar.open(this.handleTranslateTo('userDetailsUpdated'))
         this.editDetails = !this.editDetails
-        this.prefillForm()
-      }
-    })
+        this.prefillForm({ dataToSubmit, ...{ 'employeeCode': this.otherDetailsForm.value['employeeCode'] } })
+      },         (error: HttpErrorResponse) => {
+        if (!error.ok) {
+          this.matSnackBar.open(this.handleTranslateTo('userDetailsUpdateFailed'))
+          this.editDetails = !this.editDetails
+          this.prefillForm()
+        }
+      })
   }
 
   handleTransferRequest(): void {
     const dialogRef = this.dialog.open(TransferRequestComponent, {
-      data: { portalProfile : this.portalProfile, groupData: this.groupData, designationsMeta: this.designationsMeta },
+      data: { portalProfile: this.portalProfile, groupData: this.groupData, designationsMeta: this.designationsMeta },
       disableClose: true,
       panelClass: 'common-modal',
     })
@@ -771,14 +803,14 @@ export class ProfileViewComponent implements OnInit, AfterViewInit, OnDestroy {
 
   getGroupData(): void {
     this.userProfileService.getGroups()
-    .pipe(takeUntil(this.destroySubject$))
-    .subscribe((res: any) => {
-      this.groupData = res.result && res.result.response.filter((ele: any) => ele !== 'Others')
-    },         (error: HttpErrorResponse) => {
-      if (!error.ok) {
-        this.matSnackBar.open(this.handleTranslateTo('groupDataFaile'))
-      }
-    })
+      .pipe(takeUntil(this.destroySubject$))
+      .subscribe((res: any) => {
+        this.groupData = res.result && res.result.response.filter((ele: any) => ele !== 'Others')
+      },         (error: HttpErrorResponse) => {
+        if (!error.ok) {
+          this.matSnackBar.open(this.handleTranslateTo('groupDataFaile'))
+        }
+      })
   }
 
   loadDesignations() {
@@ -804,96 +836,96 @@ export class ProfileViewComponent implements OnInit, AfterViewInit, OnDestroy {
 
   getApprovedFields(): void {
     this.userProfileService.fetchApprovedFields()
-    .pipe(takeUntil(this.destroySubject$))
-    .subscribe((_res: any) => {
-      _res.result.data.filter((obj: any) => {
-        this.groupApprovedTime = (obj.hasOwnProperty('group') && obj.lastUpdatedOn > this.groupApprovedTime) ?
-          obj.lastUpdatedOn : this.groupApprovedTime
+      .pipe(takeUntil(this.destroySubject$))
+      .subscribe((_res: any) => {
+        _res.result.data.filter((obj: any) => {
+          this.groupApprovedTime = (obj.hasOwnProperty('group') && obj.lastUpdatedOn > this.groupApprovedTime) ?
+            obj.lastUpdatedOn : this.groupApprovedTime
 
-        this.designationApprovedTime = (obj.hasOwnProperty('designation') && obj.lastUpdatedOn > this.designationApprovedTime) ?
-          obj.lastUpdatedOn : this.designationApprovedTime
+          this.designationApprovedTime = (obj.hasOwnProperty('designation') && obj.lastUpdatedOn > this.designationApprovedTime) ?
+            obj.lastUpdatedOn : this.designationApprovedTime
+        })
+      },         (error: HttpErrorResponse) => {
+        if (!error.ok) {
+          this.matSnackBar.open(this.handleTranslateTo('approvedStatusFailed'))
+        }
+        this.skeletonLoader = false
       })
-    },         (error: HttpErrorResponse) => {
-      if (!error.ok) {
-        this.matSnackBar.open(this.handleTranslateTo('approvedStatusFailed'))
-      }
-      this.skeletonLoader = false
-    })
   }
 
   getSendApprovalStatus(): void {
-  this.skeletonLoader = true
+    this.skeletonLoader = true
     this.userProfileService.fetchApprovalPendingFields()
-    .pipe(takeUntil(this.destroySubject$))
-    .subscribe((_res: any) => {
-      this.unVerifiedObj.groupRequestTime = 0
-      this.unVerifiedObj.designationRequestTime = 0
-      this.approvalPendingFields = _res.result.data
+      .pipe(takeUntil(this.destroySubject$))
+      .subscribe((_res: any) => {
+        this.unVerifiedObj.groupRequestTime = 0
+        this.unVerifiedObj.designationRequestTime = 0
+        this.approvalPendingFields = _res.result.data
 
-      if (!this.approvalPendingFields || !this.approvalPendingFields.length) {
-        this.enableWTR = false
+        if (!this.approvalPendingFields || !this.approvalPendingFields.length) {
+          this.enableWTR = false
+          this.skeletonLoader = false
+          return
+        }
+        const exists = this.approvalPendingFields.filter((obj: any) => {
+          if (obj.hasOwnProperty('name')) {
+            this.unVerifiedObj.organization = obj.name
+          }
+          if (obj.hasOwnProperty('group') && obj.lastUpdatedOn > this.unVerifiedObj.groupRequestTime) {
+            this.unVerifiedObj.group = obj.group
+            this.unVerifiedObj.groupRequestTime = obj.lastUpdatedOn
+          }
+          if (obj.hasOwnProperty('designation') && obj.lastUpdatedOn > this.unVerifiedObj.designationRequestTime) {
+            this.unVerifiedObj.designation = obj.designation
+            this.unVerifiedObj.designationRequestTime = obj.lastUpdatedOn
+          }
+          return obj.hasOwnProperty('name')
+        }).length > 0
+
+        if (exists) {
+          this.enableWTR = true
+        } else {
+          this.enableWR = true
+        }
         this.skeletonLoader = false
-        return
-      }
-      const exists = this.approvalPendingFields.filter((obj: any) => {
-        if (obj.hasOwnProperty('name')) {
-          this.unVerifiedObj.organization = obj.name
+      },         (error: HttpErrorResponse) => {
+        if (!error.ok) {
+          this.matSnackBar.open(this.handleTranslateTo('approvalStatusFailed'))
         }
-        if (obj.hasOwnProperty('group') && obj.lastUpdatedOn > this.unVerifiedObj.groupRequestTime) {
-          this.unVerifiedObj.group = obj.group
-          this.unVerifiedObj.groupRequestTime = obj.lastUpdatedOn
-        }
-        if (obj.hasOwnProperty('designation') && obj.lastUpdatedOn > this.unVerifiedObj.designationRequestTime) {
-          this.unVerifiedObj.designation = obj.designation
-          this.unVerifiedObj.designationRequestTime = obj.lastUpdatedOn
-        }
-        return obj.hasOwnProperty('name')
-      }).length > 0
-
-      if (exists) {
-        this.enableWTR = true
-      } else {
-        this.enableWR = true
-      }
-      this.skeletonLoader = false
-    },         (error: HttpErrorResponse) => {
-      if (!error.ok) {
-        this.matSnackBar.open(this.handleTranslateTo('approvalStatusFailed'))
-      }
-      this.skeletonLoader = false
-    })
+        this.skeletonLoader = false
+      })
   }
 
   getRejectedStatus(): void {
     this.skeletonLoader = true
     this.userProfileService.listRejectedFields()
-    .pipe(takeUntil(this.destroySubject$))
-    .subscribe((res: any) => {
-      if (res.result && res.result.data && Array.isArray(res.result.data)) {
-        this.rejectedByMDOData = res.result.data
-        res.result.data.forEach((obj: any) => {
-          if (obj.hasOwnProperty('name')) {
-            this.rejectedFields.name = obj.name
-          }
-          if (obj.hasOwnProperty('group') && obj.lastUpdatedOn > this.rejectedFields.groupRejectionTime) {
-            this.rejectedFields.group = obj.group
-            this.rejectedFields.groupRejectionComments = obj.comment
-            this.rejectedFields.groupRejectionTime = obj.lastUpdatedOn
-          }
-          if (obj.hasOwnProperty('designation') && obj.lastUpdatedOn > this.rejectedFields.designationRejectionTime) {
-            this.rejectedFields.designation = obj.designation
-            this.rejectedFields.designationRejectionComments = obj.comment
-            this.rejectedFields.designationRejectionTime = obj.lastUpdatedOn
-          }
-        })
-      }
-      this.skeletonLoader = false
-    },         (error: HttpErrorResponse) => {
-      if (!error.ok) {
-        this.matSnackBar.open(this.handleTranslateTo('rejectedStatusFailed'))
-      }
-      this.skeletonLoader = false
-    })
+      .pipe(takeUntil(this.destroySubject$))
+      .subscribe((res: any) => {
+        if (res.result && res.result.data && Array.isArray(res.result.data)) {
+          this.rejectedByMDOData = res.result.data
+          res.result.data.forEach((obj: any) => {
+            if (obj.hasOwnProperty('name')) {
+              this.rejectedFields.name = obj.name
+            }
+            if (obj.hasOwnProperty('group') && obj.lastUpdatedOn > this.rejectedFields.groupRejectionTime) {
+              this.rejectedFields.group = obj.group
+              this.rejectedFields.groupRejectionComments = obj.comment
+              this.rejectedFields.groupRejectionTime = obj.lastUpdatedOn
+            }
+            if (obj.hasOwnProperty('designation') && obj.lastUpdatedOn > this.rejectedFields.designationRejectionTime) {
+              this.rejectedFields.designation = obj.designation
+              this.rejectedFields.designationRejectionComments = obj.comment
+              this.rejectedFields.designationRejectionTime = obj.lastUpdatedOn
+            }
+          })
+        }
+        this.skeletonLoader = false
+      },         (error: HttpErrorResponse) => {
+        if (!error.ok) {
+          this.matSnackBar.open(this.handleTranslateTo('rejectedStatusFailed'))
+        }
+        this.skeletonLoader = false
+      })
   }
 
   get showApprovalStatus(): boolean {
@@ -915,7 +947,7 @@ export class ProfileViewComponent implements OnInit, AfterViewInit, OnDestroy {
       this.unVerifiedObj.group
     ) {
       if ((this.unVerifiedObj.groupRequestTime + 100) < this.rejectedFields.designationRejectionTime ||
-      (this.unVerifiedObj.groupRequestTime + 100) < this.unVerifiedObj.designationRequestTime) {
+        (this.unVerifiedObj.groupRequestTime + 100) < this.unVerifiedObj.designationRequestTime) {
         return false
       }
       return true
@@ -930,7 +962,7 @@ export class ProfileViewComponent implements OnInit, AfterViewInit, OnDestroy {
       this.rejectedFields.group
     ) {
       if ((this.rejectedFields.groupRejectionTime + 100) < this.rejectedFields.designationRejectionTime ||
-      (this.rejectedFields.groupRejectionTime + 100) < this.unVerifiedObj.designationRequestTime) {
+        (this.rejectedFields.groupRejectionTime + 100) < this.unVerifiedObj.designationRequestTime) {
         return false
       }
       return true
@@ -945,7 +977,7 @@ export class ProfileViewComponent implements OnInit, AfterViewInit, OnDestroy {
       this.unVerifiedObj.designation
     ) {
       if ((this.unVerifiedObj.designationRequestTime + 100) < this.rejectedFields.groupRejectionTime ||
-      (this.unVerifiedObj.designationRequestTime + 100) < this.unVerifiedObj.groupRequestTime) {
+        (this.unVerifiedObj.designationRequestTime + 100) < this.unVerifiedObj.groupRequestTime) {
         return false
       }
       return true
@@ -960,7 +992,7 @@ export class ProfileViewComponent implements OnInit, AfterViewInit, OnDestroy {
       this.rejectedFields.designation
     ) {
       if ((this.rejectedFields.designationRejectionTime + 100) < this.rejectedFields.groupRejectionTime ||
-      (this.rejectedFields.designationRejectionTime + 100) < this.unVerifiedObj.groupRequestTime) {
+        (this.rejectedFields.designationRejectionTime + 100) < this.unVerifiedObj.groupRequestTime) {
         return false
       }
       return true
@@ -974,25 +1006,25 @@ export class ProfileViewComponent implements OnInit, AfterViewInit, OnDestroy {
         return false
       }
       if (this.portalProfile.professionalDetails[0].group !== this.primaryDetailsForm.get('group')!.value ||
-      this.portalProfile.professionalDetails[0].designation !== this.primaryDetailsForm.get('designation')!.value
+        this.portalProfile.professionalDetails[0].designation !== this.primaryDetailsForm.get('designation')!.value
       ) {
         return true
       }
-      if ((this.portalProfile.professionalDetails[0].group !== this.primaryDetailsForm.get('group')!.value)  &&
-      ((this.designationApprovedTime <= (this.rejectedFields.groupRejectionTime + 100) &&
-        this.rejectedFields.designationRejectionTime <= (this.rejectedFields.groupRejectionTime + 100)) ||
-      this.GroupAndDesignationApproved)
+      if ((this.portalProfile.professionalDetails[0].group !== this.primaryDetailsForm.get('group')!.value) &&
+        ((this.designationApprovedTime <= (this.rejectedFields.groupRejectionTime + 100) &&
+          this.rejectedFields.designationRejectionTime <= (this.rejectedFields.groupRejectionTime + 100)) ||
+          this.GroupAndDesignationApproved)
       ) {
         return true
       }
       if ((this.portalProfile.professionalDetails[0].designation !== this.primaryDetailsForm.get('designation')!.value) &&
-      ((this.groupApprovedTime <= (this.rejectedFields.designationRejectionTime + 100) &&
-        this.rejectedFields.groupRejectionTime <= (this.rejectedFields.designationRejectionTime + 100)) ||
-        this.GroupAndDesignationApproved)) {
+        ((this.groupApprovedTime <= (this.rejectedFields.designationRejectionTime + 100) &&
+          this.rejectedFields.groupRejectionTime <= (this.rejectedFields.designationRejectionTime + 100)) ||
+          this.GroupAndDesignationApproved)) {
         return true
       }
 
-        return false
+      return false
 
     } if (this.primaryDetailsForm.get('group')!.value && this.primaryDetailsForm.get('designation')!.value) {
       return true
@@ -1002,13 +1034,13 @@ export class ProfileViewComponent implements OnInit, AfterViewInit, OnDestroy {
 
   get GroupAndDesignationApproved(): Boolean {
     if ((this.designationApprovedTime === this.groupApprovedTime) ||
-    (this.designationApprovedTime > this.rejectedFields.designationRejectionTime &&
-      this.groupApprovedTime > this.rejectedFields.groupRejectionTime) ||
-    (this.designationApprovedTime + 100 >= this.groupApprovedTime &&
+      (this.designationApprovedTime > this.rejectedFields.designationRejectionTime &&
+        this.groupApprovedTime > this.rejectedFields.groupRejectionTime) ||
+      (this.designationApprovedTime + 100 >= this.groupApprovedTime &&
         this.groupApprovedTime + 100 >= this.designationApprovedTime)
-      ) {
-        return true
-      }
+    ) {
+      return true
+    }
     return false
   }
 
@@ -1048,18 +1080,18 @@ export class ProfileViewComponent implements OnInit, AfterViewInit, OnDestroy {
 
       postData.request.profileDetails.professionalDetails.push(data)
       this.userProfileService.editProfileDetails(postData)
-      .pipe(takeUntil(this.destroySubject$))
-      .subscribe((_res: any) => {
-        this.matSnackBar.open(this.handleTranslateTo('requestSent'))
-        this.editProfile = !this.editProfile
-        this.enableWR = true
-        this.portalProfile.verifiedKarmayogi = false
-        this.getSendApprovalStatus()
-      },         (error: HttpErrorResponse) => {
-        if (!error.ok) {
-          this.matSnackBar.open(this.handleTranslateTo('transferRequestFailed'))
-        }
-      })
+        .pipe(takeUntil(this.destroySubject$))
+        .subscribe((_res: any) => {
+          this.matSnackBar.open(this.handleTranslateTo('requestSent'))
+          this.editProfile = !this.editProfile
+          this.enableWR = true
+          this.portalProfile.verifiedKarmayogi = false
+          this.getSendApprovalStatus()
+        },         (error: HttpErrorResponse) => {
+          if (!error.ok) {
+            this.matSnackBar.open(this.handleTranslateTo('transferRequestFailed'))
+          }
+        })
     }
 
   }
@@ -1083,18 +1115,18 @@ export class ProfileViewComponent implements OnInit, AfterViewInit, OnDestroy {
   handleWithdrawRequest(): void {
     this.approvalPendingFields.forEach((_obj: any) => {
       this.userProfileService.withDrawRequest(this.configService.unMappedUser.id, _obj.wfId)
-      .pipe(takeUntil(this.destroySubject$))
-      .subscribe((_res: any) => {
-        this.getSendApprovalStatus()
-        this.unVerifiedObj.group = ''
-        this.unVerifiedObj.designation = ''
-        this.matSnackBar.open(this.handleTranslateTo('withdrawRequestSuccess'))
-        this.enableWR = false
-      },         (error: HttpErrorResponse) => {
-        if (!error.ok) {
-          this.matSnackBar.open(this.handleTranslateTo('unableWithdrawRequest'))
-        }
-      })
+        .pipe(takeUntil(this.destroySubject$))
+        .subscribe((_res: any) => {
+          this.getSendApprovalStatus()
+          this.unVerifiedObj.group = ''
+          this.unVerifiedObj.designation = ''
+          this.matSnackBar.open(this.handleTranslateTo('withdrawRequestSuccess'))
+          this.enableWR = false
+        },         (error: HttpErrorResponse) => {
+          if (!error.ok) {
+            this.matSnackBar.open(this.handleTranslateTo('unableWithdrawRequest'))
+          }
+        })
     })
   }
 
@@ -1102,8 +1134,8 @@ export class ProfileViewComponent implements OnInit, AfterViewInit, OnDestroy {
     const postData = {
       'request': {
         'userId': this.configService.unMappedUser.id,
-        'profileDetails' : {
-          'personalDetails' : {
+        'profileDetails': {
+          'personalDetails': {
             'firstname': this.profileName,
           },
         },
@@ -1111,22 +1143,22 @@ export class ProfileViewComponent implements OnInit, AfterViewInit, OnDestroy {
     }
 
     this.userProfileService.editProfileDetails(postData)
-    .pipe(takeUntil(this.destroySubject$))
-    .subscribe((_res: any) => {
-      this.portalProfile.personalDetails.firstname = this.profileName
-      if (this.configService && this.configService.userProfile && this.configService.userProfile.firstName) {
-        this.configService.userProfile.firstName = this.profileName
-      }
+      .pipe(takeUntil(this.destroySubject$))
+      .subscribe((_res: any) => {
+        this.portalProfile.personalDetails.firstname = this.profileName
+        if (this.configService && this.configService.userProfile && this.configService.userProfile.firstName) {
+          this.configService.userProfile.firstName = this.profileName
+        }
 
-      this.getInitials()
-      this.matSnackBar.open(this.handleTranslateTo('userNameUpdated'))
-      this.editName = !this.editName
-    },         (error: HttpErrorResponse) => {
-      if (!error.ok) {
-        this.matSnackBar.open(this.handleTranslateTo('userNameUpdateFailed'))
-      }
-      this.editName = !this.editName
-    })
+        this.getInitials()
+        this.matSnackBar.open(this.handleTranslateTo('userNameUpdated'))
+        this.editName = !this.editName
+      },         (error: HttpErrorResponse) => {
+        if (!error.ok) {
+          this.matSnackBar.open(this.handleTranslateTo('userNameUpdateFailed'))
+        }
+        this.editName = !this.editName
+      })
   }
 
   async onSubmit() {
@@ -1241,4 +1273,14 @@ export class ProfileViewComponent implements OnInit, AfterViewInit, OnDestroy {
       maxWidth: '90vw',
     })
   }
+
+  // isEmailAllowed(email: string): boolean {
+  //   const domain = this.extractDomain(email);
+  //   return this.approvedDomainList.includes(domain);
+  // }
+
+  // private extractDomain(email: string): string {
+  //   const parts = email.split('@');
+  //   return parts.length > 1 ? parts[1] : '';
+  // }
 }
