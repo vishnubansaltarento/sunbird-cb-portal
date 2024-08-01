@@ -219,12 +219,12 @@ export class PracticeComponent implements OnInit, OnChanges, OnDestroy {
       this.isXsmall = isXSmall
     })
 
-    this.quizSvc.checkAlreadySubmitAssessment.subscribe(result => {
-      if (result) {
-        this.isSubmitted = true
-        this.viewState = 'answer' || 'review'
-      }
-    })
+    // this.quizSvc.checkAlreadySubmitAssessment.subscribe(result => {
+    //   if (result) {
+    //     this.isSubmitted = true
+    //     this.viewState = 'answer' || 'review'
+    //   }
+    // })
   }
 
   retakeAssessment() {
@@ -1685,7 +1685,19 @@ export class PracticeComponent implements OnInit, OnChanges, OnDestroy {
         
         // this.init()
         if(this.selectedAssessmentCompatibilityLevel < 7) {
-          this.init()
+          // this.init()
+          if(this.ePrimaryCategory.FINAL_ASSESSMENT == this.primaryCategory) {
+            this.quizSvc.canAttendV5(this.identifier).subscribe(response => {
+              if (response) {
+                  this.canAttempt = response
+                //  this.canAttempt = {
+                //   attemptsAllowed: 1,
+                //   attemptsMade: 0,
+                // }
+              }
+            })
+          }          
+          this.retakeAssessment()
         } else {      
           if(this.ePrimaryCategory.FINAL_ASSESSMENT == this.primaryCategory) {
             this.quizSvc.canAttendV5(this.identifier).subscribe(response => {
