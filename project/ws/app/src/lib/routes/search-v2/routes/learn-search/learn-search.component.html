@@ -127,12 +127,13 @@
 
                         <!-- <p class="mat-subheading-1 margin-bottom-xs font-bold-imp cursor-pointer content-title" (click)="navigateToToc(param, content?.identifier, content?.primaryCategory)"> -->
                         <p class="mat-subheading-1 margin-bottom-xs font-bold-imp cursor-pointer content-title">
-                            <a (click)="getRedirectUrlData(content)">{{content.name}}</a>
+                            <a (click)="getRedirectUrlData(content)" [matTooltip]="content?.name">{{content.name}}</a> 
                         </p>
                         <!-- <p class="mat-body-2 margin-bottom-s"></p> -->
                         <div class="bottomsection">
                             <p class="mat-body-2 margin-bottom-xxs" *ngIf="content?.creator">{{'learnsearch.by' | translate}} {{content?.creator}}</p>
                             <p class="mat-body-2 margin-bottom-xxs" *ngIf="content?.organisation?.length">{{'learnsearch.by' | translate}} {{content?.organisation[0]}}</p>
+                            <p class="mat-body-2 margin-bottom-xxs" *ngIf="content?.contentPartner?.contentPartnerName">{{'learnsearch.by' | translate}} {{content?.contentPartner?.contentPartnerName}}</p>
                             <div class="contentdata margin-bottom-xm">
                                 <ul
                                     class="mat-body-2 margin-remove-top margin-bottom-xs padding-remove ws-mat-black60-text">
