@@ -32,12 +32,12 @@
         <mat-icon class="text-center notranslate material-icons info-icon" matprefix="" role="img" aria-hidden="true" [mat-dialog-close]="false" height="24px" width="24px">info_outline</mat-icon>
     </div>
     <div class="domain-msg-wrapper">
-      <p class="domain-message">{{'profileInfo.emailApprovedPopupMsg' | translate}} <span class="font-bold700">{{'profileInfo.changes' | translate}}</span></p>
+      <p class="domain-message">{{'profileInfo.emailApprovedPopupMsg' | translate}}</p>
       <p class="domain-sub-message">{{'profileInfo.emailApprovedPopupSubmsg' | translate}}</p>
     </div> 
 </div>
 
 <div class="flex btn-wrapper" mat-dialog-actions>
-  <button class="mat-button mat-button-base text-white okButton" mat-button [mat-dialog-close]="data" cdkFocusInitial>{{data.acceptButton}}</button>
+  <button class="mat-button mat-button-base text-white okButton" mat-button [mat-dialog-close]="data" cdkFocusInitial>{{'profileInfo.ok' | translate}}</button>
 </div>
 </ng-container>
