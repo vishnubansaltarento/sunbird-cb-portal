@@ -69,7 +69,7 @@
 </ng-template>
 
 <ng-template #competencyLabel>
-    <div class="mat-subheading-1 flex items-center gap-2">
+    <div class="pt-mweb-4 mat-subheading-1 flex items-center gap-2">
         {{ 'apptocsinglepage.competencies' | translate }}
         <mat-icon class="cursor-pointer ws-mat-black60-text info-icon mat-icon notranslate material-icons mat-icon-no-color"
             [matTooltipPosition]="'below'" #tooltip="matTooltip" (click)="tooltip.toggle()" matTooltip="{{ 'apptocsinglepage.competenciesTooltip' | translate }}">info_outline</mat-icon>
@@ -278,7 +278,7 @@
             </div>
         </ng-container>
         <ng-container *ngIf="!skeletonLoader">
-            <div class="mat-subheading-1 font-bold py-2">{{ 'apptocsinglepage.objectives' | translate }}</div>
+            <div class="mat-subheading-1 font-bold pt-mweb-8">{{ 'apptocsinglepage.objectives' | translate }}</div>
             <div [ngClass]="{'mob-desc-ellipsis': objectives.ellipsis && isMobile, 'desc-ellipsis': objectives.ellipsis && !isMobile}" #objectivesElem>
                 <span class="mob-text" [innerHtml]="handleCapitalize(content?.objectives)"></span>
                 <div class="ws-mat-default-text font-bold cursor-pointer text-sm" *ngIf="objectives.viewLess" (click)="objectives.ellipsis = !objectives.ellipsis; objectives.viewLess = !objectives.viewLess">&nbsp;{{ 'apptocsinglepage.viewLess' | translate }}</div>
