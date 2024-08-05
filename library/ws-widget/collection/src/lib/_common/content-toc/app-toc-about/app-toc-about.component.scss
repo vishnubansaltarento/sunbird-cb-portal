@@ -384,6 +384,16 @@ $mob-title-line-count: 2;
 
     .mobile-karma-points {
         display: none;
+    }    
+}
+
+@media screen and (max-width: 1200px){
+    .pt-mweb-8 {
+        padding-top: 2rem;
+    }
+
+    .pt-mweb-4 {
+        padding-top: 1rem;
     }
 }
 
