@@ -256,17 +256,18 @@
 .expand-icon {
     width: 32px;
     height: 32px;
-    position: absolute;
-    background: black;
-    color: white;
+    position: relative;
+    background: #000;
+    color: #fff;
     border-radius: 50%;
     display: flex;
     align-items: center;
     justify-content: center;
     left: 50%;
     right: 50%;
-    top: -16px;
+    top: 13px;
     cursor: pointer;
+    z-index: 9999;
 }
 
 .republic-wrapper .collapse-expand-icon {
